@@ -60,44 +60,36 @@ add_action( 'wp_enqueue_scripts', function() {
     // Parent theme style
     wp_enqueue_style( 'travel-style', get_stylesheet_uri() );
 
-    // Global CSS Variables
-    wp_enqueue_style(
-        'travel-global',
-        get_template_directory_uri() . '/assets/css/global.css',
-        [],
-        $version
-    );
-
     // Atoms - Individual files (bypass @import issue)
-    wp_enqueue_style('travel-atoms-button-close', get_template_directory_uri() . '/assets/css/atoms/button-close.css', ['travel-global'], $version);
-    wp_enqueue_style('travel-atoms-button-hamburger', get_template_directory_uri() . '/assets/css/atoms/button-hamburger.css', ['travel-global'], $version);
-    wp_enqueue_style('travel-atoms-logo', get_template_directory_uri() . '/assets/css/atoms/logo.css', ['travel-global'], $version);
-    wp_enqueue_style('travel-atoms-logo-footer', get_template_directory_uri() . '/assets/css/atoms/logo-footer.css', ['travel-global'], $version);
-    wp_enqueue_style('travel-atoms-nav-link', get_template_directory_uri() . '/assets/css/atoms/nav-link.css', ['travel-global'], $version);
-    wp_enqueue_style('travel-atoms-payment-icon', get_template_directory_uri() . '/assets/css/atoms/payment-icon.css', ['travel-global'], $version);
-    wp_enqueue_style('travel-atoms-social-icon', get_template_directory_uri() . '/assets/css/atoms/social-icon.css', ['travel-global'], $version);
+    wp_enqueue_style('travel-atoms-button-close', get_template_directory_uri() . '/assets/css/atoms/button-close.css', [], $version);
+    wp_enqueue_style('travel-atoms-button-hamburger', get_template_directory_uri() . '/assets/css/atoms/button-hamburger.css', [], $version);
+    wp_enqueue_style('travel-atoms-logo', get_template_directory_uri() . '/assets/css/atoms/logo.css', [], $version);
+    wp_enqueue_style('travel-atoms-logo-footer', get_template_directory_uri() . '/assets/css/atoms/logo-footer.css', [], $version);
+    wp_enqueue_style('travel-atoms-nav-link', get_template_directory_uri() . '/assets/css/atoms/nav-link.css', [], $version);
+    wp_enqueue_style('travel-atoms-payment-icon', get_template_directory_uri() . '/assets/css/atoms/payment-icon.css', [], $version);
+    wp_enqueue_style('travel-atoms-social-icon', get_template_directory_uri() . '/assets/css/atoms/social-icon.css', [], $version);
 
     // Molecules - Individual files (bypass @import issue)
-    wp_enqueue_style('travel-molecules-contact-info', get_template_directory_uri() . '/assets/css/molecules/contact-info.css', ['travel-global'], $version);
-    wp_enqueue_style('travel-molecules-footer-company-info', get_template_directory_uri() . '/assets/css/molecules/footer-company-info.css', ['travel-global'], $version);
-    wp_enqueue_style('travel-molecules-footer-legal-bar', get_template_directory_uri() . '/assets/css/molecules/footer-legal-bar.css', ['travel-global'], $version);
-    wp_enqueue_style('travel-molecules-footer-map', get_template_directory_uri() . '/assets/css/molecules/footer-map.css', ['travel-global'], $version);
-    wp_enqueue_style('travel-molecules-nav-aside', get_template_directory_uri() . '/assets/css/molecules/nav-aside.css', ['travel-global'], $version);
-    wp_enqueue_style('travel-molecules-nav-footer-column', get_template_directory_uri() . '/assets/css/molecules/nav-footer-column.css', ['travel-global'], $version);
-    wp_enqueue_style('travel-molecules-nav-main', get_template_directory_uri() . '/assets/css/molecules/nav-main.css', ['travel-global'], $version);
-    wp_enqueue_style('travel-molecules-nav-secondary', get_template_directory_uri() . '/assets/css/molecules/nav-secondary.css', ['travel-global'], $version);
-    wp_enqueue_style('travel-molecules-payment-methods', get_template_directory_uri() . '/assets/css/molecules/payment-methods.css', ['travel-global'], $version);
-    wp_enqueue_style('travel-molecules-social-media-bar', get_template_directory_uri() . '/assets/css/molecules/social-media-bar.css', ['travel-global'], $version);
+    wp_enqueue_style('travel-molecules-contact-info', get_template_directory_uri() . '/assets/css/molecules/contact-info.css', [], $version);
+    wp_enqueue_style('travel-molecules-footer-company-info', get_template_directory_uri() . '/assets/css/molecules/footer-company-info.css', [], $version);
+    wp_enqueue_style('travel-molecules-footer-legal-bar', get_template_directory_uri() . '/assets/css/molecules/footer-legal-bar.css', [], $version);
+    wp_enqueue_style('travel-molecules-footer-map', get_template_directory_uri() . '/assets/css/molecules/footer-map.css', [], $version);
+    wp_enqueue_style('travel-molecules-nav-aside', get_template_directory_uri() . '/assets/css/molecules/nav-aside.css', [], $version);
+    wp_enqueue_style('travel-molecules-nav-footer-column', get_template_directory_uri() . '/assets/css/molecules/nav-footer-column.css', [], $version);
+    wp_enqueue_style('travel-molecules-nav-main', get_template_directory_uri() . '/assets/css/molecules/nav-main.css', [], $version);
+    wp_enqueue_style('travel-molecules-nav-secondary', get_template_directory_uri() . '/assets/css/molecules/nav-secondary.css', [], $version);
+    wp_enqueue_style('travel-molecules-payment-methods', get_template_directory_uri() . '/assets/css/molecules/payment-methods.css', [], $version);
+    wp_enqueue_style('travel-molecules-social-media-bar', get_template_directory_uri() . '/assets/css/molecules/social-media-bar.css', [], $version);
 
     // Organisms - Individual files (bypass @import issue)
-    wp_enqueue_style('travel-organisms-header', get_template_directory_uri() . '/assets/css/organisms/header.css', ['travel-global'], $version);
-    wp_enqueue_style('travel-organisms-footer-main', get_template_directory_uri() . '/assets/css/organisms/footer-main.css', ['travel-global'], $version);
+    wp_enqueue_style('travel-organisms-header', get_template_directory_uri() . '/assets/css/organisms/header.css', [], $version);
+    wp_enqueue_style('travel-organisms-footer-main', get_template_directory_uri() . '/assets/css/organisms/footer-main.css', [], $version);
 
     // Utilities
     wp_enqueue_style(
         'travel-utilities',
         get_template_directory_uri() . '/assets/css/utilities.css',
-        ['travel-global'],
+        [],
         $version
     );
 
@@ -106,7 +98,7 @@ add_action( 'wp_enqueue_scripts', function() {
         wp_enqueue_style(
             'travel-package-layout',
             get_template_directory_uri() . '/assets/css/package-layout.css',
-            ['travel-global'],
+            [],
             $version
         );
     }
