@@ -4,10 +4,6 @@
    Grid de 3 columnas en desktop
 ========================================================= */
 
-/* ---- GOOGLE FONTS ---- */
-@import url('https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
-
 /* ---- VARIABLES CSS ---- */
 .related-packages {
   --transition-speed: 0.3s;

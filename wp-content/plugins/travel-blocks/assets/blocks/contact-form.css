@@ -8,11 +8,12 @@
  * @since 2.0.0
  */
 
-/* ===== CSS VARIABLES (Brand Colors) ===== */
+/* ===== HERO CONTAINER ===== */
 
-:root {
+.hero-form {
+    /* CSS VARIABLES (Block-scoped) */
     /* Brand colors */
-    --rose: #E78C85;
+    --rose: var(--wp--preset--color--secondary);
     --green-dark: #0A797E;
     --green-strong: #A8F04C;
     --green-soft: #EBFED3;
@@ -35,11 +36,8 @@
     --error-bg: #FEF2F2;
     --error-text: #991B1B;
     --error-border: #EF4444;
-}
 
-/* ===== HERO CONTAINER ===== */
-
-.hero-form {
+    /* Layout styles */
     position: relative;
     width: 100%;
     height: var(--hero-height-desktop, 700px);
