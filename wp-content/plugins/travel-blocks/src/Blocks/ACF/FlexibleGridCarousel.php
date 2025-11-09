@@ -1,13 +1,50 @@
 <?php
+/**
+ * Block: Flexible Grid Carousel
+ *
+ * Advanced grid/carousel with mixed content: cards AND text blocks.
+ * Desktop: Responsive grid. Mobile: Native carousel.
+ *
+ * ⚠️ CRITICAL ARCHITECTURAL ISSUES (Audit Score: 5.5/10):
+ * - Does NOT inherit from BlockBase (inconsistent)
+ * - register_fields() method: 363 lines (CATASTROPHIC)
+ * - render() method: 127 lines
+ * - 150 lines of hardcoded demo data
+ * - Duplication with HeroCarousel block
+ * - Namespace incorrect
+ * - Double asset registration
+ *
+ * ⚠️ PENDING REFACTORING:
+ * 1. register_fields(): 363 lines
+ *    → TODO: Extract to /src/Blocks/ACF/FlexibleGridCarousel/fields.php
+ * 2. render(): 127 lines
+ *    → TODO: Split into smaller methods
+ * 3. Demo data: 150 lines
+ *    → TODO: Move to JSON file
+ * 4. Decide: Inherit from BlockBase or consolidate with HeroCarousel
+ *
+ * Features:
+ * - Mixed content: Cards (image+title+excerpt+CTA) + Text Blocks (title+text)
+ * - Dynamic content via ContentQueryHelper (packages/posts/deals)
+ * - Manual content via ACF repeater
+ * - Desktop: Responsive grid (2-6 columns)
+ * - Mobile: Native scroll-snap carousel
+ * - Flexible column-span pattern
+ * - 6 button variants + 6 badge variants
+ *
+ * @package Travel\Blocks\ACF
+ * @since 1.0.0
+ * @version 1.1.0 - Refactored: namespace fix, added critical architectural warnings
+ */
 
-namespace Travel\Blocks\Blocks\ACF;
+namespace Travel\Blocks\ACF;
 
 use Travel\Blocks\Helpers\ContentQueryHelper;
 
 class FlexibleGridCarousel {
 
     public function __construct() {
-        // Los métodos se llaman directamente desde Plugin.php
+        // Methods called directly from Plugin.php
     }
 
     public function register() {
