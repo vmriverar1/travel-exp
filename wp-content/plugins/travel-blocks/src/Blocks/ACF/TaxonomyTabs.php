@@ -1,11 +1,58 @@
 <?php
+/**
+ * Block: Taxonomy Tabs
+ *
+ * Advanced tabs system for organizing dynamic content by taxonomy terms.
+ * Supports packages, posts, and deals with flexible taxonomy/term selection.
+ *
+ * ⚠️ CRITICAL REFACTORING NEEDED - Audit Score: 4/10
+ *
+ * This is the LARGEST and most COMPLEX block in the codebase (1444 lines).
+ * Multiple CRITICAL issues require urgent refactoring:
+ *
+ * CRITICAL ISSUES:
+ * - render() method: 313 lines (should be <50)
+ * - register_fields() method: 428 lines (CATASTROPHIC)
+ * - Does NOT inherit from BlockBase (architectural inconsistency)
+ * - Massive code duplication with other tab/carousel blocks
+ * - Google Fonts hardcoded in CSS (should be in theme)
+ * - Excessive nesting (4-5 levels)
+ *
+ * RECOMMENDED REFACTORING (6+ hours):
+ * 1. Split render() into 8-10 focused methods
+ * 2. Split register_fields() into multiple methods per tab group
+ * 3. Extract TaxonomyTabsBuilder service class
+ * 4. Decide on BlockBase inheritance strategy
+ * 5. Consolidate with similar blocks (reduce duplication)
+ *
+ * Features (when working):
+ * - Dynamic content from packages/posts/deals via ContentQueryHelper
+ * - Complete taxonomies OR individual terms as tabs
+ * - Tab customization (names, icons) via repeater
+ * - 4 tab styles: pills, underline, buttons, hero-overlap
+ * - Desktop: responsive grid layout
+ * - Mobile: slider with arrows (3 positions) + dots + autoplay
+ * - ACF filters for dynamic choices loading
+ * - Gutenberg block data reconstruction
+ *
+ * @package Travel\Blocks\ACF
+ * @since 1.0.0
+ * @version 1.1.0 - Refactored: namespace fix, added critical refactoring notes
+ *
+ * @see ContentQueryHelper For dynamic content queries
+ */
 
-namespace Travel\Blocks\Blocks\ACF;
+namespace Travel\Blocks\ACF;
 
 use Travel\Blocks\Helpers\ContentQueryHelper;
 
 class TaxonomyTabs
 {
+    /**
+     * Block name identifier.
+     *
+     * @var string
+     */
     private string $name = 'travel-taxonomy-tabs';
 
     public function __construct()
