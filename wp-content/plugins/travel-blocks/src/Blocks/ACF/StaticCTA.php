@@ -3,12 +3,14 @@
  * Block: Static CTA
  *
  * Call-to-action block with background image, title, subtitle, and button(s).
+ * Supports image backgrounds, solid colors, and gradients with customizable overlay.
  *
- * @package Travel\Blocks\Blocks
+ * @package Travel\Blocks\ACF
  * @since 1.0.0
+ * @version 1.1.0 - Refactored: namespace fix, added error handling
  */
 
-namespace Travel\Blocks\Blocks\ACF;
+namespace Travel\Blocks\ACF;
 
 use Travel\Blocks\Core\BlockBase;
 
@@ -184,39 +186,53 @@ class StaticCTA extends BlockBase
     /**
      * Render the block output.
      *
-     * @param array  $block      Block settings
-     * @param string $content    Block content
-     * @param bool   $is_preview Whether in preview mode
+     * Generates call-to-action section with customizable background and buttons.
+     * Supports three background types: image (with overlay), solid color, or gradient.
+     *
+     * @param array  $block      Block settings and attributes
+     * @param string $content    Block content (unused)
+     * @param bool   $is_preview Whether block is being previewed in editor
      * @param int    $post_id    Current post ID
      *
      * @return void
      */
     public function render(array $block, string $content = '', bool $is_preview = false, int $post_id = 0): void
     {
-        // Get field values
-        $title = get_field('title');
-        $subtitle = get_field('subtitle');
-        $background_type = get_field('background_type') ?: 'image';
-        $background_image = get_field('background_image');
-        $background_color = get_field('background_color');
-        $overlay_opacity = get_field('overlay_opacity') ?: 50;
-        $buttons = get_field('buttons') ?: [];
+        try {
+            // Get field values
+            $title = get_field('title');
+            $subtitle = get_field('subtitle');
+            $background_type = get_field('background_type') ?: 'image';
+            $background_image = get_field('background_image');
+            $background_color = get_field('background_color');
+            $overlay_opacity = get_field('overlay_opacity') ?: 50;
+            $buttons = get_field('buttons') ?: [];
 
-        // Prepare template data
-        $data = [
-            'block'            => $block,
-            'is_preview'       => $is_preview,
-            'title'            => $title,
-            'subtitle'         => $subtitle,
-            'background_type'  => $background_type,
-            'background_image' => $background_image,
-            'background_color' => $background_color,
-            'overlay_opacity'  => $overlay_opacity,
-            'buttons'          => $buttons,
-        ];
+            // Prepare template data
+            $data = [
+                'block'            => $block,
+                'is_preview'       => $is_preview,
+                'title'            => $title,
+                'subtitle'         => $subtitle,
+                'background_type'  => $background_type,
+                'background_image' => $background_image,
+                'background_color' => $background_color,
+                'overlay_opacity'  => $overlay_opacity,
+                'buttons'          => $buttons,
+            ];
 
-        // Load template
-        $this->load_template('static-cta', $data);
+            // Load template
+            $this->load_template('static-cta', $data);
+
+        } catch (\Exception $e) {
+            // Error handling
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                echo '<div style="padding: 20px; background: #ffebee; border: 2px solid #f44336; margin: 20px 0;">';
+                echo '<h3>Error en Static CTA</h3>';
+                echo '<p>' . esc_html($e->getMessage()) . '</p>';
+                echo '</div>';
+            }
+        }
     }
 
     /**
