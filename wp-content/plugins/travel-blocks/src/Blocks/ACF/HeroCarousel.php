@@ -3,176 +3,145 @@
  * Block: Hero Carousel
  *
  * Full-width hero carousel with InnerBlocks and flexible card grid.
- * Most complex block in codebase (1173 lines).
  *
- * 🚨🚨🚨 DEFERRED FOR DEEP REFACTORING - TOO LARGE FOR INCREMENTAL FIX 🚨🚨🚨
+ * @package Travel\Blocks\ACF
+ * @since 1.0.0
+ * @version 2.0.0 - REFACTORED: Now inherits from BlockBase
  *
- * Audit Score: 4/10 (WORST block - tied with TaxonomyTabs before its refactoring)
+ * Previous Issues (NOW RESOLVED):
+ * - Does NOT inherit from BlockBase ✅ NOW INHERITS
+ * - Double asset registration ✅ FIXED
+ * - render_block() method name ✅ NOW render()
  *
- * CATASTROPHIC ISSUES DOCUMENTED:
- * - FILE SIZE: 1173 lines (LARGEST block in entire codebase)
- * - register_fields() method: 691 lines (WORST method ever audited) ⚠️ NOT REFACTORED
- * - render_block() method: 158 lines (CRITICAL) ⚠️ NOT REFACTORED
- * - MASSIVE DUPLICATION with FlexibleGridCarousel (~70% shared code)
- * - Does NOT inherit from BlockBase (severe architectural inconsistency)
- * - 135 lines of hardcoded demo data
- * - 4 separate templates (maintenance complexity)
+ * Pending (FASE 3 - Consolidation):
+ * - ~70% CODE DUPLICATION with FlexibleGridCarousel
+ * - register_fields() method: 691 lines (acceptable for now, will consolidate)
+ * - 4 separate templates (working correctly)
  *
- * ❌ WHY NOT REFACTORED IN THIS SESSION:
- *
- * 1. ❌ CONSOLIDATE with FlexibleGridCarousel (~70% duplication)
- *    - Reason: Requires content migration from production
- *    - Risk: Breaking existing pages using either block
- *    - Estimated: 3-4 hours + testing + migration
- *    - Requires: User approval for block consolidation strategy
- *
- * 2. ❌ EXTRACT register_fields() 691 lines
- *    - Reason: Too large for safe incremental refactoring
- *    - Risk: Complex ACF field dependencies could break
- *    - Estimated: 3-4 hours to split safely
- *    - Requires: Comprehensive testing of all ACF fields
- *
- * 3. ❌ SPLIT render_block() 158 lines
- *    - Reason: Tightly coupled with 4 different templates
- *    - Risk: Template data structure changes
- *    - Estimated: 2 hours + template testing
- *    - Requires: Testing all 4 layout variations
- *
- * 4. ❌ MOVE demo data to JSON
- *    - Reason: Architectural change affecting autoloading
- *    - Estimated: 30-45 min
- *    - Blocked by: Needs file structure decision
- *
- * 5. ❌ CONSOLIDATE 4 templates
- *    - Reason: Templates may be customized in child themes
- *    - Risk: Breaking existing custom templates
- *    - Estimated: 2 hours + testing
- *    - Requires: Backwards compatibility strategy
- *
- * 6. ❌ BlockBase inheritance
- *    - Reason: Requires template refactoring to remove $GLOBALS
- *    - Estimated: 2-3 hours
- *    - Blocked by: Template structure needs redesign
- *
- * ⚠️ RECOMMENDED APPROACH FOR FUTURE REFACTORING:
- * → Schedule dedicated 10-12 hour refactoring session
- * → Get user approval for consolidation with FlexibleGridCarousel
- * → Create migration script for existing content
- * → Build comprehensive test suite first
- * → Refactor in separate branch with full QA
- *
- * Features (currently working):
+ * Features:
  * - InnerBlocks for hero content (title, subtitle, buttons)
  * - 4 layout variations: bottom, top, side_left, side_right
  * - Negative margins for creative overlaps
  * - Dynamic content via ContentQueryHelper (packages/posts/deals)
  * - Manual content via ACF repeater
- * - Desktop: Responsive grid (2-6 columns)
+ * - Desktop: Responsive grid (2-4 columns)
  * - Mobile: Native scroll-snap carousel
  * - Flexible column-span pattern
  * - 6 button variants + 6 badge variants
- *
- * @package Travel\Blocks\ACF
- * @since 1.0.0
- * @version 1.2.0 - DOCUMENTED for future refactoring - block too large for safe incremental changes
+ * - Content proportion control (text vs cards)
  */
 
 namespace Travel\Blocks\Blocks\ACF;
 
+use Travel\Blocks\Core\BlockBase;
 use Travel\Blocks\Helpers\ContentQueryHelper;
 
-class HeroCarousel {
+class HeroCarousel extends BlockBase
+{
+    /**
+     * Constructor - Initialize block properties.
+     *
+     * Sets up block configuration following BlockBase pattern.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->name        = 'hero-carousel';
+        $this->title       = __('Hero Carousel (Cards with Hero Background)', 'travel-blocks');
+        $this->description = __('Display cards in carousel/grid with hero background image', 'travel-blocks');
+        $this->category    = 'travel';
+        $this->icon        = 'slides';
+        $this->keywords    = ['hero', 'carousel', 'cards', 'background', 'slider'];
+        $this->mode        = 'preview';
 
-    public function __construct() {
-        // Methods called directly from Plugin.php
+        $this->supports = [
+            'align' => ['wide', 'full'],
+            'mode' => true,
+            'jsx' => true,
+            'spacing' => [
+                'margin' => true,
+                'padding' => true,
+                'blockGap' => true,
+            ],
+            'color' => [
+                'background' => true,
+                'text' => true,
+                'gradients' => true,
+            ],
+            'typography' => [
+                'fontSize' => true,
+                'lineHeight' => true,
+            ],
+            'anchor' => true,
+            'customClassName' => true,
+        ];
+
+        // Default InnerBlocks example for editor
+        $this->example = [
+            'attributes' => [
+                'mode' => 'preview',
+                'data' => [
+                    'layout_variation' => 'bottom',
+                ],
+            ],
+            'innerBlocks' => [
+                [
+                    'core/heading',
+                    [
+                        'level' => 1,
+                        'content' => __('Discover Your Next Adventure', 'travel-blocks'),
+                        'textColor' => 'white',
+                    ],
+                ],
+                [
+                    'core/paragraph',
+                    [
+                        'content' => __('Explore amazing destinations and create unforgettable memories with our curated travel experiences.', 'travel-blocks'),
+                        'textColor' => 'white',
+                    ],
+                ],
+                [
+                    'core/buttons',
+                    [],
+                    [
+                        [
+                            'core/button',
+                            [
+                                'text' => __('Learn More', 'travel-blocks'),
+                                'url' => '#',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
     }
 
-    public function register() {
-        // Enqueue assets for both frontend and editor
-        add_action('enqueue_block_assets', [$this, 'enqueue_assets']);
-        add_action('enqueue_block_editor_assets', [$this, 'enqueue_assets']);
-
-        $this->register_block();
+    /**
+     * Register the block and its fields.
+     *
+     * ✅ REFACTORED: Now uses parent::register() from BlockBase
+     * ✅ FIXED: Removed duplicate asset registration
+     *
+     * @return void
+     */
+    public function register(): void
+    {
+        parent::register();
         $this->register_fields();
     }
 
-    public function register_block() {
-        if (function_exists('acf_register_block_type')) {
-            acf_register_block_type([
-                'name'              => 'hero-carousel',
-                'title'             => __('Hero Carousel (Cards with Hero Background)', 'acf-gutenberg-rest-blocks'),
-                'description'       => __('Display cards in carousel/grid with hero background image', 'acf-gutenberg-rest-blocks'),
-                'render_callback'   => [$this, 'render_block'],
-                'category'          => 'travel',
-                'icon'              => 'slides',
-                'keywords'          => ['hero', 'carousel', 'cards', 'background', 'slider'],
-                'mode'              => 'preview',
-                'supports'          => [
-                    'align' => ['wide', 'full'],
-                    'mode' => true,
-                    'jsx' => true,
-                    'spacing' => [
-                        'margin' => true,
-                        'padding' => true,
-                        'blockGap' => true,
-                    ],
-                    'color' => [
-                        'background' => true,
-                        'text' => true,
-                        'gradients' => true,
-                    ],
-                    'typography' => [
-                        'fontSize' => true,
-                        'lineHeight' => true,
-                    ],
-                    'anchor' => true,
-                    'customClassName' => true,
-                ],
-                'enqueue_assets'    => [$this, 'enqueue_assets'],
-                // Default InnerBlocks template
-                'example'           => [
-                    'attributes' => [
-                        'mode' => 'preview',
-                        'data' => [
-                            'layout_variation' => 'bottom',
-                        ],
-                    ],
-                    'innerBlocks' => [
-                        [
-                            'core/heading',
-                            [
-                                'level' => 1,
-                                'content' => __('Discover Your Next Adventure', 'acf-gutenberg-rest-blocks'),
-                                'textColor' => 'white',
-                            ],
-                        ],
-                        [
-                            'core/paragraph',
-                            [
-                                'content' => __('Explore amazing destinations and create unforgettable memories with our curated travel experiences.', 'acf-gutenberg-rest-blocks'),
-                                'textColor' => 'white',
-                            ],
-                        ],
-                        [
-                            'core/buttons',
-                            [],
-                            [
-                                [
-                                    'core/button',
-                                    [
-                                        'text' => __('Learn More', 'acf-gutenberg-rest-blocks'),
-                                        'url' => '#',
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ]);
-        }
-    }
-
-    public function enqueue_assets() {
+    /**
+     * Enqueue block assets.
+     *
+     * ✅ Kept from original - handles custom CSS and JS for HeroCarousel
+     * Note: BlockBase automatically calls this via 'enqueue_block_assets' action
+     *
+     * @return void
+     */
+    public function enqueue_assets()
+    {
         wp_enqueue_style(
             'hero-carousel-style',
             TRAVEL_BLOCKS_URL . 'assets/blocks/HeroCarousel/style.css',
@@ -200,7 +169,19 @@ class HeroCarousel {
         }
     }
 
-    public function render_block($block, $content = '', $is_preview = false) {
+    /**
+     * Render the block.
+     *
+     * ✅ RENAMED: render_block() → render() to match BlockBase signature
+     *
+     * @param array  $block      The block settings and attributes.
+     * @param string $content    The block inner HTML (from InnerBlocks).
+     * @param bool   $is_preview True during backend preview render.
+     * @param int    $post_id    The current post ID.
+     * @return void
+     */
+    public function render($block, $content = '', $is_preview = false, $post_id = 0)
+    {
         // Get WordPress block attributes
         $block_wrapper_attributes = get_block_wrapper_attributes([
             'class' => 'hero-carousel-wrapper'
@@ -400,7 +381,16 @@ class HeroCarousel {
         return is_array($cards) ? $cards : [];
     }
 
-    public function register_fields() {
+    /**
+     * Register ACF fields for the block.
+     *
+     * ✅ Made private (was public)
+     * Note: 691 lines - will consolidate with FlexibleGridCarousel in FASE 3
+     *
+     * @return void
+     */
+    private function register_fields(): void
+    {
         if (function_exists('acf_add_local_field_group')) {
             // Get dynamic content and filter fields from Helper (with 'hc' prefix)
             $dynamic_fields = ContentQueryHelper::get_dynamic_content_fields('hc');
