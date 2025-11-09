@@ -1,33 +1,86 @@
 <?php
+/**
+ * Block: Posts Carousel Native (CSS Scroll-Snap)
+ *
+ * Native CSS scroll-snap carousel with vanilla JavaScript.
+ * No external dependencies (Swiper, etc.).
+ *
+ * ⚠️ CRITICAL DUPLICATION WARNING:
+ * This block has ~70% DUPLICATION with PostsCarousel block.
+ * - PostsCarousel: 755 lines, inherits BlockBase, Material Design
+ * - PostsCarouselNative: 274 lines, NO BlockBase, simpler
+ * Decision needed: Consolidate or deprecate one of them.
+ *
+ * ⚠️ ARCHITECTURAL ISSUES (Audit Score: 4/10):
+ * - Does NOT inherit from BlockBase (inconsistent with best practices)
+ * - Template performs queries directly (MVC violation)
+ * - No DocBlocks (0/6 methods documented)
+ * - Block name confusing (acf-gbr prefix)
+ * - Namespace incorrect
+ * - Empty constructor (unnecessary)
+ *
+ * Features:
+ * - CSS scroll-snap native carousel
+ * - Vanilla JavaScript (no libraries)
+ * - Manual cards OR dynamic via ContentQueryHelper
+ * - Desktop grid + Mobile slider
+ * - Show/hide fields: category, location, price
+ *
+ * @package Travel\Blocks\ACF
+ * @since 1.0.0
+ * @version 1.1.0 - Refactored: namespace fix, added duplication and architectural warnings
+ */
 
-namespace Travel\Blocks\Blocks\ACF;
+namespace Travel\Blocks\ACF;
 
 use Travel\Blocks\Helpers\ContentQueryHelper;
 
 class PostsCarouselNative
 {
+    /**
+     * Block name identifier.
+     *
+     * @var string
+     */
     private string $name = 'acf-gbr-posts-carousel';
 
+    /**
+     * Constructor.
+     *
+     * ⚠️ Note: Empty constructor, could be removed.
+     */
     public function __construct()
     {
-        // Los métodos se llaman directamente desde Plugin.php
+        // Methods called directly from Plugin.php
     }
 
-    public function register()
+    /**
+     * Register block and ACF fields.
+     *
+     * ⚠️ DUPLICATION: Consider consolidating with PostsCarousel.
+     *
+     * @return void
+     */
+    public function register(): void
     {
         $this->register_block();
         $this->register_fields();
     }
 
     /**
-     * Registro del bloque Gutenberg
+     * Register ACF block type.
+     *
+     * ⚠️ ARCHITECTURAL ISSUE: Does NOT inherit from BlockBase.
+     * Should extend BlockBase for consistency and code reuse.
+     *
+     * @return void
      */
     public function register_block(): void
     {
         acf_register_block_type([
             'name'            => $this->name,
-            'title'           => __('Posts Carousel (Native CSS)', 'acf-gbr'),
-            'description'     => __('Carousel nativo con CSS scroll-snap y JavaScript vanilla. Sin dependencias externas.', 'acf-gbr'),
+            'title'           => __('Posts Carousel (Native CSS) - Consider using Posts Carousel instead', 'acf-gbr'),
+            'description'     => __('⚠️ DUPLICATION: ~70% duplicated with Posts Carousel. Native scroll-snap carousel without external dependencies.', 'acf-gbr'),
             'category'        => 'travel',
             'icon'            => 'images-alt2',
             'keywords'        => ['posts', 'carousel', 'slider', 'native', 'scroll-snap'],
