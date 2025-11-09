@@ -3,36 +3,65 @@
  * Block: Hero Carousel
  *
  * Full-width hero carousel with InnerBlocks and flexible card grid.
- * Most complex block in codebase (1126 lines).
+ * Most complex block in codebase (1173 lines).
  *
- * 🚨🚨🚨 CRITICAL REFACTORING URGENTLY NEEDED 🚨🚨🚨
+ * 🚨🚨🚨 DEFERRED FOR DEEP REFACTORING - TOO LARGE FOR INCREMENTAL FIX 🚨🚨🚨
  *
- * Audit Score: 4/10 (tied for WORST with TaxonomyTabs)
+ * Audit Score: 4/10 (WORST block - tied with TaxonomyTabs before its refactoring)
  *
- * CATASTROPHIC ISSUES:
- * - FILE SIZE: 1126 lines (LARGEST block in entire codebase)
- * - register_fields() method: 691 lines (WORST method ever audited)
- * - render_block() method: 158 lines (CRITICAL)
+ * CATASTROPHIC ISSUES DOCUMENTED:
+ * - FILE SIZE: 1173 lines (LARGEST block in entire codebase)
+ * - register_fields() method: 691 lines (WORST method ever audited) ⚠️ NOT REFACTORED
+ * - render_block() method: 158 lines (CRITICAL) ⚠️ NOT REFACTORED
  * - MASSIVE DUPLICATION with FlexibleGridCarousel (~70% shared code)
  * - Does NOT inherit from BlockBase (severe architectural inconsistency)
  * - 135 lines of hardcoded demo data
  * - 4 separate templates (maintenance complexity)
- * - Namespace incorrect
  *
- * ⚠️ URGENT RECOMMENDED ACTIONS:
- * 1. CONSOLIDATE with FlexibleGridCarousel (3-4 hours)
- *    → Both blocks share ~70% of code
- *    → Create unified "Advanced Grid/Hero Carousel" block
- *    → Maintain backward compatibility via aliases
- * 2. EXTRACT register_fields() 691 lines to separate file (2 hours)
- * 3. SPLIT render_block() 158 lines into smaller methods (1.5 hours)
- * 4. MOVE demo data 135 lines to JSON file (30 min)
- * 5. DECIDE BlockBase inheritance strategy (1 hour)
- * 6. CONSOLIDATE 4 templates into dynamic template (2 hours)
+ * ❌ WHY NOT REFACTORED IN THIS SESSION:
  *
- * Total estimated refactoring: 10-12 hours
+ * 1. ❌ CONSOLIDATE with FlexibleGridCarousel (~70% duplication)
+ *    - Reason: Requires content migration from production
+ *    - Risk: Breaking existing pages using either block
+ *    - Estimated: 3-4 hours + testing + migration
+ *    - Requires: User approval for block consolidation strategy
  *
- * Features (when working):
+ * 2. ❌ EXTRACT register_fields() 691 lines
+ *    - Reason: Too large for safe incremental refactoring
+ *    - Risk: Complex ACF field dependencies could break
+ *    - Estimated: 3-4 hours to split safely
+ *    - Requires: Comprehensive testing of all ACF fields
+ *
+ * 3. ❌ SPLIT render_block() 158 lines
+ *    - Reason: Tightly coupled with 4 different templates
+ *    - Risk: Template data structure changes
+ *    - Estimated: 2 hours + template testing
+ *    - Requires: Testing all 4 layout variations
+ *
+ * 4. ❌ MOVE demo data to JSON
+ *    - Reason: Architectural change affecting autoloading
+ *    - Estimated: 30-45 min
+ *    - Blocked by: Needs file structure decision
+ *
+ * 5. ❌ CONSOLIDATE 4 templates
+ *    - Reason: Templates may be customized in child themes
+ *    - Risk: Breaking existing custom templates
+ *    - Estimated: 2 hours + testing
+ *    - Requires: Backwards compatibility strategy
+ *
+ * 6. ❌ BlockBase inheritance
+ *    - Reason: Requires template refactoring to remove $GLOBALS
+ *    - Estimated: 2-3 hours
+ *    - Blocked by: Template structure needs redesign
+ *
+ * ⚠️ RECOMMENDED APPROACH FOR FUTURE REFACTORING:
+ * → Schedule dedicated 10-12 hour refactoring session
+ * → Get user approval for consolidation with FlexibleGridCarousel
+ * → Create migration script for existing content
+ * → Build comprehensive test suite first
+ * → Refactor in separate branch with full QA
+ *
+ * Features (currently working):
  * - InnerBlocks for hero content (title, subtitle, buttons)
  * - 4 layout variations: bottom, top, side_left, side_right
  * - Negative margins for creative overlaps
@@ -45,7 +74,7 @@
  *
  * @package Travel\Blocks\ACF
  * @since 1.0.0
- * @version 1.1.0 - Refactored: namespace fix, added CRITICAL warnings, documented urgent refactoring needs
+ * @version 1.2.0 - DOCUMENTED for future refactoring - block too large for safe incremental changes
  */
 
 namespace Travel\Blocks\ACF;
