@@ -2,14 +2,32 @@
 /**
  * Block: Contact Form
  *
- * Hero contact form with background image and customizable fields.
- * Converted to BlockBase pattern for better reliability in production.
+ * Hero contact form with background image, AJAX submission, and email notifications.
+ * Critical block for lead generation and customer inquiries.
  *
- * @package Travel\Blocks\Blocks\ACF
+ * Features:
+ * - Hero-style form with background image
+ * - AJAX form submission with nonce security
+ * - Complete field validation and sanitization
+ * - HTML email template with responsive design
+ * - Package inquiry integration
+ * - Form success/error messaging
+ *
+ * Security:
+ * - Nonce verification for all submissions
+ * - Complete input sanitization
+ * - Field validation with error messages
+ * - Safe email header handling
+ *
+ * ⚠️ PRODUCTION CRITICAL: This block handles live customer inquiries.
+ * DO NOT modify AJAX action names or nonce keys without coordinating JS changes.
+ *
+ * @package Travel\Blocks\ACF
  * @since 1.0.0
+ * @version 1.1.0 - Refactored: namespace fix, improved validation structure, added docs
  */
 
-namespace Travel\Blocks\Blocks\ACF;
+namespace Travel\Blocks\ACF;
 
 use Travel\Blocks\Core\BlockBase;
 
@@ -37,6 +55,21 @@ class ContactForm extends BlockBase
 
     /**
      * Register block and its ACF fields.
+     *
+     * Registers ACF block type and loads field configuration from external JSON file.
+     * Also registers AJAX handlers for form submission (both authenticated and public).
+     *
+     * ACF Fields Source: /travel-acf-fields/acf-json/group_contact_form_hero.json
+     * - Form fields configuration (first name, last name, email, phone, etc.)
+     * - Background image settings
+     * - Form styling options
+     *
+     * AJAX Actions Registered:
+     * - wp_ajax_travel_hero_form_submit (logged-in users)
+     * - wp_ajax_nopriv_travel_hero_form_submit (public)
+     *
+     * ⚠️ Critical Dependency: Requires external ACF JSON file to function.
+     * If JSON file is missing, block will register but have no editable fields.
      *
      * @return void
      */
@@ -74,6 +107,11 @@ class ContactForm extends BlockBase
                         'instruction_placement' => 'label',
                         'active' => true,
                     ]);
+                }
+            } else {
+                // Log error if JSON file is missing
+                if (defined('WP_DEBUG') && WP_DEBUG) {
+                    error_log('ContactForm: ACF JSON file not found at ' . $json_file);
                 }
             }
         }
