@@ -2,15 +2,37 @@
 /**
  * Block: Posts Carousel (Material Design)
  *
- * Grid 3 columnas en desktop con hover effect.
- * Slider solo en mobile con Material Design.
- * ACF Repeater para control manual de cards.
+ * Material Design cards in 3-column desktop grid and mobile slider.
+ * Supports manual cards or dynamic content from packages/posts/deals.
  *
- * @package Travel\Blocks\Blocks
+ * ⚠️ CRITICAL DUPLICATION WARNING:
+ * This block has CRITICAL duplication with PostsCarouselNative block.
+ * - PostsCarousel: 755 lines, inherits BlockBase, more complete
+ * - PostsCarouselNative: 274 lines, does NOT inherit BlockBase, simpler
+ * Decision needed: Consolidate or deprecate one of them.
+ *
+ * Features:
+ * - Desktop: 3-column grid with hover effects
+ * - Mobile: Material Design slider with navigation
+ * - Manual cards via ACF repeater OR dynamic via ContentQueryHelper
+ * - 6 button color variants + 6 badge variants
+ * - Show/hide fields: category, location, price, excerpt, CTA
+ * - Grid effects: squeeze, lift, glow, zoom
+ *
+ * ⚠️ PENDING REFACTORING (Audit Score: 6.5/10):
+ * 1. register() method: 437 lines (353 are ACF fields)
+ *    → TODO: Extract ACF fields to /src/Blocks/ACF/PostsCarousel/fields.php
+ * 2. render() method: 194 lines
+ *    → TODO: Split into get_cards_data(), get_block_settings(), prepare_template_data()
+ * 3. Excessive logging
+ *    → TODO: Reduce debug logging
+ *
+ * @package Travel\Blocks\ACF
  * @since 1.0.0
+ * @version 1.1.0 - Refactored: namespace fix, added duplication warning, pending refactorings documented
  */
 
-namespace Travel\Blocks\Blocks\ACF;
+namespace Travel\Blocks\ACF;
 
 use Travel\Blocks\Core\BlockBase;
 use Travel\Blocks\Helpers\ContentQueryHelper;
