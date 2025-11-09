@@ -1,0 +1,120 @@
+{
+  "key": "group_tc_social_share",
+  "title": "Social Share",
+  "fields": [
+    {
+      "key": "field_tc_ss_title",
+      "label": "Share Title",
+      "name": "share_title",
+      "type": "text",
+      "default_value": "Share it"
+    },
+    {
+      "key": "field_tc_ss_facebook",
+      "label": "Facebook",
+      "name": "show_facebook",
+      "type": "true_false",
+      "ui": 1,
+      "default_value": 1
+    },
+    {
+      "key": "field_tc_ss_pinterest",
+      "label": "Pinterest",
+      "name": "show_pinterest",
+      "type": "true_false",
+      "ui": 1,
+      "default_value": 1
+    },
+    {
+      "key": "field_tc_ss_linkedin",
+      "label": "LinkedIn",
+      "name": "show_linkedin",
+      "type": "true_false",
+      "ui": 1,
+      "default_value": 1
+    },
+    {
+      "key": "field_tc_ss_instagram",
+      "label": "Instagram",
+      "name": "instagram",
+      "type": "group",
+      "layout": "row",
+      "sub_fields": [
+        {
+          "key": "field_tc_ss_instagram_visible",
+          "label": "Visible",
+          "name": "visible",
+          "type": "true_false",
+          "ui": 1,
+          "default_value": 1
+        },
+        {
+          "key": "field_tc_ss_instagram_url",
+          "label": "Profile URL",
+          "name": "url",
+          "type": "url",
+          "placeholder": "https://www.instagram.com/valenciatravel"
+        }
+      ]
+    },
+    {
+      "key": "field_tc_ss_youtube",
+      "label": "YouTube",
+      "name": "youtube",
+      "type": "group",
+      "layout": "row",
+      "sub_fields": [
+        {
+          "key": "field_tc_ss_youtube_visible",
+          "label": "Visible",
+          "name": "visible",
+          "type": "true_false",
+          "ui": 1,
+          "default_value": 1
+        },
+        {
+          "key": "field_tc_ss_youtube_url",
+          "label": "Channel URL",
+          "name": "url",
+          "type": "url",
+          "placeholder": "https://www.youtube.com/@valenciatravel"
+        }
+      ]
+    },
+    {
+      "key": "field_tc_ss_tripadvisor",
+      "label": "TripAdvisor",
+      "name": "tripadvisor",
+      "type": "group",
+      "layout": "row",
+      "sub_fields": [
+        {
+          "key": "field_tc_ss_tripadvisor_visible",
+          "label": "Visible",
+          "name": "visible",
+          "type": "true_false",
+          "ui": 1,
+          "default_value": 1
+        },
+        {
+          "key": "field_tc_ss_tripadvisor_url",
+          "label": "Profile URL",
+          "name": "url",
+          "type": "url",
+          "placeholder": "https://www.tripadvisor.com/Attraction_Review..."
+        }
+      ]
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "block",
+        "operator": "==",
+        "value": "acf/socialshare"
+      }
+    ]
+  ],
+  "active": true,
+  "style": "default"
+}

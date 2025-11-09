@@ -1,0 +1,11 @@
+{
+  "name": "chatgpt/acf-search-bar",
+  "description": "ACF + Gutenberg block: destinations search bar using Select2 and Flatpickr.",
+  "type": "wordpress-plugin",
+  "autoload": {
+    "psr-4": {
+      "AcfSearchBar\\": "src/"
+    }
+  },
+  "require": {}
+}

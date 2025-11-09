@@ -1,0 +1,1655 @@
+/* =========================================================
+   HERO CAROUSEL - Cards with Hero Background
+   Three variations: Overlay, Side Left, Side Right
+========================================================= */
+
+/* ---- PREVENT HORIZONTAL SCROLL ---- */
+body {
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+/* ---- HERO CAROUSEL CONTAINER ---- */
+.hc-hero-carousel {
+  position: relative;
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  left: 0;
+  right: 0;
+  min-height: 600px;
+  overflow: visible; /* Allow cards to overflow for negative margins */
+  transition: opacity 0.6s ease-out 0.2s;
+}
+
+/* Clip background only, not cards */
+.hc-hero-background {
+  clip-path: inset(0);
+}
+
+/* Override WordPress alignment classes and theme constraints */
+/* This targets the :where(:not(.alignleft):not(.alignright):not(.alignfull)) selector from WordPress themes */
+.wp-block-acf-hero-carousel,
+.wp-block-acf-hero-carousel .hc-hero-carousel,
+.alignwide .hc-hero-carousel,
+.alignfull .hc-hero-carousel {
+  width: 100vw !important;
+  max-width: 100vw !important;
+  margin-left: calc(50% - 50vw) !important;
+  margin-right: calc(50% - 50vw) !important;
+  overflow: visible !important; /* Allow cards to overflow */
+}
+
+/* Additional override for WordPress core max-width constraint */
+.wp-block-acf-hero-carousel:not(.alignleft):not(.alignright):not(.alignfull) {
+  max-width: none !important;
+  width: 100vw !important;
+  margin-left: calc(50% - 50vw) !important;
+  margin-right: calc(50% - 50vw) !important;
+  overflow: visible !important;
+}
+
+.wp-block-acf-hero-carousel:not(.alignleft):not(.alignright):not(.alignfull) .hc-hero-carousel {
+  max-width: none !important;
+  width: 100vw !important;
+  overflow: visible !important;
+}
+
+.hc-hero-carousel.is-loaded {
+  opacity: 1;
+}
+
+/* ---- HERO BACKGROUND ---- */
+.hc-hero-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
+}
+
+.hc-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1;
+}
+
+/* ---- SKELETON LOADER ---- */
+.hc-skeleton {
+  display: grid;
+  gap: 2rem;
+  opacity: 1;
+  transition: opacity 0.5s ease-out;
+  pointer-events: none;
+  position: relative;
+  z-index: 2;
+}
+
+.hc-skeleton.is-hidden {
+  opacity: 0;
+}
+
+.hc-skeleton-item {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.hc-skeleton-image {
+  width: 100%;
+  height: 200px;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 37%, #f0f0f0 63%);
+  background-size: 400% 100%;
+  animation: hc-shimmer 1.6s infinite linear;
+}
+
+.hc-skeleton-line {
+  height: 16px;
+  margin-bottom: 0.75rem;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 37%, #f0f0f0 63%);
+  background-size: 400% 100%;
+  animation: hc-shimmer 1.6s infinite linear;
+}
+
+.hc-skeleton-line--title {
+  height: 24px;
+  width: 70%;
+  margin-bottom: 1rem;
+}
+
+.hc-skeleton-line--text {
+  width: 90%;
+}
+
+@keyframes hc-shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+/* =========================================================
+   VARIATION 1: BOTTOM (Hero text top, cards bottom)
+========================================================= */
+
+.hc-hero-carousel--bottom .hc-content {
+  position: relative;
+  z-index: 2;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 60px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  overflow: visible; /* Allow cards to overflow */
+}
+
+/* Override content padding if hero carousel itself has padding (from WordPress Block Supports) */
+.hc-hero-carousel--bottom[style*="padding"] .hc-content {
+  padding: 0;
+}
+
+/* Cards wrapper should also allow overflow */
+.hc-hero-carousel--bottom .hc-cards-wrapper {
+  position: relative;
+  overflow: visible;
+}
+
+/* Centered layout when no text */
+.hc-hero-carousel--bottom .hc-content--centered {
+  justify-content: center;
+}
+
+/* With text layout */
+.hc-hero-carousel--bottom .hc-content--with-text.hc-content--bottom {
+  justify-content: space-between;
+}
+
+.hc-hero-carousel--bottom .hc-content--with-text.hc-content--top {
+  justify-content: space-between;
+  flex-direction: column-reverse;
+}
+
+/* Hero Text Section */
+.hc-hero-text {
+  text-align: center;
+  color: #fff;
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.hc-hero-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.hc-hero-description {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  line-height: 1.6;
+  margin: 0;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  opacity: 0.95;
+}
+
+/* CTA Button Base Styles */
+.hc-hero-cta {
+  display: inline-block;
+  padding: 1rem 2.5rem;
+  text-decoration: none !important;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 1.125rem;
+  transition: all 0.3s ease;
+  text-shadow: none;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+
+/* Button Style Variants (matching PostsCarousel) */
+/* Primary - Pink */
+.hc-hero-cta--primary {
+  background: #E78C85;
+  color: #fff !important;
+  box-shadow: 0 4px 16px rgba(231, 140, 133, 0.4);
+}
+
+.hc-hero-cta--primary:hover,
+.hc-hero-cta--primary:focus {
+  background: #fff !important;
+  color: #1A1A1A !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(255, 255, 255, 0.8);
+  text-decoration: none !important;
+}
+
+/* Secondary - Purple */
+.hc-hero-cta--secondary {
+  background: #311A42;
+  color: #fff !important;
+  box-shadow: 0 4px 16px rgba(49, 26, 66, 0.4);
+}
+
+.hc-hero-cta--secondary:hover,
+.hc-hero-cta--secondary:focus {
+  background: #fff !important;
+  color: #1A1A1A !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(255, 255, 255, 0.8);
+  text-decoration: none !important;
+}
+
+/* White */
+.hc-hero-cta--white {
+  background: #fff;
+  color: #1A1A1A !important;
+  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.3);
+}
+
+.hc-hero-cta--white:hover,
+.hc-hero-cta--white:focus {
+  background: #1A1A1A !important;
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(26, 26, 26, 0.8);
+  text-decoration: none !important;
+}
+
+/* Gold */
+.hc-hero-cta--gold {
+  background: #CEA02D;
+  color: #fff !important;
+  box-shadow: 0 4px 16px rgba(206, 160, 45, 0.4);
+}
+
+.hc-hero-cta--gold:hover,
+.hc-hero-cta--gold:focus {
+  background: #fff !important;
+  color: #1A1A1A !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(255, 255, 255, 0.8);
+  text-decoration: none !important;
+}
+
+/* Dark */
+.hc-hero-cta--dark {
+  background: #1A1A1A;
+  color: #fff !important;
+  box-shadow: 0 4px 16px rgba(26, 26, 26, 0.4);
+}
+
+.hc-hero-cta--dark:hover,
+.hc-hero-cta--dark:focus {
+  background: #fff !important;
+  color: #1A1A1A !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(255, 255, 255, 0.8);
+  text-decoration: none !important;
+}
+
+/* Transparent with border */
+.hc-hero-cta--transparent {
+  background: transparent;
+  color: #fff !important;
+  border-color: #fff;
+  box-shadow: none;
+}
+
+.hc-hero-cta--transparent:hover,
+.hc-hero-cta--transparent:focus {
+  background: #fff !important;
+  color: #1A1A1A !important;
+  transform: translateY(-2px);
+  border-color: #fff;
+  text-decoration: none !important;
+}
+
+/* Read More style (text only) */
+.hc-hero-cta--read-more {
+  background: transparent;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  border-radius: 0;
+  box-shadow: none;
+  position: relative;
+}
+
+.hc-hero-cta--read-more::after {
+  content: '→';
+  margin-left: 0.5rem;
+  transition: transform 0.3s ease;
+  display: inline-block;
+}
+
+.hc-hero-cta--read-more:hover {
+  transform: none;
+  text-decoration: underline;
+}
+
+.hc-hero-cta--read-more:hover::after {
+  transform: translateX(4px);
+}
+
+/* Desktop Grid or Carousel */
+@media (min-width: 1024px) {
+  /* Grid mode when cards <= columns */
+  .hc-hero-carousel--bottom[data-is-carousel="false"] .hc-cards {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .hc-hero-carousel--bottom[data-columns="2"][data-is-carousel="false"] .hc-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hc-hero-carousel--bottom[data-columns="3"][data-is-carousel="false"] .hc-cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .hc-hero-carousel--bottom[data-columns="4"][data-is-carousel="false"] .hc-cards {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  /* Carousel mode when cards > columns - SINGLE ROW ONLY */
+  .hc-hero-carousel--bottom[data-is-carousel="true"] .hc-cards {
+    display: flex;
+    gap: 2rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .hc-hero-carousel--bottom[data-is-carousel="true"] .hc-cards::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hc-hero-carousel--bottom[data-is-carousel="true"] .hc-card {
+    flex: 0 0 calc((100% - (2rem * (var(--columns, 3) - 1))) / var(--columns, 3));
+    scroll-snap-align: start;
+  }
+
+  .hc-hero-carousel--bottom[data-columns="2"][data-is-carousel="true"] .hc-card {
+    flex: 0 0 calc((100% - 2rem) / 2);
+  }
+
+  .hc-hero-carousel--bottom[data-columns="3"][data-is-carousel="true"] .hc-card {
+    flex: 0 0 calc((100% - 4rem) / 3);
+  }
+
+  .hc-hero-carousel--bottom[data-columns="4"][data-is-carousel="true"] .hc-card {
+    flex: 0 0 calc((100% - 6rem) / 4);
+  }
+
+  .hc-hero-carousel--bottom .hc-skeleton {
+    grid-template-columns: repeat(var(--columns, 3), 1fr);
+  }
+
+  .hc-hero-carousel--bottom[data-columns="2"] .hc-skeleton {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hc-hero-carousel--bottom[data-columns="3"] .hc-skeleton {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .hc-hero-carousel--bottom[data-columns="4"] .hc-skeleton {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Mobile Carousel */
+@media (max-width: 1023px) {
+  .hc-hero-carousel--bottom .hc-cards {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .hc-hero-carousel--bottom .hc-cards::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hc-hero-carousel--bottom .hc-card {
+    flex: 0 0 calc(90% - 20px);
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+}
+
+/* =========================================================
+   VARIATION 2: TOP (Cards top, hero text bottom)
+========================================================= */
+
+/* TOP variant shares most styles with BOTTOM, but with reversed order (handled in template) */
+/* Apply all BOTTOM styles to TOP as well */
+.hc-hero-carousel--top .hc-content {
+  position: relative;
+  z-index: 2;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 60px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  overflow: visible;
+}
+
+.hc-hero-carousel--top[style*="padding"] .hc-content {
+  padding: 0;
+}
+
+.hc-hero-carousel--top .hc-cards-wrapper {
+  position: relative;
+  overflow: visible;
+}
+
+.hc-hero-carousel--top .hc-content--centered {
+  justify-content: center;
+}
+
+.hc-hero-carousel--top .hc-content--with-text {
+  justify-content: space-between;
+}
+
+/* Desktop Grid or Carousel */
+@media (min-width: 1024px) {
+  .hc-hero-carousel--top[data-is-carousel="false"] .hc-cards {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .hc-hero-carousel--top[data-columns="2"][data-is-carousel="false"] .hc-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hc-hero-carousel--top[data-columns="3"][data-is-carousel="false"] .hc-cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .hc-hero-carousel--top[data-columns="4"][data-is-carousel="false"] .hc-cards {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .hc-hero-carousel--top[data-is-carousel="true"] .hc-cards {
+    display: flex;
+    gap: 2rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .hc-hero-carousel--top[data-is-carousel="true"] .hc-cards::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hc-hero-carousel--top[data-is-carousel="true"] .hc-card {
+    flex: 0 0 calc((100% - (2rem * (var(--columns, 3) - 1))) / var(--columns, 3));
+    scroll-snap-align: start;
+  }
+
+  .hc-hero-carousel--top[data-columns="2"][data-is-carousel="true"] .hc-card {
+    flex: 0 0 calc((100% - 2rem) / 2);
+  }
+
+  .hc-hero-carousel--top[data-columns="3"][data-is-carousel="true"] .hc-card {
+    flex: 0 0 calc((100% - 4rem) / 3);
+  }
+
+  .hc-hero-carousel--top[data-columns="4"][data-is-carousel="true"] .hc-card {
+    flex: 0 0 calc((100% - 6rem) / 4);
+  }
+
+  .hc-hero-carousel--top .hc-skeleton {
+    grid-template-columns: repeat(var(--columns, 3), 1fr);
+  }
+
+  .hc-hero-carousel--top[data-columns="2"] .hc-skeleton {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hc-hero-carousel--top[data-columns="3"] .hc-skeleton {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .hc-hero-carousel--top[data-columns="4"] .hc-skeleton {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Mobile Carousel */
+@media (max-width: 1023px) {
+  .hc-hero-carousel--top .hc-cards {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .hc-hero-carousel--top .hc-cards::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hc-hero-carousel--top .hc-card {
+    flex: 0 0 calc(90% - 20px);
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+}
+
+/* Navigation for TOP variant */
+.hc-hero-carousel--top .hc-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+}
+
+.hc-hero-carousel--top .hc-nav--prev {
+  left: 20px;
+}
+
+.hc-hero-carousel--top .hc-nav--next {
+  right: 20px;
+}
+
+.hc-hero-carousel--top .hc-nav:hover {
+  transform: translateY(-50%) scale(1.1);
+}
+
+.hc-hero-carousel--top .hc-nav:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+@media (max-width: 767px) {
+  .hc-hero-carousel--top .hc-nav {
+    width: 40px;
+    height: 40px;
+  }
+
+  .hc-hero-carousel--top .hc-nav--prev {
+    left: 10px;
+  }
+
+  .hc-hero-carousel--top .hc-nav--next {
+    right: 10px;
+  }
+}
+
+/* =========================================================
+   VARIATION 3 & 4: SIDE LEFT / SIDE RIGHT
+========================================================= */
+
+/* Prevent horizontal scroll from negative margins on side variations */
+.hc-hero-carousel--side-left,
+.hc-hero-carousel--side-right {
+  overflow-x: clip; /* Clip horizontal overflow without creating scrollbar */
+  overflow-y: visible; /* Allow vertical overflow for creative layouts */
+}
+
+.hc-side-layout {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0; /* Remove gap to prevent pushing sections */
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 60px 20px;
+  min-height: 600px;
+}
+
+/* Override side layout padding if hero carousel itself has padding (from WordPress Block Supports) */
+.hc-hero-carousel--side-left[style*="padding"] .hc-side-layout,
+.hc-hero-carousel--side-right[style*="padding"] .hc-side-layout {
+  padding: 0;
+}
+
+/* Side Left: Cards left (55%), Hero text right (45%) */
+.hc-hero-carousel--side-left .hc-side-layout {
+  flex-direction: row;
+  align-items: center; /* Vertical center alignment */
+}
+
+/* Side Right: Hero text left (45%), Cards right (55%) */
+.hc-hero-carousel--side-right .hc-side-layout {
+  flex-direction: row;
+  align-items: center; /* Vertical center alignment */
+}
+
+/* Cards Section - 55% width */
+.hc-cards-section {
+  position: absolute;
+  width: 85%;
+  display: flex;
+  align-items: center;
+  /* Prevent this section from causing page scroll */
+  contain: layout; /* Isolate layout to prevent scroll propagation */
+}
+
+/* Side Left: Cards start from left edge of viewport */
+.hc-hero-carousel--side-left .hc-cards-section {
+  left: calc(-50vw + 50%); /* Distance from container edge to viewport edge */
+}
+
+/* Side Right: Cards start from right edge of viewport */
+.hc-hero-carousel--side-right .hc-cards-section {
+  right: calc(-75vw + 50%); /* Distance from container edge to viewport edge */
+}
+
+/* Cards wrapper - specific styles for side variations */
+.hc-hero-carousel--side-left .hc-cards-wrapper,
+.hc-hero-carousel--side-right .hc-cards-wrapper {
+  width: 63%;
+  position: relative; /* For absolute positioning of nav arrows inside */
+}
+
+/* Hero Section - 45% width */
+.hc-hero-section {
+  position: relative;
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  justify-content: center;
+  padding: 3rem 4rem; /* More padding to keep text away from edges */
+  overflow: hidden; /* Prevent text from overflowing */
+  box-sizing: border-box; /* Include padding in width calculation */
+}
+
+/* Side Left: Hero section on the right */
+.hc-hero-carousel--side-left .hc-hero-section {
+  margin-left: auto;
+}
+
+/* Side Right: Hero section on the left */
+.hc-hero-carousel--side-right .hc-hero-section {
+  margin-right: auto;
+}
+
+/* Hero Text inside Hero Section - Side Left (align right) */
+.hc-hero-carousel--side-left .hc-hero-section .hc-hero-text {
+  text-align: right;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: flex-end; /* Align to the right */
+  width: 100%;
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.hc-hero-carousel--side-left .hc-hero-section .hc-hero-text * {
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Hero Text inside Hero Section - Side Right (align left) */
+.hc-hero-carousel--side-right .hc-hero-section .hc-hero-text {
+  text-align: left;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: flex-start; /* Align to the left */
+  width: 100%;
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.hc-hero-carousel--side-right .hc-hero-section .hc-hero-text * {
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Navigation Section - Inside cards section, positioned at center of cards vertically */
+.hc-hero-carousel--side-left .hc-nav-section,
+.hc-hero-carousel--side-right .hc-nav-section {
+  position: absolute;
+  top: 50%; /* Center vertically relative to cards */
+  transform: translateY(-50%); /* Center vertically */
+  display: flex;
+  flex-direction: row; /* Horizontal layout */
+  gap: 1.5rem;
+  z-index: 10;
+  pointer-events: none; /* Allow clicks through the container */
+}
+
+/* Side Left: Arrows on the right side of cards */
+.hc-hero-carousel--side-left .hc-nav-section {
+  left: 110%;
+}
+
+/* Side Right: Arrows on the left side of cards */
+.hc-hero-carousel--side-right .hc-nav-section {
+  right: 110%;
+}
+
+/* Re-enable pointer events on the buttons themselves */
+.hc-hero-carousel--side-left .hc-nav-section .hc-nav,
+.hc-hero-carousel--side-right .hc-nav-section .hc-nav {
+  pointer-events: auto;
+}
+
+/* Desktop Grid/Carousel for Side variations */
+@media (min-width: 1024px) {
+  /* Grid mode */
+  .hc-hero-carousel--side-left[data-is-carousel="false"] .hc-cards,
+  .hc-hero-carousel--side-right[data-is-carousel="false"] .hc-cards {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .hc-hero-carousel--side-left[data-columns="2"][data-is-carousel="false"] .hc-cards,
+  .hc-hero-carousel--side-right[data-columns="2"][data-is-carousel="false"] .hc-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hc-hero-carousel--side-left[data-columns="3"][data-is-carousel="false"] .hc-cards,
+  .hc-hero-carousel--side-right[data-columns="3"][data-is-carousel="false"] .hc-cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Carousel mode - SINGLE ROW ONLY */
+  .hc-hero-carousel--side-left[data-is-carousel="true"] .hc-cards,
+  .hc-hero-carousel--side-right[data-is-carousel="true"] .hc-cards {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .hc-hero-carousel--side-left[data-is-carousel="true"] .hc-cards::-webkit-scrollbar,
+  .hc-hero-carousel--side-right[data-is-carousel="true"] .hc-cards::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hc-hero-carousel--side-left[data-is-carousel="true"] .hc-card,
+  .hc-hero-carousel--side-right[data-is-carousel="true"] .hc-card {
+    flex: 0 0 calc((100% - (1.5rem * (var(--columns, 3) - 1))) / var(--columns, 3));
+    scroll-snap-align: start;
+  }
+
+  .hc-hero-carousel--side-left[data-columns="2"][data-is-carousel="true"] .hc-card,
+  .hc-hero-carousel--side-right[data-columns="2"][data-is-carousel="true"] .hc-card {
+    flex: 0 0 calc((100% - 1.5rem) / 2);
+  }
+
+  .hc-hero-carousel--side-left[data-columns="3"][data-is-carousel="true"] .hc-card,
+  .hc-hero-carousel--side-right[data-columns="3"][data-is-carousel="true"] .hc-card {
+    flex: 0 0 calc((100% - 3rem) / 3);
+  }
+
+  .hc-hero-carousel--side-left[data-columns="4"][data-is-carousel="true"] .hc-card,
+  .hc-hero-carousel--side-right[data-columns="4"][data-is-carousel="true"] .hc-card {
+    flex: 0 0 calc((100% - 4.5rem) / 4);
+  }
+
+  /* Hide nav section if not carousel */
+  .hc-hero-carousel--side-left[data-is-carousel="false"] .hc-nav-section,
+  .hc-hero-carousel--side-right[data-is-carousel="false"] .hc-nav-section {
+    display: none;
+  }
+
+  .hc-hero-carousel--side-left .hc-skeleton,
+  .hc-hero-carousel--side-right .hc-skeleton {
+    grid-template-columns: repeat(var(--columns, 3), 1fr);
+  }
+}
+
+/* Mobile: Stack vertically */
+@media (max-width: 1023px) {
+  .hc-side-layout {
+    flex-direction: column;
+    padding: 40px 20px;
+  }
+
+  .hc-nav-section {
+    display: none;
+  }
+
+  .hc-hero-carousel--side-left .hc-cards,
+  .hc-hero-carousel--side-right .hc-cards {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .hc-hero-carousel--side-left .hc-cards::-webkit-scrollbar,
+  .hc-hero-carousel--side-right .hc-cards::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hc-hero-carousel--side-left .hc-card,
+  .hc-hero-carousel--side-right .hc-card {
+    flex: 0 0 calc(90% - 20px);
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+}
+
+/* =========================================================
+   CARD STYLES (ALL VARIATIONS) - PostsCarousel Design
+========================================================= */
+
+.hc-card {
+  position: relative;
+  min-height: 450px;
+  height: 450px;
+  width: 100%;
+  border-radius: 16px;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+  background-color: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hc-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* Gradient Overlay */
+.hc-card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.85) 0%,
+    rgba(0, 0, 0, 0.4) 50%,
+    rgba(0, 0, 0, 0.1) 100%
+  );
+  z-index: 1;
+  transition: background 0.3s ease;
+}
+
+.hc-card:hover .hc-card-overlay {
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0.3) 50%,
+    transparent 100%
+  );
+}
+
+/* Card Content */
+.hc-card-content {
+  position: relative;
+  z-index: 2;
+  padding: 40px 32px 32px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.hc-card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.hc-card-title {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0;
+  color: #fff;
+}
+
+/* Category Badge (matching PostsCarousel) */
+.hc-card-category {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: #FF6B6B;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+}
+
+.hc-card-excerpt {
+  font-size: 16px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.hc-card-date {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+}
+
+.hc-card-readmore {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #FFE66D;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  align-self: flex-start;
+  padding: 12px 24px;
+  border: 2px solid #FFE66D;
+  border-radius: 30px;
+  transition: all 0.3s ease;
+}
+
+.hc-card-readmore:hover {
+  background: #FFE66D;
+  color: #111;
+  transform: translateX(4px);
+}
+
+.hc-card-readmore svg {
+  transition: transform 0.3s ease;
+}
+
+.hc-card-readmore:hover svg {
+  transform: translateX(4px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hc-card {
+    min-height: 420px;
+  }
+
+  .hc-card-content {
+    padding: 32px 24px 24px;
+  }
+
+  .hc-card-title {
+    font-size: 24px;
+  }
+
+  .hc-card-excerpt {
+    font-size: 14px;
+    -webkit-line-clamp: 2;
+  }
+
+  .hc-card-readmore {
+    font-size: 14px;
+    padding: 10px 20px;
+  }
+}
+
+/* ---- NAVIGATION ARROWS ---- */
+.hc-nav {
+  background: rgba(255, 255, 255, 0.95);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  color: #111;
+  backdrop-filter: blur(10px);
+}
+
+/* Overlay variation: positioned on sides */
+.hc-hero-carousel--bottom .hc-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+}
+
+.hc-hero-carousel--bottom .hc-nav--prev {
+  left: 20px;
+}
+
+.hc-hero-carousel--bottom .hc-nav--next {
+  right: 20px;
+}
+
+/* Side variations: standard size, in horizontal nav section */
+.hc-hero-carousel--side-left .hc-nav-section .hc-nav,
+.hc-hero-carousel--side-right .hc-nav-section .hc-nav {
+  width: 56px;
+  height: 56px;
+  position: relative;
+  transform: none;
+}
+
+.hc-nav:hover {
+  background: #fff;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+  transform: scale(1.1);
+}
+
+.hc-hero-carousel--bottom .hc-nav:hover {
+  transform: translateY(-50%) scale(1.1);
+}
+
+.hc-nav:active {
+  transform: scale(0.95);
+}
+
+.hc-hero-carousel--bottom .hc-nav:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.hc-nav:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ---- PAGINATION DOTS ---- */
+.hc-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 2rem;
+  position: relative;
+  z-index: 3;
+}
+
+/* Ocultar dots en desktop */
+@media (min-width: 1024px) {
+  .hc-dots {
+    display: none !important;
+  }
+}
+
+.hc-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+.hc-dot:hover {
+  border-color: #fff;
+  transform: scale(1.2);
+}
+
+.hc-dot.is-active {
+  width: 28px;
+  border-radius: 5px;
+  background: #d46a3f;
+  border-color: #d46a3f;
+}
+
+/* =========================================================
+   RESPONSIVE ADJUSTMENTS
+========================================================= */
+
+@media (max-width: 767px) {
+  .hc-hero-carousel {
+    min-height: 500px;
+  }
+
+  .hc-card-title {
+    font-size: 1.125rem;
+  }
+
+  .hc-card-description {
+    font-size: 0.875rem;
+  }
+
+  .hc-hero-carousel--bottom .hc-nav {
+    width: 40px;
+    height: 40px;
+  }
+
+  .hc-hero-carousel--bottom .hc-nav--prev {
+    left: 10px;
+  }
+
+  .hc-hero-carousel--bottom .hc-nav--next {
+    right: 10px;
+  }
+}
+
+/* =========================================================
+   PREVIEW PLACEHOLDER (Editor)
+========================================================= */
+.hc-preview-placeholder {
+  text-align: center;
+  padding: 80px 20px;
+  background: #f9f9f9;
+  border: 2px dashed #ddd;
+  border-radius: 12px;
+  color: #666;
+}
+
+.hc-preview-placeholder p {
+  margin: 0;
+  font-size: 16px;
+}
+
+/* =========================================================
+   CARD ADDITIONAL ELEMENTS (matching PostsCarousel)
+========================================================= */
+
+/* Card Link Wrapper */
+.hc-card-link {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  flex: 1;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Divider Line */
+.hc-card-divider {
+  width: 50%;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.8) 0%,
+    rgba(255, 255, 255, 0.3) 100%
+  );
+  margin: 4px 0;
+}
+
+/* Location */
+.hc-card-location {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.hc-card-location svg {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+}
+
+/* Price */
+.hc-card-price {
+  font-family: 'Satoshi', sans-serif;
+  font-size: 20px;
+  font-weight: 900;
+  color: #fff;
+  margin: 4px 0;
+}
+
+/* CTA Button */
+.hc-card-button {
+  padding: 10px 20px;
+  background: #E78C85;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  align-self: flex-start;
+  margin-top: 8px;
+}
+
+.hc-card-button:hover {
+  background: #dc7b74;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.hc-card-button:active {
+  transform: translateY(0);
+}
+
+/* =========================================================
+   BUTTON COLOR VARIANTS
+========================================================= */
+
+/* Button variant Primary (Pink #E78C85) - DEFAULT */
+.hc-card-button--primary {
+  background: #E78C85 !important;
+  color: #fff !important;
+}
+
+.hc-card-button--primary:hover {
+  background: #dc7b74 !important;
+}
+
+/* Button variant Secondary (Purple #311A42) */
+.hc-card-button--secondary {
+  background: #311A42 !important;
+  color: #fff !important;
+}
+
+.hc-card-button--secondary:hover {
+  background: #402753 !important;
+}
+
+/* Button variant White (White with black text) */
+.hc-card-button--white {
+  background: #fff !important;
+  color: #000 !important;
+  border: 2px solid #fff !important;
+}
+
+.hc-card-button--white:hover {
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: #000 !important;
+}
+
+/* Button variant Gold (Gold #CEA02D) */
+.hc-card-button--gold {
+  background: #CEA02D !important;
+  color: #fff !important;
+}
+
+.hc-card-button--gold:hover {
+  background: #b88f25 !important;
+}
+
+/* Button variant Dark (Black #1A1A1A) */
+.hc-card-button--dark {
+  background: #1A1A1A !important;
+  color: #fff !important;
+}
+
+.hc-card-button--dark:hover {
+  background: #2d2d2d !important;
+}
+
+/* Button variant Transparent (Transparent with white border) */
+.hc-card-button--transparent {
+  background: transparent !important;
+  color: #fff !important;
+  border: 2px solid #fff !important;
+  backdrop-filter: blur(4px);
+}
+
+.hc-card-button--transparent:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: #fff !important;
+}
+
+/* Button variant Read More (Text in bold without background) */
+.hc-card-button--read-more {
+  background: transparent !important;
+  color: #1976d2 !important;
+  font-weight: 700;
+  padding: 0 !important;
+  box-shadow: none !important;
+  border: none !important;
+  font-size: 14px;
+}
+
+.hc-card-button--read-more:hover {
+  background: transparent !important;
+  color: #1565c0 !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* =========================================================
+   BADGE COLOR VARIANTS
+========================================================= */
+
+/* Badge variant Primary (Pink #E78C85) */
+.hc-card-category--primary {
+  background: #E78C85 !important;
+  color: #fff !important;
+}
+
+.hc-card-category--primary:hover {
+  background: #dc7b74 !important;
+}
+
+/* Badge variant Secondary (Purple #311A42) - DEFAULT */
+.hc-card-category--secondary {
+  background: #311A42 !important;
+  color: #fff !important;
+}
+
+.hc-card-category--secondary:hover {
+  background: #402753 !important;
+}
+
+/* Badge variant White (White with black text) */
+.hc-card-category--white {
+  background: #fff !important;
+  color: #000 !important;
+}
+
+.hc-card-category--white:hover {
+  background: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Badge variant Gold (Gold #CEA02D) */
+.hc-card-category--gold {
+  background: #CEA02D !important;
+  color: #fff !important;
+}
+
+.hc-card-category--gold:hover {
+  background: #b88f25 !important;
+}
+
+/* Badge variant Dark (Black #1A1A1A) */
+.hc-card-category--dark {
+  background: #1A1A1A !important;
+  color: #fff !important;
+}
+
+.hc-card-category--dark:hover {
+  background: #2d2d2d !important;
+}
+
+/* Badge variant Transparent (Transparent with white border) */
+.hc-card-category--transparent {
+  background: transparent !important;
+  color: #fff !important;
+  border: 2px solid #fff !important;
+  backdrop-filter: blur(4px);
+}
+
+.hc-card-category--transparent:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* =========================================================
+   CONTENT ALIGNMENT
+========================================================= */
+
+/* Text Alignment - Left (default) */
+.text-align-left .hc-card-content {
+  text-align: left;
+}
+
+.text-align-left .hc-card-title,
+.text-align-left .hc-card-excerpt,
+.text-align-left .hc-card-location,
+.text-align-left .hc-card-price {
+  text-align: left;
+}
+
+.text-align-left .hc-card-divider {
+  align-self: flex-start;
+}
+
+.text-align-left .hc-card-location {
+  justify-content: flex-start;
+}
+
+/* Text Alignment - Center */
+.text-align-center .hc-card-content {
+  text-align: center;
+}
+
+.text-align-center .hc-card-title,
+.text-align-center .hc-card-excerpt,
+.text-align-center .hc-card-location,
+.text-align-center .hc-card-price {
+  text-align: center;
+}
+
+.text-align-center .hc-card-divider {
+  align-self: center;
+}
+
+.text-align-center .hc-card-location {
+  justify-content: center;
+}
+
+/* Text Alignment - Right */
+.text-align-right .hc-card-content {
+  text-align: right;
+}
+
+.text-align-right .hc-card-title,
+.text-align-right .hc-card-excerpt,
+.text-align-right .hc-card-location,
+.text-align-right .hc-card-price {
+  text-align: right;
+}
+
+.text-align-right .hc-card-divider {
+  align-self: flex-end;
+}
+
+.text-align-right .hc-card-location {
+  justify-content: flex-end;
+}
+
+/* Button Alignment - Left (default) */
+.button-align-left .hc-card-button {
+  align-self: flex-start;
+}
+
+/* Button Alignment - Center */
+.button-align-center .hc-card-button {
+  align-self: center;
+}
+
+/* Button Alignment - Right */
+.button-align-right .hc-card-button {
+  align-self: flex-end;
+}
+
+/* Responsive adjustments for new elements */
+@media (max-width: 768px) {
+  .hc-card-location {
+    font-size: 12px;
+  }
+
+  .hc-card-price {
+    font-size: 18px;
+  }
+
+  .hc-card-button {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+}
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  .hc-cards {
+    scroll-behavior: auto;
+  }
+
+  .hc-card,
+  .hc-nav,
+  .hc-dot,
+  .hc-card-image {
+    transition: none;
+  }
+}
+
+.hc-nav:focus-visible,
+.hc-dot:focus-visible {
+  outline: 3px solid #d46a3f;
+  outline-offset: 4px;
+}
+
+.hc-card:focus {
+  outline: 2px solid #d46a3f;
+  outline-offset: 4px;
+}
+
+/* =========================================================
+   WORDPRESS EDITOR (BACKEND) FIXES
+========================================================= */
+
+/* In the editor, WordPress applies padding/margin to the wrapper block
+   We need to transfer it to the inner hero container */
+
+/* Editor: Remove padding from WordPress wrapper */
+.block-editor-block-list__block.wp-block-acf-hero-carousel {
+  padding: 0 !important;
+}
+
+/* Editor: Apply padding from WordPress custom properties to the hero container */
+.block-editor-block-list__block.wp-block-acf-hero-carousel[style*="padding-top"] .hc-hero-carousel {
+  padding-top: var(--wp--style--block-gap, 0) !important;
+}
+
+.block-editor-block-list__block.wp-block-acf-hero-carousel[style*="padding-bottom"] .hc-hero-carousel {
+  padding-bottom: var(--wp--style--block-gap, 0) !important;
+}
+
+.block-editor-block-list__block.wp-block-acf-hero-carousel[style*="padding-left"] .hc-hero-carousel {
+  padding-left: var(--wp--style--block-gap, 0) !important;
+}
+
+.block-editor-block-list__block.wp-block-acf-hero-carousel[style*="padding-right"] .hc-hero-carousel {
+  padding-right: var(--wp--style--block-gap, 0) !important;
+}
+
+/* For spacing presets (var(--wp--preset--spacing--XX)) */
+.block-editor-block-list__block.wp-block-acf-hero-carousel[style*="--wp--preset--spacing"] .hc-hero-carousel {
+  padding-top: inherit;
+  padding-bottom: inherit;
+  padding-left: inherit;
+  padding-right: inherit;
+}
+
+/* Ensure editor preview maintains full width */
+.editor-styles-wrapper .hc-hero-carousel,
+.block-editor-block-list__block .hc-hero-carousel {
+  width: 100vw !important;
+  max-width: 100vw !important;
+  margin-left: calc(50% - 50vw) !important;
+  margin-right: calc(50% - 50vw) !important;
+}
+
+/* =========================================================
+   WORDPRESS GUTENBERG NATIVE COLOR SUPPORT
+========================================================= */
+
+/* Allow WordPress color controls to override default colors */
+/* ONLY affects hero title and description (NOT cards) */
+
+/* Hero Title - Allow color override from WordPress */
+.wp-block-acf-hero-carousel.has-text-color .hc-hero-title,
+.wp-block-acf-hero-carousel[style*="color"] .hc-hero-title {
+  color: inherit !important;
+}
+
+/* Hero Description - Allow color override from WordPress */
+.wp-block-acf-hero-carousel.has-text-color .hc-hero-description,
+.wp-block-acf-hero-carousel[style*="color"] .hc-hero-description {
+  color: inherit !important;
+}
+
+/* Hero Text Container - Inherit color from wrapper */
+.wp-block-acf-hero-carousel.has-text-color .hc-hero-text,
+.wp-block-acf-hero-carousel[style*="color"] .hc-hero-text {
+  color: inherit;
+}
+
+/* Hero CTA Button - Allow color override */
+.wp-block-acf-hero-carousel.has-text-color .hc-hero-cta,
+.wp-block-acf-hero-carousel[style*="color"] .hc-hero-cta {
+  color: inherit !important;
+}
+
+/* Background Color Support */
+/* Allow WordPress background color to apply to the hero background overlay */
+.wp-block-acf-hero-carousel.has-background .hc-hero-overlay {
+  background-color: inherit;
+  opacity: 0.7;
+}
+
+/* Font Size Support - Allow WordPress typography controls */
+.wp-block-acf-hero-carousel[class*="has-"] .hc-hero-title,
+.wp-block-acf-hero-carousel[style*="font-size"] .hc-hero-title {
+  font-size: inherit;
+}
+
+.wp-block-acf-hero-carousel[class*="has-"] .hc-hero-description,
+.wp-block-acf-hero-carousel[style*="font-size"] .hc-hero-description {
+  font-size: inherit;
+}

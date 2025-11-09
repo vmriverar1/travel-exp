@@ -1,0 +1,47 @@
+/**
+ * Atom: Navigation Link
+ */
+
+.nav-link {
+    display: inline-block;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text);
+    transition: color var(--transition-fast);
+    position: relative;
+}
+
+.nav-link:hover,
+.nav-link:focus {
+    color: var(--color-primary);
+}
+
+/* Underline effect on hover */
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-primary);
+    transform: translateX(-50%);
+    transition: width var(--transition-fast);
+}
+
+.nav-link:hover::after,
+.nav-link:focus::after {
+    width: 80%;
+}
+
+/* Current/active page indicator */
+.nav-link.current-menu-item,
+.nav-link.current_page_item {
+    color: var(--color-primary);
+}
+
+.nav-link.current-menu-item::after,
+.nav-link.current_page_item::after {
+    width: 80%;
+}

@@ -1,0 +1,214 @@
+/* ===== BASE ===== */
+.acf-fecp-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    font-family: "Poppins", sans-serif;
+    color: #2a2a2a;
+    gap: 25px;
+}
+
+@media(max-width: 768px) {
+    .acf-fecp-form {
+        gap: 15px;
+    }
+}
+
+/* ===== GRUPOS ===== */
+.acf-fecp-form__group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-inline: 0.25rem;
+    /* margen lateral tipo Bootstrap */
+}
+
+/* ===== CAMPOS ===== */
+.acf-fecp-form__field {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 240px;
+    position: relative;
+}
+
+/* ===== INPUTS / SELECTS / TEXTAREA ===== */
+.acf-fecp-form__input,
+.acf-fecp-form__select,
+.acf-fecp-form__textarea {
+    width: 100%;
+    padding: 13px;
+    text-align: center;
+    border: 1px solid #C66E65 !important;
+    /* 🔹 color fijo */
+    border-radius: 12px;
+    background-color: #fff;
+    font-size: 0.95rem;
+    color: #898989;
+    font-weight: 700;
+    transition: all 0.25s ease;
+    box-shadow: 0px 4px 4px 0px #00000040;
+    box-sizing: border-box;
+}
+
+.acf-fecp-form__textarea { 
+    min-height: 100px;
+    max-height: 100px;
+    min-width: 100%;
+    max-width: 100%;
+}
+
+
+/* ===== FOCUS ===== */
+.acf-fecp-form__input:focus,
+.acf-fecp-form__select:focus,
+.acf-fecp-form__textarea:focus {
+    outline: none;
+    border-color: #a54f47 !important;
+    box-shadow: 0 0 0 3px rgba(198, 110, 101, 0.25);
+}
+
+/* ===== SELECT con flecha ===== */
+.acf-fecp-form__select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='14' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23C66E65' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 14px;
+    cursor: pointer;
+}
+
+/* ===== RADIO GROUP ===== */
+.acf-fecp-form__radio-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem 1rem;
+    flex-wrap: wrap;
+    padding-top: 0.5rem;
+    margin-top: -15px;
+    gap: 0;
+}
+
+@media(max-width: 768px) {
+    .acf-fecp-form__radio-group {
+        padding-top: 15px;
+    }
+}
+
+.acf-fecp-form__label {
+    font-weight: 700;
+    color: #898989;
+    margin-right: 0.5rem;
+}
+
+.acf-fecp-form__radio-group__content label {
+        font-weight: 700;
+    color: #898989;
+    font-size: 16px;
+}
+
+/* Radio moderno */
+.acf-fecp-form__radio input[type="radio"] {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 1.8px solid #C66E65;
+    border-radius: 50%;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.acf-fecp-form__radio input[type="radio"]:checked::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 7px;
+    height: 7px;
+    background-color: #C66E65;
+    border-radius: 50%;
+}
+
+/* ===== CHECKBOX ===== */
+.acf-fecp-form__checkbox-group {
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.acf-fecp-form__checkbox-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  color: #898989;
+}
+
+/* Checkbox base */
+.acf-fecp-form__checkbox-group input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  border: 1.8px solid #C66E65;
+  border-radius: 4px;
+  accent-color: #C66E65; /* ✅ hace el color del check */
+  cursor: pointer;
+}
+
+/* Enlace */
+.acf-fecp-form__checkbox-group a {
+  color: #C66E65;
+  text-decoration: underline;
+}
+
+
+
+/* ===== BOTÓN ===== */
+.acf-fecp-form__button {
+    background-color: #C66E65;
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    border-radius: 25px;
+    padding: 0.9rem 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    align-self: center;
+    min-width: 180px;
+}
+
+.acf-fecp-form__button:hover {
+    background-color: #a54f47;
+}
+
+/* ===== VALIDACIÓN ===== */
+.valid {
+    border-color: #3cb371 !important;
+    background-color: #f9fff9 !important;
+}
+
+.error {
+    border-color: #dc143c !important;
+    background-color: #fff7f7 !important;
+}
+
+.fecp-error {
+    color: #dc143c;
+    font-size: 0.85rem;
+    margin-top: 4px;
+    display: block;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .acf-fecp-form__group {
+        flex-direction: column;
+    }
+
+    .acf-fecp-form__button {
+        width: 100%;
+    }
+}

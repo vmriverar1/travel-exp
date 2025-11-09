@@ -1,0 +1,77 @@
+/* === Travel Sustain Block === */
+.sustain-slide {
+    display: flex;
+    justify-content: center;
+}
+
+.sustain-slide .sustain-icon {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.sustain-slide .sustain-icon img {
+    height: 82px;
+    width: auto;
+}
+
+.sustain-title {
+    font-size: var(--wp--preset--font-size--medium);
+    font-weight: 700;
+    color: var(--wp--preset--color--primary);
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.sustain-desc {
+    color: #000000;
+    margin-bottom: 1.25rem;
+}
+
+.sustain-img img {
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+}
+
+/* === Botón === */
+.sustain-cta-container {
+    text-align: center;
+}
+
+.sustain-cta-btn {
+    display: inline-block;
+    padding: 12px 28px;
+    border-radius: 50px;
+    color: #fff;
+    font-weight: 600;
+    background-color: #E78C85;
+}
+
+.sustain-cta-btn:hover {
+    color: #fff;
+}
+
+
+/* === Responsive === */
+@media (max-width: 768px) {
+    .travel-swiper--sustain .swiper {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .sustain-cta-container {
+        order: -1;
+        margin-bottom: 1rem;
+    }
+}
+
+@media (min-width: 769px) {
+    .sustain-slide:not(:nth-child(3n + 2)) {
+        margin-top: 5rem;
+    }
+
+    .sustain-cta-container {
+        margin-top: -2.5rem;
+    }
+}

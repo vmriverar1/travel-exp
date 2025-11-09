@@ -1,0 +1,97 @@
+.vtb-banner {
+  position: relative;
+  overflow: hidden;
+  max-width: 100% !important;
+  color: var(--text-color, #fff);
+}
+
+/* Imagen */
+.vtb-figure {
+  margin: 0;
+}
+
+.vtb-bg {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+  filter: brightness(calc(1 - (var(--tint-opacity, 50) / 100)));
+}
+
+/* Overlay */
+.vtb-overlay {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: linear-gradient(0.99deg, var(--overlay-color, #2A2A2A) 58.91%, rgba(42, 42, 42, 0) 99.4%);
+  padding: 65px 130px;
+}
+
+/* Grid */
+.vtb-icons {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));
+  gap: 1.5rem;
+  text-align: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.vtb-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: .4rem;
+}
+
+.vtb-item--center .vtb-icon {
+  width: 70%
+}
+
+.vtb-icon {
+  width: 60px;
+  height: auto;
+}
+
+.vtb-title {
+  font-weight: 900;
+  margin: 0;
+  color: var(--text-color, #fff);
+}
+
+.vtb-desc {
+  margin: 0;
+  color: var(--text-color, #fff);
+  opacity: .9;
+  width: 200px;
+  font-size: 18px;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .vtb-overlay {
+    position: static;
+    background: linear-gradient(94.87deg, #2A2A2A 3.92%, rgba(42, 42, 42, 0.75) 96.07%);
+    padding: 60px 100px;
+  }
+
+  .vtb-icons {
+    gap: 50px;
+  }
+
+  .vtb-item--center {
+    order: -1;
+  }
+
+  .vtb-item--center .vtb-icon {
+    width: 170px;
+  }
+}
+
+/* Estilo opcional para fondo oscuro del overlay en el editor */
+.editor-styles-wrapper .vtb-overlay {
+  background: #1e1e1e;
+  color: #fff;
+}

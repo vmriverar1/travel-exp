@@ -1,0 +1,46 @@
+<!-- wp:template-part {"slug":"header"} /-->
+
+<!-- wp:group {"tagName":"main","layout":{"type":"constrained"}} -->
+<main class="wp-block-group">
+
+  <!-- Location Header -->
+  <!-- wp:group {"style":{"spacing":{"padding":{"top":"3rem","bottom":"2rem"}}},"backgroundColor":"light","layout":{"type":"constrained"}} -->
+  <div class="wp-block-group has-light-background-color has-background" style="padding-top:3rem;padding-bottom:2rem">
+
+    <!-- wp:post-title {"textAlign":"center","level":1,"style":{"typography":{"fontSize":"3rem","fontWeight":"700"},"spacing":{"margin":{"bottom":"1rem"}}}} /-->
+
+    <!-- wp:post-excerpt {"textAlign":"center","style":{"typography":{"fontSize":"1.125rem"},"spacing":{"margin":{"top":"0.5rem"}}},"textColor":"secondary"} /-->
+
+  </div>
+  <!-- /wp:group -->
+
+  <!-- Packages by Location Block -->
+  <!-- wp:acf/packages-by-location {"name":"acf/packages-by-location","data":{"filter_mode":"auto","_filter_mode":"field_pbl_filter_mode","section_title":"","_section_title":"field_pbl_section_title","columns":"3","_columns":"field_pbl_columns","posts_per_page":"12","_posts_per_page":"field_pbl_posts_per_page","show_pagination":"1","_show_pagination":"field_pbl_show_pagination","show_image":"1","_show_image":"field_pbl_show_image","show_price":"1","_show_price":"field_pbl_show_price","show_duration":"1","_show_duration":"field_pbl_show_duration","show_rating":"1","_show_rating":"field_pbl_show_rating","show_excerpt":"1","_show_excerpt":"field_pbl_show_excerpt","excerpt_length":"20","_excerpt_length":"field_pbl_excerpt_length"},"mode":"preview"} /-->
+
+  <!-- Newsletter Signup Section -->
+  <!-- wp:group {"style":{"spacing":{"padding":{"top":"3rem","bottom":"3rem"}}},"backgroundColor":"primary","textColor":"white","layout":{"type":"constrained"}} -->
+  <div class="wp-block-group has-white-color has-primary-background-color has-text-color has-background" style="padding-top:3rem;padding-bottom:3rem">
+
+    <!-- wp:heading {"textAlign":"center","level":2,"style":{"spacing":{"margin":{"bottom":"1rem"}}},"textColor":"white"} -->
+    <h2 class="wp-block-heading has-text-align-center has-white-color has-text-color" style="margin-bottom:1rem">Ready for Your Next Adventure?</h2>
+    <!-- /wp:heading -->
+
+    <!-- wp:paragraph {"align":"center","style":{"spacing":{"margin":{"bottom":"2rem"}}},"textColor":"white"} -->
+    <p class="has-text-align-center has-white-color has-text-color" style="margin-bottom:2rem">Subscribe to our newsletter and get exclusive travel tips, deals, and destination guides</p>
+    <!-- /wp:paragraph -->
+
+    <!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} -->
+    <div class="wp-block-buttons">
+      <!-- wp:button {"backgroundColor":"white","textColor":"primary","className":"is-style-fill"} -->
+      <div class="wp-block-button is-style-fill"><a class="wp-block-button__link has-primary-color has-white-background-color has-text-color has-background wp-element-button">Subscribe Now</a></div>
+      <!-- /wp:button -->
+    </div>
+    <!-- /wp:buttons -->
+
+  </div>
+  <!-- /wp:group -->
+
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer"} /-->

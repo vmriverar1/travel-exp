@@ -1,0 +1,114 @@
+.travel-swiper--category-cards {
+    width: 100%;
+    margin: 40px auto;
+    position: relative;
+}
+
+/* === DESKTOP (fila de 5) === */
+@media (min-width: 1024px) {
+    .travel-swiper--category-cards .swiper-wrapper {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 20px;
+    }
+
+    .travel-swiper--category-cards .swiper-slide {
+        flex: 1 1 calc(20% - 20px);
+        /* 5 por fila */
+        max-width: calc(20% - 20px);
+    }
+
+    .travel-swiper--category-cards .swiper-controls {
+        display: none;
+        /* sin flechas ni dots */
+    }
+}
+
+/* === MOBILE Swiper === */
+@media (max-width: 1023px) {
+    .travel-swiper--category-cards .swiper {
+        overflow: hidden;
+    }
+
+    .travel-swiper--category-cards .swiper-slide {
+        width: 85%;
+        /* ancho visible del slide */
+    }
+}
+
+/* === CARD STYLES === */
+.travel-card {
+    display: flex;
+    flex-direction: column;
+    border-radius: 14px;
+    overflow: hidden;
+    position: relative;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+}
+
+.travel-card:hover {
+    transform: translateY(-4px);
+}
+
+.travel-card__image img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 14px;
+}
+
+.travel-card__content {
+    position: absolute;
+    justify-content: space-between;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.travel-card__title {
+    position: absolute;
+    left: 15px;
+    font-size: 16px;
+    top: 15px;
+    font-weight: 900;
+    text-align: center;
+    font-size: 14px;
+    background: transparent;
+    border: 1px solid #FFFFFF;
+    color: #FFFFFF;
+    padding: 4px 12px;
+    border-radius: 22px;
+    font-family: var(--wp--preset--font-family--satoshi); 
+}
+
+.travel-card__button {
+    position: absolute;
+    bottom: 20px;
+    right: 15px;
+    font-size: 14px;
+    font-weight: 900;
+    background: #E78C85;
+    color: #fff;
+    border-radius: 22px;
+    font-size: 16px;
+    padding: 5px 20px;
+    transition: background 0.3s ease;
+    font-family: var(--wp--preset--font-family--satoshi); 
+}
+
+.travel-card__button:hover {
+    background: #ff9b95;
+}
+
+.travel-card__content__info {
+    width: 100%;
+    height: 100px;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0) 94.85%);
+}

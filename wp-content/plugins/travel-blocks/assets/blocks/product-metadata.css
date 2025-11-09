@@ -1,0 +1,259 @@
+/**
+ * Product Metadata Block Styles
+ *
+ * Displays TripAdvisor rating badge and metadata line
+ *
+ * @package Travel\Blocks
+ * @since 1.0.0
+ */
+
+/* ===== CONTAINER ===== */
+
+.product-metadata {
+    padding: 1rem 0;
+}
+
+/* ===== PACKAGE TITLE ===== */
+
+.product-metadata__title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--color-gray-900, #212121);
+    margin: 0 0 1.5rem 0;
+}
+
+@media (max-width: 768px) {
+    .product-metadata__title {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .product-metadata__title {
+        font-size: 1.75rem;
+    }
+}
+
+/* ===== TRIPADVISOR RATING BADGE ===== */
+
+.product-metadata__rating-badge {
+    margin-bottom: 0.75rem;
+}
+
+.product-metadata__tripadvisor-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: inherit;
+    transition: opacity 0.2s ease;
+}
+
+.product-metadata__tripadvisor-link:hover {
+    opacity: 0.8;
+}
+
+.product-metadata__tripadvisor-logo {
+    width: auto;
+    height: 24px;
+}
+
+.product-metadata__stars {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.product-metadata__star {
+    display: inline-flex;
+    line-height: 1;
+}
+
+.product-metadata__star svg {
+    display: block;
+}
+
+.product-metadata__reviews-count {
+    font-size: 0.875rem;
+    color: var(--color-gray-600, #757575);
+    font-weight: 500;
+}
+
+/* ===== METADATA LINE ===== */
+
+.product-metadata__meta-line {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem 1.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin-top: 1rem;
+}
+
+.product-metadata__meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.product-metadata__meta-item svg {
+    flex-shrink: 0;
+}
+
+.product-metadata__meta-text {
+    font-size: 0.9375rem;
+    font-weight: 500;
+}
+
+.product-metadata__separator {
+    display: none;
+}
+
+/* ===== DURATION SPECIAL DESIGN ===== */
+
+.product-metadata__meta-item--duration {
+    display: flex !important;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.product-metadata__meta-item--duration svg {
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+}
+
+.product-metadata__duration-number {
+    font-size: 3.75rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--color-gray-900, #212121);
+}
+
+.product-metadata__duration-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 0.875rem;
+    line-height: 1.3;
+    color: var(--color-gray-700, #616161);
+}
+
+.product-metadata__duration-text strong {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--color-gray-900, #212121);
+}
+
+/* ===== COLOR VARIANTS ===== */
+
+/* Default (Gray) */
+.product-metadata__meta-line--default {
+    color: var(--color-gray-700, #616161);
+}
+
+.product-metadata__meta-line--default .product-metadata__meta-item svg {
+    color: var(--color-gray-600, #757575);
+}
+
+/* Primary (Coral) */
+.product-metadata__meta-line--primary {
+    color: var(--color-coral, #E78C85);
+}
+
+.product-metadata__meta-line--primary .product-metadata__meta-item svg {
+    color: var(--color-coral, #E78C85);
+}
+
+.product-metadata__meta-line--primary .product-metadata__separator {
+    color: var(--color-coral-light, #FFF0EF);
+}
+
+/* Secondary (Purple) */
+.product-metadata__meta-line--secondary {
+    color: var(--color-purple, #311A42);
+}
+
+.product-metadata__meta-line--secondary .product-metadata__meta-item svg {
+    color: var(--color-purple-light, #4A2B5E);
+}
+
+.product-metadata__meta-line--secondary .product-metadata__separator {
+    color: var(--color-purple-light, #4A2B5E);
+}
+
+/* ===== RESPONSIVE ===== */
+
+/* Spacing adjustments for mobile */
+@media (max-width: 640px) {
+    .product-metadata__meta-line {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+        margin-top: 0.75rem;
+    }
+
+    .product-metadata__meta-text {
+        font-size: 0.875rem;
+    }
+
+    /* Duration responsive */
+    .product-metadata__meta-item--duration {
+        gap: 0.5rem;
+    }
+
+    .product-metadata__meta-item--duration svg {
+        width: 48px;
+        height: 48px;
+    }
+
+    .product-metadata__duration-number {
+        font-size: 3rem;
+    }
+
+    .product-metadata__duration-text strong {
+        font-size: 0.875rem;
+    }
+
+    .product-metadata__duration-text {
+        font-size: 0.75rem;
+    }
+}
+
+/* Tablet: mantener 2 columnas */
+@media (min-width: 641px) and (max-width: 1023px) {
+    .product-metadata__meta-line {
+        gap: 0.875rem 1.25rem;
+    }
+}
+
+/* ===== PRINT STYLES ===== */
+
+@media print {
+    .product-metadata__tripadvisor-link {
+        pointer-events: none;
+    }
+
+    .product-metadata__stars {
+        color: #00AF87;
+    }
+}
+
+/* ===== ACCESSIBILITY ===== */
+
+.product-metadata__tripadvisor-link:focus-visible {
+    outline: 2px solid var(--color-coral, #E78C85);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .product-metadata__meta-line {
+        font-weight: 600;
+    }
+
+    .product-metadata__meta-text {
+        font-weight: 700;
+    }
+}

@@ -1,0 +1,22 @@
+/**
+ * Hide native Description and Slug fields for FAQ taxonomy
+ * Only target native WP fields, NOT ACF fields
+ */
+
+/* Hide native description field but NOT ACF fields */
+body.taxonomy-faq .form-field.term-description-wrap:not(.acf-field) {
+    display: none !important;
+}
+
+/* Additional specific targeting for native field */
+body.taxonomy-faq .form-field:has(> label[for="description"]):not(.acf-field),
+body.taxonomy-faq .form-field:has(> label[for="tag-description"]):not(.acf-field) {
+    display: none !important;
+}
+
+/* Hide Slug field */
+body.taxonomy-faq .form-field.term-slug-wrap:not(.acf-field),
+body.taxonomy-faq .form-field:has(> label[for="slug"]):not(.acf-field),
+body.taxonomy-faq .form-field:has(> label[for="tag-slug"]):not(.acf-field) {
+    display: none !important;
+}

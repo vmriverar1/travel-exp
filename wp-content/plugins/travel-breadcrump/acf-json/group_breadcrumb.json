@@ -1,0 +1,67 @@
+{
+  "key": "group_breadcrumb",
+  "title": "Breadcrumb Block",
+  "fields": [
+    {
+      "key": "field_breadcrumb_items",
+      "label": "Breadcrumb Items",
+      "name": "breadcrumb_items",
+      "type": "repeater",
+      "layout": "table",
+      "button_label": "Add Item",
+      "sub_fields": [
+        {
+          "key": "field_item_text",
+          "label": "Text",
+          "name": "text",
+          "type": "text"
+        },
+        {
+          "key": "field_item_link",
+          "label": "Link (optional)",
+          "name": "link",
+          "type": "url"
+        }
+      ]
+    },
+    {
+      "key": "field_arrow_color",
+      "label": "Arrow Color",
+      "name": "arrow_color",
+      "type": "color_picker",
+      "default_value": "#E78C85"
+    },
+    {
+      "key": "field_font_size_desktop",
+      "label": "Font Size (Desktop px)",
+      "name": "font_size_desktop",
+      "type": "number",
+      "default_value": 16
+    },
+    {
+      "key": "field_font_size_mobile",
+      "label": "Font Size (Mobile px)",
+      "name": "font_size_mobile",
+      "type": "number",
+      "default_value": 14
+    },
+    {
+      "key": "field_strikethrough",
+      "label": "Strikethrough text?",
+      "name": "strikethrough",
+      "type": "true_false",
+      "ui": 1
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "block",
+        "operator": "==",
+        "value": "acf/breadcrumb"
+      }
+    ]
+  ],
+  "active": true,
+  "description": "Breadcrumb block fields"
+}

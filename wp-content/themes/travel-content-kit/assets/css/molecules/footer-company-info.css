@@ -1,0 +1,44 @@
+/**
+ * Molecule: Footer Company Info
+ * Styling for company registration and address
+ * Centered below reviews section
+ *
+ * @package Travel_Child_Theme
+ * @since 1.0.0
+ */
+
+.footer-company-info {
+    text-align: center;
+    color: var(--color-footer-text-muted);
+    font-size: 0.875rem; /* 14px */
+    line-height: 1.6;
+    padding: var(--spacing-md) 0;
+    margin-top: var(--spacing-lg);
+}
+
+.footer-company-info__ruc,
+.footer-company-info__address {
+    margin: 0 0 var(--spacing-xs) 0;
+}
+
+.footer-company-info__address {
+    margin-bottom: 0;
+}
+
+.footer-company-info__label {
+    font-weight: 600;
+    color: var(--color-footer-text);
+    margin-right: var(--spacing-2xs);
+}
+
+.footer-company-info__value {
+    color: var(--color-footer-text-muted);
+}
+
+/* Mobile adjustments */
+@media (max-width: 767px) {
+    .footer-company-info {
+        font-size: 0.75rem; /* 12px */
+        padding: var(--spacing-sm) 0;
+    }
+}

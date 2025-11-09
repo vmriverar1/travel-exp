@@ -1,0 +1,48 @@
+{
+  "key": "group_fecp_form_core",
+  "title": "Formulario Core (FECP)",
+  "fields": [
+    {
+      "key": "field_form_type",
+      "label": "Form type",
+      "name": "form_type",
+      "type": "select",
+      "choices": {
+        "contacto": "Contacto",
+        "cotizacion": "Cotizacion"
+      },
+      "ui": 1
+    },
+    {
+      "key": "field_endpoint",
+      "label": "Endpoint API",
+      "name": "endpoint",
+      "type": "text",
+      "instructions": "Solo el ID o código del formulario remoto del CRM.",
+      "placeholder": "Ej: MzY0sjQwNDM2AgA/",
+      "required": 1
+    },
+    {
+      "key": "field_base_uri",
+      "label": "Base URI (CRM API)",
+      "name": "base_uri",
+      "type": "text",
+      "instructions": "URL raíz fija del CRM donde se enviarán los leads. Solo visible para administradores.",
+      "default_value": "https://app-3SL2TCGX3O.marketingautomation.services/webforms/receivePostback/",
+      "wrapper": {
+        "class": "acf-hidden-admin-only"
+      },
+      "conditional_logic": 0
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "block",
+        "operator": "==",
+        "value": "acf/fecp-form"
+      }
+    ]
+  ],
+  "active": true
+}

@@ -1,0 +1,101 @@
+.wp-group__information {
+    border-radius: 36px;
+    background: #fff;
+    box-shadow: 3px 3px 4px 3px rgba(0, 0, 0, 0.15);
+    padding: 20px;
+}
+
+.wp-group__information p {
+    margin: 0;
+}
+
+.wp-file__icon {
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 3px 3px 4px 3px rgba(0, 0, 0, 0.15);
+    padding: 11px 20px;
+}
+
+.wp-group__hero__title {
+    font-family: "Satoshi Variable", sans-serif;
+    font-weight: 900;
+    /* Black */
+    font-size: 75px;
+    line-height: 46.71px;
+    letter-spacing: 0.39%;
+    color: #ffffff;
+    text-align: center;
+    text-shadow: 0px 0px 6px rgba(0, 0, 0, 0.75);
+    /* Drop shadow */
+}
+
+.wp-group__paragraph__general {
+    font-size: 22px;
+    font-weight: 700;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.wp-group__paragraph {
+    font-size: 22px;
+    font-weight: 700;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.wp-group__title__700 {
+    font-weight: 700;
+}
+
+.wp-group__guiding {
+    font-weight: 700;
+    font-size: 36px;
+}
+
+.wp-block-button__link {
+    font-weight: 900;
+    font-size: 18px;
+}
+
+.wp-group__title__information {
+    margin-bottom: 18px;
+    font-size: 30px;
+}
+
+.wp-group__information {
+    height: 350px;
+}
+
+@media(max-width: 768px) {
+    .wp-group__information {
+        height: auto;
+    }
+}
+
+.wp-group__information a {
+    text-decoration: none;
+    color: #17565C;
+}
+
+.wp-group__information a:hover {
+    opacity: 0.8;
+}
+
+.wp-column__information a {
+    text-decoration: none;
+    color: #17565C;
+}
+
+.wp-column__information a:hover {
+    opacity: 0.8;
+}
+
+@media(max-width: 768px) {
+    .wp-column__content__mobile {
+        border-radius: 0 !important;
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+        padding-bottom: 30px !important;
+        padding-top: 30px !important;
+    }
+}

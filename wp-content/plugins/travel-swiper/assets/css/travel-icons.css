@@ -1,0 +1,54 @@
+/* === Tarjeta base === */
+.icon-card {
+  text-align: center;
+  padding: 20px;
+  transition: transform 0.2s ease;
+}
+
+.icon-card:hover {
+  transform: translateY(-4px);
+}
+
+.icon-img img {
+  width: 80px;
+  height: auto;
+  margin: 0 auto 12px;
+  display: block;
+}
+
+.icon-title {
+  font-weight: 700;
+  font-size: 16px;
+  color: #000;
+  margin-bottom: 8px;
+}
+
+.icon-desc {
+  font-size: 14px;
+  color: #333;
+  line-height: 1.5;
+  max-width: 260px;
+  margin: 0 auto;
+}
+
+
+
+/* === Paginación global (ya incluida en travel-swiper-style.css) === */
+/* .swiper-pagination__mobile ... etc */
+
+/* === Responsive GRID (desktop y tablet) === */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .travel-icons-block .swiper-wrapper {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .travel-icons-block .swiper-wrapper {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+  }
+}

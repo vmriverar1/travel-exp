@@ -1,0 +1,19 @@
+/**
+ * Atom: Payment Icon
+ */
+
+.payment-icon {
+    display: inline-block;
+}
+
+.payment-icon__img {
+    display: block;
+    width: 40px;
+    height: auto;
+    opacity: 0.8;
+    transition: opacity var(--transition-fast);
+}
+
+.payment-icon__img:hover {
+    opacity: 1;
+}

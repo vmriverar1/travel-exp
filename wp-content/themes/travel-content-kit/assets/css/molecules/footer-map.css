@@ -1,0 +1,27 @@
+/**
+ * Molecule: Footer Map
+ */
+
+.footer-map {
+    width: 100%;
+    max-width: 600px;
+    margin: var(--spacing-lg) auto;
+    opacity: 0.6;
+}
+
+.footer-map__svg,
+.footer-map__image {
+    width: 100%;
+    height: auto;
+    color: var(--color-footer-text-muted);
+}
+
+.footer-map__image {
+    display: block;
+}
+
+@media (max-width: 767px) {
+    .footer-map {
+        display: none;
+    }
+}

@@ -1,0 +1,58 @@
+/* === Travel Cards Block === */
+.travel-swiper--cards .swiper-slide {
+    display: flex;
+    justify-content: center;
+}
+
+.card-thumb {
+    position: relative;
+    display: block;
+}
+
+.card-thumb img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 1rem;
+    object-fit: cover;
+    object-position: center;
+    aspect-ratio: 16 / 7;
+}
+
+.card-link {
+    position: absolute;
+    inset: 0;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    font-family: var(--wp--preset--font-family--satoshi);
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: var(--wp--preset--color--base) !important;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+/* === Grid en desktop === */
+@media (min-width: 768px) {
+    .travel-swiper--cards .swiper-wrapper {
+        display: grid;
+        gap: 2rem;
+    }
+
+    .travel-swiper--cards.swiper-rows-1 .swiper-wrapper {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .travel-swiper--cards.swiper-rows-2 .swiper-wrapper {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(2, auto);
+    }
+
+    .travel-swiper--cards .swiper-controls {
+        display: none;
+    }
+}

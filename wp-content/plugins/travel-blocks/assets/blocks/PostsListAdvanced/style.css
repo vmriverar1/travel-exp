@@ -1,0 +1,248 @@
+/* =========================================================
+   POSTS LIST ADVANCED - 60/20/20 Desktop + Glider Mobile
+========================================================= */
+
+/* ---- GRID PRINCIPAL ---- */
+.pla-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.pla-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  contain: layout;
+}
+
+/* ---- BASE DE CADA CARD ---- */
+.pla-card {
+  position: relative;
+  border-radius: 16px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 420px;
+  overflow: hidden;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  transition: all 0.5s ease;
+  flex: 1 1 20%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* ---- EL CARD DESTACADO ---- */
+.pla-card.is-featured {
+  flex: 1 1 60%;
+}
+
+/* ---- OVERLAY ---- */
+.pla-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.15));
+  z-index: 0;
+  transition: background 0.3s ease;
+}
+
+/* ---- INTERACCIÓN DESKTOP ---- */
+@media (hover: hover) and (pointer: fine) {
+  .pla-row:hover .pla-card {
+    flex: 1 1 20%;
+    filter: brightness(0.6);
+  }
+
+  .pla-row:hover .pla-card:hover {
+    flex: 1 1 60%;
+    filter: brightness(1);
+    transform: translateY(-4px);
+    z-index: 3;
+    box-shadow: 8px 8px 24px rgba(0,0,0,0.25);
+  }
+
+  .pla-card:hover::before {
+    background: linear-gradient(to top, rgba(0,0,0,0.5), rgba(0,0,0,0.1));
+  }
+}
+
+/* ---- CONTENIDO ---- */
+.pla-category {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: #ffb400;
+  color: #111;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 8px;
+  z-index: 2;
+}
+
+.pla-content {
+  position: relative;
+  z-index: 2;
+  padding: 24px 20px;
+}
+
+.pla-title {
+  font-size: 20px;
+  margin: 0 0 8px;
+  line-height: 1.3;
+  font-weight: 700;
+}
+.pla-title a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.pla-excerpt {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #eee;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.pla-readmore {
+  margin-top: auto;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffb400;
+  text-decoration: none;
+  align-self: flex-end;
+}
+.pla-readmore:hover {
+  color: #ffe082;
+}
+
+/* =========================================================
+   RESPONSIVE TABLET
+========================================================= */
+@media (max-width: 1024px) {
+  .pla-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .pla-card,
+  .pla-card.is-featured {
+    flex: none;
+    min-height: 380px;
+  }
+}
+
+
+/* ==========================================================
+   Skeleton loader + Fade-in Swiper
+========================================================== */
+@media (max-width: 1023px) {
+  /* Loader contenedor */
+  .pla-loader {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 320px;
+  }
+
+  /* Efecto shimmer */
+  .pla-skeleton {
+    width: 90%;
+    height: 180px;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #f3f3f3 25%, #e6e6e6 37%, #f3f3f3 63%);
+    background-size: 400% 100%;
+    animation: shimmer 1.6s infinite linear;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -400px 0; }
+    100% { background-position: 400px 0; }
+  }
+
+  /* Fade-in suave al cargar */
+  .pla-row {
+    opacity: 0;
+    transition: opacity 0.6s ease-out;
+  }
+
+  .pla-row.is-loaded {
+    opacity: 1;
+  }
+
+  /* Swiper visual */
+  .pla-swiper-mobile {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .swiper-slide {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Dots y flechas */
+  .swiper-pagination {
+    position: static;
+    margin-top: 14px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .swiper-pagination-bullet {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ccc;
+    opacity: 1;
+  }
+
+  .swiper-pagination-bullet-active {
+    background: #111;
+  }
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    position: static;
+    width: 36px;
+    height: 36px;
+    background: #E78C85;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .swiper-button-prev:hover,
+  .swiper-button-next:hover {
+    background: #d7706b;
+  }
+
+  .swiper-button-prev::after,
+  .swiper-button-next::after {
+    font-size: 13px;
+  }
+
+  .pla-row .swiper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}

@@ -1,0 +1,5 @@
+.pla-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width: 767px){.pla-grid{grid-template-columns:repeat(1,minmax(0,1fr))}}
+.pla-card{border:1px solid #e6e6e6;border-radius:12px;padding:16px}
+.pla-title{margin:0 0 8px 0;font-size:18px}
+.pla-excerpt p{color:#555;font-size:14px}

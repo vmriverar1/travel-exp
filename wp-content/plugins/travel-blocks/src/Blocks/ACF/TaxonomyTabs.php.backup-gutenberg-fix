@@ -1,0 +1,774 @@
+<?php
+
+namespace Travel\Blocks\Blocks\ACF;
+
+use Travel\Blocks\Helpers\ContentQueryHelper;
+
+class TaxonomyTabs
+{
+    private string $name = 'travel-taxonomy-tabs';
+
+    public function __construct()
+    {
+        // Los métodos se llaman directamente desde Plugin.php
+        // Add ACF filters to update taxonomy field dynamically
+        add_filter('acf/load_field/name=tt_selected_terms', [$this, 'update_taxonomy_field']);
+        add_filter('acf/load_field/name=tt_tab_overrides', [$this, 'update_overrides_taxonomy']);
+    }
+
+    public function register()
+    {
+        // Enqueue assets for both frontend and editor
+        add_action('enqueue_block_assets', [$this, 'enqueue_assets']);
+        add_action('enqueue_block_editor_assets', [$this, 'enqueue_assets']);
+
+        $this->register_block();
+        $this->register_fields();
+    }
+
+    /**
+     * Registro del bloque Gutenberg
+     */
+    public function register_block(): void
+    {
+        acf_register_block_type([
+            'name'            => $this->name,
+            'title'           => __('Taxonomy Tabs', 'travel-blocks'),
+            'description'     => __('Organiza cards por taxonomías en tabs. Soporta Packages, Blog Posts y Deals.', 'travel-blocks'),
+            'category'        => 'travel',
+            'icon'            => 'tagcloud',
+            'keywords'        => ['tabs', 'taxonomy', 'categories', 'packages', 'cards'],
+            'render_callback' => [$this, 'render'],
+            'enqueue_assets'  => [$this, 'enqueue_assets'],
+            'mode'            => 'preview',
+            'api_version'     => 2,
+            'supports'        => [
+                'align' => ['wide', 'full'],
+                'mode' => true,
+                'jsx' => true,
+                'spacing' => [
+                    'margin' => true,
+                    'padding' => true,
+                ],
+                'color' => [
+                    'background' => true,
+                    'text' => true,
+                ],
+                'anchor' => true,
+                'customClassName' => true,
+            ],
+        ]);
+    }
+
+    /**
+     * Registro de ACF Fields
+     */
+    public function register_fields(): void
+    {
+        if (!function_exists('acf_add_local_field_group')) {
+            return;
+        }
+
+        // Get dynamic content fields from ContentQueryHelper (without source selector, we'll add it manually)
+        $dynamic_fields = ContentQueryHelper::get_dynamic_content_fields('tt');
+        $filter_fields = ContentQueryHelper::get_filter_fields('tt');
+
+        // Build complete fields array
+        $fields = array_merge(
+            [
+                // ===== TAB: GENERAL =====
+                [
+                    'key' => 'field_tt_tab_general',
+                    'label' => '⚙️ General',
+                    'type' => 'tab',
+                    'placement' => 'top',
+                ],
+                [
+                    'key' => 'field_tt_dynamic_source',
+                    'label' => '📦 Fuente de Contenido',
+                    'name' => 'tt_dynamic_source',
+                    'type' => 'select',
+                    'instructions' => 'Selecciona el tipo de contenido para organizar en tabs',
+                    'required' => 1,
+                    'choices' => [
+                        'package' => 'Packages',
+                        'post' => 'Blog Posts',
+                        'deal' => 'Deals',
+                    ],
+                    'default_value' => 'package',
+                    'ui' => 1,
+                    'return_format' => 'value',
+                ],
+            ],
+            [
+                // ===== TAB: TAXONOMÍAS =====
+                [
+                    'key' => 'field_tt_tab_taxonomies',
+                    'label' => '🏷️ Taxonomías',
+                    'type' => 'tab',
+                    'placement' => 'top',
+                ],
+                [
+                    'key' => 'field_tt_taxonomy_type',
+                    'label' => 'Taxonomía a Usar',
+                    'name' => 'tt_taxonomy_type',
+                    'type' => 'select',
+                    'instructions' => 'Selecciona qué taxonomía usar para organizar los tabs',
+                    'required' => 1,
+                    'conditional_logic' => [
+                        [
+                            [
+                                'field' => 'field_tt_dynamic_source',
+                                'operator' => '==',
+                                'value' => 'package',
+                            ],
+                        ],
+                    ],
+                    'choices' => [
+                        'package_type' => 'Package Type',
+                        'locations' => 'Locations',
+                        'interest' => 'Interests',
+                    ],
+                    'default_value' => 'package_type',
+                    'ui' => 1,
+                ],
+                [
+                    'key' => 'field_tt_taxonomy_type_post',
+                    'label' => 'Taxonomía a Usar',
+                    'name' => 'tt_taxonomy_type_post',
+                    'type' => 'select',
+                    'instructions' => 'Selecciona qué taxonomía usar para organizar los tabs',
+                    'required' => 1,
+                    'conditional_logic' => [
+                        [
+                            [
+                                'field' => 'field_tt_dynamic_source',
+                                'operator' => '==',
+                                'value' => 'post',
+                            ],
+                        ],
+                    ],
+                    'choices' => [
+                        'category' => 'Category',
+                        'post_tag' => 'Tags',
+                    ],
+                    'default_value' => 'category',
+                    'ui' => 1,
+                ],
+                [
+                    'key' => 'field_tt_selected_terms',
+                    'label' => 'Términos Seleccionados',
+                    'name' => 'tt_selected_terms',
+                    'type' => 'taxonomy',
+                    'instructions' => 'Selecciona los términos que aparecerán como tabs (en el orden seleccionado)',
+                    'taxonomy' => 'package_type', // Will be updated dynamically
+                    'field_type' => 'multi_select',
+                    'allow_null' => 0,
+                    'add_term' => 0,
+                    'save_terms' => 0,
+                    'load_terms' => 0,
+                    'return_format' => 'id',
+                    'multiple' => 1,
+                ],
+                [
+                    'key' => 'field_tt_tab_overrides',
+                    'label' => 'Personalizar Tabs',
+                    'name' => 'tt_tab_overrides',
+                    'type' => 'repeater',
+                    'instructions' => 'Opcional: Personaliza el nombre y/o ícono de los tabs. Deja vacío para usar los valores por defecto.',
+                    'layout' => 'row',
+                    'button_label' => 'Agregar Personalización',
+                    'sub_fields' => [
+                        [
+                            'key' => 'field_tt_override_term_id',
+                            'label' => 'Término',
+                            'name' => 'term_id',
+                            'type' => 'taxonomy',
+                            'taxonomy' => 'package_type',
+                            'field_type' => 'select',
+                            'return_format' => 'id',
+                            'allow_null' => 0,
+                        ],
+                        [
+                            'key' => 'field_tt_override_custom_name',
+                            'label' => 'Nombre Personalizado',
+                            'name' => 'custom_name',
+                            'type' => 'text',
+                            'placeholder' => 'Ej: Aventuras',
+                        ],
+                        [
+                            'key' => 'field_tt_override_icon',
+                            'label' => 'Ícono',
+                            'name' => 'icon',
+                            'type' => 'image',
+                            'instructions' => 'Sube un ícono (SVG, PNG, etc.) para mostrar junto al nombre del tab',
+                            'return_format' => 'array',
+                            'preview_size' => 'thumbnail',
+                            'library' => 'all',
+                            'mime_types' => 'svg,png,jpg,jpeg,gif',
+                        ],
+                    ],
+                ],
+                [
+                    'key' => 'field_tt_preview_mode',
+                    'label' => 'Modo Vista Previa',
+                    'name' => 'tt_preview_mode',
+                    'type' => 'true_false',
+                    'instructions' => 'Activar para mostrar datos de ejemplo en el editor',
+                    'default_value' => 0,
+                    'ui' => 1,
+                ],
+            ],
+            // Dynamic content fields (filters and visible fields)
+            $filter_fields,
+            [
+                // ===== TAB: APARIENCIA =====
+                [
+                    'key' => 'field_tt_tab_appearance',
+                    'label' => '🎨 Apariencia',
+                    'type' => 'tab',
+                    'placement' => 'top',
+                ],
+                [
+                    'key' => 'field_tt_tabs_style',
+                    'label' => 'Estilo de Tabs',
+                    'name' => 'tt_tabs_style',
+                    'type' => 'select',
+                    'choices' => [
+                        'pills' => 'Pills',
+                        'underline' => 'Underline',
+                        'buttons' => 'Buttons',
+                    ],
+                    'default_value' => 'pills',
+                    'ui' => 1,
+                ],
+                [
+                    'key' => 'field_tt_tabs_alignment',
+                    'label' => 'Alineación de Tabs',
+                    'name' => 'tt_tabs_alignment',
+                    'type' => 'select',
+                    'choices' => [
+                        'left' => 'Izquierda',
+                        'center' => 'Centro',
+                        'right' => 'Derecha',
+                    ],
+                    'default_value' => 'center',
+                    'ui' => 1,
+                ],
+                [
+                    'key' => 'field_tt_cards_per_row',
+                    'label' => 'Cards por Fila (Desktop)',
+                    'name' => 'tt_cards_per_row',
+                    'type' => 'range',
+                    'default_value' => 3,
+                    'min' => 2,
+                    'max' => 4,
+                    'step' => 1,
+                    'append' => 'cards',
+                ],
+                [
+                    'key' => 'field_tt_card_gap',
+                    'label' => 'Espacio entre Cards',
+                    'name' => 'tt_card_gap',
+                    'type' => 'range',
+                    'default_value' => 24,
+                    'min' => 0,
+                    'max' => 64,
+                    'step' => 4,
+                    'append' => 'px',
+                ],
+                [
+                    'key' => 'field_tt_button_color_variant',
+                    'label' => 'Color de Botones',
+                    'name' => 'tt_button_color_variant',
+                    'type' => 'select',
+                    'choices' => [
+                        'primary' => 'Primary',
+                        'secondary' => 'Secondary',
+                        'accent' => 'Accent',
+                    ],
+                    'default_value' => 'primary',
+                    'ui' => 1,
+                ],
+                [
+                    'key' => 'field_tt_badge_color_variant',
+                    'label' => 'Color de Badges',
+                    'name' => 'tt_badge_color_variant',
+                    'type' => 'select',
+                    'choices' => [
+                        'primary' => 'Primary',
+                        'secondary' => 'Secondary',
+                        'accent' => 'Accent',
+                    ],
+                    'default_value' => 'secondary',
+                    'ui' => 1,
+                ],
+            ]
+        );
+
+        acf_add_local_field_group([
+            'key' => 'group_taxonomy_tabs',
+            'title' => __('Taxonomy Tabs - Settings', 'travel-blocks'),
+            'fields' => $fields,
+            'location' => [
+                [
+                    [
+                        'param' => 'block',
+                        'operator' => '==',
+                        'value' => 'acf/' . $this->name,
+                    ],
+                ],
+            ],
+            'menu_order' => 0,
+            'position' => 'normal',
+            'style' => 'default',
+            'label_placement' => 'top',
+            'instruction_placement' => 'label',
+        ]);
+    }
+
+    /**
+     * Enqueue assets
+     */
+    public function enqueue_assets(): void
+    {
+        // CSS
+        wp_enqueue_style(
+            "{$this->name}-style",
+            TRAVEL_BLOCKS_URL . 'assets/blocks/taxonomy-tabs.css',
+            [],
+            TRAVEL_BLOCKS_VERSION
+        );
+
+        // JavaScript
+        wp_enqueue_script(
+            "{$this->name}-script",
+            TRAVEL_BLOCKS_URL . 'assets/blocks/taxonomy-tabs.js',
+            [],
+            TRAVEL_BLOCKS_VERSION,
+            true
+        );
+    }
+
+    /**
+     * Render callback
+     */
+    public function render($block, $content = '', $is_preview = false, $post_id = 0): void
+    {
+        // Get block attributes
+        $block_wrapper_attributes = get_block_wrapper_attributes([
+            'class' => 'taxonomy-tabs-wrapper'
+        ]);
+
+        // IMPORTANTE: En Gutenberg, ACF pasa los datos del bloque en $block['data']
+        // Intentamos obtener de ahí primero, si no existe, usamos get_field()
+        $block_data = $block['data'] ?? [];
+
+        // ACF fields - try block data first, then get_field as fallback
+        $dynamic_source = $block_data['tt_dynamic_source'] ?? get_field('tt_dynamic_source') ?: 'package';
+        $taxonomy_type = $dynamic_source === 'post'
+            ? ($block_data['tt_taxonomy_type_post'] ?? get_field('tt_taxonomy_type_post') ?: 'category')
+            : ($block_data['tt_taxonomy_type'] ?? get_field('tt_taxonomy_type') ?: 'package_type');
+        $selected_terms = $block_data['tt_selected_terms'] ?? get_field('tt_selected_terms') ?: [];
+        $tab_overrides = $block_data['tt_tab_overrides'] ?? get_field('tt_tab_overrides') ?: [];
+        $preview_mode = $block_data['tt_preview_mode'] ?? get_field('tt_preview_mode') ?: false;
+
+        // Debug - remove after testing
+        // Temporarily disabled to prevent 502 errors from too big headers
+        /*
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('=== TaxonomyTabs Render Debug ===');
+            error_log('  - is_preview: ' . ($is_preview ? 'YES' : 'NO'));
+            error_log('  - block[id]: ' . ($block['id'] ?? 'NOT SET'));
+            error_log('  - dynamic_source: ' . $dynamic_source);
+            error_log('  - taxonomy_type: ' . $taxonomy_type);
+            error_log('  - selected_terms: ' . print_r($selected_terms, true));
+            error_log('  - preview_mode: ' . ($preview_mode ? 'YES' : 'NO'));
+            error_log('  - block_data keys: ' . implode(', ', array_keys($block_data)));
+        }
+        */
+
+        // Appearance - use block data first
+        $tabs_style = $block_data['tt_tabs_style'] ?? get_field('tt_tabs_style') ?: 'pills';
+        $tabs_alignment = $block_data['tt_tabs_alignment'] ?? get_field('tt_tabs_alignment') ?: 'center';
+        $cards_per_row = $block_data['tt_cards_per_row'] ?? get_field('tt_cards_per_row') ?: 3;
+        $card_gap = $block_data['tt_card_gap'] ?? get_field('tt_card_gap') ?: 24;
+        $button_color_variant = $block_data['tt_button_color_variant'] ?? get_field('tt_button_color_variant') ?: 'primary';
+        $badge_color_variant = $block_data['tt_badge_color_variant'] ?? get_field('tt_badge_color_variant') ?: 'secondary';
+
+        // Block ID
+        $block_id = 'tt-' . ($block['id'] ?? uniqid());
+        $align = $block['align'] ?? 'wide';
+
+        // Build tabs data
+        $tabs = [];
+
+        // Debug logging
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('=== TaxonomyTabs Render Debug ===');
+            error_log('Dynamic Source: ' . $dynamic_source);
+            error_log('Taxonomy Type: ' . $taxonomy_type);
+            error_log('Selected Terms: ' . print_r($selected_terms, true));
+            error_log('Preview Mode: ' . ($preview_mode ? 'YES' : 'NO'));
+        }
+
+        if ($preview_mode) {
+            // Preview mode: Generate sample data (only when preview_mode field is enabled)
+            $tabs = $this->get_preview_tabs($dynamic_source, $taxonomy_type);
+        } else {
+            // Real mode: Get data from selected terms
+            if (empty($selected_terms)) {
+                if (defined('WP_DEBUG') && WP_DEBUG) {
+                    error_log('⚠️ NO SELECTED TERMS - Array is empty');
+                }
+            }
+
+            foreach ($selected_terms as $term_id) {
+                $term = get_term($term_id, $taxonomy_type);
+
+                if (!$term || is_wp_error($term)) {
+                    continue;
+                }
+
+                // Check for custom name and icon override
+                $tab_name = $term->name;
+                $tab_icon = null;
+                if (!empty($tab_overrides)) {
+                    foreach ($tab_overrides as $override) {
+                        if (isset($override['term_id']) && $override['term_id'] == $term_id) {
+                            // Apply custom name if provided
+                            if (!empty($override['custom_name'])) {
+                                $tab_name = $override['custom_name'];
+                            }
+                            // Apply icon if provided
+                            if (!empty($override['icon'])) {
+                                $tab_icon = $override['icon'];
+                            }
+                            break;
+                        }
+                    }
+                }
+
+                // Get cards for this term
+                $cards = $this->get_cards_for_term($term_id, $taxonomy_type, $dynamic_source);
+
+                // Always add the tab, even if there are no cards
+                $tabs[] = [
+                    'id' => $term_id,
+                    'name' => $tab_name,
+                    'slug' => $term->slug,
+                    'icon' => $tab_icon,
+                    'cards' => $cards, // Can be empty array
+                ];
+            }
+        }
+
+        // Get Display Fields (control what to show in each card)
+        $display_fields_packages = get_field('tt_mat_dynamic_visible_fields') ?: [];
+        $display_fields_posts = get_field('tt_mat_dynamic_visible_fields') ?: [];
+
+        // Pass data to template
+        $data = [
+            'block_wrapper_attributes' => $block_wrapper_attributes,
+            'block_id' => $block_id,
+            'align' => $align,
+            'tabs' => $tabs,
+            'tabs_style' => $tabs_style,
+            'tabs_alignment' => $tabs_alignment,
+            'cards_per_row' => $cards_per_row,
+            'card_gap' => $card_gap,
+            'button_color_variant' => $button_color_variant,
+            'badge_color_variant' => $badge_color_variant,
+            'display_fields_packages' => $display_fields_packages,
+            'display_fields_posts' => $display_fields_posts,
+            'is_preview' => $is_preview || $preview_mode,
+        ];
+
+        // Load template
+        $template = TRAVEL_BLOCKS_PATH . 'templates/taxonomy-tabs.php';
+        if (file_exists($template)) {
+            include $template;
+        }
+    }
+
+    /**
+     * Get cards for a specific term
+     */
+    private function get_cards_for_term($term_id, $taxonomy, $source)
+    {
+        // Use ContentQueryHelper with taxonomy filter
+        // We'll add the taxonomy filter to the get_content method temporarily
+
+        $args = [
+            'post_type' => $source === 'deal' ? 'deal' : ($source === 'post' ? 'post' : 'package'),
+            'posts_per_page' => get_field('tt_posts_per_page') ?: 6,
+            'post_status' => 'publish',
+            'tax_query' => [
+                [
+                    'taxonomy' => $taxonomy,
+                    'field' => 'term_id',
+                    'terms' => $term_id,
+                ],
+            ],
+        ];
+
+        // Add filters from ContentQueryHelper
+        $meta_query = [];
+
+        // Apply filters similar to ContentQueryHelper
+        $filter_active_promo = get_field('tt_filter_active_promo');
+        if ($filter_active_promo && $source === 'package') {
+            $meta_query[] = [
+                'key' => 'active_promotion',
+                'value' => '1',
+                'compare' => '=',
+            ];
+        }
+
+        if (!empty($meta_query)) {
+            $args['meta_query'] = $meta_query;
+        }
+
+        $query = new \WP_Query($args);
+        $cards = [];
+
+        // Debug logging
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('=== TaxonomyTabs get_cards_for_term ===');
+            error_log('Term ID: ' . $term_id);
+            error_log('Taxonomy: ' . $taxonomy);
+            error_log('Source: ' . $source);
+            error_log('Query args: ' . print_r($args, true));
+            error_log('Found posts: ' . $query->found_posts);
+        }
+
+        if ($query->have_posts()) {
+            while ($query->have_posts()) {
+                $query->the_post();
+                $post = get_post();
+
+                // Use ContentQueryHelper to prepare card data
+                if ($source === 'package') {
+                    $cards[] = ContentQueryHelper::prepare_package_card_data($post, 'tt');
+                } elseif ($source === 'post') {
+                    $cards[] = ContentQueryHelper::prepare_post_card_data($post, 'tt');
+                }
+            }
+            wp_reset_postdata();
+        } else {
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('⚠️ NO POSTS FOUND for term_id=' . $term_id . ', taxonomy=' . $taxonomy);
+            }
+        }
+
+        return $cards;
+    }
+
+    /**
+     * Get preview/sample tabs for editor
+     */
+    private function get_preview_tabs($source, $taxonomy)
+    {
+        $preview_tabs = [];
+
+        if ($source === 'package') {
+            $sample_terms = [
+                ['id' => 1, 'name' => 'Trekking', 'slug' => 'trekking'],
+                ['id' => 2, 'name' => 'Cultural Tours', 'slug' => 'cultural'],
+                ['id' => 3, 'name' => 'Adventure', 'slug' => 'adventure'],
+            ];
+        } else {
+            $sample_terms = [
+                ['id' => 1, 'name' => 'Travel Tips', 'slug' => 'tips'],
+                ['id' => 2, 'name' => 'Destinations', 'slug' => 'destinations'],
+                ['id' => 3, 'name' => 'Culture', 'slug' => 'culture'],
+            ];
+        }
+
+        foreach ($sample_terms as $term) {
+            $preview_tabs[] = [
+                'id' => $term['id'],
+                'name' => $term['name'],
+                'slug' => $term['slug'],
+                'icon' => null, // Icons are optional, null by default
+                'cards' => $this->get_sample_cards($source, 3),
+            ];
+        }
+
+        return $preview_tabs;
+    }
+
+    /**
+     * Update taxonomy field based on selected source and taxonomy type
+     */
+    public function update_taxonomy_field($field)
+    {
+        // Debug logging
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('=== update_taxonomy_field called ===');
+            error_log('Current field taxonomy: ' . ($field['taxonomy'] ?? 'NOT SET'));
+        }
+
+        // Try to get values from AJAX request (Gutenberg editor context)
+        $dynamic_source = null;
+        $taxonomy_type = null;
+
+        if (isset($_POST['acf'])) {
+            // Debug: log POST data structure
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('POST acf keys: ' . implode(', ', array_keys($_POST['acf'])));
+            }
+
+            // Find the source value in the POST data
+            foreach ($_POST['acf'] as $key => $value) {
+                if (is_array($value)) {
+                    // Check all variations of field keys
+                    if (isset($value['field_tt_dynamic_source'])) {
+                        $dynamic_source = $value['field_tt_dynamic_source'];
+                    }
+                    if (isset($value['field_tt_taxonomy_type'])) {
+                        $taxonomy_type = $value['field_tt_taxonomy_type'];
+                    }
+                    if (isset($value['field_tt_taxonomy_type_post'])) {
+                        $taxonomy_type_post = $value['field_tt_taxonomy_type_post'];
+                    }
+                }
+            }
+
+            // Also check at root level
+            if (!$dynamic_source && isset($_POST['acf']['field_tt_dynamic_source'])) {
+                $dynamic_source = $_POST['acf']['field_tt_dynamic_source'];
+            }
+
+            // Determine taxonomy based on source
+            if ($dynamic_source === 'post') {
+                $taxonomy_type = $taxonomy_type_post ?? 'category';
+            } elseif ($dynamic_source) {
+                $taxonomy_type = $taxonomy_type ?? 'package_type';
+            }
+        }
+
+        // Fallback to get_field for non-AJAX contexts
+        if (!$taxonomy_type) {
+            $dynamic_source = get_field('tt_dynamic_source');
+
+            if ($dynamic_source === 'post') {
+                $taxonomy_type = get_field('tt_taxonomy_type_post') ?: 'category';
+            } else {
+                $taxonomy_type = get_field('tt_taxonomy_type') ?: 'package_type';
+            }
+        }
+
+        // Debug logging
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('Dynamic source: ' . ($dynamic_source ?: 'NOT FOUND'));
+            error_log('Taxonomy type determined: ' . ($taxonomy_type ?: 'NOT FOUND'));
+            error_log('Setting field taxonomy to: ' . $taxonomy_type);
+        }
+
+        // Update the taxonomy for the field
+        $field['taxonomy'] = $taxonomy_type;
+
+        return $field;
+    }
+
+    /**
+     * Update taxonomy in tab overrides repeater
+     */
+    public function update_overrides_taxonomy($field)
+    {
+        // Try to get values from AJAX request (Gutenberg editor context)
+        $dynamic_source = null;
+        $taxonomy_type = null;
+
+        if (isset($_POST['acf'])) {
+            // Find the source value in the POST data
+            foreach ($_POST['acf'] as $key => $value) {
+                if (is_array($value) && isset($value['field_tt_dynamic_source'])) {
+                    $dynamic_source = $value['field_tt_dynamic_source'];
+
+                    if ($dynamic_source === 'post') {
+                        $taxonomy_type = $value['field_tt_taxonomy_type_post'] ?? 'category';
+                    } else {
+                        $taxonomy_type = $value['field_tt_taxonomy_type'] ?? 'package_type';
+                    }
+                    break;
+                }
+            }
+        }
+
+        // Fallback to get_field for non-AJAX contexts
+        if (!$taxonomy_type) {
+            $dynamic_source = get_field('tt_dynamic_source');
+
+            if ($dynamic_source === 'post') {
+                $taxonomy_type = get_field('tt_taxonomy_type_post') ?: 'category';
+            } else {
+                $taxonomy_type = get_field('tt_taxonomy_type') ?: 'package_type';
+            }
+        }
+
+        // Update the taxonomy for the term_id subfield ONLY
+        // Do not modify other sub_fields (custom_name, icon)
+        if (isset($field['sub_fields']) && is_array($field['sub_fields'])) {
+            foreach ($field['sub_fields'] as $index => &$sub_field) {
+                if (isset($sub_field['name']) && $sub_field['name'] === 'term_id') {
+                    $sub_field['taxonomy'] = $taxonomy_type;
+                    break; // Only update term_id, leave other fields intact
+                }
+            }
+            unset($sub_field); // Break reference
+        }
+
+        return $field;
+    }
+
+    /**
+     * Get sample cards for preview
+     */
+    private function get_sample_cards($source, $count = 3)
+    {
+        $cards = [];
+
+        for ($i = 1; $i <= $count; $i++) {
+            if ($source === 'package') {
+                $cards[] = [
+                    'acf_fc_layout' => 'card',
+                    'image' => [
+                        'url' => 'https://picsum.photos/800/600?random=' . $i,
+                        'alt' => 'Sample Package ' . $i,
+                    ],
+                    'category' => 'POPULAR',
+                    'badge_color_variant' => 'primary',
+                    'title' => 'Sample Package ' . $i,
+                    'description' => 'This is a sample package description for preview.',
+                    'location' => 'Cusco, Peru',
+                    'duration' => '5 days',
+                    'price' => 'From $' . (299 + ($i * 100)) . ' USD',
+                    'duration_price' => '5 days | From $' . (299 + ($i * 100)) . ' USD',
+                    'is_package' => true,
+                    'link' => ['url' => '#'],
+                    'cta_text' => 'View Package',
+                ];
+            } else {
+                $cards[] = [
+                    'acf_fc_layout' => 'card',
+                    'image' => [
+                        'url' => 'https://picsum.photos/800/600?random=' . ($i + 10),
+                        'alt' => 'Sample Post ' . $i,
+                    ],
+                    'category' => 'ARTICLE',
+                    'badge_color_variant' => 'secondary',
+                    'title' => 'Sample Blog Post ' . $i,
+                    'description' => 'This is a sample blog post description for preview.',
+                    'location' => 'Peru',
+                    'date' => date('F j, Y'),
+                    'link' => ['url' => '#'],
+                    'cta_text' => 'Read More',
+                ];
+            }
+        }
+
+        return $cards;
+    }
+}

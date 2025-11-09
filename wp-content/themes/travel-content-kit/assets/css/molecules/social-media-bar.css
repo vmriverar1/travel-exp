@@ -1,0 +1,80 @@
+/**
+ * Molecule: Social Media Bar
+ */
+
+.social-media-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin: var(--spacing-lg) 0;
+}
+
+.social-media-bar__section {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.social-media-bar__label {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-footer-text-muted);
+}
+
+.social-media-bar__list {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.social-media-bar__item {
+    margin: 0;
+}
+
+/* Review Logos */
+.social-media-bar__logos {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.social-media-bar__logo-item {
+    margin: 0;
+    line-height: 0;
+}
+
+.social-media-bar__logo-link {
+    display: inline-block;
+    line-height: 0;
+    transition: opacity 0.2s ease;
+}
+
+.social-media-bar__logo-link:hover {
+    opacity: 0.8;
+}
+
+.social-media-bar__logo-image {
+    height: 24px;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+/* Mobile adjustments */
+@media (max-width: 767px) {
+    .social-media-bar__list,
+    .social-media-bar__logos {
+        gap: var(--spacing-xs);
+    }
+
+    .social-media-bar__logo-image {
+        height: 20px;
+    }
+}

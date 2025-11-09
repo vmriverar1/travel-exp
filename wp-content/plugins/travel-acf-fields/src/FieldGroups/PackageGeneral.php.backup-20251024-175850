@@ -1,0 +1,336 @@
+<?php
+namespace Aurora\ACFKit\FieldGroups;
+
+use Aurora\ACFKit\Core\FieldGroup;
+
+class PackageGeneral extends FieldGroup
+{
+    public function register(): void
+    {
+        if (!function_exists('acf_add_local_field_group')) return;
+
+        acf_add_local_field_group([
+            'key' => 'group_package_general',
+            'title' => '📋 Package - General Information',
+            'fields' => [
+
+                // ===== FEATURED & RATING =====
+                [
+                    'key' => 'field_package_featured',
+                    'label' => '⭐ Featured Package',
+                    'name' => 'featured_package',
+                    'type' => 'true_false',
+                    'instructions' => 'Mark if this package should appear in featured sections (home, banners).',
+                    'default_value' => 0,
+                    'ui' => 1,
+                ],
+                [
+                    'key' => 'field_package_rating',
+                    'label' => '⭐ Rating',
+                    'name' => 'rating',
+                    'type' => 'number',
+                    'instructions' => 'Package rating (0-5). Will be displayed as stars.',
+                    'default_value' => 0,
+                    'min' => 0,
+                    'max' => 5,
+                    'step' => 0.1,
+                ],
+
+                // ===== SERVICE TYPE (SHARED/PRIVATE) =====
+                [
+                    'key' => 'field_package_service_type',
+                    'label' => '🎯 Service Type',
+                    'name' => 'service_type',
+                    'type' => 'select',
+                    'instructions' => 'Define if the package is shared or private.',
+                    'required' => 1,
+                    'choices' => [
+                        'shared' => 'Shared',
+                        'private' => 'Private',
+                    ],
+                    'default_value' => 'shared',
+                    'ui' => 1,
+                ],
+                [
+                    'key' => 'field_package_shared_details',
+                    'label' => '👥 Shared Package Details',
+                    'name' => 'shared_package_details',
+                    'type' => 'wysiwyg',
+                    'instructions' => 'Additional information about the shared service (schedules, meeting points, etc.).',
+                    'required' => 0,
+                    'tabs' => 'visual',
+                    'toolbar' => 'basic',
+                    'media_upload' => 0,
+                    'conditional_logic' => [
+                        [
+                            [
+                                'field' => 'field_package_service_type',
+                                'operator' => '==',
+                                'value' => 'shared',
+                            ],
+                        ],
+                    ],
+                ],
+
+                // ===== DESCRIPTIONS =====
+                [
+                    'key' => 'field_package_summary',
+                    'label' => '📝 Short Summary',
+                    'name' => 'summary',
+                    'type' => 'textarea',
+                    'instructions' => 'Brief description of the package (max 200 characters). Shown on cards/listings.',
+                    'required' => 1,
+                    'rows' => 3,
+                    'maxlength' => 200,
+                ],
+                [
+                    'key' => 'field_package_description',
+                    'label' => '📄 Detailed Description',
+                    'name' => 'description',
+                    'type' => 'wysiwyg',
+                    'instructions' => 'Complete description of the package: history, attractions, recommendations.',
+                    'required' => 1,
+                    'tabs' => 'all',
+                    'toolbar' => 'full',
+                    'media_upload' => 1,
+                ],
+                [
+                    'key' => 'field_package_included',
+                    'label' => '✅ What is Included',
+                    'name' => 'included',
+                    'type' => 'wysiwyg',
+                    'instructions' => 'List of included services: transport, meals, entrance fees, guide, etc.',
+                    'required' => 0,
+                    'tabs' => 'all',
+                    'toolbar' => 'full',
+                    'media_upload' => 0,
+                ],
+                [
+                    'key' => 'field_package_not_included',
+                    'label' => '❌ What is NOT Included',
+                    'name' => 'not_included',
+                    'type' => 'wysiwyg',
+                    'instructions' => 'Exclusions: drinks, insurance, tips, etc.',
+                    'required' => 0,
+                    'tabs' => 'all',
+                    'toolbar' => 'full',
+                    'media_upload' => 0,
+                ],
+                [
+                    'key' => 'field_package_highlight',
+                    'label' => '🌟 Highlights',
+                    'name' => 'highlight',
+                    'type' => 'wysiwyg',
+                    'instructions' => 'Main highlights or attractions of the package.',
+                    'required' => 0,
+                    'tabs' => 'visual',
+                    'toolbar' => 'basic',
+                    'media_upload' => 0,
+                ],
+
+                // ===== VIDEO =====
+                [
+                    'key' => 'field_package_video_url',
+                    'label' => '🎥 Video URL',
+                    'name' => 'video_url',
+                    'type' => 'url',
+                    'instructions' => 'Link to YouTube or Vimeo video of the package.',
+                    'required' => 0,
+                    'placeholder' => 'https://www.youtube.com/watch?v=...',
+                ],
+
+                // ===== PACKAGE DETAILS =====
+                [
+                    'key' => 'field_package_days',
+                    'label' => '📅 Days',
+                    'name' => 'days',
+                    'type' => 'number',
+                    'instructions' => 'Number of days for the package (1-38).',
+                    'required' => 1,
+                    'default_value' => 1,
+                    'min' => 1,
+                    'max' => 38,
+                ],
+                [
+                    'key' => 'field_package_duration',
+                    'label' => '⏱️ Duration (text)',
+                    'name' => 'duration',
+                    'type' => 'text',
+                    'instructions' => 'Package duration in readable format. Example: "5 days / 4 nights"',
+                    'required' => 1,
+                    'placeholder' => '5 days / 4 nights',
+                ],
+                [
+                    'key' => 'field_package_group_size',
+                    'label' => '👥 Group Size',
+                    'name' => 'group_size',
+                    'type' => 'number',
+                    'instructions' => 'Maximum number of people per group.',
+                    'required' => 0,
+                    'default_value' => 12,
+                    'min' => 1,
+                    'max' => 50,
+                ],
+
+                // ===== ACTIVITY LEVEL =====
+                [
+                    'key' => 'field_package_activity',
+                    'label' => '🏃 Activity Level',
+                    'name' => 'activity_level',
+                    'type' => 'select',
+                    'instructions' => 'Physical intensity level of the package.',
+                    'required' => 0,
+                    'choices' => [
+                        'low' => 'Low',
+                        'moderate' => 'Moderate',
+                        'high' => 'High',
+                        'very_high' => 'Very High',
+                    ],
+                    'default_value' => 'moderate',
+                    'ui' => 1,
+                ],
+
+                // ===== PHYSICAL DIFFICULTY =====
+                [
+                    'key' => 'field_package_physical_difficulty',
+                    'label' => '💪 Physical Difficulty',
+                    'name' => 'physical_difficulty',
+                    'type' => 'select',
+                    'instructions' => 'Physical demand level required.',
+                    'required' => 0,
+                    'choices' => [
+                        'easy' => 'Easy',
+                        'moderate' => 'Moderate',
+                        'moderate_demanding' => 'Moderate - Demanding',
+                        'difficult' => 'Difficult',
+                        'very_difficult' => 'Very Difficult',
+                    ],
+                    'default_value' => 'moderate',
+                    'ui' => 1,
+                ],
+
+                // ===== CULTURAL RATING =====
+                [
+                    'key' => 'field_package_cultural_rating',
+                    'label' => '🏛️ Cultural Rating',
+                    'name' => 'cultural_rating',
+                    'type' => 'range',
+                    'instructions' => 'Cultural content rating (1-5).',
+                    'required' => 0,
+                    'default_value' => 3,
+                    'min' => 1,
+                    'max' => 5,
+                    'step' => 1,
+                    'prepend' => '1',
+                    'append' => '5',
+                ],
+
+                // ===== WILDLIFE EXPECTATION =====
+                [
+                    'key' => 'field_package_wildlife_expectation',
+                    'label' => '🦙 Wildlife Expectation',
+                    'name' => 'wildlife_expectation',
+                    'type' => 'range',
+                    'instructions' => 'Wildlife sighting expectation (1-5).',
+                    'required' => 0,
+                    'default_value' => 3,
+                    'min' => 1,
+                    'max' => 5,
+                    'step' => 1,
+                    'prepend' => '1',
+                    'append' => '5',
+                ],
+
+                // ===== DEPARTURE/ARRIVAL =====
+                [
+                    'key' => 'field_package_departure_point',
+                    'label' => '📍 Departure Point',
+                    'name' => 'departure',
+                    'type' => 'text',
+                    'instructions' => 'Starting location of the package (hotel, terminal, airport).',
+                    'required' => 0,
+                    'placeholder' => 'Plaza de Armas, Cusco',
+                ],
+                [
+                    'key' => 'field_package_arrival_point',
+                    'label' => '🏁 Arrival Point',
+                    'name' => 'arrival',
+                    'type' => 'text',
+                    'instructions' => 'Ending location of the package.',
+                    'required' => 0,
+                    'placeholder' => 'Plaza de Armas, Cusco',
+                ],
+                [
+                    'key' => 'field_package_departure_time',
+                    'label' => '🕐 Departure Time',
+                    'name' => 'departure_time',
+                    'type' => 'text',
+                    'instructions' => 'Starting time of the package.',
+                    'required' => 0,
+                    'placeholder' => '04:30 a.m.',
+                ],
+                [
+                    'key' => 'field_package_return_time',
+                    'label' => '🕐 Return Time',
+                    'name' => 'return_time',
+                    'type' => 'text',
+                    'instructions' => 'Approximate return time.',
+                    'required' => 0,
+                    'placeholder' => '06:00 p.m.',
+                ],
+                [
+                    'key' => 'field_package_availability',
+                    'label' => '📆 Availability',
+                    'name' => 'availability',
+                    'type' => 'select',
+                    'instructions' => 'Package frequency.',
+                    'required' => 0,
+                    'choices' => [
+                        'daily' => 'Daily',
+                        'weekly' => 'Weekly',
+                        'specific_dates' => 'Specific dates (see Fixed Departures)',
+                        'on_request' => 'On request',
+                    ],
+                    'default_value' => 'daily',
+                    'ui' => 1,
+                ],
+
+                // ===== ADD TO HOME =====
+                [
+                    'key' => 'field_package_show_on_homepage',
+                    'label' => '🏠 Show on Homepage',
+                    'name' => 'show_on_homepage',
+                    'type' => 'true_false',
+                    'instructions' => 'Check to include this package on the homepage.',
+                    'default_value' => 0,
+                    'ui' => 1,
+                ],
+
+                // ===== AFFILIATE =====
+                [
+                    'key' => 'field_package_affiliate_url',
+                    'label' => '🔗 Affiliate URL',
+                    'name' => 'affiliate_url',
+                    'type' => 'url',
+                    'instructions' => 'External link if the package is booked through an affiliate or external agency.',
+                    'required' => 0,
+                ],
+
+            ],
+            'location' => [
+                [
+                    [
+                        'param' => 'post_type',
+                        'operator' => '==',
+                        'value' => 'package',
+                    ],
+                ],
+            ],
+            'menu_order' => 10,
+            'position' => 'normal',
+            'style' => 'default',
+            'label_placement' => 'top',
+            'instruction_placement' => 'label',
+        ]);
+    }
+}

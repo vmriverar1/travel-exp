@@ -1,0 +1,334 @@
+/**
+ * Pricing Card Block Styles
+ * Sticky sidebar card with price, CTA, and package details
+ */
+
+.pricing-card {
+    top: 2rem;
+    background: #F9F9F9;
+    border-radius: 12px;
+    padding: 1.5rem;
+    max-width: 100%;
+}
+
+.pricing-card__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Duration Section - Horizontal Layout */
+.pricing-card__duration-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.pricing-card__duration-icon {
+    flex-shrink: 0;
+}
+
+.pricing-card__duration-icon svg {
+    width: 45px;
+    height: 40px;
+    display: block;
+}
+
+.pricing-card__duration-content {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.pricing-card__duration-number {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #202C2E;
+    line-height: 1;
+}
+
+.pricing-card__duration-text {
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: #202C2E;
+    line-height: 1.3;
+}
+
+.pricing-card__duration-text strong {
+    font-weight: 700;
+}
+
+/* White Box with Price Info */
+.pricing-card__white-box {
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* Price Section (Top Part - 3 columns) */
+.pricing-card__price-section {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    align-items: center;
+    padding: 1.5rem 1.5rem 0.5rem 1.5rem;
+}
+
+/* Left: Best Price Tag */
+.pricing-card__best-price-tag {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.25rem;
+}
+
+.pricing-card__best-price-tag svg {
+    width: 20px;
+    height: 12px;
+}
+
+.pricing-card__from-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: #202C2E;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+/* Center: Price Display */
+.pricing-card__price-display {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.25rem;
+}
+
+.pricing-card__dollar-sign {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #202C2E;
+    line-height: 1;
+    margin-top: 0.25rem;
+}
+
+.pricing-card__price-value {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #202C2E;
+    line-height: 1;
+}
+
+/* Right: Per Person Info */
+.pricing-card__per-person {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    max-width: 120px;
+}
+
+.pricing-card__info-icon {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    order: 2;
+}
+
+.pricing-card__per-person-text {
+    font-size: 11px;
+    font-weight: 400;
+    color: #757575;
+    line-height: 1.3;
+    text-align: left;
+    order: 1;
+}
+
+/* Bottom Section: Private Service Question */
+.pricing-card__private-service {
+    padding: 0.5rem 1.5rem 1rem 1.5rem;
+    text-align: center;
+}
+
+.pricing-card__private-service p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: #424242;
+    line-height: 1.4;
+}
+
+/* CTA Button */
+.pricing-card__cta-button {
+    display: block;
+    width: 65%;
+    margin: 0 auto;
+    padding: .5rem 1.5rem;
+    background: #E78C85;
+    color: #ffffff;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.pricing-card__cta-button:hover {
+    background: #d97a73;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(231, 140, 133, 0.3);
+}
+
+.pricing-card__cta-button:active {
+    transform: translateY(0);
+}
+
+/* Is This Tour For Me? */
+.pricing-card__tour-for-me {
+    margin: 0.5rem 0 0 0;
+}
+
+.pricing-card__tour-for-me h4 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #212121;
+    line-height: 1.4;
+}
+
+/* Details Grid (2x2) - No borders */
+.pricing-card__details-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1rem 1.5rem;
+    width: 80% !important;
+    margin: auto;
+}
+
+.pricing-card__detail-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 14px;
+    font-weight: 700;
+    color: #212121;
+}
+
+.pricing-card__detail-label svg {
+    flex-shrink: 0;
+    width: 17px;
+    height: 17px;
+}
+
+.pricing-card__detail-value {
+    font-size: 14px;
+    font-weight: 400;
+    color: #424242;
+}
+
+.pricing-card__detail-list-item {
+    line-height: 1.8;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .pricing-card {
+        position: relative;
+        top: 0;
+        margin-bottom: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .pricing-card__best-price-tag,
+    .pricing-card__per-person {
+        justify-content: center;
+        max-width: none;
+    }
+
+    .pricing-card__price-value {
+        font-size: 2.5rem;
+    }
+
+    .pricing-card__dollar-sign {
+        font-size: 1.25rem;
+    }
+
+    .pricing-card__duration-number {
+        font-size: 4rem;
+    }
+
+    .pricing-card__duration-text {
+        font-size: 1rem;
+        line-height: 1.2;
+        padding-bottom: 5px;
+    }
+
+    .pricing-card__duration-content {
+        align-items: end;
+    }
+}
+
+@media (max-width: 480px) {
+    .pricing-card {
+        padding: 1rem;
+    }
+
+    .pricing-card__inner {
+        gap: 1rem;
+    }
+
+    .pricing-card__price-section {
+        padding: 1rem;
+    }
+
+    .pricing-card__price-value {
+        font-size: 3rem;
+    }
+
+    .pricing-card__dollar-sign {
+        font-size: 1.5rem;
+    }
+
+    .pricing-card__cta-button {
+        padding: 0.875rem 1.25rem;
+        font-size: 15px;
+    }
+
+    .pricing-card__best-price-tag{
+        gap: 0px;
+    }
+
+    .pricing-card__best-price-tag svg {
+        width: 26px;
+        height: 20px;
+    }
+
+    .pricing-card__from-label{
+        font-size: 12px;
+    }
+
+    .pricing-card__per-person{
+        align-items: end;
+    }
+
+    .pricing-card__per-person-text {
+        font-size: 14px;
+    }
+
+    .pricing-card__info-icon{
+        width: 21px;
+        height: 21px;
+    }
+
+    .pricing-card__private-service p{
+        font-size: 16px;
+    }
+    
+    .pricing-card__white-box{
+        padding: 30px 1px 5px;
+    }
+}

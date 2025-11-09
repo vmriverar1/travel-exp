@@ -1,0 +1,71 @@
+/**
+ * Molecule: Payment Methods
+ */
+
+.payment-methods {
+    margin-top: var(--wp--preset--spacing--40);
+}
+
+.payment-methods__title {
+    margin: 0 0 var(--spacing-xs);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-footer-text);
+}
+
+.payment-methods__icons {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: var(--spacing-sm);
+}
+
+.payment-methods__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+}
+
+.payment-methods__icon img {
+    width: auto;
+    height: 100%;
+    max-width: 60px;
+    object-fit: contain;
+}
+
+.payment-methods__gateways {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-size: var(--font-size-xs);
+    color: var(--color-footer-text-muted);
+}
+
+.payment-methods__label {
+    font-weight: var(--font-weight-medium);
+}
+
+.payment-methods__gateway-link {
+    color: var(--color-footer-accent);
+    text-decoration: none;
+    font-weight: var(--font-weight-medium);
+    transition: color var(--transition-fast);
+}
+
+.payment-methods__gateway-link:hover,
+.payment-methods__gateway-link:focus {
+    color: var(--color-footer-text);
+    text-decoration: underline;
+}
+
+.payment-methods__gateway-name {
+    color: var(--color-footer-accent);
+    font-weight: var(--font-weight-medium);
+}
+
+.payment-methods__separator {
+    color: var(--color-footer-text-muted);
+    margin: 0 var(--spacing-2xs);
+}

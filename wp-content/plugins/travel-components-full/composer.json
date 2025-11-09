@@ -1,0 +1,15 @@
+{
+  "name": "travel/components",
+  "description": "Travel Components Blocks - ACF Gutenberg Blocks (SocialShare, DownloadableGuide, SubscribeForm)",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0-or-later",
+  "autoload": {
+    "psr-4": {
+      "Travel\\Components\\": "src/"
+    }
+  },
+  "require": {
+    "dompdf/dompdf": "^2.0",
+    "mpdf/mpdf": "^8.2"
+  }
+}

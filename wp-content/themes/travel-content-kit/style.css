@@ -1,0 +1,28 @@
+/*
+Theme Name: Travel Content Kit
+Theme URI: https://github.com/your-org/travel-content-kit
+Author: Travel Development Team
+Author URI: https://your-domain.com
+Description: Travel Content Kit is a flexible WordPress theme designed for travel and tourism websites. Built with Atomic Design principles, it features customizable header/footer components, ACF integration, navigation menus, and optimized performance. Perfect for creating engaging travel experiences.
+Requires at least: 6.4
+Tested up to: 6.8
+Requires PHP: 7.4
+Version: 1.1.1
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: travel-content-kit
+Tags: travel, tourism, custom-header, custom-footer, atomic-design, acf, navigation, flexible, performance
+*/
+
+/*
+ * Travel Content Kit Theme
+ *
+ * This theme is built with:
+ * - Atomic Design methodology (Atoms, Molecules, Organisms)
+ * - ACF (Advanced Custom Fields) integration
+ * - Custom navigation systems
+ * - Performance optimization
+ * - Flexible layout options
+ *
+ * All styles are loaded via functions.php for better organization
+ */

@@ -1,0 +1,602 @@
+/**
+ * Package Layout Styles
+ *
+ * 2-column layout with sticky sidebar for single package pages.
+ *
+ * @package TravelContentKit
+ * @since 1.0.0
+ */
+
+/* ===== MAX-WIDTH CONTAINER FOR PACKAGE PAGES ===== */
+.single-package .wp-site-blocks > .wp-block-columns {
+    max-width: 1200px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+}
+
+/* Excepciones: elementos que SÍ deben ocupar todo el ancho */
+.single-package .header,
+.single-package .footer {
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+/* ===== HEADER OVERRIDES PARA PÁGINAS DE PACKAGE ===== */
+
+/* Modificar header SOLO en páginas de package */
+.single-package .header,
+.post-type-archive-package .header {
+    position: relative !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+/* Quitar TODOS los sombreados (text-shadow) del header en package */
+.single-package .header *,
+.post-type-archive-package .header * {
+    text-shadow: none !important;
+}
+
+/* TODOS los textos del header en negro para fondo blanco */
+.single-package .header,
+.single-package .header a,
+.single-package .header span,
+.single-package .header p,
+.single-package .header__phone,
+.single-package .header__lang-switcher,
+.single-package .header__nav-link,
+.single-package .navigation__link,
+.post-type-archive-package .header,
+.post-type-archive-package .header a,
+.post-type-archive-package .header span,
+.post-type-archive-package .header p,
+.post-type-archive-package .header__phone,
+.post-type-archive-package .header__lang-switcher,
+.post-type-archive-package .header__nav-link,
+.post-type-archive-package .navigation__link {
+    color: var(--color-gray-900, #212121) !important;
+}
+
+/* Hover states en negro/coral */
+.single-package .header a:hover,
+.single-package .header__phone:hover,
+.single-package .header__lang-switcher:hover,
+.single-package .header__nav-link:hover,
+.single-package .navigation__link:hover,
+.post-type-archive-package .header a:hover,
+.post-type-archive-package .header__phone:hover,
+.post-type-archive-package .header__lang-switcher:hover,
+.post-type-archive-package .header__nav-link:hover,
+.post-type-archive-package .navigation__link:hover {
+    color: var(--color-coral, #E78C85) !important;
+}
+
+/* TODOS los iconos y SVG del header en color oscuro */
+.single-package .header svg,
+.single-package .header__actions svg,
+.single-package .header__icon,
+.post-type-archive-package .header svg,
+.post-type-archive-package .header__actions svg,
+.post-type-archive-package .header__icon {
+    color: var(--color-gray-900, #212121) !important;
+    fill: var(--color-gray-900, #212121) !important;
+}
+
+/* Hamburger menu en color oscuro */
+.single-package .menu-toggle__line,
+.post-type-archive-package .menu-toggle__line {
+    background-color: var(--color-gray-900, #212121) !important;
+}
+
+/* Logo de colores se maneja en parts/atoms/logo.php */
+/* El logo detecta automáticamente si es página de package y usa header_logo_color */
+
+/* Quitar TODOS los sombreados del logo en páginas de package */
+.single-package .logo,
+.single-package .logo__icon,
+.single-package .logo__image,
+.post-type-archive-package .logo,
+.post-type-archive-package .logo__icon,
+.post-type-archive-package .logo__image {
+    filter: none !important;
+    text-shadow: none !important;
+}
+
+/* IMPORTANTE: Estos estilos SOLO afectan a:
+   - .single-package (páginas individuales de package)
+   - .post-type-archive-package (archivo de packages)
+   NO afectan a otras páginas del sitio */
+
+/* ===== FASE 1: LAYOUT PRINCIPAL ===== */
+
+/* Wrapper para layout de 2 columnas usando WP Columns block */
+.package-main-layout {
+    margin-top: 2rem;
+    gap: 2rem !important;
+}
+
+/* Columna de contenido principal (izquierda) */
+.package-content-column {
+    flex-basis: 66.66% !important;
+}
+
+/* Sidebar sticky (derecha) */
+.package-sidebar.sticky {
+    flex-basis: 33.33% !important;
+    /* position: sticky; */
+    background-color: #F9F9F9;
+    border-radius: 25px;
+    top: 2rem;
+    align-self: flex-start;
+    height: fit-content;
+    /* max-height: calc(100vh - 4rem); */
+    overflow-y: auto;
+}
+
+/* Hide scrollbar pero mantener funcionalidad */
+.package-sidebar.sticky::-webkit-scrollbar {
+    width: 4px;
+}
+
+.package-sidebar.sticky::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.package-sidebar.sticky::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+}
+
+.package-sidebar.sticky::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* ===== LEGACY PACKAGE LAYOUT (mantener compatibilidad) ===== */
+
+.package-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+@media (min-width: 1024px) {
+    .package-layout {
+        grid-template-columns: 2fr 1fr;
+        gap: 3rem;
+    }
+}
+
+/* ===== STICKY SIDEBAR ===== */
+
+@media (min-width: 1024px) {
+    .package-sidebar-sticky {
+        position: sticky;
+        top: 20px;
+        align-self: start;
+        max-height: calc(100vh - 40px);
+        overflow-y: auto;
+    }
+
+    /* Hide scrollbar but keep functionality */
+    .package-sidebar-sticky::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .package-sidebar-sticky::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .package-sidebar-sticky::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 2px;
+    }
+
+    .package-sidebar-sticky::-webkit-scrollbar-thumb:hover {
+        background: rgba(0, 0, 0, 0.3);
+    }
+}
+
+/* On mobile, sidebar is not sticky and appears below content */
+@media (max-width: 1023px) {
+    .package-sidebar-sticky {
+        order: 2;
+    }
+}
+
+/* ===== SPACING BETWEEN SIDEBAR BLOCKS ===== */
+
+.package-sidebar-sticky > * {
+    margin-bottom: 1.5rem;
+}
+
+.package-sidebar-sticky > *:last-child {
+    margin-bottom: 0;
+}
+
+/* ===== MAIN CONTENT SPACING ===== */
+
+.package-layout .wp-block-column:first-child > * {
+    margin-bottom: 2rem;
+}
+
+.package-layout .wp-block-column:first-child > *:last-child {
+    margin-bottom: 0;
+}
+
+/* ===== SPACING ENTRE BLOQUES ===== */
+
+/* Espacio entre bloques en sidebar */
+.package-sidebar.sticky > * {
+    margin-bottom: 1.5rem;
+}
+
+.package-sidebar.sticky > *:last-child {
+    margin-bottom: 0;
+}
+
+/* Espacio entre bloques en contenido principal */
+.package-content-column > * {
+    margin-bottom: 2rem;
+}
+
+.package-content-column > *:last-child {
+    margin-bottom: 0;
+}
+
+/* ===== FASE 3: CONTENIDO PRINCIPAL ===== */
+
+/* Tagline - texto en cursiva bajo el hero */
+.package-tagline {
+    font-size: 1rem;
+    font-style: italic;
+    color: #666666;
+    margin-top: 0;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+/* Sección de promo cards */
+.promo-cards-section {
+    gap: 1.5rem !important;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* H2 de secciones en contenido principal */
+.package-content-column h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #212121;
+    margin-top: 2.5rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.3;
+}
+
+.package-content-column h2:first-of-type {
+    margin-top: 0;
+}
+
+/* Overview paragraph styling */
+.package-content-column > p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #424242;
+    margin-bottom: 1.5rem;
+}
+
+/* ===== RESPONSIVE BREAKPOINTS ===== */
+
+/* Mobile: < 782px */
+@media (max-width: 782px) {
+    .package-main-layout {
+        flex-direction: column !important;
+        gap: 1.5rem !important;
+    }
+
+    .package-content-column,
+    .package-sidebar.sticky {
+        flex-basis: 100% !important;
+        width: 100% !important;
+    }
+
+    /* En mobile, sidebar NO es sticky */
+    .package-sidebar.sticky {
+        position: relative;
+        top: 0;
+        max-height: none;
+        overflow-y: visible;
+    }
+}
+
+/* Tablet: 768px - 1023px */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .package-layout {
+        gap: 2.5rem;
+    }
+
+    .package-main-layout {
+        gap: 2.5rem !important;
+    }
+}
+
+/* Small desktop: 1024px - 1279px */
+@media (min-width: 1024px) and (max-width: 1279px) {
+    .package-layout {
+        grid-template-columns: 1.8fr 1fr;
+    }
+}
+
+/* Large desktop: 1280px+ */
+@media (min-width: 1280px) {
+    .package-layout {
+        grid-template-columns: 2.2fr 1fr;
+        gap: 4rem;
+    }
+}
+
+/* ===== SECCIÓN MEDIA: Gallery + Map/Video ===== */
+
+/* Container de la sección media */
+.package-media-section {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    gap: 1.5rem !important;
+}
+
+/* Columna de galería (65%) */
+.media-gallery-column {
+    flex-basis: 65% !important;
+}
+
+/* Columna sidebar media (35%) */
+.media-sidebar-column {
+    flex-basis: 35% !important;
+    display: flex;
+    flex-direction: column;
+    gap:    .5rem;
+    justify-content: space-around;
+}
+
+/* Mini-mapa en sección media */
+.media-minimap {
+    margin: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    height: auto;
+}
+
+.media-minimap img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Video en sección media */
+.media-video {
+    margin: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    cursor: pointer;
+}
+
+.media-video img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Hover effect en video */
+.media-video:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
+
+/* Responsive para sección media */
+@media (max-width: 782px) {
+    .package-media-section {
+        flex-direction: column !important;
+        gap: 1rem !important;
+    }
+
+    .media-gallery-column,
+    .media-sidebar-column {
+        flex-basis: 100% !important;
+        width: 100% !important;
+    }
+
+    .media-sidebar-column {
+        flex-direction: row;
+        gap: 1rem;
+    }
+
+    .media-minimap,
+    .media-video {
+        flex: 1;
+        max-width: 50%;
+    }
+}
+
+/* Tablet: ajuste de proporciones */
+@media (min-width: 783px) and (max-width: 1023px) {
+    .media-gallery-column {
+        flex-basis: 60% !important;
+    }
+
+    .media-sidebar-column {
+        flex-basis: 40% !important;
+    }
+}
+
+/* ===== FASE 2: SIDEBAR WIDGETS ===== */
+
+/* Títulos de sección en sidebar */
+.sidebar-section-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    margin-top: 0;
+    color: #212121;
+}
+
+/* Mini-mapa placeholder */
+.sidebar-minimap {
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-minimap img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Video placeholder */
+.sidebar-video {
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.sidebar-video img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* WhatsApp floating button (agregar después) */
+.whatsapp-float {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+/* Responsive sidebar widgets */
+@media (max-width: 782px) {
+    .sidebar-minimap,
+    .sidebar-video {
+        max-width: 100%;
+    }
+
+    .sidebar-section-title {
+        font-size: 1rem;
+    }
+}
+
+/* ===== FASE 4: SECCIONES DE ANCHO COMPLETO ===== */
+
+/* Secciones que van después del layout 2 columnas */
+.section-title-full-width {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #212121;
+    margin-top: 4rem;
+    margin-bottom: 2rem;
+    line-height: 1.3;
+}
+
+.section-title-full-width:first-of-type {
+    margin-top: 3rem;
+}
+
+/* Ajustes responsive para títulos de sección */
+@media (max-width: 782px) {
+    .section-title-full-width {
+        font-size: 1.5rem;
+        margin-top: 3rem;
+        margin-bottom: 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .section-title-full-width {
+        font-size: 2rem;
+        margin-top: 5rem;
+        margin-bottom: 2.5rem;
+    }
+}
+
+/* ===== PRINT STYLES ===== */
+
+@media print {
+    .package-layout {
+        display: block;
+    }
+
+    .package-sidebar-sticky {
+        position: static;
+        max-height: none;
+        page-break-inside: avoid;
+    }
+
+    /* Ocultar widgets no esenciales en impresión */
+    .sidebar-minimap,
+    .sidebar-video,
+    .media-video,
+    .whatsapp-float {
+        display: none;
+    }
+
+    /* Mostrar solo la galería en impresión */
+    .package-media-section {
+        display: block;
+    }
+
+    .media-gallery-column {
+        width: 100%;
+    }
+
+    .media-sidebar-column {
+        display: none;
+    }
+
+    /* Títulos de sección */
+    .section-title-full-width {
+        page-break-after: avoid;
+        margin-top: 2rem;
+    }
+}
+
+/* ==================== MOBILE RESPONSIVE ==================== */
+
+@media (max-width: 768px) {
+    /* Remove lateral padding from columns in single package on mobile */
+    .single-package .wp-site-blocks > .wp-block-columns {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    /* Reverse order of price-block-general children in single-package on mobile */
+    .single-package .price-block-general {
+        display: flex !important;
+        flex-direction: column;
+    }
+    
+    .single-package .price-block-general > div:first-child {
+        max-width: 100vw;
+        padding: 0px clamp(1.5rem, 1.2857rem + 0.9524vw, 2rem) !important;
+        order: 2;
+    }
+
+    .single-package .price-block-general > div:last-child {
+        max-width: 100vw;
+        order: 1;
+    }
+
+    /* Limit itinerary content width to viewport on mobile */
+    .itinerary-day__content {
+        max-width: 100vw;
+    }
+}

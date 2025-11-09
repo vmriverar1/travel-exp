@@ -1,0 +1,9 @@
+/**
+ * Custom CSS for child theme
+ *
+ * Add your additional styles here.
+ * This file needs to be enqueued in functions.php if you want to use it.
+ *
+ * Example in functions.php:
+ * wp_enqueue_style('child-custom', get_stylesheet_directory_uri() . '/assets/css/custom.css');
+ */

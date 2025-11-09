@@ -1,0 +1,1104 @@
+/**
+ * Taxonomy Tabs Block Styles
+ * Tabs navegables con cards organizadas por taxonomía
+ */
+
+/* ---- GOOGLE FONTS ---- */
+@import url('https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
+
+:root {
+    --tt-primary-color: #2563eb;
+    --tt-secondary-color: #64748b;
+    --tt-accent-color: #f59e0b;
+    --tt-text-color: #1e293b;
+    --tt-bg-color: #ffffff;
+    --tt-border-color: #e2e8f0;
+    --tt-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --tt-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+/* ===== WRAPPER STYLES ===== */
+/* Remove top margin for hero-overlap variant only */
+.taxonomy-tabs-wrapper--hero-overlap {
+    margin-block-start: 0 !important;
+}
+
+/* ===== MAIN CONTAINER ===== */
+.taxonomy-tabs {
+    --cards-per-row: 3;
+    --card-gap: 24px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* ===== TABS NAVIGATION ===== */
+.tt-nav-wrapper {
+    /* overflow-x: auto; */
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+}
+
+.tt-nav {
+    display: inline-flex;
+    gap: 0.5rem;
+    min-width: 100%;
+}
+
+/* Alignment */
+.taxonomy-tabs--align-center .tt-nav {
+    justify-content: center;
+}
+
+.taxonomy-tabs--align-left .tt-nav {
+    justify-content: flex-start;
+}
+
+.taxonomy-tabs--align-right .tt-nav {
+    justify-content: flex-end;
+}
+
+/* Tab Button Base */
+.tt-nav__item {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #94a3b8;
+    background: #e2e8f0;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.tt-nav__count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.5rem;
+    height: 1.5rem;
+    padding: 0 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: rgba(148, 163, 184, 0.3);
+    border-radius: 999px;
+    transition: all 0.2s ease;
+    color: #64748b;
+}
+
+/* Tab Icon */
+.tt-nav__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.tt-nav__icon-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Hide counter in all tab styles */
+.tt-nav__count {
+    display: none !important;
+}
+
+/* Tab with icon - adjust layout */
+.tt-nav__item--has-icon {
+    gap: 0.75rem;
+}
+
+.tt-nav__item--has-icon .tt-nav__text {
+    display: inline-block;
+}
+
+/* ===== PILLS STYLE ===== */
+.taxonomy-tabs--pills .tt-nav__item {
+    border-radius: 19px 19px 0px 0px;
+}
+
+.taxonomy-tabs--pills .tt-nav__item:hover {
+    background: #cbd5e1;
+    color: #64748b;
+}
+
+.taxonomy-tabs--pills .tt-nav__item.is-active {
+    background: #f5f5f5;
+    color: black;
+}
+
+.taxonomy-tabs--pills .tt-nav__item.is-active .tt-nav__count {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+/* ===== UNDERLINE STYLE ===== */
+.taxonomy-tabs--underline .tt-nav__item {
+    padding-bottom: 1rem;
+    border-bottom: 2px solid transparent;
+    background: transparent;
+}
+
+.taxonomy-tabs--underline .tt-nav__item:hover {
+    color: #64748b;
+    border-bottom-color: #cbd5e1;
+}
+
+.taxonomy-tabs--underline .tt-nav__item.is-active {
+    color: #311A42;
+    border-bottom-color: #311A42;
+    background: transparent;
+}
+
+.taxonomy-tabs--underline .tt-nav__item.is-active .tt-nav__count {
+    background: #311A42;
+    color: white;
+}
+
+/* ===== BUTTONS STYLE ===== */
+.taxonomy-tabs--buttons .tt-nav__item {
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    background: #e2e8f0;
+}
+
+.taxonomy-tabs--buttons .tt-nav__item:hover {
+    border-color: #cbd5e1;
+    color: #64748b;
+    background: #cbd5e1;
+}
+
+.taxonomy-tabs--buttons .tt-nav__item.is-active {
+    background: #311A42;
+    border-color: #311A42;
+    color: white;
+}
+
+.taxonomy-tabs--buttons .tt-nav__item.is-active .tt-nav__count {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+/* ===== PANELS CONTAINER ===== */
+.tt-panels {
+    position: relative;
+    min-height: 400px;
+    background: #f5f5f5;
+    padding: 40px 20px;
+    border-radius: 8px;
+}
+
+.tt-panel {
+    display: none;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.tt-panel.is-active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== CARDS GRID ===== */
+.tt-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--cards-per-row), 1fr);
+    gap: var(--card-gap);
+}
+
+/* ===== CARD STYLES (Posts Carousel Material Design) ===== */
+.tt-card {
+    position: relative;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    min-height: 450px;
+}
+
+.tt-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
+    z-index: 10;
+}
+
+.tt-card:hover .tt-card__image-bg {
+    transform: scale(1.1);
+}
+
+/* Card Image Background (Full) */
+.tt-card__image-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 0;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Overlay gradient */
+.tt-card__image-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.9) 0%,
+        rgba(0, 0, 0, 0.5) 40%,
+        rgba(0, 0, 0, 0.2) 70%,
+        transparent 100%
+    );
+    z-index: 1;
+}
+
+/* Badge */
+.tt-card__badge {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 10;
+    background: #311A42;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Badge Color Variants */
+.tt-card__badge--primary {
+    background: #E78C85;
+    color: #fff;
+}
+
+.tt-card__badge--primary:hover {
+    background: #dc7b74;
+}
+
+.tt-card__badge--secondary {
+    background: #311A42;
+    color: #fff;
+}
+
+.tt-card__badge--secondary:hover {
+    background: #402753;
+}
+
+.tt-card__badge--white {
+    background: #fff;
+    color: #000;
+}
+
+.tt-card__badge--white:hover {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.tt-card__badge--gold {
+    background: #CEA02D;
+    color: #fff;
+}
+
+.tt-card__badge--gold:hover {
+    background: #b88f25;
+}
+
+.tt-card__badge--dark {
+    background: #1A1A1A;
+    color: #fff;
+}
+
+.tt-card__badge--dark:hover {
+    background: #2d2d2d;
+}
+
+.tt-card__badge--transparent {
+    background: transparent;
+    color: #fff;
+    border: 2px solid #fff;
+    backdrop-filter: blur(4px);
+}
+
+.tt-card__badge--transparent:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Card Link */
+.tt-card__link {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    flex: 1;
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Card Content */
+.tt-card__content {
+    padding: 24px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.tt-card__title {
+    font-family: 'Satoshi', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #fff;
+    margin: 0;
+}
+
+.tt-card__excerpt {
+    font-family: 'Satoshi', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.tt-card__divider {
+    width: 50%;
+    height: 2px;
+    background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0.8) 0%,
+        rgba(255, 255, 255, 0.3) 100%
+    );
+    margin: 4px 0;
+}
+
+/* Meta Information */
+.tt-card__meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.tt-card__meta svg {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+}
+
+.tt-card__price {
+    font-family: 'Satoshi', sans-serif;
+    font-size: 20px;
+    font-weight: 900;
+    color: #fff;
+    margin: 4px 0;
+}
+
+/* CTA Button */
+.tt-card__button {
+    padding: 10px 20px;
+    background: #E78C85;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    border-radius: 24px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    align-self: flex-start;
+    margin-top: 8px;
+}
+
+.tt-card__button:hover {
+    background: #dc7b74;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.tt-card__button:active {
+    transform: translateY(0);
+}
+
+/* Button Color Variants */
+.tt-card__button--primary {
+    background: #E78C85;
+    color: #fff;
+}
+
+.tt-card__button--primary:hover {
+    background: #dc7b74;
+}
+
+.tt-card__button--secondary {
+    background: #311A42;
+    color: #fff;
+}
+
+.tt-card__button--secondary:hover {
+    background: #402753;
+}
+
+.tt-card__button--white {
+    background: #fff;
+    color: #000;
+    border: 2px solid #fff;
+}
+
+.tt-card__button--white:hover {
+    background: rgba(255, 255, 255, 0.9);
+    color: #000;
+}
+
+.tt-card__button--gold {
+    background: #CEA02D;
+    color: #fff;
+}
+
+.tt-card__button--gold:hover {
+    background: #b88f25;
+}
+
+.tt-card__button--dark {
+    background: #1A1A1A;
+    color: #fff;
+}
+
+.tt-card__button--dark:hover {
+    background: #2d2d2d;
+}
+
+.tt-card__button--transparent {
+    background: transparent;
+    color: #fff;
+    border: 2px solid #fff;
+    backdrop-filter: blur(4px);
+}
+
+.tt-card__button--transparent:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #fff;
+}
+
+.tt-card__button--read-more {
+    background: transparent;
+    color: #1976d2;
+    font-weight: 700;
+    padding: 0;
+    box-shadow: none;
+    border: none;
+    font-size: 14px;
+}
+
+.tt-card__button--read-more:hover {
+    background: transparent;
+    color: #1565c0;
+    transform: none;
+    box-shadow: none;
+}
+
+/* ===== RESPONSIVE ===== */
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .tt-cards-grid {
+        --cards-per-row: 2 !important;
+    }
+
+    .tt-nav__item {
+        padding: 0.625rem 1.25rem;
+        font-size: 0.875rem;
+    }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+    .tt-cards-grid {
+        --cards-per-row: 1 !important;
+    }
+
+    .tt-nav-wrapper {
+        margin-bottom: 1.5rem;
+    }
+
+    .tt-nav {
+        justify-content: flex-start !important;
+    }
+
+    .tt-nav__item {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
+
+    .tt-card__content {
+        padding: 1.25rem;
+    }
+
+    .tt-card__title {
+        font-size: 1.125rem;
+    }
+
+    .tt-card__excerpt {
+        font-size: 0.875rem;
+    }
+}
+
+/* ===== HERO OVERLAP STYLE ===== */
+
+/* Hero overlap: Tabs float over the hero section */
+.taxonomy-tabs--hero-overlap .tt-nav-wrapper {
+    margin-top: -60px; /* Negative margin to overlap hero */
+    margin-bottom: 3rem;
+    padding: 0 1rem;
+}
+
+.taxonomy-tabs--hero-overlap .tt-nav {
+    justify-content: center;
+    gap: 0; /* No gap between tabs for hero-overlap */
+}
+
+/* Tab base styles for hero-overlap */
+.taxonomy-tabs--hero-overlap .tt-nav__item {
+    padding: 1rem 2rem;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 24px;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Inactive tabs: transparent background, white text, white icons */
+.taxonomy-tabs--hero-overlap .tt-nav__item:not(.is-active) {
+    background: transparent;
+    color: #ffffff;
+}
+
+.taxonomy-tabs--hero-overlap .tt-nav__item:not(.is-active) .tt-nav__count {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+}
+
+/* SVG color manipulation for inactive tabs (white) */
+.taxonomy-tabs--hero-overlap .tt-nav__item:not(.is-active) .tt-nav__icon-svg {
+    fill: #ffffff;
+    color: #ffffff;
+}
+
+.taxonomy-tabs--hero-overlap .tt-nav__item:not(.is-active) .tt-nav__icon-svg * {
+    fill: inherit;
+    stroke: #ffffff;
+}
+
+/* Active tab: white background, black text, black icons */
+.taxonomy-tabs--hero-overlap .tt-nav__item.is-active {
+    background: #ffffff;
+    color: #000000;
+    border-radius: 18px 18px 0 0;
+    transform: translateY(-2px);
+}
+
+.taxonomy-tabs--hero-overlap .tt-nav__item.is-active .tt-nav__count {
+    background: rgba(0, 0, 0, 0.1);
+    color: #000000;
+}
+
+/* SVG color manipulation for active tab (black) */
+.taxonomy-tabs--hero-overlap .tt-nav__item.is-active .tt-nav__icon-svg {
+    fill: #000000;
+    color: #000000;
+}
+
+.taxonomy-tabs--hero-overlap .tt-nav__item.is-active .tt-nav__icon-svg * {
+    fill: inherit;
+    stroke: #000000;
+}
+
+/* SVG icon sizing for hero-overlap */
+.taxonomy-tabs--hero-overlap .tt-nav__icon-svg {
+    width: 24px;
+    height: 24px;
+    display: block;
+    transition: all 0.3s ease;
+}
+
+/* Hover effects */
+.taxonomy-tabs--hero-overlap .tt-nav__item:not(.is-active):hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+}
+
+/* Cards container with white background */
+.taxonomy-tabs--hero-overlap .tt-panels {
+    background: #ffffff;
+    padding: 2rem 1rem;
+    border-radius: 0 0 12px 12px;
+}
+
+/* Responsive adjustments for hero-overlap */
+@media (max-width: 1024px) {
+    .taxonomy-tabs--hero-overlap .tt-nav-wrapper {
+        margin-top: -40px;
+    }
+
+    .taxonomy-tabs--hero-overlap .tt-nav__item {
+        padding: 0.875rem 1.5rem;
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .taxonomy-tabs--hero-overlap .tt-nav-wrapper {
+        margin-top: -70px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 0 0.5rem;
+    }
+
+    .taxonomy-tabs--hero-overlap .tt-nav {
+        justify-content: flex-start;
+        gap: 0.5rem;
+    }
+
+    /* Cambiar a layout vertical: ícono arriba, texto abajo */
+    .taxonomy-tabs--hero-overlap .tt-nav__item {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0px;
+        padding: 0.75rem 0px;
+        font-size: 0.75rem;
+        min-width: 80px;
+        max-width: 120px;
+    }
+
+    .taxonomy-tabs--hero-overlap .tt-nav__icon {
+        order: -1;
+        margin-bottom: 0.25rem;
+        flex-shrink: 0;
+    }
+
+    .taxonomy-tabs--hero-overlap .tt-nav__icon-svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .taxonomy-tabs--hero-overlap .tt-nav__text {
+        order: 1;
+        text-align: center;
+        white-space: normal;
+        word-break: break-word;
+        line-height: 1.2;
+        hyphens: auto;
+    }
+}
+
+/* =========================================================
+   MOBILE SLIDER STYLES
+========================================================= */
+
+/* Flechas y dots ocultos en desktop */
+.tt-arrow,
+.tt-dots {
+    display: none;
+}
+
+/* =========================================================
+   RESPONSIVE - MOBILE SLIDER
+========================================================= */
+@media (max-width: 768px) {
+    /* Remover padding del contenedor de panels en mobile */
+    .tt-panels {
+        padding: 20px 0;
+    }
+
+    /* Hero overlap: remover padding completamente en mobile */
+    .taxonomy-tabs--hero-overlap .tt-panels {
+        padding: 0 !important;
+    }
+
+    /* Panel debe tener overflow hidden para ocultar cards fuera de vista */
+    .tt-panel {
+        overflow: hidden;
+        padding: 0;
+    }
+
+    /* Activar slider en mobile - Comportamiento por defecto (overlay/bottom) */
+    .tt-slider-wrapper {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Para variaciones overlay y bottom, mantener el wrapper contenedor del grid */
+    .arrows-overlay .tt-slider-wrapper,
+    .arrows-bottom .tt-slider-wrapper {
+        display: block;
+    }
+
+    .tt-cards-grid {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap;
+        width: 100%;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        gap: 0 !important;
+        margin: 0 !important;
+        padding: 10px 0 !important;
+    }
+
+    /* Ocultar scrollbar */
+    .tt-cards-grid::-webkit-scrollbar {
+        display: none;
+    }
+
+    .tt-card {
+        flex: 0 0 100% !important;
+        min-width: 100%;
+        max-width: 100%;
+        width: 100%;
+        min-height: var(--card-height, 450px);
+        height: auto;
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box;
+    }
+
+    /* Ajustes de contenido en mobile (como PostsCarousel) */
+    .tt-card {
+        min-height: 400px;
+    }
+
+    .tt-card > a {
+        display: flex;
+        height: 100%;
+        width: 100%;
+        text-decoration: none;
+    }
+
+    .tt-card__image-wrapper {
+        width: 100%;
+        height: 200px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .tt-card__image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .tt-card__content {
+        padding: 20px;
+    }
+
+    .tt-card__title {
+        font-size: 18px;
+        line-height: 1.4;
+        margin: 0 0 8px 0;
+        color: #ffffff;
+        font-weight: 600;
+    }
+
+    .tt-card__description {
+        font-size: 13px;
+        line-height: 1.5;
+        color: #64748b;
+        margin: 0 0 12px 0;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .tt-card__badge {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        font-size: 12px;
+        padding: 6px 12px;
+        z-index: 2;
+    }
+
+    .tt-card__category {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        font-size: 12px;
+        padding: 6px 12px;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 4px;
+        font-weight: 500;
+        z-index: 2;
+    }
+
+    .tt-card__button {
+        padding: 8px 16px;
+        font-size: 13px;
+        margin-top: auto;
+    }
+
+    .tt-card__price,
+    .tt-card__location {
+        font-size: 14px;
+    }
+
+    /* ===== NAVIGATION ARROWS ===== */
+    .tt-arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        z-index: 10;
+        width: 44px;
+        height: 44px;
+        border: none;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: #1e293b;
+    }
+
+    /* Flecha izquierda con color personalizado */
+    .tt-arrow--prev {
+        background: #E78C85;
+        color: #ffffff;
+    }
+
+    .tt-arrow--prev:hover {
+        background: #E78C85;
+        box-shadow: 0 4px 12px rgba(231, 140, 133, 0.4);
+    }
+
+    .tt-arrow:hover {
+        background: #ffffff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        transform: scale(1.05);
+    }
+
+    .tt-arrow:active {
+        transform: scale(0.95);
+    }
+
+    .tt-arrow svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    /* Arrows position: sides (default) - Flechas FUERA del slider como PostsCarousel */
+    .arrows-sides .tt-slider-wrapper {
+        display: flex !important;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        overflow: visible;
+    }
+
+    .arrows-sides .tt-arrow--prev:not(.tt-arrow--bottom) {
+        display: flex !important;
+        position: relative;
+        flex-shrink: 0;
+        order: -1;
+    }
+
+    .arrows-sides .tt-cards-grid {
+        width: 70%;
+        flex-shrink: 0;
+        order: 0;
+    }
+
+    .arrows-sides .tt-arrow--next:not(.tt-arrow--bottom) {
+        display: flex !important;
+        position: relative;
+        flex-shrink: 0;
+        order: 1;
+    }
+
+    .arrows-sides .tt-dots {
+        order: 999;
+        width: 100%; /* Forzar que los dots bajen a la siguiente línea */
+    }
+
+    /* Arrows position: overlay */
+    .arrows-overlay .tt-arrow {
+        display: flex !important;
+        position: absolute;
+    }
+
+    .arrows-overlay .tt-arrow--prev {
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .arrows-overlay .tt-arrow--next {
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    /* Arrows position: bottom (hidden, shown in dots area) */
+    .arrows-bottom .tt-arrow--prev,
+    .arrows-bottom .tt-arrow--next {
+        display: none !important;
+    }
+
+    .arrows-bottom .tt-arrow--bottom {
+        display: flex !important;
+        position: static;
+        transform: none;
+    }
+
+    /* ===== PAGINATION DOTS ===== */
+    .tt-dots {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 20px 0;
+        margin-top: 16px;
+        width: 100%;
+    }
+
+    .tt-dot {
+        width: 8px;
+        height: 8px;
+        border: none;
+        border-radius: 50%;
+        background: #cbd5e1;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        padding: 0;
+    }
+
+    .tt-dot:hover {
+        background: #94a3b8;
+        transform: scale(1.2);
+    }
+
+    .tt-dot.is-active {
+        background: #2563eb;
+        width: 24px;
+        border-radius: 4px;
+    }
+
+    /* Bottom arrows in dots container */
+    .arrows-bottom .tt-dots {
+        display: flex;
+        gap: 16px;
+    }
+
+    .arrows-bottom .tt-arrow--bottom {
+        flex-shrink: 0;
+    }
+
+    /* Responsive para pantallas muy pequeñas */
+    @media (max-width: 480px) {
+        .tt-arrow {
+            width: 36px;
+            height: 36px;
+        }
+
+        .tt-arrow svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Ajustar ancho del grid para sides en pantallas pequeñas */
+        .arrows-sides .tt-slider-wrapper {
+            gap: 8px;
+        }
+
+        .arrows-sides .tt-cards-grid {
+            width: 65%;
+        }
+
+        .arrows-overlay .tt-arrow--prev {
+            left: 8px;
+        }
+
+        .arrows-overlay .tt-arrow--next {
+            right: 8px;
+        }
+
+        /* Ajustes de contenido para pantallas pequeñas (como PostsCarousel) */
+        .tt-card {
+            min-height: 380px;
+        }
+
+        .tt-card__content {
+            padding: 16px;
+        }
+
+        .tt-card__title {
+            font-size: 16px;
+        }
+
+        .tt-card__description {
+            font-size: 12px;
+        }
+
+        .tt-card__badge,
+        .tt-card__category {
+            font-size: 11px;
+            padding: 4px 10px;
+        }
+
+        .tt-card__button {
+            padding: 6px 14px;
+            font-size: 12px;
+        }
+
+        .tt-card__price,
+        .tt-card__location {
+            font-size: 13px;
+        }
+    }
+}

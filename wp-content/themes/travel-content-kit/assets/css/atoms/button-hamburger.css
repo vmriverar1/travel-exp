@@ -1,0 +1,40 @@
+/**
+ * Atom: Hamburger Button
+ */
+
+.btn-hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    width: 30px;
+    height: 40px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    color: #ffffff;
+    outline: none;
+}
+
+.btn-hamburger__line {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: currentColor;
+    transition: transform var(--transition-medium), opacity var(--transition-medium);
+}
+
+/* Active state (X icon animation) */
+.btn-hamburger[aria-expanded="true"] .btn-hamburger__line:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.btn-hamburger[aria-expanded="true"] .btn-hamburger__line:nth-child(2) {
+    opacity: 0;
+}
+
+.btn-hamburger[aria-expanded="true"] .btn-hamburger__line:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}

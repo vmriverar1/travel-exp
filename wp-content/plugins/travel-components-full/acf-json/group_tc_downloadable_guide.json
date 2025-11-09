@@ -1,0 +1,27 @@
+{
+  "key": "group_tc_downloadable_guide",
+  "title": "Downloadable Guide",
+  "fields": [
+    {
+      "key": "field_tc_dg_btn",
+      "label": "Button Label",
+      "name": "button_text",
+      "type": "text",
+      "default_value": "Download the Guide"
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "block",
+        "operator": "==",
+        "value": "acf/downloadableguide"
+      }
+    ]
+  ],
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "active": true
+}

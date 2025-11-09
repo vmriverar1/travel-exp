@@ -1,0 +1,23 @@
+<!-- wp:template-part {"slug":"header"} /-->
+
+<!-- wp:group {"tagName":"main","layout":{"type":"constrained"}} -->
+  <!-- wp:query-title {"type":"archive"} /-->
+
+  <!-- wp:query {"queryId":1,"query":{"perPage":6,"pages":0,"offset":0,"postType":"post","order":"desc","orderBy":"date"},"displayLayout":{"type":"flex","columns":3},"layout":{"type":"constrained"}} -->
+    <!-- wp:post-template -->
+      <!-- wp:group {"layout":{"type":"constrained"}} -->
+        <!-- wp:post-featured-image {"isLink":true,"height":"240px"} /-->
+        <!-- wp:post-title {"isLink":true,"level":3} /-->
+        <!-- wp:post-excerpt {"moreText":"Leer más"} /-->
+      <!-- /wp:group -->
+    <!-- /wp:post-template -->
+
+    <!-- wp:query-pagination {"layout":{"type":"flex","justifyContent":"space-between"}} -->
+      <!-- wp:query-pagination-previous /-->
+      <!-- wp:query-pagination-numbers /-->
+      <!-- wp:query-pagination-next /-->
+    <!-- /wp:query-pagination -->
+  <!-- /wp:query -->
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer"} /-->

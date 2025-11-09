@@ -1,0 +1,10 @@
+{
+  "name": "valenciatravel/theme",
+  "description": "WordPress theme with PSR-4 autoloading and modular structure.",
+  "type": "wordpress-theme",
+  "autoload": {
+    "psr-4": {
+      "ValenciaTravel\\Theme\\": "src/"
+    }
+  }
+}

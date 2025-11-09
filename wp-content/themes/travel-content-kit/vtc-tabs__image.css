@@ -1,0 +1,298 @@
+vtc-tabs__image
+.vtc-tabs {
+  display: flex;
+  gap: 0.4rem;
+  justify-content: center;
+  width: 98%;
+  margin: auto;
+}
+
+.vtc-tabs button {
+  background: #E3E3E3;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  border: none;
+  padding: .6rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 33.33%;
+  transition: all .3s;
+  font-weight: 500;
+}
+
+.vtc-tabs button.active {
+  background: #F3F3F3;
+}
+
+/* === Header (TripAdvisor) === */
+.vtc-reviews-header {
+  display: flex;
+  background-color: #F3F3F3;
+  padding: 30px 15px;
+  justify-content: space-between;
+  border-radius: 8px;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.trip-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 1rem;
+}
+
+.trip-summary .circle {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.trip-summary .circle.filled {
+  background: #00aa6c;
+}
+
+.trip-summary .circle.empty {
+  background: #ccc;
+}
+
+.review-link {
+  display: inline-block;
+  background-color: #C66E65;
+  color: #FFFFFF;
+  border-radius: 5px;
+  padding: 15px 10px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.review-link:hover {
+  opacity: 0.8;
+  color: #FFFFFF;
+}
+
+/* === Cards === */
+.vtc-card {
+  border-radius: 10px;
+  padding: 1rem;
+  background: #F3F3F3;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  height: 331px;
+  transition: transform .3s ease;
+}
+
+.vtc-card:hover {
+  transform: translateY(-5px);
+}
+
+.vtc-card .circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 3px;
+}
+
+.vtc-card .circle.filled {
+  background: #00aa6c;
+}
+
+.vtc-card .circle.empty {
+  background: #ccc;
+}
+
+.vtc-card h4 {
+  margin: 0.3rem 0;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* Texto truncado con Show more */
+.vtc-card p {
+  font-size: 0.9rem;
+  color: #444;
+  line-height: 1.4;
+  overflow: hidden;
+  max-height: 4.5em;
+  position: relative;
+  transition: max-height 0.3s ease;
+}
+
+.vtc-card p.expanded {
+  max-height: none;
+}
+
+.vtc-card .show-more {
+  background: none;
+  border: none;
+  font-family: 'Satoshi';
+  color: #7BC5CC;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  align-self: flex-start;
+  margin-top: .3rem;
+}
+
+.vtc-card .show-more:hover {
+  text-decoration: underline;
+}
+
+.vtc-card .meta {
+  font-size: 0.85rem;
+  color: #555;
+  margin-top: .6rem;
+}
+
+.vtc-card .meta strong {
+  color: #000;
+}
+
+.vtc-card .meta .date {
+  color: #888;
+  margin-left: .25rem;
+}
+
+.vtc-card .logo-text {
+  display: block;
+  margin-top: .8rem;
+  color: #777;
+  font-size: .85rem;
+  font-weight: 500;
+  text-align: left;
+}
+
+/* === Tabs content === */
+.vtc-tab-content {
+  display: none;
+  width: 100%;
+}
+
+@media(max-width: 768px) {
+  .vtc-tab-content {
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 0px !important;
+  }
+}
+
+.vtc-tab-content.active {
+  display: block;
+}
+
+.vtc-tab-content .vtc-swiper {
+  width: 100%;
+  padding: 30px 0 80px !important;
+  overflow: hidden;
+}
+
+@media(max-width: 768px) {
+  .vtc-tab-content .vtc-swiper {
+  width: 100%;
+  padding: 0px !important;
+  overflow: hidden;
+}
+}
+/* === Swiper Controls === */
+.swiper-controls {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.6rem;
+  margin-top: 1.8rem;
+}
+
+/* === Bullets === */
+.swiper-pagination-core {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.swiper-pagination-core .swiper-pagination-bullet {
+  background: #d6d6d6;
+  opacity: 1;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.swiper-pagination-core .swiper-pagination-bullet-active {
+  background: #E78C85;
+  transform: scale(1.25);
+}
+
+.swiper-pagination-core .swiper-pagination-bullet:hover {
+  background: #E78C85;
+  transform: scale(1.25);
+}
+
+/* === Flechas === */
+.swiper-prev,
+.swiper-nex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 2px solid #E78C85;
+  color: #E78C85;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.swiper-prev svg,
+.swiper-nex svg {
+  stroke: currentColor;
+  transition: all 0.3s ease;
+}
+
+/* Hover coral sólido */
+.swiper-prev:hover,
+.swiper-nex:hover {
+  background: #E78C85;
+  color: #fff;
+  transform: scale(1.1);
+}
+
+.swiper-prev:hover svg,
+.swiper-nex:hover svg {
+  stroke: #fff;
+}
+
+/* Active feedback */
+.swiper-prev:active,
+.swiper-nex:active {
+  transform: scale(0.95);
+}
+
+/* === Responsive tweaks === */
+@media (max-width: 768px) {
+  .swiper-controls {
+    gap: 1rem;
+  }
+
+  .swiper-prev, .swiper-nex {
+    width: 34px;
+    height: 34px;
+  }
+
+  .swiper-pagination-core .swiper-pagination-bullet {
+    width: 8px;
+    height: 8px;
+  }
+}
+

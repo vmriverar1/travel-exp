@@ -1,0 +1,74 @@
+{
+  "key": "group_travel_latest_posts_block",
+  "title": "Travel – Latest Posts Block",
+  "fields": [
+    {
+      "key": "field_travel_title",
+      "label": "Título",
+      "name": "travel_title",
+      "type": "text",
+      "default_value": "Latest posts"
+    },
+    {
+      "key": "field_travel_button_text",
+      "label": "Texto del botón",
+      "name": "travel_button_text",
+      "type": "text",
+      "default_value": "VER MÁS"
+    },
+    {
+      "key": "field_travel_number_posts",
+      "label": "Número de posts",
+      "name": "travel_number_posts",
+      "type": "number",
+      "min": 1,
+      "default_value": 2
+    },
+    {
+      "key": "field_travel_selected_posts",
+      "label": "Seleccionar posts (opcional)",
+      "name": "travel_selected_posts",
+      "type": "relationship",
+      "post_type": [
+        "post"
+      ],
+      "filters": [
+        "search",
+        "post_type",
+        "taxonomy"
+      ],
+      "return_format": "id",
+      "max": 20
+    },
+    {
+      "key": "field_travel_featured_first",
+      "label": "Post destacado primero",
+      "name": "travel_featured_first",
+      "type": "post_object",
+      "post_type": [
+        "post"
+      ],
+      "return_format": "id",
+      "ui": 1
+    },
+    {
+      "key": "field_travel_show_last_post",
+      "label": "Completar con últimos si faltan",
+      "name": "travel_show_last_post",
+      "type": "true_false",
+      "ui": 1,
+      "default_value": 1
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "block",
+        "operator": "==",
+        "value": "acf/travel-latest-posts"
+      }
+    ]
+  ],
+  "position": "acf_after_title",
+  "active": true
+}

@@ -1,0 +1,209 @@
+/**
+ * Common CSS Variables
+ *
+ * Global design tokens for travel-blocks plugin.
+ * These variables ensure consistency across all blocks.
+ *
+ * @package Travel\Blocks
+ * @since 1.0.0
+ */
+
+:root {
+    /* ===== BRAND COLORS ===== */
+    --color-coral: #E78C85;
+    --color-coral-dark: #d97a74;
+    --color-coral-light: #FFF0EF;
+
+    --color-purple: #311A42;
+    --color-purple-dark: #221230;
+    --color-purple-light: #4A2B5E;
+
+    --color-teal: #4A90A4;
+    --color-teal-dark: #3a7a8c;
+    --color-teal-light: #6BAFBF;
+
+    /* ===== STATUS COLORS ===== */
+    --color-success: #2ECC71;
+    --color-success-dark: #27ae60;
+    --color-success-light: #a8e6c9;
+
+    --color-warning: #FF9800;
+    --color-warning-dark: #f57c00;
+    --color-warning-light: #ffe0b2;
+
+    --color-error: #E74C3C;
+    --color-error-dark: #c0392b;
+    --color-error-light: #ffcdd2;
+
+    --color-info: #3498DB;
+    --color-info-dark: #2980b9;
+    --color-info-light: #a6d8f5;
+
+    /* ===== NEUTRAL COLORS ===== */
+    --color-white: #FFFFFF;
+    --color-black: #000000;
+
+    --color-gray-50: #FAFAFA;
+    --color-gray-100: #F5F5F5;
+    --color-gray-200: #EEEEEE;
+    --color-gray-300: #E0E0E0;
+    --color-gray-400: #BDBDBD;
+    --color-gray-500: #9E9E9E;
+    --color-gray-600: #757575;
+    --color-gray-700: #616161;
+    --color-gray-800: #424242;
+    --color-gray-900: #212121;
+
+    /* ===== TYPOGRAPHY ===== */
+    --font-family-sans: 'Satoshi', sans-serif;
+    --font-family-serif: 'Satoshi', sans-serif;
+    --font-family-mono: 'Courier New', Courier, monospace;
+
+    --font-size-xs: 0.75rem;     /* 12px */
+    --font-size-sm: 0.875rem;    /* 14px */
+    --font-size-base: 1rem;      /* 16px */
+    --font-size-lg: 1.125rem;    /* 18px */
+    --font-size-xl: 1.25rem;     /* 20px */
+    --font-size-2xl: 1.5rem;     /* 24px */
+    --font-size-3xl: 1.875rem;   /* 30px */
+    --font-size-4xl: 2.25rem;    /* 36px */
+    --font-size-5xl: 3rem;       /* 48px */
+
+    --font-weight-light: 300;
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --font-weight-extrabold: 800;
+
+    --line-height-tight: 1.25;
+    --line-height-normal: 1.5;
+    --line-height-relaxed: 1.75;
+
+    /* ===== SPACING ===== */
+    --spacing-xs: 0.25rem;    /* 4px */
+    --spacing-sm: 0.5rem;     /* 8px */
+    --spacing-md: 1rem;       /* 16px */
+    --spacing-lg: 1.5rem;     /* 24px */
+    --spacing-xl: 2rem;       /* 32px */
+    --spacing-2xl: 2.5rem;    /* 40px */
+    --spacing-3xl: 3rem;      /* 48px */
+    --spacing-4xl: 4rem;      /* 64px */
+
+    /* ===== BORDERS ===== */
+    --border-radius-sm: 4px;
+    --border-radius-md: 6px;
+    --border-radius-lg: 8px;
+    --border-radius-xl: 12px;
+    --border-radius-2xl: 16px;
+    --border-radius-full: 9999px;
+
+    --border-width-thin: 1px;
+    --border-width-medium: 2px;
+    --border-width-thick: 4px;
+
+    /* ===== SHADOWS ===== */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+    /* ===== Z-INDEX LAYERS ===== */
+    --z-index-dropdown: 1000;
+    --z-index-sticky: 1020;
+    --z-index-fixed: 1030;
+    --z-index-modal-backdrop: 1040;
+    --z-index-modal: 1050;
+    --z-index-popover: 1060;
+    --z-index-tooltip: 1070;
+
+    /* ===== TRANSITIONS ===== */
+    --transition-fast: 150ms ease-in-out;
+    --transition-base: 200ms ease-in-out;
+    --transition-slow: 300ms ease-in-out;
+    --transition-slower: 500ms ease-in-out;
+
+    /* ===== BREAKPOINTS (for reference in media queries) ===== */
+    /* Mobile: 0-767px */
+    /* Tablet: 768-1023px */
+    /* Desktop: 1024px+ */
+    /* Note: These are used as comments since CSS variables don't work in media queries */
+
+    /* ===== CONTAINER WIDTHS ===== */
+    --container-sm: 640px;
+    --container-md: 768px;
+    --container-lg: 1024px;
+    --container-xl: 1280px;
+    --container-2xl: 1536px;
+
+    /* ===== BLOCK-SPECIFIC COLORS ===== */
+
+    /* PricingCard */
+    --pricing-card-background: var(--color-white);
+    --pricing-card-border: var(--color-gray-200);
+    --pricing-card-cta-bg: var(--color-coral);
+    --pricing-card-cta-hover: var(--color-coral-dark);
+
+    /* ProductMetadata */
+    --metadata-badge-bg: var(--color-gray-100);
+    --metadata-badge-text: var(--color-gray-700);
+    --metadata-rating-color: var(--color-success);
+
+    /* Gallery Hero */
+    --gallery-hero-discount-bg: var(--color-coral);
+    --gallery-hero-overlay: rgba(0, 0, 0, 0.4);
+
+    /* Itinerary */
+    --itinerary-accordion-bg: var(--color-coral-light);
+    --itinerary-accordion-active: var(--color-coral);
+    --itinerary-icon-color: var(--color-coral);
+
+    /* Reviews */
+    --review-card-bg: var(--color-white);
+    --review-card-border: var(--color-gray-200);
+    --review-star-color: var(--color-success);
+
+    /* Dates & Prices */
+    --dates-tab-active: var(--color-purple);
+    --dates-tab-hover: var(--color-purple-light);
+    --dates-badge-best-price: var(--color-success);
+    --dates-badge-new: var(--color-info);
+    --dates-badge-sold-out: var(--color-gray-400);
+
+    /* Inclusions/Exclusions */
+    --inclusion-check-color: var(--color-success);
+    --exclusion-x-color: var(--color-error);
+}
+
+/* ===== DARK MODE SUPPORT (optional, for future implementation) ===== */
+@media (prefers-color-scheme: dark) {
+    :root {
+        /* Dark mode overrides can be added here in the future */
+        /* Currently not implemented */
+    }
+}
+
+/* ===== UTILITY CLASSES ===== */
+
+.text-coral { color: var(--color-coral); }
+.text-purple { color: var(--color-purple); }
+.text-teal { color: var(--color-teal); }
+.text-success { color: var(--color-success); }
+.text-warning { color: var(--color-warning); }
+.text-error { color: var(--color-error); }
+
+.bg-coral { background-color: var(--color-coral); }
+.bg-purple { background-color: var(--color-purple); }
+.bg-teal { background-color: var(--color-teal); }
+.bg-coral-light { background-color: var(--color-coral-light); }
+
+.shadow-sm { box-shadow: var(--shadow-sm); }
+.shadow-md { box-shadow: var(--shadow-md); }
+.shadow-lg { box-shadow: var(--shadow-lg); }
+.shadow-xl { box-shadow: var(--shadow-xl); }
+
+.rounded-sm { border-radius: var(--border-radius-sm); }
+.rounded-md { border-radius: var(--border-radius-md); }
+.rounded-lg { border-radius: var(--border-radius-lg); }
+.rounded-full { border-radius: var(--border-radius-full); }

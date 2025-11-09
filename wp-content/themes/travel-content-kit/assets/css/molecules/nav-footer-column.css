@@ -1,0 +1,38 @@
+/**
+ * Molecule: Footer Navigation Column
+ */
+
+.nav-footer-column {
+    margin-bottom: var(--wp--preset--spacing--40);
+}
+
+.nav-footer-column__title {
+    margin-bottom: 4px;
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    color: var(--color-footer-text);
+    cursor: default;
+}
+
+.nav-footer-column__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+
+.nav-footer-column__list a {
+    display: block;
+    font-size: var(--font-size-sm);
+    color: var(--color-footer-text-muted);
+    text-decoration: none;
+}
+
+.nav-footer-column__list a:hover,
+.nav-footer-column__list a:focus {
+    color: var(--color-footer-accent);
+}
+
+.nav-footer-column__list .current-menu-item > a {
+    color: var(--color-footer-accent);
+}

@@ -1,0 +1,214 @@
+/**
+ * Impact Section Block Styles
+ */
+
+.impact-section {
+    position: relative;
+    width: 100%;
+    padding: 5rem 0;
+    overflow: hidden;
+}
+
+.impact-section__background {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 0;
+}
+
+.impact-section__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+.impact-section__inner {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    color: white;
+}
+
+/* Header */
+.impact-section__header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.impact-section__title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0 0 1.5rem 0;
+    color: white;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.impact-section__message {
+    font-size: 1.25rem;
+    line-height: 1.6;
+    margin: 0 auto;
+    max-width: 800px;
+    color: white;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Tiles */
+.impact-section__tiles {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+    margin-bottom: 3rem;
+}
+
+.impact-section__tile {
+    text-align: center;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: var(--border-radius-lg, 12px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    color: var(--color-gray-900, #212121);
+}
+
+.impact-section__tile:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.impact-section__tile-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.impact-section__tile-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.impact-section__tile-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+    color: var(--color-gray-900, #212121);
+}
+
+.impact-section__tile-text {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+    color: var(--color-gray-700, #424242);
+}
+
+/* CTA */
+.impact-section__cta {
+    text-align: center;
+}
+
+.impact-section__button {
+    display: inline-block;
+    padding: 1rem 3rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    text-decoration: none;
+    background: var(--color-coral, #E78C85);
+    color: white;
+    border-radius: var(--border-radius-sm, 4px);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(231, 140, 133, 0.4);
+}
+
+.impact-section__button:hover {
+    background: #d97a74;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(231, 140, 133, 0.5);
+}
+
+/* Placeholder */
+.impact-section-placeholder {
+    padding: 4rem;
+    text-align: center;
+    background: var(--color-gray-100, #F5F5F5);
+    border-radius: var(--border-radius-md, 6px);
+    color: var(--color-gray-600, #757575);
+}
+
+/* Responsive */
+@media (max-width: 1023px) {
+    .impact-section {
+        padding: 4rem 0;
+    }
+
+    .impact-section__title {
+        font-size: 2rem;
+    }
+
+    .impact-section__message {
+        font-size: 1.125rem;
+    }
+
+    .impact-section__tiles {
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .impact-section {
+        padding: 3rem 0;
+    }
+
+    .impact-section__inner {
+        padding: 0 1rem;
+    }
+
+    .impact-section__header {
+        margin-bottom: 3rem;
+    }
+
+    .impact-section__title {
+        font-size: 1.75rem;
+        margin-bottom: 1rem;
+    }
+
+    .impact-section__message {
+        font-size: 1rem;
+    }
+
+    .impact-section__tiles {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .impact-section__tile {
+        padding: 1.5rem;
+    }
+
+    .impact-section__tile-icon {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 1rem;
+    }
+
+    .impact-section__tile-title {
+        font-size: 1.25rem;
+    }
+
+    .impact-section__tile-text {
+        font-size: 0.9375rem;
+    }
+
+    .impact-section__button {
+        padding: 0.875rem 2rem;
+        font-size: 1rem;
+    }
+}

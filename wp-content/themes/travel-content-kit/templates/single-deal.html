@@ -1,0 +1,170 @@
+<!-- wp:template-part {"slug":"header"} /-->
+
+<!-- wp:group {"tagName":"main","layout":{"type":"constrained"}} -->
+<main class="wp-block-group">
+
+  <!-- Deal Hero Section with Banner -->
+  <!-- wp:cover {"dimRatio":50,"overlayColor":"black","minHeight":400,"isDark":false,"className":"deal-hero-banner"} -->
+  <div class="wp-block-cover is-light deal-hero-banner" style="min-height:400px">
+    <span aria-hidden="true" class="wp-block-cover__background has-black-background-color has-background-dim"></span>
+    <div class="wp-block-cover__inner-container">
+
+      <!-- Deal Title -->
+      <!-- wp:post-title {"textAlign":"center","level":1,"style":{"typography":{"fontSize":"3.5rem","fontWeight":"700"},"spacing":{"margin":{"bottom":"1rem"}}},"textColor":"white"} /-->
+
+      <!-- Deal Subtitle/Tagline -->
+      <!-- wp:paragraph {"align":"center","style":{"typography":{"fontSize":"1.25rem"},"spacing":{"margin":{"top":"0.5rem","bottom":"0"}}},"textColor":"white"} -->
+      <p class="has-text-align-center has-white-color has-text-color" style="margin-top:0.5rem;margin-bottom:0;font-size:1.25rem">Limited time offer - Save big on your next adventure!</p>
+      <!-- /wp:paragraph -->
+
+    </div>
+  </div>
+  <!-- /wp:cover -->
+
+  <!-- Deal Content Container -->
+  <!-- wp:group {"style":{"spacing":{"padding":{"top":"3rem","bottom":"3rem"}}},"layout":{"type":"constrained","contentSize":"1200px"}} -->
+  <div class="wp-block-group" style="padding-top:3rem;padding-bottom:3rem">
+
+    <!-- Deal Info Section -->
+    <!-- wp:columns {"style":{"spacing":{"blockGap":{"left":"3rem"}}}} -->
+    <div class="wp-block-columns">
+
+      <!-- Main Content Column (66%) -->
+      <!-- wp:column {"width":"66.66%"} -->
+      <div class="wp-block-column" style="flex-basis:66.66%">
+
+        <!-- Deal Description -->
+        <!-- wp:heading {"level":2,"style":{"spacing":{"margin":{"bottom":"1rem"}}}} -->
+        <h2 class="wp-block-heading" style="margin-bottom:1rem">About This Deal</h2>
+        <!-- /wp:heading -->
+
+        <!-- wp:paragraph {"className":"deal-description"} -->
+        <p class="deal-description">This amazing summer adventure sale gives you the perfect opportunity to explore Peru's most iconic destinations at unbeatable prices. Whether you're dreaming of hiking to Machu Picchu or witnessing the stunning Rainbow Mountain, now is the time to book.</p>
+        <!-- /wp:paragraph -->
+
+        <!-- Packages Included Section -->
+        <!-- wp:heading {"level":2,"style":{"spacing":{"margin":{"top":"2rem","bottom":"1.5rem"}}}} -->
+        <h2 class="wp-block-heading" style="margin-top:2rem;margin-bottom:1.5rem">Packages Included in This Deal</h2>
+        <!-- /wp:heading -->
+
+        <!-- wp:paragraph {"className":"deal-packages-intro"} -->
+        <p class="deal-packages-intro">Choose from these incredible packages, all featuring special promotional pricing:</p>
+        <!-- /wp:paragraph -->
+
+        <!-- Package Cards Grid - This will be populated dynamically -->
+        <!-- wp:group {"className":"deal-packages-grid","layout":{"type":"grid","columnCount":2}} -->
+        <div class="wp-block-group deal-packages-grid">
+          <!-- Package cards will be rendered here dynamically -->
+          <!-- Placeholder for now -->
+          <!-- wp:paragraph -->
+          <p>Package cards will be displayed here (requires custom block or shortcode)</p>
+          <!-- /wp:paragraph -->
+        </div>
+        <!-- /wp:group -->
+
+        <!-- Terms & Conditions -->
+        <!-- wp:heading {"level":2,"style":{"spacing":{"margin":{"top":"3rem","bottom":"1rem"}}}} -->
+        <h2 class="wp-block-heading" style="margin-top:3rem;margin-bottom:1rem">Terms &amp; Conditions</h2>
+        <!-- /wp:heading -->
+
+        <!-- wp:paragraph {"className":"deal-terms"} -->
+        <p class="deal-terms">Offer valid from October 19, 2025 through November 30, 2025. Subject to availability. Blackout dates may apply during peak holiday periods. Cannot be combined with other offers. Prices subject to change without notice.</p>
+        <!-- /wp:paragraph -->
+
+      </div>
+      <!-- /wp:column -->
+
+      <!-- Sidebar Column (33%) -->
+      <!-- wp:column {"width":"33.33%","className":"deal-sidebar sticky"} -->
+      <div class="wp-block-column deal-sidebar sticky" style="flex-basis:33.33%">
+
+        <!-- Deal Info Card -->
+        <!-- wp:group {"style":{"border":{"radius":"12px","width":"2px"},"spacing":{"padding":{"top":"1.5rem","bottom":"1.5rem","left":"1.5rem","right":"1.5rem"}}},"borderColor":"primary","backgroundColor":"white","className":"deal-info-card","layout":{"type":"constrained"}} -->
+        <div class="wp-block-group deal-info-card has-border-color has-primary-border-color has-white-background-color has-background" style="border-width:2px;border-radius:12px;padding-top:1.5rem;padding-right:1.5rem;padding-bottom:1.5rem;padding-left:1.5rem">
+
+          <!-- Discount Badge -->
+          <!-- wp:heading {"textAlign":"center","level":3,"style":{"typography":{"fontSize":"3rem","fontWeight":"800"},"spacing":{"margin":{"bottom":"0.5rem"}}},"textColor":"primary"} -->
+          <h3 class="wp-block-heading has-text-align-center has-primary-color has-text-color" style="margin-bottom:0.5rem;font-size:3rem;font-weight:800">20% OFF</h3>
+          <!-- /wp:heading -->
+
+          <!-- wp:separator {"className":"is-style-wide","style":{"spacing":{"margin":{"top":"1rem","bottom":"1rem"}}}} -->
+          <hr class="wp-block-separator has-alpha-channel-opacity is-style-wide" style="margin-top:1rem;margin-bottom:1rem"/>
+          <!-- /wp:separator -->
+
+          <!-- Deal Validity Period -->
+          <!-- wp:heading {"level":4,"style":{"spacing":{"margin":{"bottom":"0.75rem"}},"typography":{"fontSize":"1.125rem"}}} -->
+          <h4 class="wp-block-heading" style="margin-bottom:0.75rem;font-size:1.125rem">Deal Validity</h4>
+          <!-- /wp:heading -->
+
+          <!-- wp:paragraph {"style":{"spacing":{"margin":{"bottom":"0.25rem"}}},"fontSize":"small"} -->
+          <p class="has-small-font-size" style="margin-bottom:0.25rem">📅 <strong>Starts:</strong> October 19, 2025</p>
+          <!-- /wp:paragraph -->
+
+          <!-- wp:paragraph {"style":{"spacing":{"margin":{"bottom":"0"}}},"fontSize":"small"} -->
+          <p class="has-small-font-size" style="margin-bottom:0">📅 <strong>Ends:</strong> November 30, 2025</p>
+          <!-- /wp:paragraph -->
+
+          <!-- wp:separator {"className":"is-style-wide","style":{"spacing":{"margin":{"top":"1rem","bottom":"1rem"}}}} -->
+          <hr class="wp-block-separator has-alpha-channel-opacity is-style-wide" style="margin-top:1rem;margin-bottom:1rem"/>
+          <!-- /wp:separator -->
+
+          <!-- CTA Button -->
+          <!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} -->
+          <div class="wp-block-buttons">
+            <!-- wp:button {"width":100,"className":"is-style-fill"} -->
+            <div class="wp-block-button has-custom-width wp-block-button__width-100 is-style-fill"><a class="wp-block-button__link wp-element-button">Book Now</a></div>
+            <!-- /wp:button -->
+          </div>
+          <!-- /wp:buttons -->
+
+          <!-- Contact Info -->
+          <!-- wp:paragraph {"align":"center","style":{"spacing":{"margin":{"top":"1rem"}}},"fontSize":"small"} -->
+          <p class="has-text-align-center has-small-font-size" style="margin-top:1rem">Questions? Contact us at:<br><strong>info@travel.com</strong></p>
+          <!-- /wp:paragraph -->
+
+        </div>
+        <!-- /wp:group -->
+
+        <!-- Trust Badges (Smaller version) -->
+        <!-- wp:heading {"level":4,"style":{"spacing":{"margin":{"top":"2rem","bottom":"1rem"}}},"fontSize":"medium"} -->
+        <h4 class="wp-block-heading has-medium-font-size" style="margin-top:2rem;margin-bottom:1rem">Why Book With Us</h4>
+        <!-- /wp:heading -->
+
+        <!-- wp:list {"className":"deal-benefits"} -->
+        <ul class="deal-benefits">
+          <li>✓ Best Price Guarantee</li>
+          <li>✓ Free Cancellation</li>
+          <li>✓ 24/7 Customer Support</li>
+          <li>✓ Secure Payment</li>
+          <li>✓ Instant Confirmation</li>
+        </ul>
+        <!-- /wp:list -->
+
+      </div>
+      <!-- /wp:column -->
+
+    </div>
+    <!-- /wp:columns -->
+
+  </div>
+  <!-- /wp:group -->
+
+  <!-- Related Blog Posts or Other Deals -->
+  <!-- wp:group {"style":{"spacing":{"padding":{"top":"3rem","bottom":"3rem"}}},"backgroundColor":"light-gray","layout":{"type":"constrained"}} -->
+  <div class="wp-block-group has-light-gray-background-color has-background" style="padding-top:3rem;padding-bottom:3rem">
+
+    <!-- wp:heading {"textAlign":"center","level":2,"style":{"spacing":{"margin":{"bottom":"2rem"}}}} -->
+    <h2 class="wp-block-heading has-text-align-center" style="margin-bottom:2rem">More Deals You Might Like</h2>
+    <!-- /wp:heading -->
+
+    <!-- wp:paragraph {"align":"center"} -->
+    <p class="has-text-align-center">More deals will be displayed here (requires custom query loop)</p>
+    <!-- /wp:paragraph -->
+
+  </div>
+  <!-- /wp:group -->
+
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer"} /-->

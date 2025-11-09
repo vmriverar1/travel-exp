@@ -1,0 +1,101 @@
+/* Base */
+.travel-swiper-block {
+  position: relative;
+  width: 100%;
+}
+.travel-swiper-block .tsb-swiper {
+  width: 100%;
+}
+.travel-swiper-block .swiper-wrapper {
+  align-items: stretch;
+}
+.travel-swiper-block .swiper-slide {
+  height: auto;
+}
+
+/* Cards demo */
+.tsb-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.06);
+  overflow: hidden;
+  height: 100%;
+}
+.tsb-card .tsb-img {
+  display: block;
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  background: #f2f2f2;
+}
+.tsb-card .tsb-img.placeholder { height: 220px; }
+.tsb-card .tsb-caption {
+  padding: 12px 14px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* Quotes */
+.tsb-quote {
+  background: #fff;
+  border-left: 4px solid #0a7;
+  padding: 18px 16px;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.06);
+  height: 100%;
+}
+.tsb-quote cite {
+  display: block;
+  margin-top: 8px;
+  font-size: 13px;
+  opacity: .8;
+}
+
+/* Controls at bottom */
+.travel-swiper-block .swiper-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+.travel-swiper-block .swiper-button-prev,
+.travel-swiper-block .swiper-button-next {
+  position: static;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,.08);
+}
+.travel-swiper-block .swiper-button-prev:after,
+.travel-swiper-block .swiper-button-next:after {
+  font-size: 14px;
+  color: #333;
+}
+
+/* Dots */
+.travel-swiper-block .swiper-pagination {
+  position: static;
+  display: inline-flex;
+  gap: 6px;
+}
+.travel-swiper-block .swiper-pagination-bullet {
+  width: 8px; height: 8px; opacity: .4;
+}
+.travel-swiper-block .swiper-pagination-bullet-active {
+  opacity: 1;
+}
+
+/* Desktop: mostrar como "grid" visual (sin touch) */
+@media (min-width: 1024px) {
+  .travel-swiper-block .swiper-wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .travel-swiper-block .swiper-slide {
+    width: auto !important;
+  }
+  .travel-swiper-block .swiper-controls { display: none; }
+}

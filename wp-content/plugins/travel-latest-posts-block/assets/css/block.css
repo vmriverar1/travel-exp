@@ -1,0 +1,153 @@
+.travel-lp {
+  --radius: 18px;
+  --gap: 20px;
+  --bg: #fff;
+  --shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  --accent: #e83e3e;
+  --text: #222;
+  --muted: #555;
+  --border: #eaeaea;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* === GRID === */
+.travel-lp__grid .swiper-wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--gap);
+}
+
+/* === CARD === */
+.travel-lp__card-inner {
+  background: var(--bg);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease;
+}
+
+.travel-lp__card-inner:hover {
+  transform: translateY(-3px);
+}
+
+/* === IMAGEN === */
+.travel-lp__image {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+  padding: 5px;
+}
+
+.travel-lp__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.travel-lp__card-inner:hover .travel-lp__image img {
+  transform: scale(1.05);
+}
+
+/* === CORAZÓN === */
+.travel-lp__fav {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #fff;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  z-index: 2;
+}
+
+.travel-lp__fav.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+.travel-lp__fav:hover {
+  transform: scale(1.05);
+}
+
+/* === CONTENIDO === */
+.travel-lp__content {
+  padding: 20px 22px 24px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.travel-lp__post-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 8px;
+}
+
+.travel-lp__excerpt {
+  color: var(--muted);
+  margin: 0 0 14px;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* === BOTÓN === */
+.travel-lp__button {
+  position: relative;
+  align-self: flex-start;
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 0.92rem;
+  letter-spacing: 0.3px;
+}
+
+.travel-lp__button::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: 0;
+  width: 35%;
+  height: 3px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+/* === MOBILE === */
+@media (max-width: 768px) {
+  .travel-lp__grid .swiper-wrapper {
+    display: flex;
+  }
+
+  .travel-lp__pagination {
+    margin-top: 14px;
+    text-align: center;
+  }
+
+  .travel-lp__pagination .swiper-pagination-bullet {
+    background: var(--accent);
+    opacity: 0.5;
+  }
+
+  .travel-lp__pagination .swiper-pagination-bullet-active {
+    opacity: 1;
+  }
+}

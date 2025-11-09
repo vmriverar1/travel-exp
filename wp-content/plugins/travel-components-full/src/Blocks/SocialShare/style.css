@@ -1,0 +1,43 @@
+/* SocialShare styles */
+.tc-social-share {
+  text-align: center;
+  margin: 40px 0;
+}
+
+.tc-ss-label {
+  display: block;
+  color: #E78C85;
+  font-family: 'Satoshi Variable', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0;
+  margin-bottom: 16px;
+}
+
+.tc-ss-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+}
+
+.tc-ss-icon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  color: #202626;
+  transition: transform 0.25s ease, color 0.25s ease;
+}
+
+.tc-ss-icon:hover {
+  transform: scale(1.1);
+  color: #E78C85;
+}
+
+.tc-ss-icon svg {
+  width: 100%;
+  height: 100%;
+}

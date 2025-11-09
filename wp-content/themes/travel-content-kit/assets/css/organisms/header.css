@@ -1,0 +1,133 @@
+/**
+ * Organism: Header
+ */
+
+/* Header Container - Unified gradient shadow for both primary and secondary nav */
+.header {
+    position: absolute;
+    width: 100%;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0) 100%);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    z-index: var(--z-header);
+}
+
+.header__container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header__menus {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    flex: 1 1 0;
+}
+
+.header__nav {
+    display: none !important;
+}
+
+.header__actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.header__phone {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.header__phone:hover,
+.header__phone:focus {
+    color: #ffffff;
+}
+
+.header__phone svg {
+    width: 18px;
+    height: 18px;
+}
+
+.lang-selector {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: transparent;
+    border: none;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.lang-selector svg {
+    width: 16px;
+    height: 16px;
+    stroke-width: 3;
+}
+
+.header__fav {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.header__fav:hover,
+.header__fav:focus {
+    color: #ffffff;
+}
+
+.header__fav svg {
+    width: 16px;
+    height: 16px;
+    stroke-width: 2;
+}
+
+.header__hamburger {
+    display: flex;
+    outline: none;
+}
+
+
+@media (min-width: 1024px) {
+    .header__container {
+        padding: 0 var(--spacing-lg);
+    }
+
+    .header__hamburger {
+        margin-right: 16px;
+    }
+}
+
+
+@media (max-width: 1023px) {
+    .header__container {
+        padding: 0 var(--spacing-sm);
+    }
+
+    .header__fav {
+        display: none;
+    }
+
+    .header {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .header__phone,
+    .lang-selector {
+        font-size: 12px;
+    }
+
+    .header__actions {
+        gap: 10px;
+    }
+}

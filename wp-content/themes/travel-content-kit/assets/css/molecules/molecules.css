@@ -1,0 +1,17 @@
+/**
+ * Molecules Bundle
+ * Import all molecular components
+ */
+
+@import 'nav-main.css';
+@import 'nav-secondary.css';
+@import 'nav-aside.css';
+
+/* Footer molecules */
+@import 'nav-footer-column.css';
+@import 'contact-info.css';
+@import 'social-media-bar.css';
+@import 'payment-methods.css';
+@import 'footer-legal-bar.css';
+@import 'footer-map.css';
+@import 'footer-company-info.css';

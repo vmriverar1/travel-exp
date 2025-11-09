@@ -1,0 +1,53 @@
+{
+  "key": "group_acf_search_bar",
+  "title": "Search Bar (Destinations) \u2013 Configuraci\u00f3n",
+  "fields": [
+    {
+      "key": "field_placeholder_where",
+      "label": "Placeholder Where",
+      "name": "placeholder_where",
+      "type": "text",
+      "default_value": "Where..."
+    },
+    {
+      "key": "field_placeholder_when",
+      "label": "Placeholder When",
+      "name": "placeholder_when",
+      "type": "text",
+      "default_value": "When..."
+    },
+    {
+      "key": "field_color_button",
+      "label": "Color del bot\u00f3n",
+      "name": "color_button",
+      "type": "color_picker",
+      "default_value": "#e58b84"
+    },
+    {
+      "key": "field_year_start",
+      "label": "A\u00f1o inicial (calendario)",
+      "name": "year_start",
+      "type": "number",
+      "default_value": 2020
+    },
+    {
+      "key": "field_year_end",
+      "label": "A\u00f1o final (calendario)",
+      "name": "year_end",
+      "type": "number",
+      "default_value": 2030
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "block",
+        "operator": "==",
+        "value": "acf/acf-search-bar"
+      }
+    ]
+  ],
+  "position": "normal",
+  "style": "default",
+  "active": true
+}

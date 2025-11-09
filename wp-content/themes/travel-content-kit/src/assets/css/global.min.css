@@ -1,0 +1,99 @@
+.img-full img {
+	width: 100%;
+}
+
+.overflow-hidden {
+    overflow: hidden;
+}
+
+.z-index-5 {
+    z-index: 5;
+}
+
+@media (max-width: 781px) {
+    .text-center-sm {
+        text-align: center;
+    }
+
+    .justify-content-sm-center {
+        justify-content: center;
+    }
+
+    .mt-sm-0 {
+            margin-top: 0 !important;
+    }
+
+    .mb-sm-0 {
+        margin-bottom: 0 !important;
+    }
+
+    .section-columns-number {
+        padding-bottom: 0 !important;
+    }
+
+    .number img {
+        width: 32px;
+        object-fit: contain;
+    }
+
+    .order-sm-1 {
+        order: 1;
+    }
+
+    .order-sm-2 {
+        order: 2;
+    }
+
+    .section-brands .section-brands__custom {
+        flex-wrap: wrap !important;
+    }
+
+    .section-brands .section-brands__custom .main-mobile-image {
+        flex-basis: 100% !important;
+        order: -1;
+    }
+
+    .section-brands .section-brands__custom .wp-block-columns {
+        flex: 1 1 0;
+    }
+
+    .section-time .cards {
+        margin-top: 1rem !important;
+    }
+
+    .section-time .card {
+        padding: 0 !important;
+        box-shadow: none !important;
+        border-radius: initial !important;
+    }
+
+    .section-time .card .wp-block-heading,
+    .section-time .card p {
+        text-align: left;
+    }
+}
+
+@media (min-width: 782px) {
+    .img-full-right {
+        width: calc(93% + (50vw - 100%));
+        max-width: 1000px;
+    }
+
+    .section-philosophy figure {
+        margin-top: -120px;
+    }
+}
+
+.section-mission .wp-block-heading,
+.section-mission p {
+    text-shadow: 0px 0px 8px rgba(0, 0, 0, 0.75);
+}
+
+.image-gray {
+    filter: grayscale(100%);
+    transition: filter 0.3s ease;
+}
+
+.image-gray:hover {
+  filter: grayscale(0%);
+}

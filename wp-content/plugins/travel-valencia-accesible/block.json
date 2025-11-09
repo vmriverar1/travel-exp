@@ -1,0 +1,17 @@
+{
+  "apiVersion": 2,
+  "name": "valencia/team-banner",
+  "title": "Team Banner (v5)",
+  "category": "widgets",
+  "icon": "groups",
+  "description": "Bloque con imagen principal, 5 íconos superpuestos y controles de color, condicionales y WYSIWYG.",
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "render.php"
+  },
+  "supports": {
+    "align": false,
+    "anchor": true
+  },
+  "style": "file:./assets/style.css"
+}

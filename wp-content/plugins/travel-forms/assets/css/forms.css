@@ -1,0 +1,251 @@
+/**
+ * Travel Forms - Frontend Styles
+ *
+ * @package Travel\Forms
+ */
+
+/* Form Container */
+.travel-form {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.travel-form .form-title {
+    margin: 0 0 0.5rem;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #333;
+}
+
+.travel-form .form-description {
+    margin: 0 0 1.5rem;
+    color: #666;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* Form Fields */
+.form-field {
+    margin-bottom: 1.25rem;
+}
+
+.form-field label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #333;
+    font-size: 0.95rem;
+}
+
+.form-field label .required {
+    color: #e74c3c;
+    margin-left: 2px;
+}
+
+.form-field input[type="text"],
+.form-field input[type="email"],
+.form-field input[type="tel"],
+.form-field input[type="url"],
+.form-field input[type="number"],
+.form-field input[type="date"],
+.form-field textarea,
+.form-field select {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    font-family: inherit;
+}
+
+.form-field input:focus,
+.form-field textarea:focus,
+.form-field select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.form-field textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* Checkbox Fields */
+.form-field-checkbox {
+    display: flex;
+    align-items: flex-start;
+}
+
+.form-field-checkbox input[type="checkbox"] {
+    width: auto;
+    margin-right: 0.5rem;
+    margin-top: 0.25rem;
+}
+
+.form-field-checkbox label {
+    margin-bottom: 0;
+    font-weight: normal;
+}
+
+.form-field-checkbox .checkbox-label {
+    flex: 1;
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.4;
+}
+
+/* Error States */
+.form-field.has-error input,
+.form-field.has-error textarea,
+.form-field.has-error select {
+    border-color: #e74c3c;
+}
+
+.form-field.has-error input:focus,
+.form-field.has-error textarea:focus,
+.form-field.has-error select:focus {
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
+.form-field .error-message {
+    display: none;
+    margin-top: 0.5rem;
+    color: #e74c3c;
+    font-size: 0.875rem;
+}
+
+/* Form Actions */
+.form-actions {
+    margin-top: 1.5rem;
+}
+
+.form-actions .btn {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.form-actions .btn-primary {
+    background-color: #e74c3c;
+    color: #fff;
+}
+
+.form-actions .btn-primary:hover:not(:disabled) {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.form-actions .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Form Messages */
+.form-messages {
+    display: none;
+    margin-top: 1.5rem;
+}
+
+.form-message {
+    padding: 1rem;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.form-message-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.form-message-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.form-message-warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+}
+
+/* Conditional Fields */
+.conditional-field.hidden {
+    display: none;
+}
+
+/* Pre-filled Field Value Display */
+.form-field-value {
+    padding: 0.75rem;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    font-size: 1rem;
+    color: #333;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+    .travel-form {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+
+    .travel-form .form-title {
+        font-size: 1.5rem;
+    }
+
+    .form-field input,
+    .form-field textarea,
+    .form-field select {
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+}
+
+/* Loading State */
+.form-loading {
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.form-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+    margin: -15px 0 0 -15px;
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-top-color: #3498db;
+    border-radius: 50%;
+    animation: spinner 0.8s linear infinite;
+}
+
+@keyframes spinner {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Accessibility */
+.form-field input:focus-visible,
+.form-field textarea:focus-visible,
+.form-field select:focus-visible {
+    outline: 2px solid #3498db;
+    outline-offset: 2px;
+}

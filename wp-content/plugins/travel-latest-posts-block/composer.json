@@ -1,0 +1,21 @@
+{
+  "name": "travel/latest-posts-block",
+  "description": "ACF Pro + Gutenberg block (Travel) to display selected/latest posts with mobile Swiper and desktop grid.",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0-or-later",
+  "authors": [
+    {
+      "name": "Travel Devs"
+    }
+  ],
+  "require": {
+    "php": ">=7.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "Travel\\Latest\\": "src/"
+    }
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
+}

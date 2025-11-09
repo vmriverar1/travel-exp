@@ -1,0 +1,14 @@
+/**
+ * Atoms Bundle
+ * Import all atomic components
+ */
+
+@import 'logo.css';
+@import 'button-hamburger.css';
+@import 'button-close.css';
+@import 'nav-link.css';
+
+/* Footer atoms */
+@import 'logo-footer.css';
+@import 'social-icon.css';
+@import 'payment-icon.css';

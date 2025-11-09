@@ -1,0 +1,76 @@
+{
+  "key": "group_tsb_swiper",
+  "title": "Travel Swiper Settings",
+  "fields": [
+    {
+      "key": "field_tsb_rows",
+      "label": "Filas en móvil",
+      "name": "layout_rows",
+      "type": "select",
+      "choices": {
+        "1": "1 fila",
+        "2": "2 filas",
+        "3": "3 filas"
+      },
+      "default_value": "1",
+      "return_format": "value",
+      "ui": 1
+    },
+    {
+      "key": "field_tsb_slides",
+      "label": "Slides",
+      "name": "slides",
+      "type": "repeater",
+      "layout": "row",
+      "button_label": "Agregar slide",
+      "sub_fields": [
+        {
+          "key": "field_tsb_image",
+          "label": "Imagen",
+          "name": "image",
+          "type": "image",
+          "return_format": "id",
+          "preview_size": "medium",
+          "library": "all"
+        },
+        {
+          "key": "field_tsb_caption",
+          "label": "Caption / Autor",
+          "name": "caption",
+          "type": "text"
+        },
+        {
+          "key": "field_tsb_quote",
+          "label": "Quote (solo para Testimonials)",
+          "name": "quote",
+          "type": "textarea"
+        },
+        {
+          "key": "field_tsb_author",
+          "label": "Author (solo para Testimonials)",
+          "name": "author",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "block",
+        "operator": "==",
+        "value": "acf/travel-team"
+      }
+    ],
+    [
+      {
+        "param": "block",
+        "operator": "==",
+        "value": "acf/travel-testimonials"
+      }
+    ]
+  ],
+  "position": "normal",
+  "style": "default",
+  "active": true
+}

@@ -1,0 +1,57 @@
+/**
+ * Atom: Social Icon
+ */
+
+.social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-footer-text);
+    transition: all var(--transition-fast);
+    text-decoration: none;
+}
+
+.social-icon:hover,
+.social-icon:focus {
+    color: var(--color-footer-accent);
+    transform: translateY(-2px);
+}
+
+/* Sizes */
+.social-icon--sm {
+    width: 20px;
+    height: 20px;
+}
+
+.social-icon--md {
+    width: 24px;
+    height: 24px;
+}
+
+.social-icon--lg {
+    width: 32px;
+    height: 32px;
+}
+
+.social-icon__svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Platform specific colors on hover */
+.social-icon--facebook:hover { color: #1877f2; }
+.social-icon--instagram:hover { color: #e4405f; }
+.social-icon--pinterest:hover { color: #bd081c; }
+.social-icon--linkedin:hover { color: #0a66c2; }
+.social-icon--youtube:hover { color: #ff0000; }
+.social-icon--tripadvisor:hover { color: #00af87; }
+.social-icon--google:hover { color: #4285f4; }
+
+/* Mobile: Optimizar touch targets (mínimo 40px) */
+@media (max-width: 767px) {
+    .social-icon {
+        padding: var(--spacing-xs); /* 8px padding = 24px icon + 16px padding = 40px total */
+        min-width: 40px;
+        min-height: 40px;
+    }
+}

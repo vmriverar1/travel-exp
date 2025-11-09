@@ -1,0 +1,35 @@
+{
+  "key": "group_acfgbr_static_hero",
+  "title": "Static Hero",
+  "fields": [
+    {
+      "key": "field_sh_title",
+      "label": "Title",
+      "name": "sh_title",
+      "type": "text"
+    },
+    {
+      "key": "field_sh_subtitle",
+      "label": "Subtitle",
+      "name": "sh_subtitle",
+      "type": "text"
+    },
+    {
+      "key": "field_sh_background",
+      "label": "Background Image",
+      "name": "sh_background",
+      "type": "image",
+      "return_format": "array"
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "block",
+        "operator": "==",
+        "value": "acf/acf-gbr-static-hero"
+      }
+    ]
+  ],
+  "active": true
+}

@@ -1,0 +1,186 @@
+<!-- wp:template-part {"slug":"header"} /-->
+
+<!-- wp:group {"tagName":"main","layout":{"type":"constrained"}} -->
+<main class="wp-block-group">
+
+  <!-- FASE 1: ESTRUCTURA BÁSICA + HERO -->
+
+  <!-- 1. Breadcrumb - Migas de pan -->
+  <!-- wp:acf/breadcrumb /-->
+
+  <!-- 2. Título + Metadata + Rating -->
+  <!-- wp:travel-blocks/product-metadata /-->
+
+  <!-- 3. SECCIÓN MEDIA: Gallery (65%) + Map/Video (35%) -->
+  <!-- wp:columns {"className":"package-media-section"} -->
+  <div class="wp-block-columns package-media-section">
+
+    <!-- Columna izquierda: Hero Gallery (65%) -->
+    <!-- wp:column {"width":"65%","className":"media-gallery-column"} -->
+    <div class="wp-block-column media-gallery-column" style="flex-basis:65%">
+      <!-- wp:travel-blocks/product-gallery-hero /-->
+    </div>
+    <!-- /wp:column -->
+
+    <!-- Columna derecha: Mapa + Video apilados (35%) -->
+    <!-- wp:column {"width":"35%","className":"media-sidebar-column"} -->
+    <div class="wp-block-column media-sidebar-column" style="flex-basis:35%">
+
+      <!-- Route Map -->
+      <!-- wp:travel-blocks/package-map /-->
+
+      <!-- YouTube Video -->
+      <!-- wp:travel-blocks/package-video /-->
+
+    </div>
+    <!-- /wp:column -->
+
+  </div>
+  <!-- /wp:columns -->
+
+  <!-- 3. Layout 2 Columnas: Contenido (izq) + Sidebar (der) -->
+  <!-- wp:columns {"className":"package-main-layout"} -->
+  <div class="wp-block-columns package-main-layout">
+
+    <!-- ========================================== -->
+    <!-- COLUMNA IZQUIERDA: CONTENIDO PRINCIPAL    -->
+    <!-- ========================================== -->
+    <!-- wp:column {"width":"66.66%","className":"package-content-column"} -->
+    <div class="wp-block-column package-content-column" style="flex-basis:66.66%">
+
+      <!-- FASE 3: CONTENIDO PRINCIPAL -->
+
+      <!-- 1. Tagline (cursiva, gris) -->
+      <!-- wp:paragraph {"className":"package-tagline"} -->
+      <p class="package-tagline"><em>The Inca Trail Express for those who are short on time.</em></p>
+      <!-- /wp:paragraph -->
+
+      <!-- 2. Overview Section -->
+      <!-- wp:heading {"level":2} -->
+      <h2>Overview</h2>
+      <!-- /wp:heading -->
+
+      <!-- wp:paragraph -->
+      <p>Experience the magic of the Inca Trail on this condensed 2-day journey to Machu Picchu. Perfect for travelers with limited time, this express trek combines stunning mountain scenery, ancient Inca ruins, and the thrill of reaching the Sun Gate at sunrise.</p>
+      <!-- /wp:paragraph -->
+
+      <!-- 2.5 Metadata Line (origin • difficulty • duration • type) -->
+      <!-- wp:travel-blocks/metadata-line /-->
+
+      <!-- 3. Promo Cards (Free brochure + Meet our guides) -->
+      <!-- wp:columns {"className":"promo-cards-section"} -->
+      <div class="wp-block-columns promo-cards-section">
+
+        <!-- Free Brochure Card -->
+        <!-- wp:column -->
+        <div class="wp-block-column">
+          <!-- wp:travel-blocks/promo-card /-->
+        </div>
+        <!-- /wp:column -->
+
+        <!-- Meet Our Guides Card -->
+        <!-- wp:column -->
+        <div class="wp-block-column">
+          <!-- wp:travel-blocks/promo-card /-->
+        </div>
+        <!-- /wp:column -->
+
+      </div>
+      <!-- /wp:columns -->
+
+      <!-- 5. Itinerary Day by Day -->
+      <!-- wp:heading {"level":2} -->
+      <h2>Day by day itinerary</h2>
+      <!-- /wp:heading -->
+
+      <!-- wp:travel-blocks/itinerary-day-by-day /-->
+
+      <!-- ========================================== -->
+      <!-- FASE 4: CONVERSIÓN (DENTRO DE COLUMNA)    -->
+      <!-- ========================================== -->
+
+      <!-- 6. Dates and Prices -->
+      <!-- wp:heading {"level":2} -->
+      <h2>Dates and Prices</h2>
+      <!-- /wp:heading -->
+
+      <!-- wp:travel-blocks/dates-and-prices /-->
+
+      <!-- 7. Inclusions & Exclusions -->
+      <!-- wp:heading {"level":2} -->
+      <h2>What's included</h2>
+      <!-- /wp:heading -->
+
+      <!-- wp:travel-blocks/inclusions-exclusions /-->
+
+      <!-- ========================================== -->
+      <!-- FASE 5: FORMULARIO + FAQ                  -->
+      <!-- ========================================== -->
+
+      <!-- 8. Contact Form -->
+      <!-- wp:heading {"level":2} -->
+      <h2>Get in Touch</h2>
+      <!-- /wp:heading -->
+
+      <!-- wp:travel-blocks/contact-form /-->
+
+      <!-- 9. FAQ Accordion -->
+      <!-- wp:travel-blocks/faq-accordion-package /-->
+
+    </div>
+    <!-- /wp:column -->
+
+    <!-- ========================================== -->
+    <!-- COLUMNA DERECHA: SIDEBAR STICKY           -->
+    <!-- ========================================== -->
+    <!-- wp:column {"width":"33.33%","className":"package-sidebar sticky"} -->
+    <div class="wp-block-column package-sidebar sticky" style="flex-basis:33.33%">
+
+      <!-- FASE 2: SIDEBAR DE CONVERSIÓN -->
+
+      <!-- Pricing Card - Tarjeta de reserva/conversión -->
+      <!-- wp:travel-blocks/pricing-card /-->
+
+      <!-- 3.4 Mini-reviews - Reviews cortas para sidebar -->
+      <!-- wp:heading {"level":4,"className":"sidebar-section-title"} -->
+      <h4 class="sidebar-section-title">Who recommends this visit</h4>
+      <!-- /wp:heading -->
+
+      <!-- wp:travel-blocks/reviews-carousel /-->
+
+      <!-- 3.5 Related Trips - Paquetes relacionados -->
+      <!-- wp:heading {"level":4,"className":"sidebar-section-title"} -->
+      <h4 class="sidebar-section-title wp-block-heading">Related Trips</h4>
+      <!-- /wp:heading -->
+
+      <!-- wp:travel-blocks/related-packages /-->
+
+    </div>
+    <!-- /wp:column -->
+
+  </div>
+  <!-- /wp:columns -->
+
+  <!-- ========================================== -->
+  <!-- SECCIONES FULL-WIDTH DESPUÉS DE COLUMNAS  -->
+  <!-- ========================================== -->
+
+  <!-- Contact Planner Form - Formulario sobre imagen de fondo -->
+  <!-- wp:travel-blocks/contact-planner-form /-->
+
+  <!-- Traveler Reviews - Grid grande de reviews con filtros -->
+  <!-- wp:travel-blocks/traveler-reviews /-->
+
+  <!-- Related Posts Grid - Blog posts relacionados -->
+  <!-- wp:travel-blocks/related-posts-grid /-->
+
+  <!-- Impact Section - Responsabilidad social -->
+  <!-- wp:travel-blocks/impact-section /-->
+
+  <!-- Trust Badges - Logos de certificaciones -->
+  <!-- wp:travel-blocks/trust-badges /-->
+
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer"} /-->

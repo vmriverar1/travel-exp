@@ -1,0 +1,57 @@
+.travel-swiper--checklist .check-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+.travel-swiper--checklist img {
+    width: 120px;
+    height: auto;
+    display: block;
+}
+
+.travel-swiper--checklist .checklist-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.travel-swiper--checklist .checklist-button {
+    display: inline-block;
+    background-color: #E78C85;
+    color: #ffffff;
+    font-weight: 700;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    text-decoration: none;
+}
+
+.travel-swiper--checklist .checklist-bottom.desktop-only {
+    visibility: hidden;
+}
+
+@media (min-width:1024px) {
+    .travel-swiper--checklist .check-item {
+        display: flex;
+        gap: 12px;
+    }
+
+    .travel-swiper--checklist .swiper-wrapper {
+        gap: 4rem 0.25rem;
+    }
+
+    .travel-swiper--checklist .check-title {
+        font-size: 18px;
+        margin-top: 0;
+    }
+
+    .travel-swiper--checklist .checklist-bottom.desktop-only {
+        visibility: visible;
+    }
+
+    .travel-swiper--checklist .checklist-bottom.mobile-only {
+        display: none;
+    }
+}

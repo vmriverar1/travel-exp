@@ -1,0 +1,1 @@
+Todos markdown que generes los debes poner en la carpeta docs.

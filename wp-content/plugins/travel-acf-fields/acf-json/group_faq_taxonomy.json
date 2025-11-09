@@ -1,0 +1,62 @@
+{
+    "key": "group_faq_taxonomy",
+    "title": "FAQ Taxonomy Fields",
+    "fields": [
+        {
+            "key": "field_faq_pregunta",
+            "label": "Pregunta Completa",
+            "name": "pregunta",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "La pregunta completa que se mostrará en el acordeón FAQ",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "rows": 2,
+            "placeholder": "Ejemplo: ¿Cuáles son las opciones de pago disponibles?"
+        },
+        {
+            "key": "field_faq_respuesta",
+            "label": "Respuesta",
+            "name": "respuesta",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "La respuesta completa a la pregunta (soporta formato, enlaces, listas, etc.)",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "basic",
+            "media_upload": 0
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "taxonomy",
+                "operator": "==",
+                "value": "faq"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "acf_after_title",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": ["description"],
+    "active": true,
+    "description": "Campos personalizados para la taxonomía FAQ. Usa el campo Nombre para el título, el campo Pregunta para la pregunta completa, y el campo Descripción para la respuesta.",
+    "show_in_rest": 1,
+    "modified": 1730000000
+}

@@ -1,0 +1,409 @@
+/* =========================================================
+   POSTS CAROUSEL - Native CSS Scroll-Snap
+   Sin dependencias externas, solo CSS y JS vanilla
+========================================================= */
+
+/* ---- CONTENEDOR PRINCIPAL ---- */
+.posts-carousel {
+  position: relative;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+/* ---- SKELETON LOADER ---- */
+.pc-loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 800px;
+  z-index: 10;
+  opacity: 1;
+  transition: opacity 0.5s ease-out;
+  pointer-events: none;
+}
+
+.pc-loader.is-hidden {
+  opacity: 0;
+}
+
+.pc-skeleton {
+  width: 100%;
+  height: 450px;
+  border-radius: 16px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 37%, #f0f0f0 63%);
+  background-size: 400% 100%;
+  animation: pc-shimmer 1.6s infinite linear;
+}
+
+@keyframes pc-shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+/* ---- CAROUSEL CONTAINER ---- */
+.pc-carousel {
+  position: relative;
+  opacity: 0;
+  transition: opacity 0.6s ease-out 0.2s;
+}
+
+.pc-carousel.is-loaded {
+  opacity: 1;
+}
+
+/* ---- SLIDES WRAPPER (scroll-snap) ---- */
+.pc-slides {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+  padding: 10px 0;
+}
+
+/* Ocultar scrollbar en Chrome/Safari */
+.pc-slides::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---- SLIDE INDIVIDUAL ---- */
+.pc-slide {
+  position: relative;
+  flex: 0 0 calc(100% - 40px);
+  min-height: 500px;
+  border-radius: 16px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect (solo desktop) */
+@media (hover: hover) and (pointer: fine) {
+  .pc-slide:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* ---- GRADIENT OVERLAY ---- */
+.pc-slide__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.85) 0%,
+    rgba(0, 0, 0, 0.4) 50%,
+    rgba(0, 0, 0, 0.1) 100%
+  );
+  z-index: 1;
+  transition: background 0.3s ease;
+}
+
+.pc-slide:hover .pc-slide__overlay {
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0.3) 50%,
+    transparent 100%
+  );
+}
+
+/* ---- CATEGORY BADGE ---- */
+.pc-slide__category {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: #FF6B6B;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+}
+
+/* ---- CONTENT ---- */
+.pc-slide__content {
+  position: relative;
+  z-index: 2;
+  padding: 40px 32px 32px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pc-slide__text {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pc-slide__title {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.pc-slide__title a {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.pc-slide__title a:hover {
+  color: #FFE66D;
+}
+
+.pc-slide__excerpt {
+  font-size: 16px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.pc-slide__date {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+}
+
+.pc-slide__readmore {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #FFE66D;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  align-self: flex-start;
+  padding: 12px 24px;
+  border: 2px solid #FFE66D;
+  border-radius: 30px;
+  transition: all 0.3s ease;
+}
+
+.pc-slide__readmore:hover {
+  background: #FFE66D;
+  color: #111;
+  transform: translateX(4px);
+}
+
+.pc-slide__readmore svg {
+  transition: transform 0.3s ease;
+}
+
+.pc-slide__readmore:hover svg {
+  transform: translateX(4px);
+}
+
+/* ---- NAVIGATION ARROWS ---- */
+.pc-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 56px;
+  height: 56px;
+  background: rgba(255, 255, 255, 0.95);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  color: #111;
+}
+
+.pc-nav:hover {
+  background: #fff;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.pc-nav:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.pc-nav--prev {
+  left: -28px;
+}
+
+.pc-nav--next {
+  right: -28px;
+}
+
+.pc-nav:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ---- PAGINATION DOTS ---- */
+.pc-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.pc-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+.pc-dot:hover {
+  border-color: #888;
+  transform: scale(1.2);
+}
+
+.pc-dot.is-active {
+  width: 32px;
+  border-radius: 6px;
+  background: #FF6B6B;
+  border-color: #FF6B6B;
+}
+
+/* ---- EMPTY STATE ---- */
+.pc-empty {
+  text-align: center;
+  padding: 80px 20px;
+  color: #666;
+  font-size: 18px;
+}
+
+/* =========================================================
+   RESPONSIVE TABLET
+========================================================= */
+@media (max-width: 1024px) {
+  .pc-slide {
+    flex: 0 0 calc(90% - 20px);
+    min-height: 450px;
+  }
+
+  .pc-slide__title {
+    font-size: 28px;
+  }
+
+  .pc-nav {
+    width: 48px;
+    height: 48px;
+  }
+
+  .pc-nav--prev {
+    left: 10px;
+  }
+
+  .pc-nav--next {
+    right: 10px;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE MOBILE
+========================================================= */
+@media (max-width: 768px) {
+  .posts-carousel {
+    padding: 20px 10px;
+  }
+
+  .pc-slide {
+    flex: 0 0 calc(100% - 20px);
+    min-height: 420px;
+  }
+
+  .pc-slide__content {
+    padding: 32px 24px 24px;
+  }
+
+  .pc-slide__title {
+    font-size: 24px;
+  }
+
+  .pc-slide__excerpt {
+    font-size: 14px;
+    -webkit-line-clamp: 2;
+  }
+
+  .pc-slide__readmore {
+    font-size: 14px;
+    padding: 10px 20px;
+  }
+
+  .pc-nav {
+    width: 40px;
+    height: 40px;
+  }
+
+  .pc-nav--prev {
+    left: 5px;
+  }
+
+  .pc-nav--next {
+    right: 5px;
+  }
+
+  .pc-dot {
+    width: 10px;
+    height: 10px;
+  }
+
+  .pc-dot.is-active {
+    width: 24px;
+  }
+}
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  .pc-slides {
+    scroll-behavior: auto;
+  }
+
+  .pc-slide,
+  .pc-nav,
+  .pc-dot,
+  .pc-slide__readmore {
+    transition: none;
+  }
+}
+
+/* Focus visible para navegación con teclado */
+.pc-nav:focus-visible,
+.pc-dot:focus-visible {
+  outline: 3px solid #FFE66D;
+  outline-offset: 4px;
+}

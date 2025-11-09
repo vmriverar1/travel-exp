@@ -1,0 +1,78 @@
+/**
+ * Organism: Footer Main
+ */
+
+.footer-main {
+    background-color: #154D52;
+    color: var(--color-footer-text);
+    padding: var(--spacing-xl) 0 0;
+}
+
+.footer-main__container {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}
+
+.footer-main__top {
+    display: grid;
+    gap: var(--wp--preset--spacing--90);
+}
+
+/* Mobile: apilado verticalmente */
+@media (max-width: 767px) {
+    .footer-main__top {
+        grid-template-columns: 1fr;
+    }
+
+    /* Orden Mobile según especificaciones:
+       1. Logo + Lema (centrado)
+       2. Reviews + Redes Sociales (centrado)
+       3. RUC + Dirección (centrado)
+       4. Navegación (izquierda)
+       5. Info Institucional (izquierda)
+       6. Contact + Office Hours (izquierda)
+    */
+    .footer-main__column--brand {
+        order: 1;
+    }
+
+    .footer-main__column--nav {
+        order: 2;
+    }
+
+    .footer-main__column--info {
+        order: 3;
+    }
+}
+
+/* Tablet: 2 columnas */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .footer-main__top {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .footer-main__column--brand {
+        grid-column: 1 / -1;
+        order: -1;
+    }
+}
+
+/* Desktop: 3 columnas */
+@media (min-width: 1024px) {
+    .footer-main__top {
+        grid-template-columns: 2fr 3fr 2fr;
+    }
+
+    .footer-main__column--nav {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+
+@media (min-width: 1280px) {
+    .footer-main__top {
+        grid-template-columns: 2fr 5fr 2fr;
+    }
+}

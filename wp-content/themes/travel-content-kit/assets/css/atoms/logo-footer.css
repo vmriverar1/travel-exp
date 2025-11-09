@@ -1,0 +1,55 @@
+/**
+ * Atom: Footer Logo
+ */
+
+.logo-footer {
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+.logo-footer__link {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-xs);
+    text-decoration: none;
+    color: var(--color-footer-text);
+    transition: color var(--transition-fast);
+}
+
+.logo-footer__link:hover,
+.logo-footer__link:focus {
+    color: var(--color-footer-accent);
+}
+
+.logo-footer__icon {
+    width: 120px;
+    height: auto;
+}
+
+.logo-footer__image {
+    width: auto;
+    max-width: 250px;
+    height: auto;
+    max-height: 55px;
+    object-fit: contain;
+}
+
+.logo-footer__text {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.5px;
+}
+
+.logo-footer__tagline,
+.logo-footer__slogan {
+    margin: var(--spacing-xs) 0 0;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-light);
+    font-style: italic;
+    color: var(--color-footer-text-muted);
+}
+
+.logo-footer__slogan {
+    font-size: var(--font-size-base);
+}

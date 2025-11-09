@@ -1,0 +1,979 @@
+{
+    "key": "group_contact_form_hero",
+    "title": "Hero Form Settings",
+    "fields": [
+        {
+            "key": "field_hero_bg_tab",
+            "label": "Background Image",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_hero_bg_desktop",
+            "label": "Background Image (Desktop)",
+            "name": "hero_background_desktop",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Recommended size: 1920x680px. High quality image for desktop hero background.",
+            "required": 1,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "preview_size": "medium",
+            "library": "all",
+            "min_width": 0,
+            "min_height": 0,
+            "min_size": 0,
+            "max_width": 0,
+            "max_height": 0,
+            "max_size": 0,
+            "mime_types": ""
+        },
+        {
+            "key": "field_hero_bg_mobile",
+            "label": "Background Image (Mobile)",
+            "name": "hero_background_mobile",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Optional. Recommended size: 768x480px. If empty, desktop image will be used.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "preview_size": "medium",
+            "library": "all",
+            "min_width": 0,
+            "min_height": 0,
+            "min_size": 0,
+            "max_width": 0,
+            "max_height": 0,
+            "max_size": 0,
+            "mime_types": ""
+        },
+        {
+            "key": "field_hero_focal_position",
+            "label": "Image Focal Position",
+            "name": "hero_focal_position",
+            "aria-label": "",
+            "type": "select",
+            "instructions": "Control where the image is focused\/positioned",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "center center": "Center Center",
+                "center top": "Center Top",
+                "center bottom": "Center Bottom",
+                "left center": "Left Center",
+                "left top": "Left Top",
+                "left bottom": "Left Bottom",
+                "right center": "Right Center",
+                "right top": "Right Top",
+                "right bottom": "Right Bottom"
+            },
+            "default_value": "center center",
+            "return_format": "value",
+            "multiple": 0,
+            "allow_null": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": ""
+        },
+        {
+            "key": "field_hero_height_desktop",
+            "label": "Hero Height (Desktop)",
+            "name": "hero_height_desktop",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "Minimum height in pixels for desktop (≥1200px)",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 620,
+            "min": 400,
+            "max": 1000,
+            "step": 10,
+            "append": "px",
+            "placeholder": "",
+            "prepend": ""
+        },
+        {
+            "key": "field_hero_height_tablet",
+            "label": "Hero Height (Tablet)",
+            "name": "hero_height_tablet",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "Minimum height in pixels for tablet (768-1199px)",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 520,
+            "min": 360,
+            "max": 800,
+            "step": 10,
+            "append": "px",
+            "placeholder": "",
+            "prepend": ""
+        },
+        {
+            "key": "field_hero_height_mobile",
+            "label": "Hero Height (Mobile)",
+            "name": "hero_height_mobile",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "Minimum height in pixels for mobile (≤767px)",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 450,
+            "min": 320,
+            "max": 600,
+            "step": 10,
+            "append": "px",
+            "placeholder": "",
+            "prepend": ""
+        },
+        {
+            "key": "field_overlay_tab",
+            "label": "Overlay & Card",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_overlay_color",
+            "label": "Overlay Color",
+            "name": "overlay_color",
+            "aria-label": "",
+            "type": "color_picker",
+            "instructions": "Base color for the translucent overlay",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "#0a797e",
+            "enable_opacity": 0,
+            "return_format": "string"
+        },
+        {
+            "key": "field_overlay_opacity",
+            "label": "Overlay Opacity",
+            "name": "overlay_opacity",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "Opacity percentage (0-100). Recommended: 26-32%",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 28,
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "append": "%",
+            "placeholder": "",
+            "prepend": ""
+        },
+        {
+            "key": "field_overlay_blur",
+            "label": "Overlay Blur (Glass Effect)",
+            "name": "overlay_blur",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "Backdrop blur in pixels. Set to 0 to disable.",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 8,
+            "min": 0,
+            "max": 20,
+            "step": 1,
+            "append": "px",
+            "placeholder": "",
+            "prepend": ""
+        },
+        {
+            "key": "field_card_border_radius",
+            "label": "Card Border Radius",
+            "name": "card_border_radius",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "Border radius for the form card",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 26,
+            "min": 0,
+            "max": 50,
+            "step": 2,
+            "append": "px",
+            "placeholder": "",
+            "prepend": ""
+        },
+        {
+            "key": "field_card_max_width",
+            "label": "Card Max Width (Desktop)",
+            "name": "card_max_width",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "Maximum width of the form card on desktop",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 1100,
+            "min": 800,
+            "max": 1400,
+            "step": 20,
+            "append": "px",
+            "placeholder": "",
+            "prepend": ""
+        },
+        {
+            "key": "field_card_padding_desktop",
+            "label": "Card Padding (Desktop)",
+            "name": "card_padding_desktop",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "Internal padding of the card on desktop",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 60,
+            "min": 20,
+            "max": 100,
+            "step": 4,
+            "append": "px",
+            "placeholder": "",
+            "prepend": ""
+        },
+        {
+            "key": "field_card_padding_mobile",
+            "label": "Card Padding (Mobile)",
+            "name": "card_padding_mobile",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "Internal padding of the card on mobile",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 32,
+            "min": 16,
+            "max": 60,
+            "step": 4,
+            "append": "px",
+            "placeholder": "",
+            "prepend": ""
+        },
+        {
+            "key": "field_title_tab",
+            "label": "Title & Content",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_title_part_1",
+            "label": "Title - Part 1 (Before Highlight)",
+            "name": "title_part_1",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Text before the first highlight",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Let Our Team Of",
+            "maxlength": 100,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_title_highlight_1",
+            "label": "Title - Highlight 1 (Teal)",
+            "name": "title_highlight_1",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "First highlighted text (typically in teal)",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Local Experts",
+            "maxlength": 50,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_title_highlight_1_color",
+            "label": "Highlight 1 Color",
+            "name": "title_highlight_1_color",
+            "aria-label": "",
+            "type": "color_picker",
+            "instructions": "",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "#0a797e",
+            "enable_opacity": 0,
+            "return_format": "string"
+        },
+        {
+            "key": "field_title_part_2",
+            "label": "Title - Part 2 (Middle)",
+            "name": "title_part_2",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Text between the two highlights",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Help You Choose Your Perfect Peruvian Adventure.",
+            "maxlength": 150,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_title_highlight_2",
+            "label": "Title - Highlight 2 (Rose)",
+            "name": "title_highlight_2",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Second highlighted text (typically in rose)",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Get in touch today!",
+            "maxlength": 50,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_title_highlight_2_color",
+            "label": "Highlight 2 Color",
+            "name": "title_highlight_2_color",
+            "aria-label": "",
+            "type": "color_picker",
+            "instructions": "",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "#e78c85",
+            "enable_opacity": 0,
+            "return_format": "string"
+        },
+        {
+            "key": "field_form_fields_tab",
+            "label": "Form Fields",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_enable_first_name",
+            "label": "Enable First Name Field",
+            "name": "enable_first_name",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 1,
+            "ui": 1,
+            "message": "",
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_enable_last_name",
+            "label": "Enable Last Name Field",
+            "name": "enable_last_name",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 1,
+            "ui": 1,
+            "message": "",
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_enable_email",
+            "label": "Enable Email Field",
+            "name": "enable_email",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 1,
+            "ui": 1,
+            "message": "",
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_enable_phone",
+            "label": "Enable Phone Field",
+            "name": "enable_phone",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 1,
+            "ui": 1,
+            "message": "",
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_enable_country",
+            "label": "Enable Country Field",
+            "name": "enable_country",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 1,
+            "ui": 1,
+            "message": "",
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_country_list",
+            "label": "Country List",
+            "name": "country_list",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "List of countries (one per line). Leave empty for default list.",
+            "required": false,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_enable_country",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "rows": 8,
+            "default_value": "",
+            "new_lines": "",
+            "maxlength": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_enable_package",
+            "label": "Enable Package Field",
+            "name": "enable_package",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 1,
+            "ui": 1,
+            "message": "",
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_package_source",
+            "label": "Package Source",
+            "name": "package_source",
+            "aria-label": "",
+            "type": "select",
+            "instructions": "Where to load packages from",
+            "required": false,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_enable_package",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "cpt": "Load from Package CPT",
+                "manual": "Manual list"
+            },
+            "default_value": "cpt",
+            "multiple": 0,
+            "allow_null": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "return_format": "value"
+        },
+        {
+            "key": "field_package_manual_list",
+            "label": "Manual Package List",
+            "name": "package_manual_list",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "List of packages (one per line)",
+            "required": false,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_package_source",
+                        "operator": "==",
+                        "value": "manual"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "rows": 6,
+            "default_value": "",
+            "new_lines": "",
+            "maxlength": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_enable_message",
+            "label": "Enable Message Field",
+            "name": "enable_message",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 1,
+            "ui": 1,
+            "message": "",
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_message_placeholder",
+            "label": "Message Placeholder",
+            "name": "message_placeholder",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": false,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_enable_message",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Questions \/ Comments \/ Useful Information",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_legal_cta_tab",
+            "label": "Legal & CTA",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_legal_notice",
+            "label": "Legal Notice",
+            "name": "legal_notice",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "Legal notice text (appears below form). Can include links.",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "* By submitting this form, you agree to our <a href=\"\/privacy-policy\">privacy policy<\/a>",
+            "tabs": "visual",
+            "toolbar": "basic",
+            "media_upload": 0,
+            "delay": 0
+        },
+        {
+            "key": "field_legal_chip_bg",
+            "label": "Legal Chip Background",
+            "name": "legal_chip_bg",
+            "aria-label": "",
+            "type": "color_picker",
+            "instructions": "Background color for the legal notice chip (use semi-transparent white)",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "rgba(255,255,255,0.12)",
+            "enable_opacity": 1,
+            "return_format": "string"
+        },
+        {
+            "key": "field_cta_label",
+            "label": "CTA Button Label",
+            "name": "cta_label",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Text for the submit button",
+            "required": 1,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Connect With Us",
+            "maxlength": 30,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_cta_bg_color",
+            "label": "CTA Background Color",
+            "name": "cta_bg_color",
+            "aria-label": "",
+            "type": "color_picker",
+            "instructions": "",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "#e78c85",
+            "enable_opacity": 0,
+            "return_format": "string"
+        },
+        {
+            "key": "field_cta_text_color",
+            "label": "CTA Text Color",
+            "name": "cta_text_color",
+            "aria-label": "",
+            "type": "color_picker",
+            "instructions": "",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "#ffffff",
+            "enable_opacity": 0,
+            "return_format": "string"
+        },
+        {
+            "key": "field_behavior_tab",
+            "label": "Form Behavior",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_recipient_email",
+            "label": "Recipient Email",
+            "name": "recipient_email",
+            "aria-label": "",
+            "type": "email",
+            "instructions": "Email address to receive form submissions. Leave empty to use site admin email.",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placeholder": "info@example.com",
+            "default_value": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_success_message",
+            "label": "Success Message",
+            "name": "success_message",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Message shown after successful submission",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Thank you! We'll be in touch within 24 hours.",
+            "maxlength": 150,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_error_message",
+            "label": "Error Message",
+            "name": "error_message",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Message shown if submission fails",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Something went wrong. Please try again or contact us directly.",
+            "maxlength": 150,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_enable_ajax",
+            "label": "Enable AJAX Submission",
+            "name": "enable_ajax",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Submit form without page reload",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 1,
+            "ui": 1,
+            "message": "",
+            "ui_on_text": "",
+            "ui_off_text": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "acf\/contact-form"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Settings for the Hero Contact Form block with background image and overlay",
+    "show_in_rest": false,
+    "modified": 1761731178
+}

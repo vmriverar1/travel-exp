@@ -1,0 +1,74 @@
+/**
+ * Atom: Logo
+ */
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    color: #ffffff;
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-base);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    transition: all var(--transition-fast);
+}
+
+.logo:hover {
+    opacity: 0.9;
+    color: #ffffff;
+    transform: scale(1.05);
+}
+
+.logo__icon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    color: #ffffff;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.logo__image {
+    height: 24px;
+    width: auto;
+    max-width: 250px;
+    flex-shrink: 0;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+/* Logo variant for aside menu - uses color version, no filters */
+.logo--aside .logo__image {
+    filter: none;
+    height: 55px;
+}
+
+.logo--aside .logo__icon {
+    color: var(--color-primary, #d46a3f);
+    filter: none;
+}
+
+.logo__text {
+    display: none;
+    white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+    .logo__text {
+        display: block;
+    }
+}
+
+@media (min-width: 1024px) {
+    .logo {
+        font-size: var(--font-size-lg);
+    }
+
+    .logo__image {
+        height: 55px;
+    }
+}
+
+@media (max-width: 767px) {
+    .logo--aside .logo__image {
+        height: 36px;
+    }
+}

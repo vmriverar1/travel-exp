@@ -1,0 +1,7 @@
+/**
+ * Organisms Bundle
+ * Import all organism components
+ */
+
+@import 'header.css';
+@import 'footer-main.css';

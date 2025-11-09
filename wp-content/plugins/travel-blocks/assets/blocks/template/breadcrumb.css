@@ -1,0 +1,88 @@
+/**
+ * Breadcrumb Navigation (Template Block)
+ * Displays: Home > Packages > Adventure > Amazon Jungle Tour 3 Days
+ */
+
+.breadcrumb-navigation {
+  padding: 12px 0;
+  margin-bottom: 16px;
+}
+
+.breadcrumb-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.breadcrumb-item {
+  display: inline-flex;
+  align-items: center;
+  color: #666;
+}
+
+.breadcrumb-item a {
+  color: #666;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.breadcrumb-item a:hover {
+  color: #E78C85;
+  text-decoration: underline;
+}
+
+/* Current page (last item, no link) */
+.breadcrumb-item span[aria-current="page"] {
+  color: #333;
+  font-weight: 500;
+}
+
+/* Separator between items */
+.breadcrumb-item:not(:last-child)::after {
+  content: '>';
+  margin: 0 8px;
+  color: #999;
+  font-size: 12px;
+}
+
+/* ==================== RESPONSIVE ==================== */
+
+@media (max-width: 768px) {
+  .breadcrumb-navigation {
+    padding: 8px 0;
+    margin-bottom: 12px;
+  }
+
+  .breadcrumb-list {
+    font-size: 13px;
+  }
+
+  .breadcrumb-item:not(:last-child)::after {
+    margin: 0 6px;
+    font-size: 11px;
+  }
+}
+
+/* ==================== EDITOR PREVIEW ==================== */
+
+/* Make breadcrumb more visible in editor */
+.editor-styles-wrapper .breadcrumb-navigation {
+  background: #f9f9f9;
+  padding: 16px;
+  border-radius: 4px;
+  border: 1px solid #e0e0e0;
+}
+
+/* ==================== ACCESSIBILITY ==================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .breadcrumb-item a {
+    transition: none;
+  }
+}

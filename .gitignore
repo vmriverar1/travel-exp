@@ -1,0 +1,8 @@
+*.zip
+instructions/*
+instructions/
+docs/
+docs/*
+*/claude/*
+*.jpg
+/wp-content/uploads/*

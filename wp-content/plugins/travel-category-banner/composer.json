@@ -1,0 +1,11 @@
+{
+  "name": "attach/travel-category-banner",
+  "description": "Blocks ACF Gutenberg: Category Banner (dynamic & static) with Swiper.",
+  "type": "wordpress-plugin",
+  "autoload": {
+    "psr-4": {
+      "Travel\\CategoryBanner\\": "src/"
+    }
+  },
+  "require": {}
+}

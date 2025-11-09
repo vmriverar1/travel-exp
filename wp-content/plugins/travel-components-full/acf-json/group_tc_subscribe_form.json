@@ -1,0 +1,69 @@
+{
+  "key": "group_tc_subscribe_form",
+  "title": "Subscribe Form",
+  "fields": [
+    {
+      "key": "field_tc_sf_bg",
+      "label": "Background Color",
+      "name": "bg_color",
+      "type": "color_picker",
+      "default_value": "#f8f8f8"
+    },
+    {
+      "key": "field_tc_sf_btn",
+      "label": "Button Text",
+      "name": "button_text",
+      "type": "text",
+      "default_value": "Subscribe Now"
+    },
+    {
+      "key": "field_tc_sf_endpoint",
+      "label": "Endpoint API",
+      "name": "endpoint",
+      "type": "text",
+      "instructions": "Solo el ID o código del formulario remoto del CRM.",
+      "placeholder": "Ej: MzY0sjQwNDM2AgA/",
+      "required": 1
+    },
+    {
+      "key": "field_tc_sf_baseuri",
+      "label": "Base URI (CRM API)",
+      "name": "base_uri",
+      "type": "text",
+      "instructions": "URL raíz fija del CRM o API.",
+      "placeholder": "https://api.valenciatravel.com/v1/",
+      "required": 1
+    },
+    {
+      "key": "field_tc_sf_recip",
+      "label": "Recipients",
+      "name": "recipients",
+      "type": "repeater",
+      "layout": "table",
+      "button_label": "Add Recipient",
+      "sub_fields": [
+        {
+          "key": "field_tc_sf_recip_email",
+          "label": "Email",
+          "name": "recipient_email",
+          "type": "email",
+          "required": 1
+        }
+      ]
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "block",
+        "operator": "==",
+        "value": "acf/subscribeform"
+      }
+    ]
+  ],
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "active": true
+}
