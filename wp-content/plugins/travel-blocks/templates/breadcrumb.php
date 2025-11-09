@@ -4,14 +4,13 @@
  *
  * Muestra la ruta de navegación automáticamente
  *
- * @var array $data Block data and settings
+ * @var string $block_id    Block unique ID
+ * @var bool   $show_home   Whether to show home link
+ * @var string $separator   Breadcrumb separator symbol
+ * @var string $text_color  Text color variant
+ * @var array  $items       Breadcrumb items array
+ * @var bool   $is_preview  Whether in preview mode
  */
-
-// Get data
-$items = $data['items'] ?? [];
-$separator = $data['separator'] ?? '>';
-$text_color = $data['text_color'] ?? 'default';
-$block_id = $data['block_id'] ?? 'breadcrumb-' . uniqid();
 
 // If no items, don't render
 if (empty($items)) {

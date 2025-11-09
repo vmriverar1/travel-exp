@@ -31,11 +31,15 @@ class HeroMediaGrid extends TemplateBlockBase
         $data = [
             'gallery' => $this->get_preview_images(6),
             'map_image' => 'https://picsum.photos/600/400?random=100',
-            'video_url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+            'video_embed' => $this->parse_video_embed_url('https://www.youtube.com/watch?v=dQw4w9WgXcQ'),
             'discount_badge' => [
                 'show' => true,
                 'percentage' => 15,
                 'text' => 'Early Bird Discount',
+            ],
+            'activity_level' => [
+                'label' => __('Moderate', 'travel-blocks'),
+                'dots' => 3,
             ],
             'is_preview' => true,
         ];
@@ -45,11 +49,14 @@ class HeroMediaGrid extends TemplateBlockBase
 
     protected function render_live(int $post_id, array $attributes): string
     {
+        $video_url = $this->get_package_video_url($post_id);
+
         $data = [
             'gallery' => $this->get_package_gallery($post_id),
             'map_image' => $this->get_package_map_image($post_id),
-            'video_url' => $this->get_package_video_url($post_id),
+            'video_embed' => $this->parse_video_embed_url($video_url),
             'discount_badge' => $this->get_package_discount($post_id),
+            'activity_level' => $this->get_package_physical_difficulty($post_id),
             'is_preview' => false,
         ];
 
@@ -136,6 +143,68 @@ class HeroMediaGrid extends TemplateBlockBase
             'percentage' => $percentage,
             'text' => $show_discount ? __('Special Offer', 'travel-blocks') : '',
         ];
+    }
+
+    /**
+     * Parse video URL and return embed iframe HTML
+     *
+     * Supports YouTube and Vimeo URLs
+     *
+     * @param string $video_url Video URL from ACF field
+     * @return string Iframe HTML or empty string
+     */
+    private function parse_video_embed_url(string $video_url): string
+    {
+        if (empty($video_url)) {
+            return '';
+        }
+
+        // YouTube
+        if (preg_match('/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/', $video_url, $matches)) {
+            $video_id = sanitize_text_field($matches[1]);
+            return sprintf(
+                '<iframe src="https://www.youtube.com/embed/%s" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+                esc_attr($video_id)
+            );
+        }
+
+        // Vimeo
+        if (preg_match('/vimeo\.com\/([0-9]+)/', $video_url, $matches)) {
+            $video_id = sanitize_text_field($matches[1]);
+            return sprintf(
+                '<iframe src="https://player.vimeo.com/video/%s" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>',
+                esc_attr($video_id)
+            );
+        }
+
+        return '';
+    }
+
+    /**
+     * Get package physical difficulty level
+     *
+     * Maps ACF field value to display label and dots count (1-5)
+     *
+     * @param int $post_id Package post ID
+     * @return array Activity level data with label and dots
+     */
+    private function get_package_physical_difficulty(int $post_id): array
+    {
+        $physical_difficulty = get_field('physical_difficulty', $post_id);
+
+        $difficulty_map = [
+            'easy' => ['label' => __('Easy', 'travel-blocks'), 'dots' => 1],
+            'moderate' => ['label' => __('Moderate', 'travel-blocks'), 'dots' => 2],
+            'moderate_demanding' => ['label' => __('Moderate - Demanding', 'travel-blocks'), 'dots' => 3],
+            'difficult' => ['label' => __('Difficult', 'travel-blocks'), 'dots' => 4],
+            'very_difficult' => ['label' => __('Very Difficult', 'travel-blocks'), 'dots' => 5],
+        ];
+
+        if (!empty($physical_difficulty) && isset($difficulty_map[$physical_difficulty])) {
+            return $difficulty_map[$physical_difficulty];
+        }
+
+        return ['label' => '', 'dots' => 0];
     }
 
     /**
