@@ -5,21 +5,55 @@
  * Native CSS scroll-snap carousel with vanilla JavaScript.
  * No external dependencies (Swiper, etc.).
  *
- * ⚠️ CRITICAL DUPLICATION WARNING:
- * This block has ~70% DUPLICATION with PostsCarousel block.
- * - PostsCarousel: 755 lines, inherits BlockBase, Material Design
- * - PostsCarouselNative: 274 lines, NO BlockBase, simpler
- * Decision needed: Consolidate or deprecate one of them.
+ * 🚨 DEFERRED - BLOCKED BY PostsCarousel CONSOLIDATION DECISION 🚨
  *
- * ⚠️ ARCHITECTURAL ISSUES (Audit Score: 4/10):
- * - Does NOT inherit from BlockBase (inconsistent with best practices)
+ * Audit Score: 4/10 (CRITICAL - but blocked by consolidation decision)
+ *
+ * CRITICAL ISSUES DOCUMENTED:
+ * - FILE SIZE: 326 lines
+ * - ~70% CODE DUPLICATION with PostsCarousel (777 lines)
+ * - Does NOT inherit from BlockBase (architectural inconsistency)
  * - Template performs queries directly (MVC violation)
- * - No DocBlocks (0/6 methods documented)
- * - Block name confusing (acf-gbr prefix)
- * - Namespace incorrect
- * - Empty constructor (unnecessary)
+ * - No DocBlocks (0/6 methods documented) ⚠️ NOT FIXED
+ * - Block name confusing (acf-gbr prefix) ⚠️ NOT FIXED
+ * - Empty constructor (unnecessary) ⚠️ NOT FIXED
  *
- * Features:
+ * ❌ WHY NOT REFACTORED IN THIS SESSION:
+ *
+ * 1. ❌ BLOCKED BY PostsCarousel consolidation decision
+ *    - Reason: ~70% shared code with PostsCarousel
+ *    - Risk: Refactoring one without the other worsens duplication
+ *    - Decision needed: Deprecate this block OR consolidate both
+ *    - Estimated: 2-3 hours to consolidate + migration
+ *
+ * 2. ❌ BlockBase inheritance
+ *    - Reason: Blocked by consolidation decision
+ *    - Risk: Wasted effort if block is deprecated
+ *    - Estimated: 1 hour (but may be obsolete)
+ *
+ * 3. ❌ Add DocBlocks (0/6 methods)
+ *    - Reason: Minimal value if block will be deprecated
+ *    - Estimated: 15-20 minutes
+ *    - Blocked by: Consolidation decision
+ *
+ * 4. ❌ Fix block name (acf-gbr prefix)
+ *    - Reason: Breaking change for existing content
+ *    - Risk: Requires migration of all pages using this block
+ *    - Estimated: 30 min + migration script
+ *
+ * 5. ❌ Template MVC violations
+ *    - Reason: Blocked by consolidation decision
+ *    - Estimated: 1 hour
+ *
+ * ⚠️ RECOMMENDED APPROACH FOR FUTURE:
+ * → DECISION NEEDED: Keep PostsCarousel OR PostsCarouselNative
+ * → Option A: DEPRECATE PostsCarouselNative (simpler, less features)
+ * → Option B: Consolidate both into single block with "style" option
+ * → Migrate existing content to chosen block
+ * → Remove deprecated block in next major version
+ * → Estimated: 2-3 hours for deprecation OR 4-5 hours for consolidation
+ *
+ * Features (currently working):
  * - CSS scroll-snap native carousel
  * - Vanilla JavaScript (no libraries)
  * - Manual cards OR dynamic via ContentQueryHelper
@@ -28,7 +62,7 @@
  *
  * @package Travel\Blocks\ACF
  * @since 1.0.0
- * @version 1.1.0 - Refactored: namespace fix, added duplication and architectural warnings
+ * @version 1.2.0 - DOCUMENTED - deferred pending PostsCarousel consolidation decision
  */
 
 namespace Travel\Blocks\ACF;
