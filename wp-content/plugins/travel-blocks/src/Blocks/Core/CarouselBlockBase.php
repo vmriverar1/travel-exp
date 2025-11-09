@@ -20,6 +20,7 @@
 
 namespace Travel\Blocks\Core;
 
+use Travel\Blocks\Config\ButtonStyles;
 use Travel\Blocks\Helpers\ContentQueryHelper;
 
 abstract class CarouselBlockBase extends BlockBase
@@ -108,6 +109,8 @@ abstract class CarouselBlockBase extends BlockBase
     /**
      * Get common style settings fields.
      *
+     * ✅ REFACTORED v2.1.0: Now uses ButtonStyles config class.
+     *
      * Returns ACF fields for styling:
      * - Button color variant
      * - Badge color variant
@@ -129,85 +132,34 @@ abstract class CarouselBlockBase extends BlockBase
                 'placement' => 'top',
             ],
 
-            // Button Color Variant
-            [
-                'key' => "field_{$prefix}_button_color_variant",
-                'label' => __('🎨 Button Color', 'travel-blocks'),
-                'name' => 'button_color_variant',
-                'type' => 'select',
-                'required' => 0,
-                'choices' => [
-                    'primary' => __('Primary - Pink (#E78C85)', 'travel-blocks'),
-                    'secondary' => __('Secondary - Purple (#311A42)', 'travel-blocks'),
-                    'white' => __('White with black text', 'travel-blocks'),
-                    'gold' => __('Gold (#CEA02D)', 'travel-blocks'),
-                    'dark' => __('Dark (#1A1A1A)', 'travel-blocks'),
-                    'transparent' => __('Transparent with white border', 'travel-blocks'),
-                    'read-more' => __('Text "Read More" (no background)', 'travel-blocks'),
-                ],
-                'default_value' => 'primary',
-                'ui' => 1,
-                'instructions' => __('Color applied to all card buttons', 'travel-blocks'),
-            ],
+            // ✅ Button Color Variant - using ButtonStyles config
+            ButtonStyles::get_button_field(
+                "field_{$prefix}_button_color_variant",
+                'button_color_variant',
+                'primary',
+                true // include read-more variant
+            ),
 
-            // Badge Color Variant
-            [
-                'key' => "field_{$prefix}_badge_color_variant",
-                'label' => __('🎨 Badge Color', 'travel-blocks'),
-                'name' => 'badge_color_variant',
-                'type' => 'select',
-                'required' => 0,
-                'choices' => [
-                    'primary' => __('Primary - Pink (#E78C85)', 'travel-blocks'),
-                    'secondary' => __('Secondary - Purple (#311A42)', 'travel-blocks'),
-                    'white' => __('White with black text', 'travel-blocks'),
-                    'gold' => __('Gold (#CEA02D)', 'travel-blocks'),
-                    'dark' => __('Dark (#1A1A1A)', 'travel-blocks'),
-                    'transparent' => __('Transparent with white border', 'travel-blocks'),
-                ],
-                'default_value' => 'secondary',
-                'ui' => 1,
-                'instructions' => __('Color applied to all badges', 'travel-blocks'),
-            ],
+            // ✅ Badge Color Variant - using ButtonStyles config
+            ButtonStyles::get_badge_field(
+                "field_{$prefix}_badge_color_variant",
+                'badge_color_variant',
+                'secondary'
+            ),
         ];
 
         // Add alignment fields if requested
         if ($include_alignments) {
-            $fields = array_merge($fields, [
-                // Text Alignment
-                [
-                    'key' => "field_{$prefix}_text_alignment",
-                    'label' => __('📐 Text Alignment', 'travel-blocks'),
-                    'name' => 'text_alignment',
-                    'type' => 'select',
-                    'required' => 0,
-                    'choices' => [
-                        'left' => __('Left', 'travel-blocks'),
-                        'center' => __('Center', 'travel-blocks'),
-                        'right' => __('Right', 'travel-blocks'),
-                    ],
-                    'default_value' => 'left',
-                    'ui' => 1,
-                    'instructions' => __('Text alignment (title, description, location, price)', 'travel-blocks'),
-                ],
-
-                // Button Alignment
-                [
-                    'key' => "field_{$prefix}_button_alignment",
-                    'label' => __('📍 Button Alignment', 'travel-blocks'),
-                    'name' => 'button_alignment',
-                    'type' => 'select',
-                    'required' => 0,
-                    'choices' => [
-                        'left' => __('Left', 'travel-blocks'),
-                        'center' => __('Center', 'travel-blocks'),
-                        'right' => __('Right', 'travel-blocks'),
-                    ],
-                    'default_value' => 'left',
-                    'ui' => 1,
-                    'instructions' => __('Button/CTA alignment', 'travel-blocks'),
-                ],
-            ]);
+            $fields[] = ButtonStyles::get_text_alignment_field(
+                "field_{$prefix}_text_alignment",
+                'text_alignment',
+                'left'
+            );
+            $fields[] = ButtonStyles::get_button_alignment_field(
+                "field_{$prefix}_button_alignment",
+                'button_alignment',
+                'left'
+            );
         }
 
         return $fields;
