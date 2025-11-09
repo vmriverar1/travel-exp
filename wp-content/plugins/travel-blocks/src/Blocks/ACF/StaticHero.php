@@ -1,10 +1,60 @@
 <?php
+/**
+ * Block: Static Hero
+ *
+ * Simple fullscreen hero with title, subtitle, and background image.
+ * Minimal options, static layout only.
+ *
+ * ⚠️ DEPRECATION WARNING:
+ * This block has CRITICAL architectural issues:
+ * - Does NOT inherit from BlockBase (violates architecture consistency)
+ * - Template violates MVC (calls get_field() directly)
+ * - Uses $GLOBALS anti-pattern for data passing
+ * - add_action('wp_head') inside template (severe anti-pattern)
+ * - Background-image without proper escaping (XSS risk in template)
+ * - ACF fields defined in JSON (less flexible than PHP)
+ * - Functionality duplicated by HeroSection block (which is superior)
+ *
+ * ⚠️ RECOMMENDATION: Migrate content to HeroSection and deprecate this block.
+ * HeroSection provides same functionality with better architecture and more options.
+ *
+ * @package Travel\Blocks\ACF
+ * @since 1.0.0
+ * @version 1.1.0 - Refactored: namespace fix, added docs, marked for deprecation
+ *
+ * @see HeroSection Better alternative with proper BlockBase inheritance
+ */
 
-namespace Travel\Blocks\Blocks\ACF;
+namespace Travel\Blocks\ACF;
 
 class StaticHero
 {
+    /**
+     * Block name identifier.
+     *
+     * @var string
+     */
     private string $name = 'acf-gbr-static-hero';
+
+    /**
+     * Register the ACF block type.
+     *
+     * Registers a simple static hero block with minimal configuration.
+     * Does NOT inherit from BlockBase (architectural issue).
+     *
+     * ACF Fields (defined in JSON /acf-json/group_acfgbr_static_hero.json):
+     * - sh_title: Hero title text
+     * - sh_subtitle: Hero subtitle text
+     * - sh_background: Background image
+     *
+     * ⚠️ Known Issues:
+     * - Template violates MVC by calling get_field() directly
+     * - Uses $GLOBALS for data passing (anti-pattern)
+     * - Template has add_action('wp_head') inside (severe anti-pattern)
+     * - Background-image lacks proper escaping in template (XSS risk)
+     *
+     * @return void
+     */
     public function register(): void
     {
         acf_register_block_type([
@@ -41,6 +91,26 @@ class StaticHero
             },
         ]);
     }
+
+    /**
+     * Render the block output.
+     *
+     * Loads template that generates fullscreen hero section.
+     * Passes block wrapper attributes via $GLOBALS (anti-pattern).
+     *
+     * ⚠️ Architectural Issues in this method:
+     * - Uses $GLOBALS to pass data to template (should use $data array)
+     * - Template calls get_field() directly (violates MVC)
+     * - Template includes add_action('wp_head') (severe anti-pattern)
+     * - Direct file include instead of load_template() method
+     *
+     * @param array  $block      Block settings and attributes
+     * @param string $content    Block content (unused)
+     * @param bool   $is_preview Whether block is being previewed in editor
+     * @param int    $post_id    Current post ID
+     *
+     * @return void
+     */
     public function render($block, $content = '', $is_preview = false, $post_id = 0): void
     {
         // Get WordPress block attributes
