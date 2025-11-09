@@ -23,9 +23,9 @@
  * @version 1.1.1 - Enhanced: critical dependency documentation for header integration
  */
 
-namespace Travel\Blocks\ACF;
+namespace Travel\Blocks\Blocks\ACF;
 
-use Travel\Blocks\Core\BlockBase;
+use Travel\Core\BlockBase;
 
 class StickySideMenu extends BlockBase
 {

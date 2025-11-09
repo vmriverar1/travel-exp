@@ -86,29 +86,29 @@ add_action('acf/init', function () {
         // ==========================================
 
         // Bloques originales de acf-gutenberg-blocks
-        new \Travel\Blocks\ACF\HeroSection(),
-        new \Travel\Blocks\ACF\StaticCTA(),
-        new \Travel\Blocks\ACF\FAQAccordion(),
-        new \Travel\Blocks\ACF\PostsCarousel(), // PostsCarousel Material
-        new \Travel\Blocks\ACF\SideBySideCards(), // Side by Side Cards (Horizontal)
-        new \Travel\Blocks\ACF\Breadcrumb(), // Breadcrumb (Migas de Pan)
-        new \Travel\Blocks\ACF\StickySideMenu(), // Sticky Side Menu (lateral derecho)
+        new \Travel\Blocks\Blocks\ACF\HeroSection(),
+        new \Travel\Blocks\Blocks\ACF\StaticCTA(),
+        new \Travel\Blocks\Blocks\ACF\FAQAccordion(),
+        new \Travel\Blocks\Blocks\ACF\PostsCarousel(), // PostsCarousel Material
+        new \Travel\Blocks\Blocks\ACF\SideBySideCards(), // Side by Side Cards (Horizontal)
+        new \Travel\Blocks\Blocks\ACF\Breadcrumb(), // Breadcrumb (Migas de Pan)
+        new \Travel\Blocks\Blocks\ACF\StickySideMenu(), // Sticky Side Menu (lateral derecho)
 
         // Bloques migrados desde acf-gutenberg-rest-blocks-v5
-        new \Travel\Blocks\ACF\FlexibleGridCarousel(),
-        new \Travel\Blocks\ACF\HeroCarousel(),
-        new \Travel\Blocks\ACF\PostsCarouselNative(), // PostsCarousel Native CSS
-        new \Travel\Blocks\ACF\TeamCarousel(),
-        new \Travel\Blocks\ACF\PostsListAdvanced(),
-        new \Travel\Blocks\ACF\StaticHero(),
-        new \Travel\Blocks\ACF\TaxonomyTabs(), // Taxonomy Tabs - Cards organizadas por categorías
+        new \Travel\Blocks\Blocks\ACF\FlexibleGridCarousel(),
+        new \Travel\Blocks\Blocks\ACF\HeroCarousel(),
+        new \Travel\Blocks\Blocks\ACF\PostsCarouselNative(), // PostsCarousel Native CSS
+        new \Travel\Blocks\Blocks\ACF\TeamCarousel(),
+        new \Travel\Blocks\Blocks\ACF\PostsListAdvanced(),
+        new \Travel\Blocks\Blocks\ACF\StaticHero(),
+        new \Travel\Blocks\Blocks\ACF\TaxonomyTabs(), // Taxonomy Tabs - Cards organizadas por categorías
 
         // Bloques Template con ACF
         new \Travel\Blocks\Blocks\Template\PromoCards(), // Two image cards with editable heights
         new \Travel\Blocks\Blocks\Template\TaxonomyArchiveHero(), // Taxonomy Archive Hero with image fallback
         new \Travel\Blocks\Blocks\Package\RelatedPackages(), // Related packages with ACF configuration
         new \Travel\Blocks\Blocks\Package\PackagesByLocation(), // Filter packages by location/destination
-        new \Travel\Blocks\ACF\ContactForm(), // Hero contact form with background image and ACF fields
+        new \Travel\Blocks\Blocks\ACF\ContactForm(), // Hero contact form with background image and ACF fields
     ];
 
     foreach ($acf_blocks as $block) {

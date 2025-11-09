@@ -77,9 +77,9 @@
  * @version 1.2.0 - DOCUMENTED for future refactoring - block too large for safe incremental changes
  */
 
-namespace Travel\Blocks\ACF;
+namespace Travel\Blocks\Blocks\ACF;
 
-use Travel\Blocks\Helpers\ContentQueryHelper;
+use Travel\Helpers\ContentQueryHelper;
 
 class HeroCarousel {
 

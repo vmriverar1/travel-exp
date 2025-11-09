@@ -24,7 +24,7 @@
  * @version 2.0.0 - Created: Consolidation of PostsCarousel + PostsCarouselNative
  */
 
-namespace Travel\Blocks\ACF;
+namespace Travel\Blocks\Blocks\ACF;
 
 use Travel\Core\BlockBase;
 use Travel\Helpers\ContentQueryHelper;

@@ -39,7 +39,7 @@
  * @see PostsCarousel Sibling block (Material variant)
  */
 
-namespace Travel\Blocks\ACF;
+namespace Travel\Blocks\Blocks\ACF;
 
 class PostsCarouselNative extends PostsCarouselUnified
 {

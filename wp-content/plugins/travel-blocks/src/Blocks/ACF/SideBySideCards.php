@@ -20,10 +20,10 @@
  * @version 1.1.0 - Refactored: namespace fix, improved docs, extracted column_span logic
  */
 
-namespace Travel\Blocks\ACF;
+namespace Travel\Blocks\Blocks\ACF;
 
-use Travel\Blocks\Core\BlockBase;
-use Travel\Blocks\Helpers\ContentQueryHelper;
+use Travel\Core\BlockBase;
+use Travel\Helpers\ContentQueryHelper;
 
 class SideBySideCards extends BlockBase
 {

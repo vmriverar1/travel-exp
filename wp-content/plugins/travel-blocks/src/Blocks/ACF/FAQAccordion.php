@@ -26,7 +26,7 @@
  * @version 1.1.0 - Refactored: namespace fix, improved Schema.org documentation
  */
 
-namespace Travel\Blocks\ACF;
+namespace Travel\Blocks\Blocks\ACF;
 
 use Travel\Blocks\Core\BlockBase;
 

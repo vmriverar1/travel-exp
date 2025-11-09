@@ -11,9 +11,9 @@
  * @version 1.1.0 - Refactored: divided long methods, improved architecture
  */
 
-namespace Travel\Blocks\ACF;
+namespace Travel\Blocks\Blocks\ACF;
 
-use Travel\Blocks\Core\BlockBase;
+use Travel\Core\BlockBase;
 
 class Breadcrumb extends BlockBase
 {

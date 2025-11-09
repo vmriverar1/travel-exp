@@ -10,7 +10,7 @@
  * @version 1.1.0 - Refactored: namespace fix, added error handling
  */
 
-namespace Travel\Blocks\ACF;
+namespace Travel\Blocks\Blocks\ACF;
 
 use Travel\Blocks\Core\BlockBase;
 

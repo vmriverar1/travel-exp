@@ -25,7 +25,7 @@
  * @see HeroSection Better alternative with proper BlockBase inheritance
  */
 
-namespace Travel\Blocks\ACF;
+namespace Travel\Blocks\Blocks\ACF;
 
 class StaticHero
 {

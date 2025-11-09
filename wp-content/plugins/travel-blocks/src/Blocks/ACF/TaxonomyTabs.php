@@ -22,9 +22,9 @@
  * @see ContentQueryHelper For dynamic content queries
  */
 
-namespace Travel\Blocks\ACF;
+namespace Travel\Blocks\Blocks\ACF;
 
-use Travel\Blocks\Helpers\ContentQueryHelper;
+use Travel\Helpers\ContentQueryHelper;
 
 class TaxonomyTabs
 {

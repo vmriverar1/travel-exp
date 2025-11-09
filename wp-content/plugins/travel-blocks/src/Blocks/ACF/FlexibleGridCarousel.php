@@ -67,9 +67,9 @@
  * @version 1.2.0 - DOCUMENTED - deferred pending HeroCarousel consolidation decision
  */
 
-namespace Travel\Blocks\ACF;
+namespace Travel\Blocks\Blocks\ACF;
 
-use Travel\Blocks\Helpers\ContentQueryHelper;
+use Travel\Helpers\ContentQueryHelper;
 
 class FlexibleGridCarousel {
 

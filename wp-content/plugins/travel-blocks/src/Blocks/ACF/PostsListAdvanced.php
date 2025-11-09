@@ -41,7 +41,7 @@
  * @deprecated 1.1.0 Use PostsCarousel block instead
  */
 
-namespace Travel\Blocks\ACF;
+namespace Travel\Blocks\Blocks\ACF;
 
 class PostsListAdvanced
 {

@@ -37,7 +37,7 @@
  * @see PostsCarouselNative Sibling block (Native variant)
  */
 
-namespace Travel\Blocks\ACF;
+namespace Travel\Blocks\Blocks\ACF;
 
 class PostsCarousel extends PostsCarouselUnified
 {
