@@ -26,8 +26,8 @@
 
 namespace Travel\Blocks\Blocks\ACF;
 
-use Travel\Core\BlockBase;
-use Travel\Helpers\ContentQueryHelper;
+use Travel\Blocks\Core\BlockBase;
+use Travel\Blocks\Helpers\ContentQueryHelper;
 
 abstract class PostsCarouselUnified extends BlockBase
 {

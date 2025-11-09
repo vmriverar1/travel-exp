@@ -25,7 +25,7 @@
 
 namespace Travel\Blocks\Blocks\ACF;
 
-use Travel\Core\BlockBase;
+use Travel\Blocks\Core\BlockBase;
 
 class StickySideMenu extends BlockBase
 {

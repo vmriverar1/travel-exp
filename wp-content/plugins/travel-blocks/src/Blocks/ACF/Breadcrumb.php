@@ -13,7 +13,7 @@
 
 namespace Travel\Blocks\Blocks\ACF;
 
-use Travel\Core\BlockBase;
+use Travel\Blocks\Core\BlockBase;
 
 class Breadcrumb extends BlockBase
 {
