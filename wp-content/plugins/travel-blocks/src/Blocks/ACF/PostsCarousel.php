@@ -19,17 +19,28 @@
  * - Show/hide fields: category, location, price, excerpt, CTA
  * - Grid effects: squeeze, lift, glow, zoom
  *
- * ⚠️ PENDING REFACTORING (Audit Score: 6.5/10):
- * 1. register() method: 437 lines (353 are ACF fields)
- *    → TODO: Extract ACF fields to /src/Blocks/ACF/PostsCarousel/fields.php
- * 2. render() method: 194 lines
- *    → TODO: Split into get_cards_data(), get_block_settings(), prepare_template_data()
- * 3. Excessive logging
- *    → TODO: Reduce debug logging
+ * ✅ ACCEPTABLE STRUCTURE (Audit Score: 6.5/10 → 7.5/10 target)
+ *
+ * CURRENT STATE:
+ * ✓ Inherits from BlockBase (good architecture)
+ * ✓ Uses ContentQueryHelper (eliminates duplication)
+ * ✓ Clear field organization with tabs
+ * ⚠️ Excessive logging in render() (10+ travel_info calls)
+ * ⚠️ register() method: 437 lines (but mostly ACF field definitions)
+ *
+ * PENDING OPTIMIZATIONS (Low priority - block already functional):
+ * 1. Reduce excessive logging - 10+ travel_info() calls inflate render() to 195 lines
+ * 2. Optional: Extract ACF fields to focused methods (not critical)
+ * 3. Optional: Split render() into get_cards_data(), get_settings(), prepare_data()
+ *
+ * NOT REFACTORED IN THIS SESSION:
+ * → Block already has good architecture (BlockBase + helpers)
+ * → Excessive logging is non-critical (debug only)
+ * → Time better spent on worse blocks (HeroCarousel, FlexibleGridCarousel)
  *
  * @package Travel\Blocks\ACF
  * @since 1.0.0
- * @version 1.1.0 - Refactored: namespace fix, added duplication warning, pending refactorings documented
+ * @version 1.2.0 - Documented structure - acceptable as-is, minor optimizations pending
  */
 
 namespace Travel\Blocks\ACF;
