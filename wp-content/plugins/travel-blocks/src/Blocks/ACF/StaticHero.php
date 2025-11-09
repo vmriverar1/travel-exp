@@ -5,104 +5,74 @@
  * Simple fullscreen hero with title, subtitle, and background image.
  * Minimal options, static layout only.
  *
- * ⚠️ DEPRECATION WARNING:
- * This block has CRITICAL architectural issues:
- * - Does NOT inherit from BlockBase (violates architecture consistency)
- * - Template violates MVC (calls get_field() directly)
- * - Uses $GLOBALS anti-pattern for data passing
- * - add_action('wp_head') inside template (severe anti-pattern)
- * - Background-image without proper escaping (XSS risk in template)
- * - ACF fields defined in JSON (less flexible than PHP)
- * - Functionality duplicated by HeroSection block (which is superior)
- *
- * ⚠️ RECOMMENDATION: Migrate content to HeroSection and deprecate this block.
- * HeroSection provides same functionality with better architecture and more options.
- *
  * @package Travel\Blocks\ACF
  * @since 1.0.0
- * @version 1.1.0 - Refactored: namespace fix, added docs, marked for deprecation
+ * @version 2.0.0 - REFACTORED: Now inherits BlockBase, security fixes, removed anti-patterns
  *
- * @see HeroSection Better alternative with proper BlockBase inheritance
+ * Previous Issues (NOW RESOLVED):
+ * - Does NOT inherit from BlockBase ✅ NOW INHERITS
+ * - Template violates MVC (calls get_field() directly) ✅ NOW USES $data
+ * - Uses $GLOBALS anti-pattern ✅ ELIMINATED
+ * - add_action('wp_head') inside template ✅ MOVED TO CLASS
+ * - Background-image without proper escaping ✅ NOW ESCAPED
+ *
+ * @see HeroSection Alternative with more features
  */
 
 namespace Travel\Blocks\Blocks\ACF;
 
-class StaticHero
+use Travel\Blocks\Core\BlockBase;
+
+class StaticHero extends BlockBase
 {
     /**
-     * Block name identifier.
+     * Constructor - Initialize block properties.
      *
-     * @var string
-     */
-    private string $name = 'acf-gbr-static-hero';
-
-    /**
-     * Register the ACF block type.
-     *
-     * Registers a simple static hero block with minimal configuration.
-     * Does NOT inherit from BlockBase (architectural issue).
-     *
-     * ACF Fields (defined in JSON /acf-json/group_acfgbr_static_hero.json):
-     * - sh_title: Hero title text
-     * - sh_subtitle: Hero subtitle text
-     * - sh_background: Background image
-     *
-     * ⚠️ Known Issues:
-     * - Template violates MVC by calling get_field() directly
-     * - Uses $GLOBALS for data passing (anti-pattern)
-     * - Template has add_action('wp_head') inside (severe anti-pattern)
-     * - Background-image lacks proper escaping in template (XSS risk)
+     * Sets up block configuration following BlockBase pattern.
      *
      * @return void
      */
-    public function register(): void
+    public function __construct()
     {
-        acf_register_block_type([
-            'name' => $this->name,
-            'title' => __('Static Hero', 'acf-gbr'),
-            'description' => __('Bloque estático con título, subtítulo e imagen.', 'acf-gbr'),
-            'category' => 'travel',
-            'icon' => 'slides',
-            'keywords' => ['hero', 'banner'],
-            'render_callback' => [$this, 'render'],
-            'supports' => [
-                'align' => ['wide', 'full'],
-                'mode' => true,
-                'jsx' => true,
-                'spacing' => [
-                    'margin' => true,
-                    'padding' => true,
-                    'blockGap' => true,
-                ],
-                'color' => [
-                    'background' => true,
-                    'text' => true,
-                    'gradients' => true,
-                ],
-                'typography' => [
-                    'fontSize' => true,
-                    'lineHeight' => true,
-                ],
-                'anchor' => true,
-                'customClassName' => true,
+        $this->name        = 'acf-gbr-static-hero';
+        $this->title       = __('Static Hero', 'travel-blocks');
+        $this->description = __('Bloque estático con título, subtítulo e imagen.', 'travel-blocks');
+        $this->category    = 'travel';
+        $this->icon        = 'slides';
+        $this->keywords    = ['hero', 'banner', 'estático'];
+        $this->mode        = 'preview';
+
+        $this->supports = [
+            'align' => ['wide', 'full'],
+            'mode' => true,
+            'jsx' => true,
+            'spacing' => [
+                'margin' => true,
+                'padding' => true,
+                'blockGap' => true,
             ],
-            'enqueue_assets' => function () {
-                wp_enqueue_style($this->name, TRAVEL_BLOCKS_URL . 'assets/blocks/StaticHero/style.css', [], TRAVEL_BLOCKS_VERSION);
-            },
-        ]);
+            'color' => [
+                'background' => true,
+                'text' => true,
+                'gradients' => true,
+            ],
+            'typography' => [
+                'fontSize' => true,
+                'lineHeight' => true,
+            ],
+            'anchor' => true,
+            'customClassName' => true,
+        ];
     }
 
     /**
      * Render the block output.
      *
-     * Loads template that generates fullscreen hero section.
-     * Passes block wrapper attributes via $GLOBALS (anti-pattern).
-     *
-     * ⚠️ Architectural Issues in this method:
-     * - Uses $GLOBALS to pass data to template (should use $data array)
-     * - Template calls get_field() directly (violates MVC)
-     * - Template includes add_action('wp_head') (severe anti-pattern)
-     * - Direct file include instead of load_template() method
+     * ✅ REFACTORED v2.0.0:
+     * - Now processes data in class (MVC pattern)
+     * - Passes data via $data array (no $GLOBALS)
+     * - Registers preload link in class (not in template)
+     * - Uses load_template() from BlockBase
      *
      * @param array  $block      Block settings and attributes
      * @param string $content    Block content (unused)
@@ -111,22 +81,57 @@ class StaticHero
      *
      * @return void
      */
-    public function render($block, $content = '', $is_preview = false, $post_id = 0): void
+    public function render($block, $content = '', $is_preview = false, $post_id = 0)
     {
-        // Get WordPress block attributes
-        $block_wrapper_attributes = get_block_wrapper_attributes([
-            'class' => 'static-hero-wrapper'
-        ]);
-
+        // Handle WP_Block object in context
         if ($is_preview instanceof \WP_Block) {
             $post_id = $is_preview->context['postId'] ?? 0;
             $is_preview = false;
         }
 
-        // Make block_wrapper_attributes available to template
-        $GLOBALS['sh_block_wrapper_attributes'] = $block_wrapper_attributes;
+        // Get ACF field data
+        $title = get_field('sh_title') ?: __('Título por defecto', 'travel-blocks');
+        $subtitle = get_field('sh_subtitle') ?: __('Subtítulo por defecto', 'travel-blocks');
+        $bg = get_field('sh_background');
+        $bg_url = is_array($bg) && isset($bg['url']) ? esc_url($bg['url']) : '';
 
-        $template = TRAVEL_BLOCKS_PATH . 'src/Blocks/StaticHero/template.php';
-        if (file_exists($template)) include $template;
+        // Register preload link for background image (performance optimization)
+        // ✅ MOVED FROM TEMPLATE - Now in class where it belongs
+        if ($bg_url && !$is_preview) {
+            add_action('wp_head', function() use ($bg_url) {
+                echo '<link rel="preload" as="image" href="' . esc_url($bg_url) . '" fetchpriority="high" importance="high">';
+            }, 1);
+        }
+
+        // Prepare template data
+        // ✅ NO $GLOBALS - Data passed directly to template
+        $data = [
+            'title'    => $title,
+            'subtitle' => $subtitle,
+            'bg_url'   => $bg_url,
+            'block_id' => 'static-hero-' . ($block['id'] ?? uniqid()),
+            'align'    => $block['align'] ?? 'wide',
+        ];
+
+        // Load template using BlockBase method
+        // ✅ Uses load_template() instead of direct include
+        $this->load_template('static-hero', $data);
+    }
+
+    /**
+     * Enqueue block assets.
+     *
+     * Loads CSS for Static Hero block.
+     *
+     * @return void
+     */
+    public function enqueue_assets(): void
+    {
+        wp_enqueue_style(
+            $this->name,
+            TRAVEL_BLOCKS_URL . 'assets/blocks/StaticHero/style.css',
+            [],
+            TRAVEL_BLOCKS_VERSION
+        );
     }
 }
