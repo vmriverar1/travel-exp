@@ -1,11 +1,34 @@
 <?php
+/**
+ * Block: Team Carousel
+ *
+ * Team member profiles displayed in carousel (mobile) or grid (desktop).
+ * Features native CSS scroll-snap carousel without external libraries.
+ *
+ * Features:
+ * - 2 layout variations: Profile Card (circular) and Full Body Portrait (vertical)
+ * - Desktop: Static grid (2/3/4 columns, no carousel)
+ * - Mobile: Native carousel with CSS scroll-snap (<1024px)
+ * - Carousel controls: arrows, dots, autoplay, keyboard navigation
+ * - Skeleton loader with shimmer animation
+ * - Demo data with 6 realistic team members
+ * - Sub-repeater for achievements (Profile Card layout)
+ * - Conditional fields based on layout style
+ *
+ * ⚠️ Note: Does NOT inherit from BlockBase (simple standalone block).
+ * Demo data (179 lines) could be moved to JSON file.
+ *
+ * @package Travel\Blocks\ACF
+ * @since 1.0.0
+ * @version 1.1.0 - Refactored: namespace fix, improved documentation
+ */
 
-namespace Travel\Blocks\Blocks\ACF;
+namespace Travel\Blocks\ACF;
 
 class TeamCarousel {
 
     public function __construct() {
-        // Los métodos se llaman directamente desde Plugin.php
+        // Methods called directly from Plugin.php
     }
 
     public function register() {
