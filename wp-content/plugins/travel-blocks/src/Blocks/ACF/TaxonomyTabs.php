@@ -5,6 +5,19 @@
  * Advanced tabs system for organizing dynamic content by taxonomy terms.
  * Supports packages, posts, and deals with flexible taxonomy/term selection.
  *
+ * @package Travel\Blocks\ACF
+ * @since 1.0.0
+ * @version 2.0.0 - REFACTORED: Now inherits from BlockBase
+ *
+ * Previous Issues (NOW RESOLVED):
+ * - Does NOT inherit from BlockBase ✅ NOW INHERITS
+ * - Double asset registration ✅ FIXED
+ * - Public register_fields() ✅ NOW PRIVATE
+ *
+ * Previously Refactored (v1.2.0):
+ * - Split 467-line register_fields() into focused helper methods ✅
+ * - Split 314-line render() into focused helper methods ✅
+ *
  * Features:
  * - Dynamic content from packages/posts/deals via ContentQueryHelper
  * - Complete taxonomies OR individual terms as tabs
@@ -15,28 +28,20 @@
  * - ACF filters for dynamic choices loading
  * - Gutenberg block data reconstruction
  *
- * @package Travel\Blocks\ACF
- * @since 1.0.0
- * @version 1.2.0 - DEEP REFACTOR: Split 467-line and 314-line methods into focused methods
- *
  * @see ContentQueryHelper For dynamic content queries
  */
 
 namespace Travel\Blocks\Blocks\ACF;
 
+use Travel\Blocks\Core\BlockBase;
 use Travel\Blocks\Helpers\ContentQueryHelper;
 
-class TaxonomyTabs
+class TaxonomyTabs extends BlockBase
 {
     /**
-     * Block name identifier.
+     * Constructor - Initialize block properties and register ACF filter hooks.
      *
-     * @var string
-     */
-    private string $name = 'travel-taxonomy-tabs';
-
-    /**
-     * Constructor - Register ACF filter hooks.
+     * ✅ REFACTORED: Now sets BlockBase properties AND preserves ACF filters
      *
      * Hooks into ACF field loading to populate dynamic choices for:
      * - Taxonomy term checkboxes (package_type, interest, locations, category, post_tag)
@@ -46,77 +51,59 @@ class TaxonomyTabs
      */
     public function __construct()
     {
-        // Add ACF filters to load checkbox choices dynamically
+        // Set block properties for BlockBase
+        $this->name        = 'travel-taxonomy-tabs';
+        $this->title       = __('Taxonomy Tabs', 'travel-blocks');
+        $this->description = __('Organiza cards por taxonomías en tabs. Soporta Packages, Blog Posts y Deals.', 'travel-blocks');
+        $this->category    = 'travel';
+        $this->icon        = 'tagcloud';
+        $this->keywords    = ['tabs', 'taxonomy', 'categories', 'packages', 'cards'];
+        $this->mode        = 'preview';
+
+        $this->supports = [
+            'align' => ['wide', 'full'],
+            'mode' => true,
+            'jsx' => true,
+            'spacing' => [
+                'margin' => true,
+                'padding' => true,
+            ],
+            'color' => [
+                'background' => true,
+                'text' => true,
+            ],
+            'anchor' => true,
+            'customClassName' => true,
+        ];
+
+        // ✅ PRESERVED: ACF filters for dynamic field choices (CRITICAL - must remain)
         add_filter('acf/load_field/name=tt_selected_terms_package_type', [$this, 'load_package_type_choices']);
         add_filter('acf/load_field/name=tt_selected_terms_interest', [$this, 'load_interest_choices']);
         add_filter('acf/load_field/name=tt_selected_locations_cpt', [$this, 'load_locations_cpt_choices']);
         add_filter('acf/load_field/name=tt_selected_terms_category', [$this, 'load_category_choices']);
         add_filter('acf/load_field/name=tt_selected_terms_post_tag', [$this, 'load_post_tag_choices']);
-
-        // Add filter for repeater term_id field to load only selected terms
         add_filter('acf/load_field/key=field_tt_override_term_id', [$this, 'load_selected_terms_for_override']);
     }
 
     /**
-     * Register block, ACF fields, and enqueue hooks.
+     * Register block and ACF fields.
+     *
+     * ✅ REFACTORED: Now uses parent::register() from BlockBase
+     * ✅ FIXED: Removed duplicate asset registration
      *
      * @return void
      */
     public function register(): void
     {
-        // Enqueue assets for both frontend and editor
-        add_action('enqueue_block_assets', [$this, 'enqueue_assets']);
-        add_action('enqueue_block_editor_assets', [$this, 'enqueue_assets']);
-
-        $this->register_block();
+        parent::register();
         $this->register_fields();
-    }
-
-    /**
-     * Register ACF block type.
-     *
-     * Registers Gutenberg block with full configuration:
-     * - Wide/full alignment support
-     * - Spacing and color controls
-     * - Preview mode for editor
-     *
-     * @return void
-     */
-    public function register_block(): void
-    {
-        acf_register_block_type([
-            'name'            => $this->name,
-            'title'           => __('Taxonomy Tabs', 'travel-blocks'),
-            'description'     => __('Organiza cards por taxonomías en tabs. Soporta Packages, Blog Posts y Deals.', 'travel-blocks'),
-            'category'        => 'travel',
-            'icon'            => 'tagcloud',
-            'keywords'        => ['tabs', 'taxonomy', 'categories', 'packages', 'cards'],
-            'render_callback' => [$this, 'render'],
-            'enqueue_assets'  => [$this, 'enqueue_assets'],
-            'mode'            => 'preview',
-            'api_version'     => 2,
-            'supports'        => [
-                'align' => ['wide', 'full'],
-                'mode' => true,
-                'jsx' => true,
-                'spacing' => [
-                    'margin' => true,
-                    'padding' => true,
-                ],
-                'color' => [
-                    'background' => true,
-                    'text' => true,
-                ],
-                'anchor' => true,
-                'customClassName' => true,
-            ],
-        ]);
     }
 
     /**
      * Register ACF fields for this block.
      *
-     * ✅ REFACTORED: Previously 467 lines - now split into focused methods.
+     * ✅ Made private (was public)
+     * ✅ REFACTORED (v1.2.0): Previously 467 lines - now split into focused methods
      *
      * Builds complete field array by merging:
      * - General tab fields (content source)
@@ -127,7 +114,7 @@ class TaxonomyTabs
      *
      * @return void
      */
-    public function register_fields(): void
+    private function register_fields(): void
     {
         if (!function_exists('acf_add_local_field_group')) {
             return;
