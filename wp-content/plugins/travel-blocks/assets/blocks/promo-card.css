@@ -126,7 +126,7 @@
 }
 
 .promo-card__button--primary {
-    background: var(--color-coral, #E78C85);
+    background: var(--wp--preset--color--secondary);
     color: white;
 }
 

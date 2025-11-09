@@ -105,7 +105,7 @@
 
 .cta-banner__button--primary {
     background: white;
-    color: var(--color-purple, #311A42);
+    color: var(--wp--preset--color--contrast-4);
 }
 
 .cta-banner__button--primary:hover {
@@ -121,7 +121,7 @@
 
 .cta-banner__button--secondary:hover {
     background: white;
-    color: var(--color-purple, #311A42);
+    color: var(--wp--preset--color--contrast-4);
 }
 
 /* Split Style */

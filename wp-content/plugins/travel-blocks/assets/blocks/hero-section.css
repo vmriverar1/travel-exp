@@ -97,12 +97,13 @@
 }
 
 .hero-section__cta.btn-primary {
-    background-color: #e74c3c;
+    background-color: var(--wp--preset--color--secondary);
     color: #fff;
 }
 
 .hero-section__cta.btn-primary:hover {
-    background-color: #c0392b;
+    --secondary-dark: #c0392b;
+    background-color: var(--secondary-dark);
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }

@@ -163,7 +163,7 @@
     width: 65%;
     margin: 0 auto;
     padding: .5rem 1.5rem;
-    background: #E78C85;
+    background: var(--wp--preset--color--secondary);
     color: #ffffff;
     text-align: center;
     text-decoration: none;

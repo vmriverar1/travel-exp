@@ -8,7 +8,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
 
 :root {
-    --tt-primary-color: #2563eb;
+    --tt-primary-color: var(--wp--preset--color--primary);
     --tt-secondary-color: #64748b;
     --tt-accent-color: #f59e0b;
     --tt-text-color: #1e293b;
@@ -153,13 +153,13 @@
 }
 
 .taxonomy-tabs--underline .tt-nav__item.is-active {
-    color: #311A42;
-    border-bottom-color: #311A42;
+    color: var(--wp--preset--color--contrast-4);
+    border-bottom-color: var(--wp--preset--color--contrast-4);
     background: transparent;
 }
 
 .taxonomy-tabs--underline .tt-nav__item.is-active .tt-nav__count {
-    background: #311A42;
+    background: var(--wp--preset--color--contrast-4);
     color: white;
 }
 
@@ -177,8 +177,8 @@
 }
 
 .taxonomy-tabs--buttons .tt-nav__item.is-active {
-    background: #311A42;
-    border-color: #311A42;
+    background: var(--wp--preset--color--contrast-4);
+    border-color: var(--wp--preset--color--contrast-4);
     color: white;
 }
 
@@ -278,7 +278,7 @@
     top: 20px;
     left: 20px;
     z-index: 10;
-    background: #311A42;
+    background: var(--wp--preset--color--contrast-4);
     color: #fff;
     font-size: 13px;
     font-weight: 600;
@@ -292,16 +292,16 @@
 
 /* Badge Color Variants */
 .tt-card__badge--primary {
-    background: #E78C85;
+    background: var(--wp--preset--color--secondary);
     color: #fff;
 }
 
 .tt-card__badge--primary:hover {
-    background: #dc7b74;
+    background: #d97a74;
 }
 
 .tt-card__badge--secondary {
-    background: #311A42;
+    background: var(--wp--preset--color--contrast-4);
     color: #fff;
 }
 
@@ -319,7 +319,7 @@
 }
 
 .tt-card__badge--gold {
-    background: #CEA02D;
+    background: var(--wp--preset--color--contrast-1);
     color: #fff;
 }
 
@@ -427,7 +427,7 @@
 /* CTA Button */
 .tt-card__button {
     padding: 10px 20px;
-    background: #E78C85;
+    background: var(--wp--preset--color--secondary);
     color: #fff;
     font-size: 14px;
     font-weight: 600;
@@ -442,7 +442,7 @@
 }
 
 .tt-card__button:hover {
-    background: #dc7b74;
+    background: #d97a74;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
@@ -453,16 +453,16 @@
 
 /* Button Color Variants */
 .tt-card__button--primary {
-    background: #E78C85;
+    background: var(--wp--preset--color--secondary);
     color: #fff;
 }
 
 .tt-card__button--primary:hover {
-    background: #dc7b74;
+    background: #d97a74;
 }
 
 .tt-card__button--secondary {
-    background: #311A42;
+    background: var(--wp--preset--color--contrast-4);
     color: #fff;
 }
 
@@ -482,7 +482,7 @@
 }
 
 .tt-card__button--gold {
-    background: #CEA02D;
+    background: var(--wp--preset--color--contrast-1);
     color: #fff;
 }
 
@@ -907,12 +907,12 @@
 
     /* Flecha izquierda con color personalizado */
     .tt-arrow--prev {
-        background: #E78C85;
+        background: var(--wp--preset--color--secondary);
         color: #ffffff;
     }
 
     .tt-arrow--prev:hover {
-        background: #E78C85;
+        background: var(--wp--preset--color--secondary);
         box-shadow: 0 4px 12px rgba(231, 140, 133, 0.4);
     }
 
@@ -1024,7 +1024,7 @@
     }
 
     .tt-dot.is-active {
-        background: #2563eb;
+        background: var(--wp--preset--color--primary);
         width: 24px;
         border-radius: 4px;
     }

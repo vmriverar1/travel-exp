@@ -120,7 +120,7 @@
     font-size: 1.125rem;
     font-weight: 600;
     text-decoration: none;
-    background: var(--color-coral, #E78C85);
+    background: var(--wp--preset--color--secondary);
     color: white;
     border-radius: var(--border-radius-sm, 4px);
     transition: all 0.3s ease;

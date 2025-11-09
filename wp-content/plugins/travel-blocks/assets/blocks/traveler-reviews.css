@@ -69,13 +69,13 @@
 }
 
 .traveler-reviews__filter-button:hover {
-    border-color: var(--color-coral, #E78C85);
-    color: var(--color-coral, #E78C85);
+    border-color: var(--wp--preset--color--secondary);
+    color: var(--wp--preset--color--secondary);
 }
 
 .traveler-reviews__filter-button.active {
-    background: var(--color-coral, #E78C85);
-    border-color: var(--color-coral, #E78C85);
+    background: var(--wp--preset--color--secondary);
+    border-color: var(--wp--preset--color--secondary);
     color: white;
 }
 
@@ -270,9 +270,9 @@
 .traveler-reviews__show-more {
     padding: 0.875rem 2.5rem;
     background: transparent;
-    border: 2px solid var(--color-coral, #E78C85);
+    border: 2px solid var(--wp--preset--color--secondary);
     border-radius: var(--border-radius-md, 6px);
-    color: var(--color-coral, #E78C85);
+    color: var(--wp--preset--color--secondary);
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
@@ -280,7 +280,7 @@
 }
 
 .traveler-reviews__show-more:hover {
-    background: var(--color-coral, #E78C85);
+    background: var(--wp--preset--color--secondary);
     color: white;
 }
 

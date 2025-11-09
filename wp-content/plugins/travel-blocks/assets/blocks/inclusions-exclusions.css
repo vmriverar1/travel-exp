@@ -222,18 +222,18 @@
 
 .inclusions-exclusions__column--inclusions .inclusions-exclusions__item-icon svg,
 .inclusions-exclusions__list--inclusions .inclusions-exclusions__item-icon svg {
-    fill: #E78C85;
+    fill: var(--wp--preset--color--secondary);
 }
 
 /* Header Icon for Inclusions */
 .inclusions-exclusions__column--inclusions .inclusions-exclusions__header-icon svg,
 .inclusions-exclusions__accordion-item--inclusions .inclusions-exclusions__accordion-icon svg {
-    fill: #E78C85;
+    fill: var(--wp--preset--color--secondary);
 }
 
 /* Accordion Inclusions Item Icons */
 .inclusions-exclusions__accordion-item--inclusions .inclusions-exclusions__item-icon {
-    background-color: #E78C85;
+    background-color: var(--wp--preset--color--secondary);
     border-radius: 50%;
     width: 24px;
     height: 24px;
@@ -291,7 +291,7 @@
 /* ===== ACCESSIBILITY ===== */
 
 .inclusions-exclusions--accordion .inclusions-exclusions__accordion-header:focus-visible {
-    outline: 2px solid var(--color-coral, #E78C85);
+    outline: 2px solid var(--wp--preset--color--secondary);
     outline-offset: 2px;
 }
 
