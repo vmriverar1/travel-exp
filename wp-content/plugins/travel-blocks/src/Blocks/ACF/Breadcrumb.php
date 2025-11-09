@@ -2,14 +2,16 @@
 /**
  * Block: Breadcrumb (Migas de Pan)
  *
- * Muestra la ruta de navegación automáticamente
- * Inicio > Archivo/Categoría > Página actual
+ * Generates automatic breadcrumb navigation based on page context.
+ * Supports singular pages, archives, taxonomies, search, and 404 pages.
+ * Provides contextual navigation trail: Home > Archive/Category > Current Page
  *
- * @package Travel\Blocks\Blocks
+ * @package Travel\Blocks\ACF
  * @since 1.0.0
+ * @version 1.1.0 - Refactored: divided long methods, improved architecture
  */
 
-namespace Travel\Blocks\Blocks\ACF;
+namespace Travel\Blocks\ACF;
 
 use Travel\Blocks\Core\BlockBase;
 
@@ -35,6 +37,10 @@ class Breadcrumb extends BlockBase
 
     /**
      * Enqueue block-specific assets.
+     *
+     * Loads CSS styles for breadcrumb navigation.
+     *
+     * @return void
      */
     public function enqueue_assets(): void
     {
@@ -49,6 +55,13 @@ class Breadcrumb extends BlockBase
 
     /**
      * Register block and its ACF fields.
+     *
+     * Registers ACF block type and defines field group with settings:
+     * - show_home: Toggle home link visibility
+     * - separator: Choose breadcrumb separator symbol
+     * - text_color: Select breadcrumb color scheme
+     *
+     * @return void
      */
     public function register(): void
     {
@@ -116,6 +129,16 @@ class Breadcrumb extends BlockBase
 
     /**
      * Render block content.
+     *
+     * Generates and displays breadcrumb navigation based on current page context.
+     * Automatically detects if user is on singular page, archive, search, or 404
+     * and builds appropriate breadcrumb trail.
+     *
+     * @param array $block Block settings and attributes
+     * @param string $content Block content (unused)
+     * @param bool $is_preview Whether block is being previewed in editor
+     * @param int $post_id Current post ID
+     * @return void
      */
     public function render(array $block, string $content = '', bool $is_preview = false, int $post_id = 0): void
     {
@@ -154,112 +177,209 @@ class Breadcrumb extends BlockBase
     }
 
     /**
-     * Get breadcrumb items based on current page context
+     * Get breadcrumb items based on current page context.
+     *
+     * Generates hierarchical breadcrumb trail based on WordPress
+     * query context (singular, archive, search, 404).
+     *
+     * @param bool $show_home Whether to include home link
+     * @return array Array of breadcrumb items with title, url, and current status
      */
     private function get_breadcrumb_items(bool $show_home = true): array
     {
         $items = [];
 
-        // Home
+        // Add home link
         if ($show_home) {
-            $items[] = [
-                'title' => __('Inicio', 'travel-blocks'),
-                'url' => home_url('/'),
-                'current' => is_front_page(),
-            ];
+            $items[] = $this->get_home_item();
         }
 
-        // Single post/package
+        // Add context-specific breadcrumbs
         if (is_singular()) {
-            global $post;
+            $items = array_merge($items, $this->get_singular_breadcrumbs());
+        } elseif (is_archive()) {
+            $items = array_merge($items, $this->get_archive_breadcrumbs());
+        } elseif (is_search()) {
+            $items[] = $this->get_search_breadcrumb();
+        } elseif (is_404()) {
+            $items[] = $this->get_404_breadcrumb();
+        }
 
-            // Get post type
-            $post_type = get_post_type();
-            $post_type_object = get_post_type_object($post_type);
+        return $items;
+    }
 
-            // Add post type archive (if not 'post')
-            if ($post_type !== 'post' && $post_type_object && $post_type_object->has_archive) {
-                $items[] = [
-                    'title' => $post_type_object->labels->name,
-                    'url' => get_post_type_archive_link($post_type),
-                    'current' => false,
-                ];
-            }
+    /**
+     * Get home breadcrumb item.
+     *
+     * @return array Home breadcrumb data
+     */
+    private function get_home_item(): array
+    {
+        return [
+            'title' => __('Inicio', 'travel-blocks'),
+            'url' => home_url('/'),
+            'current' => is_front_page(),
+        ];
+    }
 
-            // Add categories for posts
-            if ($post_type === 'post') {
-                $categories = get_the_category();
-                if (!empty($categories)) {
-                    $category = $categories[0];
-                    $items[] = [
-                        'title' => $category->name,
-                        'url' => get_category_link($category->term_id),
-                        'current' => false,
-                    ];
-                }
-            }
+    /**
+     * Get breadcrumbs for singular pages (posts, pages, custom post types).
+     *
+     * @return array Array of breadcrumb items
+     */
+    private function get_singular_breadcrumbs(): array
+    {
+        global $post;
+        $items = [];
 
-            // Add taxonomies for custom post types (like package)
-            if ($post_type !== 'post') {
-                $taxonomies = get_object_taxonomies($post_type, 'objects');
-                foreach ($taxonomies as $taxonomy) {
-                    if ($taxonomy->public && $taxonomy->show_ui) {
-                        $terms = get_the_terms($post->ID, $taxonomy->name);
-                        if ($terms && !is_wp_error($terms)) {
-                            $term = array_shift($terms);
-                            $items[] = [
-                                'title' => $term->name,
-                                'url' => get_term_link($term),
-                                'current' => false,
-                            ];
-                            break; // Only show first taxonomy
-                        }
-                    }
-                }
-            }
+        $post_type = get_post_type();
+        $post_type_object = get_post_type_object($post_type);
 
-            // Current page
+        // Add post type archive (if exists and not 'post')
+        if ($post_type !== 'post' && $post_type_object && $post_type_object->has_archive) {
             $items[] = [
-                'title' => get_the_title(),
-                'url' => get_permalink(),
-                'current' => true,
+                'title' => $post_type_object->labels->name,
+                'url' => get_post_type_archive_link($post_type),
+                'current' => false,
             ];
         }
-        // Archive pages
-        elseif (is_archive()) {
-            if (is_post_type_archive()) {
-                $post_type_object = get_queried_object();
-                $items[] = [
-                    'title' => $post_type_object->labels->name,
-                    'url' => get_post_type_archive_link($post_type_object->name),
-                    'current' => true,
-                ];
-            } elseif (is_category() || is_tag() || is_tax()) {
-                $term = get_queried_object();
-                $items[] = [
-                    'title' => $term->name,
-                    'url' => get_term_link($term),
-                    'current' => true,
-                ];
+
+        // Add category for regular posts
+        if ($post_type === 'post') {
+            $category_item = $this->get_post_category_breadcrumb();
+            if ($category_item) {
+                $items[] = $category_item;
+            }
+        } else {
+            // Add taxonomy term for custom post types
+            $taxonomy_item = $this->get_first_taxonomy_breadcrumb($post_type, $post->ID);
+            if ($taxonomy_item) {
+                $items[] = $taxonomy_item;
             }
         }
-        // Search
-        elseif (is_search()) {
+
+        // Add current page
+        $items[] = [
+            'title' => get_the_title(),
+            'url' => get_permalink(),
+            'current' => true,
+        ];
+
+        return $items;
+    }
+
+    /**
+     * Get breadcrumbs for archive pages.
+     *
+     * @return array Array of breadcrumb items
+     */
+    private function get_archive_breadcrumbs(): array
+    {
+        $items = [];
+
+        if (is_post_type_archive()) {
+            $post_type_object = get_queried_object();
             $items[] = [
-                'title' => __('Resultados de búsqueda para: ', 'travel-blocks') . get_search_query(),
-                'url' => '',
+                'title' => $post_type_object->labels->name,
+                'url' => get_post_type_archive_link($post_type_object->name),
                 'current' => true,
             ];
-        }
-        // 404
-        elseif (is_404()) {
+        } elseif (is_category() || is_tag() || is_tax()) {
+            $term = get_queried_object();
             $items[] = [
-                'title' => __('Página no encontrada', 'travel-blocks'),
-                'url' => '',
+                'title' => $term->name,
+                'url' => get_term_link($term),
                 'current' => true,
             ];
         }
 
         return $items;
+    }
+
+    /**
+     * Get search results breadcrumb.
+     *
+     * @return array Search breadcrumb data
+     */
+    private function get_search_breadcrumb(): array
+    {
+        return [
+            'title' => __('Resultados de búsqueda para: ', 'travel-blocks') . get_search_query(),
+            'url' => '',
+            'current' => true,
+        ];
+    }
+
+    /**
+     * Get 404 error breadcrumb.
+     *
+     * @return array 404 breadcrumb data
+     */
+    private function get_404_breadcrumb(): array
+    {
+        return [
+            'title' => __('Página no encontrada', 'travel-blocks'),
+            'url' => '',
+            'current' => true,
+        ];
+    }
+
+    /**
+     * Get category breadcrumb for regular posts.
+     *
+     * @return array|null Category breadcrumb or null if no category
+     */
+    private function get_post_category_breadcrumb(): ?array
+    {
+        $categories = get_the_category();
+
+        if (empty($categories)) {
+            return null;
+        }
+
+        $category = $categories[0];
+        return [
+            'title' => $category->name,
+            'url' => get_category_link($category->term_id),
+            'current' => false,
+        ];
+    }
+
+    /**
+     * Get first public taxonomy term breadcrumb for custom post types.
+     *
+     * Uses early returns to reduce nesting and improve readability.
+     *
+     * @param string $post_type The post type
+     * @param int $post_id The post ID
+     * @return array|null Taxonomy breadcrumb or null if no taxonomy found
+     */
+    private function get_first_taxonomy_breadcrumb(string $post_type, int $post_id): ?array
+    {
+        $taxonomies = get_object_taxonomies($post_type, 'objects');
+
+        foreach ($taxonomies as $taxonomy) {
+            // Skip non-public or hidden taxonomies
+            if (!$taxonomy->public || !$taxonomy->show_ui) {
+                continue;
+            }
+
+            $terms = get_the_terms($post_id, $taxonomy->name);
+
+            // Skip if no terms or error
+            if (!$terms || is_wp_error($terms)) {
+                continue;
+            }
+
+            // Return first valid term
+            $term = array_shift($terms);
+            return [
+                'title' => $term->name,
+                'url' => get_term_link($term),
+                'current' => false,
+            ];
+        }
+
+        return null;
     }
 }
