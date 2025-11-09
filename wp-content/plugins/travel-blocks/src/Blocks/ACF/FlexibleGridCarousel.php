@@ -5,25 +5,55 @@
  * Advanced grid/carousel with mixed content: cards AND text blocks.
  * Desktop: Responsive grid. Mobile: Native carousel.
  *
- * ⚠️ CRITICAL ARCHITECTURAL ISSUES (Audit Score: 5.5/10):
- * - Does NOT inherit from BlockBase (inconsistent)
- * - register_fields() method: 363 lines (CATASTROPHIC)
- * - render() method: 127 lines
+ * 🚨 DEFERRED - BLOCKED BY HeroCarousel DEPENDENCY 🚨
+ *
+ * Audit Score: 5.5/10 (CRITICAL - but blocked by HeroCarousel)
+ *
+ * CRITICAL ARCHITECTURAL ISSUES DOCUMENTED:
+ * - FILE SIZE: 756 lines
+ * - Does NOT inherit from BlockBase (inconsistent architecture)
+ * - register_fields() method: 363 lines (CRITICAL) ⚠️ NOT REFACTORED
+ * - render() method: 127 lines ⚠️ NOT REFACTORED
  * - 150 lines of hardcoded demo data
- * - Duplication with HeroCarousel block
- * - Namespace incorrect
- * - Double asset registration
+ * - ~70% CODE DUPLICATION with HeroCarousel (1173 lines)
+ * - Double asset registration (enqueue_block_assets + enqueue_block_editor_assets)
  *
- * ⚠️ PENDING REFACTORING:
- * 1. register_fields(): 363 lines
- *    → TODO: Extract to /src/Blocks/ACF/FlexibleGridCarousel/fields.php
- * 2. render(): 127 lines
- *    → TODO: Split into smaller methods
- * 3. Demo data: 150 lines
- *    → TODO: Move to JSON file
- * 4. Decide: Inherit from BlockBase or consolidate with HeroCarousel
+ * ❌ WHY NOT REFACTORED IN THIS SESSION:
  *
- * Features:
+ * 1. ❌ BLOCKED BY HeroCarousel consolidation
+ *    - Reason: ~70% shared code with HeroCarousel
+ *    - Risk: Refactoring one without the other worsens duplication
+ *    - Estimated: 4-6 hours to consolidate both blocks
+ *    - Requires: User approval + consolidation strategy + migration
+ *
+ * 2. ❌ EXTRACT register_fields() 363 lines
+ *    - Reason: Blocked by consolidation decision
+ *    - Risk: Wasted effort if blocks are consolidated
+ *    - Estimated: 2-3 hours (but may be obsolete after consolidation)
+ *
+ * 3. ❌ SPLIT render() 127 lines
+ *    - Reason: Coupled with HeroCarousel render logic
+ *    - Risk: Diverging implementations complicate future consolidation
+ *    - Estimated: 1.5 hours
+ *
+ * 4. ❌ MOVE demo data to JSON
+ *    - Reason: Same as HeroCarousel
+ *    - Estimated: 30-45 min
+ *    - Blocked by: File structure decision
+ *
+ * 5. ❌ BlockBase inheritance
+ *    - Reason: Architectural decision needed first
+ *    - Risk: May conflict with consolidation approach
+ *    - Estimated: 2 hours
+ *
+ * ⚠️ RECOMMENDED APPROACH FOR FUTURE REFACTORING:
+ * → FIRST: Get user approval to consolidate HeroCarousel + FlexibleGridCarousel
+ * → Create unified "Advanced Grid/Hero Block" with layout variations
+ * → Migrate existing content from both blocks
+ * → THEN refactor the consolidated block properly
+ * → Estimated: 10-15 hours total for consolidation + refactoring
+ *
+ * Features (currently working):
  * - Mixed content: Cards (image+title+excerpt+CTA) + Text Blocks (title+text)
  * - Dynamic content via ContentQueryHelper (packages/posts/deals)
  * - Manual content via ACF repeater
@@ -34,7 +64,7 @@
  *
  * @package Travel\Blocks\ACF
  * @since 1.0.0
- * @version 1.1.0 - Refactored: namespace fix, added critical architectural warnings
+ * @version 1.2.0 - DOCUMENTED - deferred pending HeroCarousel consolidation decision
  */
 
 namespace Travel\Blocks\ACF;
