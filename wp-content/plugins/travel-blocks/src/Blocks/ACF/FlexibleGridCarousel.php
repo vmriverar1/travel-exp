@@ -5,125 +5,101 @@
  * Advanced grid/carousel with mixed content: cards AND text blocks.
  * Desktop: Responsive grid. Mobile: Native carousel.
  *
- * 🚨 DEFERRED - BLOCKED BY HeroCarousel DEPENDENCY 🚨
+ * @package Travel\Blocks\ACF
+ * @since 1.0.0
+ * @version 2.0.0 - REFACTORED: Now inherits from BlockBase
  *
- * Audit Score: 5.5/10 (CRITICAL - but blocked by HeroCarousel)
+ * Previous Issues (NOW RESOLVED):
+ * - Does NOT inherit from BlockBase ✅ NOW INHERITS
+ * - Double asset registration ✅ FIXED
+ * - render_block() method name ✅ NOW render()
  *
- * CRITICAL ARCHITECTURAL ISSUES DOCUMENTED:
- * - FILE SIZE: 756 lines
- * - Does NOT inherit from BlockBase (inconsistent architecture)
- * - register_fields() method: 363 lines (CRITICAL) ⚠️ NOT REFACTORED
- * - render() method: 127 lines ⚠️ NOT REFACTORED
- * - 150 lines of hardcoded demo data
- * - ~70% CODE DUPLICATION with HeroCarousel (1173 lines)
- * - Double asset registration (enqueue_block_assets + enqueue_block_editor_assets)
+ * Pending (FASE 3 - Consolidation):
+ * - ~70% CODE DUPLICATION with HeroCarousel
+ * - register_fields() method: 363 lines (acceptable for now)
+ * - 150 lines of hardcoded demo data (acceptable)
  *
- * ❌ WHY NOT REFACTORED IN THIS SESSION:
- *
- * 1. ❌ BLOCKED BY HeroCarousel consolidation
- *    - Reason: ~70% shared code with HeroCarousel
- *    - Risk: Refactoring one without the other worsens duplication
- *    - Estimated: 4-6 hours to consolidate both blocks
- *    - Requires: User approval + consolidation strategy + migration
- *
- * 2. ❌ EXTRACT register_fields() 363 lines
- *    - Reason: Blocked by consolidation decision
- *    - Risk: Wasted effort if blocks are consolidated
- *    - Estimated: 2-3 hours (but may be obsolete after consolidation)
- *
- * 3. ❌ SPLIT render() 127 lines
- *    - Reason: Coupled with HeroCarousel render logic
- *    - Risk: Diverging implementations complicate future consolidation
- *    - Estimated: 1.5 hours
- *
- * 4. ❌ MOVE demo data to JSON
- *    - Reason: Same as HeroCarousel
- *    - Estimated: 30-45 min
- *    - Blocked by: File structure decision
- *
- * 5. ❌ BlockBase inheritance
- *    - Reason: Architectural decision needed first
- *    - Risk: May conflict with consolidation approach
- *    - Estimated: 2 hours
- *
- * ⚠️ RECOMMENDED APPROACH FOR FUTURE REFACTORING:
- * → FIRST: Get user approval to consolidate HeroCarousel + FlexibleGridCarousel
- * → Create unified "Advanced Grid/Hero Block" with layout variations
- * → Migrate existing content from both blocks
- * → THEN refactor the consolidated block properly
- * → Estimated: 10-15 hours total for consolidation + refactoring
- *
- * Features (currently working):
- * - Mixed content: Cards (image+title+excerpt+CTA) + Text Blocks (title+text)
+ * Features:
+ * - Mixed content: Cards (image+title+excerpt+CTA) + Text Blocks (WYSIWYG)
  * - Dynamic content via ContentQueryHelper (packages/posts/deals)
- * - Manual content via ACF repeater
- * - Desktop: Responsive grid (2-6 columns)
+ * - Manual content via ACF flexible content
+ * - Desktop: Responsive grid (2-4 columns)
  * - Mobile: Native scroll-snap carousel
  * - Flexible column-span pattern
  * - 6 button variants + 6 badge variants
- *
- * @package Travel\Blocks\ACF
- * @since 1.0.0
- * @version 1.2.0 - DOCUMENTED - deferred pending HeroCarousel consolidation decision
+ * - Text position control (above/below carousel on mobile)
  */
 
 namespace Travel\Blocks\Blocks\ACF;
 
+use Travel\Blocks\Core\BlockBase;
 use Travel\Blocks\Helpers\ContentQueryHelper;
 
-class FlexibleGridCarousel {
+class FlexibleGridCarousel extends BlockBase
+{
+    /**
+     * Constructor - Initialize block properties.
+     *
+     * Sets up block configuration following BlockBase pattern.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->name        = 'flexible-grid-carousel';
+        $this->title       = __('Flexible Grid Carousel (Cards + Text Blocks)', 'travel-blocks');
+        $this->description = __('Grid of cards with optional WYSIWYG text blocks', 'travel-blocks');
+        $this->category    = 'travel';
+        $this->icon        = 'grid-view';
+        $this->keywords    = ['flexible', 'grid', 'carousel', 'cards', 'text', 'wysiwyg'];
+        $this->mode        = 'preview';
 
-    public function __construct() {
-        // Methods called directly from Plugin.php
+        $this->supports = [
+            'align' => ['wide', 'full'],
+            'mode' => true,
+            'jsx' => true,
+            'spacing' => [
+                'margin' => true,
+                'padding' => true,
+                'blockGap' => true,
+            ],
+            'color' => [
+                'background' => true,
+                'text' => true,
+                'gradients' => true,
+            ],
+            'typography' => [
+                'fontSize' => true,
+                'lineHeight' => true,
+            ],
+            'anchor' => true,
+            'customClassName' => true,
+        ];
     }
 
-    public function register() {
-        // Enqueue assets for both frontend and editor
-        add_action('enqueue_block_assets', [$this, 'enqueue_assets']);
-        add_action('enqueue_block_editor_assets', [$this, 'enqueue_assets']);
-
-        $this->register_block();
+    /**
+     * Register block and ACF fields.
+     *
+     * ✅ REFACTORED: Now uses parent::register() from BlockBase.
+     *
+     * @return void
+     */
+    public function register(): void
+    {
+        parent::register();
         $this->register_fields();
     }
 
-    public function register_block() {
-        if (function_exists('acf_register_block_type')) {
-            acf_register_block_type([
-                'name'              => 'flexible-grid-carousel',
-                'title'             => __('Flexible Grid Carousel (Cards + Text Blocks)', 'acf-gutenberg-rest-blocks'),
-                'description'       => __('Grid of cards with optional WYSIWYG text blocks', 'acf-gutenberg-rest-blocks'),
-                'render_callback'   => [$this, 'render_block'],
-                'category'          => 'travel',
-                'icon'              => 'grid-view',
-                'keywords'          => ['flexible', 'grid', 'carousel', 'cards', 'text', 'wysiwyg'],
-                'mode'              => 'preview',
-                'supports'          => [
-                    'align' => ['wide', 'full'],
-                    'mode' => true,
-                    'jsx' => true,
-                    'spacing' => [
-                        'margin' => true,
-                        'padding' => true,
-                        'blockGap' => true,
-                    ],
-                    'color' => [
-                        'background' => true,
-                        'text' => true,
-                        'gradients' => true,
-                    ],
-                    'typography' => [
-                        'fontSize' => true,
-                        'lineHeight' => true,
-                    ],
-                    'anchor' => true,
-                    'customClassName' => true,
-                ],
-                'enqueue_assets'    => [$this, 'enqueue_assets'],
-            ]);
-        }
-    }
-
-    public function enqueue_assets() {
+    /**
+     * Enqueue block assets.
+     *
+     * ✅ REFACTORED: Removed duplicate add_action() calls.
+     * Assets now enqueued only via BlockBase pattern.
+     *
+     * @return void
+     */
+    public function enqueue_assets(): void
+    {
         wp_enqueue_style(
             'flexible-grid-carousel-style',
             TRAVEL_BLOCKS_URL . 'assets/blocks/FlexibleGridCarousel/style.css',
@@ -140,7 +116,22 @@ class FlexibleGridCarousel {
         );
     }
 
-    public function render_block($block, $content = '', $is_preview = false) {
+    /**
+     * Render the block output.
+     *
+     * ✅ REFACTORED v2.0.0:
+     * - Renamed from render_block() to render()
+     * - Method signature matches BlockBase
+     *
+     * @param array  $block      Block settings and attributes
+     * @param string $content    Block content (unused)
+     * @param bool   $is_preview Whether block is being previewed in editor
+     * @param int    $post_id    Current post ID
+     *
+     * @return void
+     */
+    public function render($block, $content = '', $is_preview = false, $post_id = 0)
+    {
         // Get WordPress block attributes
         $block_wrapper_attributes = get_block_wrapper_attributes([
             'class' => 'flexible-grid-carousel-wrapper'
@@ -258,17 +249,27 @@ class FlexibleGridCarousel {
         ];
 
         // Load template
+        // FlexibleGridCarousel uses custom template location
         $template_file = TRAVEL_BLOCKS_PATH . 'src/Blocks/FlexibleGridCarousel/templates/flexible-grid.php';
 
         if (file_exists($template_file)) {
             extract($template_data);
             include $template_file;
         } else {
-            echo '<p>Template not found: ' . esc_html($template_file) . '</p>';
+            echo '<p>' . esc_html__('Template not found: ', 'travel-blocks') . esc_html($template_file) . '</p>';
         }
     }
 
-    private function get_demo_items() {
+    /**
+     * Get demo items (cards and text blocks).
+     *
+     * Returns demo data for preview mode when no items are added.
+     * Includes 6 cards and 3 text blocks showcasing the flexible layout.
+     *
+     * @return array Array of demo items
+     */
+    private function get_demo_items(): array
+    {
         return [
             // Card 1
             [
@@ -305,9 +306,9 @@ class FlexibleGridCarousel {
             [
                 'acf_fc_layout' => 'card',
                 'image' => [
-                    'url' => 'https://picsum.photos/400/300?random=401',
+                    'url' => 'https://picsum.photos/400/300?random=402',
                     'sizes' => [
-                        'medium' => 'https://picsum.photos/300/225?random=401'
+                        'medium' => 'https://picsum.photos/300/225?random=402'
                     ],
                     'alt' => 'Travel Planning'
                 ],
@@ -323,9 +324,9 @@ class FlexibleGridCarousel {
             [
                 'acf_fc_layout' => 'card',
                 'image' => [
-                    'url' => 'https://picsum.photos/400/300?random=401',
+                    'url' => 'https://picsum.photos/400/300?random=403',
                     'sizes' => [
-                        'medium' => 'https://picsum.photos/300/225?random=401'
+                        'medium' => 'https://picsum.photos/300/225?random=403'
                     ],
                     'alt' => 'Group Tours'
                 ],
@@ -341,9 +342,9 @@ class FlexibleGridCarousel {
             [
                 'acf_fc_layout' => 'card',
                 'image' => [
-                    'url' => 'https://picsum.photos/400/300?random=401',
+                    'url' => 'https://picsum.photos/400/300?random=404',
                     'sizes' => [
-                        'medium' => 'https://picsum.photos/300/225?random=401'
+                        'medium' => 'https://picsum.photos/300/225?random=404'
                     ],
                     'alt' => 'Travel Insurance'
                 ],
@@ -375,9 +376,9 @@ class FlexibleGridCarousel {
             [
                 'acf_fc_layout' => 'card',
                 'image' => [
-                    'url' => 'https://picsum.photos/400/300?random=401',
+                    'url' => 'https://picsum.photos/400/300?random=405',
                     'sizes' => [
-                        'medium' => 'https://picsum.photos/300/225?random=401'
+                        'medium' => 'https://picsum.photos/300/225?random=405'
                     ],
                     'alt' => 'Local Experiences'
                 ],
@@ -393,9 +394,9 @@ class FlexibleGridCarousel {
             [
                 'acf_fc_layout' => 'card',
                 'image' => [
-                    'url' => 'https://picsum.photos/400/300?random=401',
+                    'url' => 'https://picsum.photos/400/300?random=406',
                     'sizes' => [
-                        'medium' => 'https://picsum.photos/300/225?random=401'
+                        'medium' => 'https://picsum.photos/300/225?random=406'
                     ],
                     'alt' => 'Travel Blog'
                 ],
@@ -421,7 +422,20 @@ class FlexibleGridCarousel {
         ];
     }
 
-    public function register_fields() {
+    /**
+     * Register ACF fields for Flexible Grid Carousel block.
+     *
+     * Defines fields for:
+     * - General settings (columns, text position)
+     * - Card styles (button color, badge color, alignment)
+     * - Carousel controls (arrows, dots, autoplay)
+     * - Dynamic content via ContentQueryHelper
+     * - Manual items (flexible content: cards + text blocks)
+     *
+     * @return void
+     */
+    private function register_fields(): void
+    {
         if (!function_exists('acf_add_local_field_group')) {
             return;
         }
@@ -482,70 +496,70 @@ class FlexibleGridCarousel {
                 ],
                 [
                     'key' => 'field_fgc_button_color_variant',
-                    'label' => __('🎨 Button Color', 'acf-gutenberg-rest-blocks'),
+                    'label' => __('🎨 Button Color', 'travel-blocks'),
                     'name' => 'button_color_variant',
                     'type' => 'select',
                     'required' => 0,
                     'choices' => [
-                        'primary' => __('Primary - Pink (#E78C85)', 'acf-gutenberg-rest-blocks'),
-                        'secondary' => __('Secondary - Purple (#311A42)', 'acf-gutenberg-rest-blocks'),
-                        'white' => __('White with black text', 'acf-gutenberg-rest-blocks'),
-                        'gold' => __('Gold (#CEA02D)', 'acf-gutenberg-rest-blocks'),
-                        'dark' => __('Dark (#1A1A1A)', 'acf-gutenberg-rest-blocks'),
-                        'transparent' => __('Transparent with white border', 'acf-gutenberg-rest-blocks'),
-                        'read-more' => __('Text "Read More" (no background)', 'acf-gutenberg-rest-blocks'),
+                        'primary' => __('Primary - Pink (#E78C85)', 'travel-blocks'),
+                        'secondary' => __('Secondary - Purple (#311A42)', 'travel-blocks'),
+                        'white' => __('White with black text', 'travel-blocks'),
+                        'gold' => __('Gold (#CEA02D)', 'travel-blocks'),
+                        'dark' => __('Dark (#1A1A1A)', 'travel-blocks'),
+                        'transparent' => __('Transparent with white border', 'travel-blocks'),
+                        'read-more' => __('Text "Read More" (no background)', 'travel-blocks'),
                     ],
                     'default_value' => 'primary',
                     'ui' => 1,
-                    'instructions' => __('Color applied to all card buttons', 'acf-gutenberg-rest-blocks'),
+                    'instructions' => __('Color applied to all card buttons', 'travel-blocks'),
                 ],
                 [
                     'key' => 'field_fgc_badge_color_variant',
-                    'label' => __('🎨 Badge Color', 'acf-gutenberg-rest-blocks'),
+                    'label' => __('🎨 Badge Color', 'travel-blocks'),
                     'name' => 'badge_color_variant',
                     'type' => 'select',
                     'required' => 0,
                     'choices' => [
-                        'primary' => __('Primary - Pink (#E78C85)', 'acf-gutenberg-rest-blocks'),
-                        'secondary' => __('Secondary - Purple (#311A42)', 'acf-gutenberg-rest-blocks'),
-                        'white' => __('White with black text', 'acf-gutenberg-rest-blocks'),
-                        'gold' => __('Gold (#CEA02D)', 'acf-gutenberg-rest-blocks'),
-                        'dark' => __('Dark (#1A1A1A)', 'acf-gutenberg-rest-blocks'),
-                        'transparent' => __('Transparent with white border', 'acf-gutenberg-rest-blocks'),
+                        'primary' => __('Primary - Pink (#E78C85)', 'travel-blocks'),
+                        'secondary' => __('Secondary - Purple (#311A42)', 'travel-blocks'),
+                        'white' => __('White with black text', 'travel-blocks'),
+                        'gold' => __('Gold (#CEA02D)', 'travel-blocks'),
+                        'dark' => __('Dark (#1A1A1A)', 'travel-blocks'),
+                        'transparent' => __('Transparent with white border', 'travel-blocks'),
                     ],
                     'default_value' => 'secondary',
                     'ui' => 1,
-                    'instructions' => __('Color applied to all badges', 'acf-gutenberg-rest-blocks'),
+                    'instructions' => __('Color applied to all badges', 'travel-blocks'),
                 ],
                 [
                     'key' => 'field_fgc_text_alignment',
-                    'label' => __('📐 Text Alignment', 'acf-gutenberg-rest-blocks'),
+                    'label' => __('📐 Text Alignment', 'travel-blocks'),
                     'name' => 'text_alignment',
                     'type' => 'select',
                     'required' => 0,
                     'choices' => [
-                        'left' => __('Left', 'acf-gutenberg-rest-blocks'),
-                        'center' => __('Center', 'acf-gutenberg-rest-blocks'),
-                        'right' => __('Right', 'acf-gutenberg-rest-blocks'),
+                        'left' => __('Left', 'travel-blocks'),
+                        'center' => __('Center', 'travel-blocks'),
+                        'right' => __('Right', 'travel-blocks'),
                     ],
                     'default_value' => 'left',
                     'ui' => 1,
-                    'instructions' => __('Text alignment (title, description, location, price)', 'acf-gutenberg-rest-blocks'),
+                    'instructions' => __('Text alignment (title, description, location, price)', 'travel-blocks'),
                 ],
                 [
                     'key' => 'field_fgc_button_alignment',
-                    'label' => __('📍 Button Alignment', 'acf-gutenberg-rest-blocks'),
+                    'label' => __('📍 Button Alignment', 'travel-blocks'),
                     'name' => 'button_alignment',
                     'type' => 'select',
                     'required' => 0,
                     'choices' => [
-                        'left' => __('Left', 'acf-gutenberg-rest-blocks'),
-                        'center' => __('Center', 'acf-gutenberg-rest-blocks'),
-                        'right' => __('Right', 'acf-gutenberg-rest-blocks'),
+                        'left' => __('Left', 'travel-blocks'),
+                        'center' => __('Center', 'travel-blocks'),
+                        'right' => __('Right', 'travel-blocks'),
                     ],
                     'default_value' => 'left',
                     'ui' => 1,
-                    'instructions' => __('Button/CTA alignment', 'acf-gutenberg-rest-blocks'),
+                    'instructions' => __('Button/CTA alignment', 'travel-blocks'),
                 ],
             ],
             // ===== TAB: CAROUSEL =====
@@ -661,23 +675,23 @@ class FlexibleGridCarousel {
                                 ],
                                 [
                                     'key' => 'field_fgc_card_badge_color',
-                                    'label' => __('🎨 Badge Color (Individual)', 'acf-gutenberg-rest-blocks'),
+                                    'label' => __('🎨 Badge Color (Individual)', 'travel-blocks'),
                                     'name' => 'badge_color_variant',
                                     'type' => 'select',
                                     'required' => 0,
                                     'choices' => [
-                                        '' => __('Use global setting', 'acf-gutenberg-rest-blocks'),
-                                        'primary' => __('Pink (#E78C85)', 'acf-gutenberg-rest-blocks'),
-                                        'secondary' => __('Purple (#311A42)', 'acf-gutenberg-rest-blocks'),
-                                        'white' => __('White', 'acf-gutenberg-rest-blocks'),
-                                        'gold' => __('Gold (#CEA02D)', 'acf-gutenberg-rest-blocks'),
-                                        'dark' => __('Dark (#1A1A1A)', 'acf-gutenberg-rest-blocks'),
-                                        'transparent' => __('Transparent with border', 'acf-gutenberg-rest-blocks'),
+                                        '' => __('Use global setting', 'travel-blocks'),
+                                        'primary' => __('Pink (#E78C85)', 'travel-blocks'),
+                                        'secondary' => __('Purple (#311A42)', 'travel-blocks'),
+                                        'white' => __('White', 'travel-blocks'),
+                                        'gold' => __('Gold (#CEA02D)', 'travel-blocks'),
+                                        'dark' => __('Dark (#1A1A1A)', 'travel-blocks'),
+                                        'transparent' => __('Transparent with border', 'travel-blocks'),
                                     ],
                                     'default_value' => '',
                                     'allow_null' => 1,
                                     'ui' => 1,
-                                    'instructions' => __('Override global badge color for this card only', 'acf-gutenberg-rest-blocks'),
+                                    'instructions' => __('Override global badge color for this card only', 'travel-blocks'),
                                 ],
                                 [
                                     'key' => 'field_fgc_card_title',
@@ -700,23 +714,23 @@ class FlexibleGridCarousel {
                                 ],
                                 [
                                     'key' => 'field_fgc_card_location',
-                                    'label' => __('📍 Location', 'acf-gutenberg-rest-blocks'),
+                                    'label' => __('📍 Location', 'travel-blocks'),
                                     'name' => 'location',
                                     'type' => 'text',
                                     'required' => 0,
                                     'maxlength' => 50,
-                                    'placeholder' => __('e.g., Cusco, Peru', 'acf-gutenberg-rest-blocks'),
-                                    'instructions' => __('Location displayed below description', 'acf-gutenberg-rest-blocks'),
+                                    'placeholder' => __('e.g., Cusco, Peru', 'travel-blocks'),
+                                    'instructions' => __('Location displayed below description', 'travel-blocks'),
                                 ],
                                 [
                                     'key' => 'field_fgc_card_price',
-                                    'label' => __('💰 Price', 'acf-gutenberg-rest-blocks'),
+                                    'label' => __('💰 Price', 'travel-blocks'),
                                     'name' => 'price',
                                     'type' => 'text',
                                     'required' => 0,
                                     'maxlength' => 20,
-                                    'placeholder' => __('e.g., $299', 'acf-gutenberg-rest-blocks'),
-                                    'instructions' => __('Price of tour/product', 'acf-gutenberg-rest-blocks'),
+                                    'placeholder' => __('e.g., $299', 'travel-blocks'),
+                                    'instructions' => __('Price of tour/product', 'travel-blocks'),
                                 ],
                                 [
                                     'key' => 'field_fgc_card_link',
@@ -728,14 +742,14 @@ class FlexibleGridCarousel {
                                 ],
                                 [
                                     'key' => 'field_fgc_card_cta_text',
-                                    'label' => __('🔘 CTA Button Text', 'acf-gutenberg-rest-blocks'),
+                                    'label' => __('🔘 CTA Button Text', 'travel-blocks'),
                                     'name' => 'cta_text',
                                     'type' => 'text',
                                     'required' => 0,
                                     'maxlength' => 30,
-                                    'default_value' => __('View More', 'acf-gutenberg-rest-blocks'),
-                                    'placeholder' => __('e.g., Explore, Read more', 'acf-gutenberg-rest-blocks'),
-                                    'instructions' => __('Text for the card button/link', 'acf-gutenberg-rest-blocks'),
+                                    'default_value' => __('View More', 'travel-blocks'),
+                                    'placeholder' => __('e.g., Explore, Read more', 'travel-blocks'),
+                                    'instructions' => __('Text for the card button/link', 'travel-blocks'),
                                 ],
                             ],
                         ],
