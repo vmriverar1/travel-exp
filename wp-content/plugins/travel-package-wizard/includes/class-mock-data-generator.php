@@ -2468,20 +2468,20 @@ class Aurora_Mock_Data_Generator
 
     /**
      * Add featured images and gallery to existing packages
+     * DISABLED: This functionality has been deactivated
      */
     public function add_images_to_packages()
     {
-        // Create debug file
-        $upload_dir = wp_upload_dir();
-        $debug_file = $upload_dir['basedir'] . '/package-debug.log';
-        file_put_contents($debug_file, "=== ADD IMAGES DEBUG LOG ===\n", FILE_APPEND);
-        file_put_contents($debug_file, date('Y-m-d H:i:s') . " - Starting add_images_to_packages (IMPROVED)\n", FILE_APPEND);
-
-        $packages = get_posts([
-            'post_type' => 'package',
-            'posts_per_page' => -1,
-            'post_status' => 'any',
-        ]);
+        // DISABLED: Adding images to packages via mock data has been deactivated
+<<<<<<< Updated upstream
+=======
+        return [
+            'success' => false,
+            'updated' => 0,
+            'total' => 0,
+            'fixed_broken' => 0,
+            'errors' => ['Adding images to packages has been disabled. This functionality is no longer available.'],
+        ];
 
         file_put_contents($debug_file, "Found " . count($packages) . " packages\n", FILE_APPEND);
         error_log("Aurora Package Builder: Found " . count($packages) . " packages to process");
@@ -2793,18 +2793,16 @@ class Aurora_Mock_Data_Generator
 
         error_log("Aurora Package Builder: Fixed $fixed_broken broken images across $updated packages");
 
+>>>>>>> Stashed changes
         return [
-            'success' => true,
-            'updated' => $updated,
-            'total' => count($packages),
-            'fixed_broken' => $fixed_broken,
-            'errors' => $errors,
+            'success' => false,
+            'updated' => 0,
+            'total' => 0,
+            'fixed_broken' => 0,
+            'errors' => ['Adding images to packages has been disabled. This functionality is no longer available.'],
         ];
     }
 
-    /**
-     * FASE 8B-1: Add images to Deal CPT
-     */
     public function add_images_to_deals()
     {
         $deals = get_posts([

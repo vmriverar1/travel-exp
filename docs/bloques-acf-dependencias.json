@@ -1,0 +1,295 @@
+{
+  "metadata": {
+    "created": "2025-11-09",
+    "project": "Travel Blocks",
+    "directory": "src/Blocks/ACF",
+    "total_blocks": 16,
+    "analysis_tool": "Manual Code Review"
+  },
+  "summary": {
+    "fully_independent": 5,
+    "semicompatible": 7,
+    "dependent": 3,
+    "deprecated": 1
+  },
+  "blocks": [
+    {
+      "name": "Breadcrumb",
+      "lines": 386,
+      "inherits_from": "BlockBase",
+      "dependencies": [],
+      "independence": 1.0,
+      "status": "✅ OK",
+      "critical_issues": []
+    },
+    {
+      "name": "FAQAccordion",
+      "lines": 254,
+      "inherits_from": "BlockBase",
+      "dependencies": [],
+      "independence": 1.0,
+      "status": "✅ OK",
+      "critical_issues": []
+    },
+    {
+      "name": "HeroSection",
+      "lines": 236,
+      "inherits_from": "BlockBase",
+      "dependencies": [],
+      "independence": 1.0,
+      "status": "✅ OK",
+      "critical_issues": []
+    },
+    {
+      "name": "StaticCTA",
+      "lines": 252,
+      "inherits_from": "BlockBase",
+      "dependencies": [],
+      "independence": 1.0,
+      "status": "✅ OK",
+      "critical_issues": []
+    },
+    {
+      "name": "ContactForm",
+      "lines": 497,
+      "inherits_from": "BlockBase",
+      "dependencies": ["ACF JSON file"],
+      "independence": 0.95,
+      "status": "✅ OK",
+      "critical_issues": []
+    },
+    {
+      "name": "TeamCarousel",
+      "lines": 614,
+      "inherits_from": null,
+      "dependencies": [],
+      "independence": 0.9,
+      "status": "⚠️ Refactor",
+      "critical_issues": [
+        "No BlockBase inheritance",
+        "Demo data hardcoded (179 lines)"
+      ]
+    },
+    {
+      "name": "StickySideMenu",
+      "lines": 406,
+      "inherits_from": "BlockBase",
+      "dependencies": ["DOM (#aside-menu)"],
+      "independence": 0.75,
+      "status": "⚠️ DOM-coupled",
+      "critical_issues": [
+        "Requires header menu element",
+        "JavaScript coupling to window.asideMenuToggle()"
+      ]
+    },
+    {
+      "name": "SideBySideCards",
+      "lines": 735,
+      "inherits_from": "BlockBase",
+      "dependencies": ["ContentQueryHelper"],
+      "independence": 0.7,
+      "status": "⚠️ Service-dep",
+      "critical_issues": []
+    },
+    {
+      "name": "PostsCarouselUnified",
+      "lines": 928,
+      "inherits_from": "BlockBase",
+      "dependencies": ["ContentQueryHelper"],
+      "independence": 0.75,
+      "status": "✅ REFACTORED",
+      "critical_issues": []
+    },
+    {
+      "name": "PostsCarousel",
+      "lines": 59,
+      "inherits_from": "PostsCarouselUnified",
+      "dependencies": ["PostsCarouselUnified", "ContentQueryHelper"],
+      "independence": 0.75,
+      "status": "✅ Via Unified",
+      "critical_issues": []
+    },
+    {
+      "name": "PostsCarouselNative",
+      "lines": 64,
+      "inherits_from": "PostsCarouselUnified",
+      "dependencies": ["PostsCarouselUnified", "ContentQueryHelper"],
+      "independence": 0.75,
+      "status": "✅ Via Unified",
+      "critical_issues": []
+    },
+    {
+      "name": "TaxonomyTabs",
+      "lines": 1818,
+      "inherits_from": null,
+      "dependencies": ["ContentQueryHelper"],
+      "independence": 0.5,
+      "status": "🔴 CRITICAL",
+      "critical_issues": [
+        "No BlockBase inheritance",
+        "1818 lines - needs extraction",
+        "ACF filters complexity",
+        "Non-standard constructor"
+      ]
+    },
+    {
+      "name": "HeroCarousel",
+      "lines": 1095,
+      "inherits_from": null,
+      "dependencies": ["ContentQueryHelper"],
+      "independence": 0.35,
+      "status": "🔴 CRITICAL",
+      "critical_issues": [
+        "No BlockBase inheritance",
+        "70% duplication with FlexibleGridCarousel",
+        "register_fields() = 691 lines",
+        "4 layout templates to maintain"
+      ]
+    },
+    {
+      "name": "FlexibleGridCarousel",
+      "lines": 786,
+      "inherits_from": null,
+      "dependencies": ["ContentQueryHelper"],
+      "independence": 0.4,
+      "status": "🔴 CRITICAL",
+      "critical_issues": [
+        "No BlockBase inheritance",
+        "70% duplication with HeroCarousel",
+        "register_fields() = 363 lines",
+        "Demo data hardcoded (150 lines)"
+      ]
+    },
+    {
+      "name": "PostsListAdvanced",
+      "lines": 266,
+      "inherits_from": null,
+      "dependencies": ["Swiper CDN"],
+      "independence": 0.6,
+      "status": "❌ DEPRECATED",
+      "critical_issues": [
+        "External CDN dependency",
+        "Uses $GLOBALS anti-pattern",
+        "Template performs WP_Query (MVC violation)",
+        "Use PostsCarousel instead"
+      ]
+    }
+  ],
+  "shared_dependencies": {
+    "BlockBase": {
+      "location": "src/Core/BlockBase.php",
+      "users": [
+        "Breadcrumb",
+        "ContactForm",
+        "FAQAccordion",
+        "HeroSection",
+        "StaticCTA",
+        "SideBySideCards",
+        "StickySideMenu",
+        "PostsCarouselUnified"
+      ],
+      "non_users": [
+        "FlexibleGridCarousel",
+        "HeroCarousel",
+        "TaxonomyTabs",
+        "TeamCarousel",
+        "PostsListAdvanced"
+      ],
+      "criticality": "CRITICAL"
+    },
+    "ContentQueryHelper": {
+      "location": "src/Helpers/ContentQueryHelper.php",
+      "users": [
+        "FlexibleGridCarousel",
+        "HeroCarousel",
+        "PostsCarouselUnified",
+        "SideBySideCards",
+        "TaxonomyTabs"
+      ],
+      "methods": [
+        "get_content()",
+        "get_deal_packages()",
+        "get_dynamic_content_fields()",
+        "get_filter_fields()",
+        "prepare_package_card_data()",
+        "prepare_post_card_data()"
+      ],
+      "criticality": "CRITICAL"
+    }
+  },
+  "refactoring_status": {
+    "completed": [
+      {
+        "name": "PostsCarousel + PostsCarouselNative → PostsCarouselUnified",
+        "date": "completed",
+        "lines_saved": 800,
+        "effort": "6 hours"
+      }
+    ],
+    "pending": [
+      {
+        "name": "HeroCarousel + FlexibleGridCarousel consolidation",
+        "estimated_effort": "10-15 hours",
+        "priority": "HIGH",
+        "blocker": "Production content migration"
+      },
+      {
+        "name": "BlockBase inheritance for 5 blocks",
+        "estimated_effort": "12-15 hours",
+        "priority": "HIGH",
+        "blocker": "Constructor refactoring"
+      },
+      {
+        "name": "Extract large methods",
+        "estimated_effort": "6-8 hours",
+        "priority": "MEDIUM",
+        "blocker": "HeroCarousel register_fields (691 lines)"
+      },
+      {
+        "name": "Move demo data to JSON",
+        "estimated_effort": "2-3 hours",
+        "priority": "LOW",
+        "blocker": "None"
+      }
+    ]
+  },
+  "recommendations": [
+    {
+      "action": "Refactor HeroCarousel to BlockBase",
+      "impact": "HIGH",
+      "effort": "5 hours",
+      "priority": 1
+    },
+    {
+      "action": "Refactor TaxonomyTabs to BlockBase",
+      "impact": "MEDIUM",
+      "effort": "4 hours",
+      "priority": 2
+    },
+    {
+      "action": "Refactor TeamCarousel to BlockBase",
+      "impact": "LOW",
+      "effort": "3 hours",
+      "priority": 3
+    },
+    {
+      "action": "Extract HeroCarousel register_fields()",
+      "impact": "MEDIUM",
+      "effort": "4 hours",
+      "priority": 4
+    },
+    {
+      "action": "Decide: Consolidate HeroCarousel + FlexibleGridCarousel",
+      "impact": "HIGH",
+      "effort": "15 hours",
+      "priority": 5,
+      "decision_required": true
+    },
+    {
+      "action": "Deprecate PostsListAdvanced",
+      "impact": "LOW",
+      "effort": "1 hour",
+      "priority": 6
+    }
+  ]
+}

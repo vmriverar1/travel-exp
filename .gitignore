@@ -3,4 +3,6 @@ instructions/*
 instructions/
 */claude/*
 *.jpg
+*.md
+*.txt
 /wp-content/uploads/*
