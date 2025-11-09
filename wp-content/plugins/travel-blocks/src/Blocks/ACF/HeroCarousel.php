@@ -6,17 +6,19 @@
  *
  * @package Travel\Blocks\ACF
  * @since 1.0.0
- * @version 2.0.0 - REFACTORED: Now inherits from BlockBase
+ * @version 2.1.0 - REFACTORED: Now inherits from CarouselBlockBase (FASE 3)
  *
  * Previous Issues (NOW RESOLVED):
- * - Does NOT inherit from BlockBase ✅ NOW INHERITS
+ * - Does NOT inherit from BlockBase ✅ NOW INHERITS CarouselBlockBase
  * - Double asset registration ✅ FIXED
  * - render_block() method name ✅ NOW render()
+ * - ~70% CODE DUPLICATION with FlexibleGridCarousel ✅ NOW RESOLVED via CarouselBlockBase
  *
- * Pending (FASE 3 - Consolidation):
- * - ~70% CODE DUPLICATION with FlexibleGridCarousel
- * - register_fields() method: 691 lines (acceptable for now, will consolidate)
- * - 4 separate templates (working correctly)
+ * Improvements in v2.1.0 (FASE 3):
+ * - Extends CarouselBlockBase (eliminates ~200+ lines of duplicated code)
+ * - Uses shared carousel/style fields methods
+ * - Uses shared dynamic content methods
+ * - register_fields() reduced significantly
  *
  * Features:
  * - InnerBlocks for hero content (title, subtitle, buttons)
@@ -33,10 +35,10 @@
 
 namespace Travel\Blocks\Blocks\ACF;
 
-use Travel\Blocks\Core\BlockBase;
+use Travel\Blocks\Core\CarouselBlockBase;
 use Travel\Blocks\Helpers\ContentQueryHelper;
 
-class HeroCarousel extends BlockBase
+class HeroCarousel extends CarouselBlockBase
 {
     /**
      * Constructor - Initialize block properties.
@@ -190,11 +192,8 @@ class HeroCarousel extends BlockBase
         // Get ACF fields (ACF automatically knows the context in preview mode)
         $layout_variation = get_field('layout_variation') ?: 'bottom';
 
-        // Global style settings
-        $button_color_variant = get_field('button_color_variant') ?: 'primary';
-        $badge_color_variant = get_field('badge_color_variant') ?: 'secondary';
-        $text_alignment = get_field('text_alignment') ?: 'left';
-        $button_alignment = get_field('button_alignment') ?: 'left';
+        // ✅ REFACTORED: Use shared style settings from CarouselBlockBase
+        $style_data = $this->get_style_data(true); // true = include alignments
 
         // Content proportion (text vs cards)
         $content_proportion = (int)(get_field('content_proportion') ?: 45);
@@ -222,93 +221,42 @@ class HeroCarousel extends BlockBase
         $hero_height_mobile = get_field('hero_height_mobile') ?: 60;
         $hero_height_tablet = get_field('hero_height_tablet') ?: 70;
         $hero_height_desktop = get_field('hero_height_desktop') ?: 80;
-        $show_arrows = get_field('show_arrows');
-        $show_dots = get_field('show_dots');
-        $enable_autoplay = get_field('enable_autoplay');
-        $autoplay_delay = get_field('autoplay_delay') ?: 5000;
 
-        // Check if using dynamic content from Package CPT, Blog Posts, or Deal
+        // ✅ REFACTORED: Get dynamic content using shared method from CarouselBlockBase
         $dynamic_source = get_field('hc_dynamic_source');
+        $cards = $this->get_dynamic_content('hc', $dynamic_source ?: 'none');
 
-        if ($dynamic_source === 'package') {
-            // Get dynamic packages from ContentQueryHelper with 'hc' prefix
-            $cards = ContentQueryHelper::get_content('hc', 'package');
-            if (function_exists('travel_info')) {
-                travel_info('Usando contenido dinámico de packages', [
-                    'cards_count' => count($cards),
-                ]);
-            }
-        } elseif ($dynamic_source === 'post') {
-            // Get dynamic blog posts from ContentQueryHelper with 'hc' prefix
-            $cards = ContentQueryHelper::get_content('hc', 'post');
-            if (function_exists('travel_info')) {
-                travel_info('Usando contenido dinámico de blog posts', [
-                    'cards_count' => count($cards),
-                ]);
-            }
-        } elseif ($dynamic_source === 'deal') {
-            // Dynamic content from selected deal's packages
-            $deal_id = get_field('hc_deal_selector');
-            if ($deal_id) {
-                $cards = ContentQueryHelper::get_deal_packages($deal_id, 'hc');
-                if (function_exists('travel_info')) {
-                    travel_info('Usando paquetes del deal seleccionado', [
-                        'deal_id' => $deal_id,
-                        'cards_count' => count($cards),
-                    ]);
-                }
-            } else {
-                $cards = [];
-            }
-        } else {
-            // Get cards (repeater) - Manual content
+        // If no dynamic content, use manual content
+        if (empty($cards)) {
             $cards = get_field('cards');
 
             // Si no hay cards, usar datos demo
             if (empty($cards)) {
                 $cards = $this->get_demo_cards();
             } else {
-                // Rellenar imágenes vacías con demo images
-                foreach ($cards as $index => &$card) {
-                    if (empty($card['image'])) {
-                        $random_id = 310 + $index + 1;
-                        $card['image'] = [
-                            'url' => 'https://picsum.photos/800/600?random=' . $random_id,
-                            'sizes' => [
-                                'large' => 'https://picsum.photos/800/600?random=' . $random_id,
-                                'medium' => 'https://picsum.photos/400/300?random=' . $random_id
-                            ],
-                            'alt' => $card['title'] ?? 'Card Image'
-                        ];
-                    }
-                }
-                unset($card); // Romper la referencia
+                // ✅ REFACTORED: Use shared method to fill demo images
+                $cards = $this->fill_demo_images($cards, 310);
             }
         }
 
-        // Determine if carousel is needed
+        // ✅ REFACTORED: Use shared carousel data method from CarouselBlockBase
         $total_cards = count($cards);
-        $is_carousel = $total_cards > $columns_desktop;
+        $carousel_data = $this->get_carousel_data($total_cards, $columns_desktop);
 
         // Get Display Fields (control what to show in each card)
         $display_fields_packages = get_field('hc_mat_dynamic_visible_fields') ?: [];
         $display_fields_posts = get_field('hc_mat_dynamic_visible_fields') ?: [];
 
-        // Pass variables to template
-        $template_data = [
+        // ✅ REFACTORED: Pass variables to template using shared data arrays
+        $template_data = array_merge([
             'block_wrapper_attributes' => $block_wrapper_attributes,
             'layout_variation' => $layout_variation,
-            'button_color_variant' => $button_color_variant,
-            'badge_color_variant' => $badge_color_variant,
-            'text_alignment' => $text_alignment,
-            'button_alignment' => $button_alignment,
             'content_proportion' => $content_proportion,
             'cards_proportion' => $cards_proportion,
             'hero_image' => $hero_image,
             'hero_content' => $content, // InnerBlocks rendered content
             'has_hero_text' => $has_hero_text,
             'cards' => $cards,
-            'columns_desktop' => $columns_desktop,
             'negative_margin' => $negative_margin,
             'cards_negative_margin_top' => $cards_negative_margin_top,
             'cards_negative_margin_bottom' => $cards_negative_margin_bottom,
@@ -319,15 +267,10 @@ class HeroCarousel extends BlockBase
             'hero_height_mobile' => $hero_height_mobile,
             'hero_height_tablet' => $hero_height_tablet,
             'hero_height_desktop' => $hero_height_desktop,
-            'show_arrows' => $show_arrows,
-            'show_dots' => $show_dots,
-            'enable_autoplay' => $enable_autoplay,
-            'autoplay_delay' => $autoplay_delay,
-            'is_carousel' => $is_carousel,
             'display_fields_packages' => $display_fields_packages,
             'display_fields_posts' => $display_fields_posts,
             'is_preview' => $is_preview,
-        ];
+        ], $style_data, $carousel_data); // Merge shared style and carousel data
 
         // Load template based on layout
         $template_file = TRAVEL_BLOCKS_PATH . 'src/Blocks/HeroCarousel/templates/' . $layout_variation . '.php';
@@ -425,25 +368,10 @@ class HeroCarousel extends BlockBase
                         'ui' => 1,
                         'return_format' => 'value',
                     ],
-
-                    // Columns Desktop
-                    [
-                        'key' => 'field_hc_columns_desktop',
-                        'label' => 'Columns (Desktop)',
-                        'name' => 'columns_desktop',
-                        'type' => 'select',
-                        'instructions' => 'Number of cards to show at once (if cards exceed this, carousel activates)',
-                        'required' => 0,
-                        'choices' => [
-                            '2' => '2 Columns',
-                            '3' => '3 Columns',
-                            '4' => '4 Columns',
-                        ],
-                        'default_value' => '3',
-                        'ui' => 1,
-                        'return_format' => 'value',
-                    ],
-
+                ],
+                // ✅ REFACTORED: Use shared grid columns field from CarouselBlockBase
+                $this->get_grid_columns_field('hc', 2, 4, 3), // min: 2, max: 4, default: 3
+                [
                     // Content Proportion (Text vs Cards)
                     [
                         'key' => 'field_hc_content_proportion',
@@ -459,83 +387,10 @@ class HeroCarousel extends BlockBase
                         'prepend' => 'Texto',
                         'append' => '%',
                     ],
-
-                    // ===== TAB: STYLES =====
-                    [
-                        'key' => 'field_hc_tab_styles',
-                        'label' => '🎨 Card Styles',
-                        'type' => 'tab',
-                        'placement' => 'top',
-                    ],
-
-                    [
-                        'key' => 'field_hc_button_color_variant',
-                        'label' => __('🎨 Button Color', 'acf-gutenberg-rest-blocks'),
-                        'name' => 'button_color_variant',
-                        'type' => 'select',
-                        'required' => 0,
-                        'choices' => [
-                            'primary' => __('Primary - Pink (#E78C85)', 'acf-gutenberg-rest-blocks'),
-                            'secondary' => __('Secondary - Purple (#311A42)', 'acf-gutenberg-rest-blocks'),
-                            'white' => __('White with black text', 'acf-gutenberg-rest-blocks'),
-                            'gold' => __('Gold (#CEA02D)', 'acf-gutenberg-rest-blocks'),
-                            'dark' => __('Dark (#1A1A1A)', 'acf-gutenberg-rest-blocks'),
-                            'transparent' => __('Transparent with white border', 'acf-gutenberg-rest-blocks'),
-                            'read-more' => __('Text "Read More" (no background)', 'acf-gutenberg-rest-blocks'),
-                        ],
-                        'default_value' => 'primary',
-                        'ui' => 1,
-                        'instructions' => __('Color applied to all card buttons', 'acf-gutenberg-rest-blocks'),
-                    ],
-                    [
-                        'key' => 'field_hc_badge_color_variant',
-                        'label' => __('🎨 Badge Color', 'acf-gutenberg-rest-blocks'),
-                        'name' => 'badge_color_variant',
-                        'type' => 'select',
-                        'required' => 0,
-                        'choices' => [
-                            'primary' => __('Primary - Pink (#E78C85)', 'acf-gutenberg-rest-blocks'),
-                            'secondary' => __('Secondary - Purple (#311A42)', 'acf-gutenberg-rest-blocks'),
-                            'white' => __('White with black text', 'acf-gutenberg-rest-blocks'),
-                            'gold' => __('Gold (#CEA02D)', 'acf-gutenberg-rest-blocks'),
-                            'dark' => __('Dark (#1A1A1A)', 'acf-gutenberg-rest-blocks'),
-                            'transparent' => __('Transparent with white border', 'acf-gutenberg-rest-blocks'),
-                        ],
-                        'default_value' => 'secondary',
-                        'ui' => 1,
-                        'instructions' => __('Color applied to all badges', 'acf-gutenberg-rest-blocks'),
-                    ],
-                    [
-                        'key' => 'field_hc_text_alignment',
-                        'label' => __('📐 Text Alignment', 'acf-gutenberg-rest-blocks'),
-                        'name' => 'text_alignment',
-                        'type' => 'select',
-                        'required' => 0,
-                        'choices' => [
-                            'left' => __('Left', 'acf-gutenberg-rest-blocks'),
-                            'center' => __('Center', 'acf-gutenberg-rest-blocks'),
-                            'right' => __('Right', 'acf-gutenberg-rest-blocks'),
-                        ],
-                        'default_value' => 'left',
-                        'ui' => 1,
-                        'instructions' => __('Text alignment (title, description, location, price)', 'acf-gutenberg-rest-blocks'),
-                    ],
-                    [
-                        'key' => 'field_hc_button_alignment',
-                        'label' => __('📍 Button Alignment', 'acf-gutenberg-rest-blocks'),
-                        'name' => 'button_alignment',
-                        'type' => 'select',
-                        'required' => 0,
-                        'choices' => [
-                            'left' => __('Left', 'acf-gutenberg-rest-blocks'),
-                            'center' => __('Center', 'acf-gutenberg-rest-blocks'),
-                            'right' => __('Right', 'acf-gutenberg-rest-blocks'),
-                        ],
-                        'default_value' => 'left',
-                        'ui' => 1,
-                        'instructions' => __('Button/CTA alignment', 'acf-gutenberg-rest-blocks'),
-                    ],
-
+                ],
+                // ✅ REFACTORED: Use shared style settings from CarouselBlockBase
+                $this->get_style_settings_fields('hc', true), // true = include text/button alignments
+                [
                     // ===== TAB: HERO CONTENT =====
                     [
                         'key' => 'field_hc_tab_hero',
@@ -838,72 +693,9 @@ class HeroCarousel extends BlockBase
                             ],
                         ],
                     ],
-
-                    // ===== TAB: CAROUSEL =====
-                    [
-                        'key' => 'field_hc_tab_carousel',
-                        'label' => '🎬 Carousel',
-                        'type' => 'tab',
-                        'placement' => 'top',
-                    ],
-
-                    // Show Arrows
-                    [
-                        'key' => 'field_hc_show_arrows',
-                        'label' => 'Show Navigation Arrows',
-                        'name' => 'show_arrows',
-                        'type' => 'true_false',
-                        'instructions' => 'Display prev/next arrows',
-                        'default_value' => 1,
-                        'ui' => 1,
-                    ],
-
-                    // Show Dots
-                    [
-                        'key' => 'field_hc_show_dots',
-                        'label' => 'Show Pagination Dots',
-                        'name' => 'show_dots',
-                        'type' => 'true_false',
-                        'instructions' => 'Display pagination dots',
-                        'default_value' => 1,
-                        'ui' => 1,
-                    ],
-
-                    // Enable Autoplay
-                    [
-                        'key' => 'field_hc_enable_autoplay',
-                        'label' => 'Enable Autoplay',
-                        'name' => 'enable_autoplay',
-                        'type' => 'true_false',
-                        'instructions' => 'Automatically advance slides',
-                        'default_value' => 0,
-                        'ui' => 1,
-                    ],
-
-                    // Autoplay Delay
-                    [
-                        'key' => 'field_hc_autoplay_delay',
-                        'label' => 'Autoplay Delay (ms)',
-                        'name' => 'autoplay_delay',
-                        'type' => 'number',
-                        'instructions' => 'Delay between slides in milliseconds',
-                        'required' => 0,
-                        'conditional_logic' => [
-                            [
-                                [
-                                    'field' => 'field_hc_enable_autoplay',
-                                    'operator' => '==',
-                                    'value' => '1',
-                                ],
-                            ],
-                        ],
-                        'default_value' => 5000,
-                        'min' => 1000,
-                        'max' => 30000,
-                        'step' => 1000,
-                    ],
-
                 ],
+                // ✅ REFACTORED: Use shared carousel settings from CarouselBlockBase
+                $this->get_carousel_settings_fields('hc'),
                 // Dynamic content fields
                 $dynamic_fields,
                 [
@@ -1081,5 +873,22 @@ class HeroCarousel extends BlockBase
                 ],
             ]);
         }
+    }
+
+    /**
+     * Get block-specific ACF fields (required by CarouselBlockBase).
+     *
+     * HeroCarousel's specific fields are already handled in register_fields().
+     * This method exists to satisfy the abstract requirement from CarouselBlockBase.
+     *
+     * @param string $prefix Field key prefix ('hc')
+     * @return array Empty array (fields are handled elsewhere)
+     */
+    protected function get_block_specific_fields(string $prefix): array
+    {
+        // All Hero-specific fields (layout, dimensions, hero content, cards repeater)
+        // are already defined in register_fields() method above.
+        // This method is required by CarouselBlockBase but not used in this implementation.
+        return [];
     }
 }
