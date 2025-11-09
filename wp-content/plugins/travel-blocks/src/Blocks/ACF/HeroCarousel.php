@@ -1,13 +1,61 @@
 <?php
+/**
+ * Block: Hero Carousel
+ *
+ * Full-width hero carousel with InnerBlocks and flexible card grid.
+ * Most complex block in codebase (1126 lines).
+ *
+ * 🚨🚨🚨 CRITICAL REFACTORING URGENTLY NEEDED 🚨🚨🚨
+ *
+ * Audit Score: 4/10 (tied for WORST with TaxonomyTabs)
+ *
+ * CATASTROPHIC ISSUES:
+ * - FILE SIZE: 1126 lines (LARGEST block in entire codebase)
+ * - register_fields() method: 691 lines (WORST method ever audited)
+ * - render_block() method: 158 lines (CRITICAL)
+ * - MASSIVE DUPLICATION with FlexibleGridCarousel (~70% shared code)
+ * - Does NOT inherit from BlockBase (severe architectural inconsistency)
+ * - 135 lines of hardcoded demo data
+ * - 4 separate templates (maintenance complexity)
+ * - Namespace incorrect
+ *
+ * ⚠️ URGENT RECOMMENDED ACTIONS:
+ * 1. CONSOLIDATE with FlexibleGridCarousel (3-4 hours)
+ *    → Both blocks share ~70% of code
+ *    → Create unified "Advanced Grid/Hero Carousel" block
+ *    → Maintain backward compatibility via aliases
+ * 2. EXTRACT register_fields() 691 lines to separate file (2 hours)
+ * 3. SPLIT render_block() 158 lines into smaller methods (1.5 hours)
+ * 4. MOVE demo data 135 lines to JSON file (30 min)
+ * 5. DECIDE BlockBase inheritance strategy (1 hour)
+ * 6. CONSOLIDATE 4 templates into dynamic template (2 hours)
+ *
+ * Total estimated refactoring: 10-12 hours
+ *
+ * Features (when working):
+ * - InnerBlocks for hero content (title, subtitle, buttons)
+ * - 4 layout variations: bottom, top, side_left, side_right
+ * - Negative margins for creative overlaps
+ * - Dynamic content via ContentQueryHelper (packages/posts/deals)
+ * - Manual content via ACF repeater
+ * - Desktop: Responsive grid (2-6 columns)
+ * - Mobile: Native scroll-snap carousel
+ * - Flexible column-span pattern
+ * - 6 button variants + 6 badge variants
+ *
+ * @package Travel\Blocks\ACF
+ * @since 1.0.0
+ * @version 1.1.0 - Refactored: namespace fix, added CRITICAL warnings, documented urgent refactoring needs
+ */
 
-namespace Travel\Blocks\Blocks\ACF;
+namespace Travel\Blocks\ACF;
 
 use Travel\Blocks\Helpers\ContentQueryHelper;
 
 class HeroCarousel {
 
     public function __construct() {
-        // Los métodos se llaman directamente desde Plugin.php
+        // Methods called directly from Plugin.php
     }
 
     public function register() {
