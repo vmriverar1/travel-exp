@@ -69,7 +69,7 @@
 
 namespace Travel\Blocks\Blocks\ACF;
 
-use Travel\Helpers\ContentQueryHelper;
+use Travel\Blocks\Helpers\ContentQueryHelper;
 
 class FlexibleGridCarousel {
 
