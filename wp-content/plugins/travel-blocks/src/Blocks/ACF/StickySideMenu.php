@@ -20,7 +20,7 @@
  *
  * @package Travel\Blocks\ACF
  * @since 1.0.0
- * @version 1.1.0 - Refactored: namespace fix, removed unused code, improved docs
+ * @version 1.1.1 - Enhanced: critical dependency documentation for header integration
  */
 
 namespace Travel\Blocks\ACF;
@@ -345,9 +345,11 @@ class StickySideMenu extends BlockBase
      * - JavaScript controls visibility with .is-visible class
      * - Shadow intensity and mobile visibility configurable
      *
-     * Integration Requirements:
-     * - Requires #aside-menu element in header
-     * - Requires window.asideMenuToggle() function (fallback provided in JS)
+     * ⚠️ Integration Requirements (CRITICAL DEPENDENCY):
+     * - Requires #aside-menu element in header (DOM dependency)
+     * - Hamburger triggers window.asideMenuToggle() function
+     * - JavaScript provides fallback if global function not available
+     * - See sticky-side-menu.js lines 85-120 for integration logic
      *
      * @param array  $block      Block settings and attributes
      * @param string $content    Block content (unused)
