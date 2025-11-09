@@ -96,6 +96,14 @@ class Aurora_Mock_Data_Admin
      */
     public function render_page()
     {
+        // Show error messages
+        if (isset($_GET['error'])) {
+            $error_message = urldecode($_GET['error']);
+            echo '<div class="notice notice-error is-dismissible"><p>';
+            echo '❌ ' . esc_html($error_message);
+            echo '</p></div>';
+        }
+
         // Show success messages
         if (isset($_GET['generated'])) {
             $created = intval($_GET['generated']);
@@ -1110,11 +1118,20 @@ class Aurora_Mock_Data_Admin
         $result = $generator->generate_packages();
 
         // Redirect with message
-        $redirect_url = add_query_arg([
-            'page' => 'package-mock-data',
-            'generated' => $result['created'],
-            'total' => $result['total'],
-        ], admin_url('edit.php?post_type=package'));
+        if (!$result['success']) {
+            // Generation was disabled
+            $error_message = isset($result['errors'][0]) ? $result['errors'][0] : 'Package generation failed';
+            $redirect_url = add_query_arg([
+                'page' => 'package-mock-data',
+                'error' => urlencode($error_message),
+            ], admin_url('edit.php?post_type=package'));
+        } else {
+            $redirect_url = add_query_arg([
+                'page' => 'package-mock-data',
+                'generated' => $result['created'],
+                'total' => $result['total'],
+            ], admin_url('edit.php?post_type=package'));
+        }
 
         wp_redirect($redirect_url);
         exit;
@@ -1140,10 +1157,19 @@ class Aurora_Mock_Data_Admin
         $result = $generator->delete_all_packages();
 
         // Redirect with message
-        $redirect_url = add_query_arg([
-            'page' => 'package-mock-data',
-            'deleted' => $result['deleted'],
-        ], admin_url('edit.php?post_type=package'));
+        if (!$result['success']) {
+            // Deletion was disabled
+            $error_message = isset($result['errors'][0]) ? $result['errors'][0] : 'Package deletion failed';
+            $redirect_url = add_query_arg([
+                'page' => 'package-mock-data',
+                'error' => urlencode($error_message),
+            ], admin_url('edit.php?post_type=package'));
+        } else {
+            $redirect_url = add_query_arg([
+                'page' => 'package-mock-data',
+                'deleted' => $result['deleted'],
+            ], admin_url('edit.php?post_type=package'));
+        }
 
         wp_redirect($redirect_url);
         exit;
@@ -1285,12 +1311,21 @@ class Aurora_Mock_Data_Admin
         $result = $generator->add_images_to_packages();
 
         // Redirect with message including fixed broken images count
-        $redirect_url = add_query_arg([
-            'page' => 'package-mock-data',
-            'images_added' => $result['updated'],
-            'images_total' => $result['total'],
-            'images_fixed' => $result['fixed_broken'],
-        ], admin_url('edit.php?post_type=package'));
+        if (!$result['success']) {
+            // Adding images was disabled
+            $error_message = isset($result['errors'][0]) ? $result['errors'][0] : 'Adding images to packages failed';
+            $redirect_url = add_query_arg([
+                'page' => 'package-mock-data',
+                'error' => urlencode($error_message),
+            ], admin_url('edit.php?post_type=package'));
+        } else {
+            $redirect_url = add_query_arg([
+                'page' => 'package-mock-data',
+                'images_added' => $result['updated'],
+                'images_total' => $result['total'],
+                'images_fixed' => $result['fixed_broken'],
+            ], admin_url('edit.php?post_type=package'));
+        }
 
         wp_redirect($redirect_url);
         exit;
@@ -1493,8 +1528,8 @@ class Aurora_Mock_Data_Admin
 
         $generator = Aurora_Mock_Data_Generator::get_instance();
 
-        // Call all image methods
-        $packages = $generator->add_images_to_packages();
+        // Call all image methods (SKIP packages - disabled)
+        // $packages = $generator->add_images_to_packages(); // DISABLED
         $deals = $generator->add_images_to_deals();
         $locations = $generator->add_images_to_locations();
         $guides = $generator->add_images_to_guides();
@@ -1503,12 +1538,12 @@ class Aurora_Mock_Data_Admin
         $destinations = $generator->add_images_to_destinations();
         $taxonomies = $generator->add_images_to_taxonomy_terms();
 
-        // Calculate totals
-        $total_updated = $packages['updated'] + $deals['updated'] + $locations['updated'] +
+        // Calculate totals (excluding packages)
+        $total_updated = $deals['updated'] + $locations['updated'] +
                         $guides['updated'] + $reviews['updated'] + $collaborators['updated'] +
                         $destinations['updated'] + $taxonomies['updated'];
 
-        $total_processed = $packages['total'] + $deals['total'] + $locations['total'] +
+        $total_processed = $deals['total'] + $locations['total'] +
                           $guides['total'] + $reviews['total'] + $collaborators['total'] +
                           $destinations['total'] + $taxonomies['total'];
 
