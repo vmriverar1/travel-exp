@@ -370,141 +370,34 @@ class HeroCarousel {
         ];
     }
 
-    private function get_demo_cards() {
-        return [
-            [
-                'image' => [
-                    'url' => 'https://picsum.photos/800/600?random=311',
-                    'sizes' => [
-                        'large' => 'https://picsum.photos/800/600?random=311',
-                        'medium' => 'https://picsum.photos/400/300?random=311'
-                    ],
-                    'alt' => 'Adventure Tours'
-                ],
-                'category' => 'Adventure',
-                'title' => 'Adventure Tours',
-                'excerpt' => 'Embark on thrilling expeditions to remote destinations. Experience nature at its wildest with expert guides and safety equipment.',
-                'date' => 'December 15, 2024',
-                'link' => [
-                    'url' => '#',
-                    'title' => 'Read More',
-                    'target' => ''
-                ],
-                'cta_text' => 'Book Now',
-                'location' => 'Cusco, Peru',
-                'price' => '$299'
-            ],
-            [
-                'image' => [
-                    'url' => 'https://picsum.photos/800/600?random=312',
-                    'sizes' => [
-                        'large' => 'https://picsum.photos/800/600?random=312',
-                        'medium' => 'https://picsum.photos/400/300?random=312'
-                    ],
-                    'alt' => 'Cultural Experiences'
-                ],
-                'category' => 'Culture',
-                'title' => 'Cultural Experiences',
-                'excerpt' => 'Immerse yourself in local traditions and customs. Connect with communities and discover authentic cultural heritage.',
-                'date' => 'December 10, 2024',
-                'link' => [
-                    'url' => '#',
-                    'title' => 'Read More',
-                    'target' => ''
-                ],
-                'cta_text' => 'Explore',
-                'location' => 'Lima, Peru',
-                'price' => '$199'
-            ],
-            [
-                'image' => [
-                    'url' => 'https://picsum.photos/800/600?random=313',
-                    'sizes' => [
-                        'large' => 'https://picsum.photos/800/600?random=313',
-                        'medium' => 'https://picsum.photos/400/300?random=313'
-                    ],
-                    'alt' => 'Luxury Retreats'
-                ],
-                'category' => 'Luxury',
-                'title' => 'Luxury Retreats',
-                'excerpt' => 'Indulge in premium accommodations and world-class amenities. Relax in paradise with personalized service and exclusive experiences.',
-                'date' => 'December 5, 2024',
-                'link' => [
-                    'url' => '#',
-                    'title' => 'Read More',
-                    'target' => ''
-                ],
-                'cta_text' => 'Reserve',
-                'location' => 'Arequipa, Peru',
-                'price' => '$599'
-            ],
-            [
-                'image' => [
-                    'url' => 'https://picsum.photos/800/600?random=314',
-                    'sizes' => [
-                        'large' => 'https://picsum.photos/800/600?random=314',
-                        'medium' => 'https://picsum.photos/400/300?random=314'
-                    ],
-                    'alt' => 'Eco Tourism'
-                ],
-                'category' => 'Eco-Friendly',
-                'title' => 'Eco Tourism',
-                'excerpt' => 'Travel responsibly while supporting conservation efforts. Explore pristine environments with minimal environmental impact.',
-                'date' => 'November 30, 2024',
-                'link' => [
-                    'url' => '#',
-                    'title' => 'Read More',
-                    'target' => ''
-                ],
-                'cta_text' => 'Discover',
-                'location' => 'Amazon, Peru',
-                'price' => '$399'
-            ],
-            [
-                'image' => [
-                    'url' => 'https://picsum.photos/800/600?random=315',
-                    'sizes' => [
-                        'large' => 'https://picsum.photos/800/600?random=315',
-                        'medium' => 'https://picsum.photos/400/300?random=315'
-                    ],
-                    'alt' => 'Family Vacations'
-                ],
-                'category' => 'Family',
-                'title' => 'Family Vacations',
-                'excerpt' => 'Create lasting memories with activities for all ages. Safe, fun, and educational experiences the whole family will enjoy.',
-                'date' => 'November 25, 2024',
-                'link' => [
-                    'url' => '#',
-                    'title' => 'Read More',
-                    'target' => ''
-                ],
-                'cta_text' => 'Plan Trip',
-                'location' => 'Puno, Peru',
-                'price' => '$249'
-            ],
-            [
-                'image' => [
-                    'url' => 'https://picsum.photos/800/600?random=316',
-                    'sizes' => [
-                        'large' => 'https://picsum.photos/800/600?random=316',
-                        'medium' => 'https://picsum.photos/400/300?random=316'
-                    ],
-                    'alt' => 'Solo Travel'
-                ],
-                'category' => 'Solo',
-                'title' => 'Solo Travel',
-                'excerpt' => 'Discover yourself while exploring the world independently. Join group tours or venture out on personalized solo adventures.',
-                'date' => 'November 20, 2024',
-                'link' => [
-                    'url' => '#',
-                    'title' => 'Read More',
-                    'target' => ''
-                ],
-                'cta_text' => 'Start Journey',
-                'location' => 'Iquitos, Peru',
-                'price' => '$179'
-            ]
-        ];
+    /**
+     * Get demo cards from JSON file.
+     *
+     * ✅ REFACTORED: Moved 135 lines of hardcoded data to external JSON file.
+     * This improves maintainability and reduces file size.
+     *
+     * @return array Demo cards data
+     */
+    private function get_demo_cards(): array
+    {
+        $json_file = TRAVEL_BLOCKS_PATH . 'data/demo/hero-carousel-cards.json';
+
+        if (!file_exists($json_file)) {
+            // Fallback: return minimal demo data if JSON file not found
+            return [
+                [
+                    'image' => ['url' => 'https://picsum.photos/800/600?random=311'],
+                    'title' => 'Demo Card',
+                    'excerpt' => 'Demo content - JSON file not found',
+                    'cta_text' => 'Learn More'
+                ]
+            ];
+        }
+
+        $json_content = file_get_contents($json_file);
+        $cards = json_decode($json_content, true);
+
+        return is_array($cards) ? $cards : [];
     }
 
     public function register_fields() {

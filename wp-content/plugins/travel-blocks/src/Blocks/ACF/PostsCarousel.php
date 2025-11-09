@@ -748,41 +748,33 @@ class PostsCarousel extends BlockBase
     }
 
     /**
-     * Get demo cards con placeholders
+     * Get demo cards from JSON file.
+     *
+     * ✅ REFACTORED: Moved hardcoded demo data to external JSON file.
+     * Improves maintainability and keeps code DRY.
+     *
+     * @return array Demo cards data
      */
     private function get_demo_cards(): array
     {
-        return [
-            [
-                'image' => ['url' => 'https://picsum.photos/800/600?random=1'],
-                'title' => 'Machu Picchu Classic Tour',
-                'excerpt' => 'Descubre la ciudadela inca más famosa del mundo en este tour guiado de día completo.',
-                'link' => '#',
-                'category' => 'Destacado',
-                'location' => 'Cusco, Perú',
-                'price' => '$299',
-                'cta_text' => 'Ver detalles',
-            ],
-            [
-                'image' => ['url' => 'https://picsum.photos/800/600?random=2'],
-                'title' => 'Inca Trail 4 Days',
-                'excerpt' => 'Camino del Inca clásico de 4 días hasta Machu Picchu. Una experiencia única.',
-                'link' => '#',
-                'category' => 'Aventura',
-                'location' => 'Cusco, Perú',
-                'price' => '$599',
-                'cta_text' => 'Reservar ahora',
-            ],
-            [
-                'image' => ['url' => 'https://picsum.photos/800/600?random=3'],
-                'title' => 'Rainbow Mountain',
-                'excerpt' => 'Visita la montaña de 7 colores, una maravilla natural de los Andes peruanos.',
-                'link' => '#',
-                'category' => 'Nuevo',
-                'location' => 'Vinicunca, Perú',
-                'price' => '$89',
-                'cta_text' => 'Descubrir',
-            ],
-        ];
+        $json_file = TRAVEL_BLOCKS_PATH . 'data/demo/posts-carousel-cards.json';
+
+        if (!file_exists($json_file)) {
+            // Fallback if JSON not found
+            return [
+                [
+                    'image' => ['url' => 'https://picsum.photos/800/600?random=1'],
+                    'title' => 'Demo Card',
+                    'excerpt' => 'Demo content',
+                    'link' => '#',
+                    'cta_text' => 'Ver más'
+                ]
+            ];
+        }
+
+        $json_content = file_get_contents($json_file);
+        $cards = json_decode($json_content, true);
+
+        return is_array($cards) ? $cards : [];
     }
 }
