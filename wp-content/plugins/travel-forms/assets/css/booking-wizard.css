@@ -1072,11 +1072,6 @@
     transition: all 0.2s ease;
 }
 
-.wizard-payment-btn--paypal {
-    background-color: #FFC439;
-    color: #003087;
-}
-
 .wizard-payment-btn--flywire {
     background-color: var(--wiz-accent);
 }

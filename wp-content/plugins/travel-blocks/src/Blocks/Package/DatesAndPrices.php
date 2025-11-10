@@ -55,13 +55,10 @@ class DatesAndPrices
                 $post_id = get_the_ID();
             }
 
-            // Last fallback: if still no post_id, return empty
-            if (empty($post_id)) {
-                return '<div style="padding:20px;background:#fff3cd;">Error: No post ID available</div>';
-            }
+            // Determine if we're in preview/editor mode
+            $is_preview = empty($post_id) || EditorHelper::is_editor_mode($post_id);
 
-            $is_preview = EditorHelper::is_editor_mode($post_id);
-
+            // Get dates: use preview data if no post_id or in editor mode
             $dates = $is_preview ? $this->get_preview_data() : $this->get_post_data($post_id);
 
             // If no dates, show empty state instead of nothing
@@ -106,6 +103,7 @@ class DatesAndPrices
                 'alert_message' => __('Secure your spot on the trip now with our real-time availability information.', 'travel-blocks'),
                 'alert_emphasis' => __('Act quickly—these spots sell out fast!', 'travel-blocks'),
                 'is_preview' => $is_preview,
+                'package_id' => $post_id,
             ];
 
             ob_start();
@@ -638,15 +636,37 @@ class DatesAndPrices
         $weekdays = get_field('fixed_departures', $post_id) ?: [];
         $start_day = intval(get_field('free_spot_start_day', $post_id) ?: 1);
         $duration = intval(get_field('days', $post_id) ?: 1);
-        
+
         // Get default values
         $default_spots = intval(get_field('default_spots', $post_id) ?: 12);
         $price_from = floatval(get_field('price_from', $post_id) ?: 0);
         $price_normal = floatval(get_field('price_normal', $post_id) ?: 0);
-        
+
+        // Check if promo is active
+        $promo_enabled = boolval(get_field('promo_enabled', $post_id) ?: false);
+        $price_offer = floatval(get_field('price_offer', $post_id) ?: 0);
+
+        // Determine if we should apply promo to all automatic dates
+        $apply_promo = $promo_enabled && $price_offer > 0 && $price_offer < $price_from;
+
+        // Calculate promo details if applicable
+        $has_deal = false;
+        $original_price = null;
+        $discount_percentage = 0;
+        $deal_label = '';
+        $final_price = $price_from;
+
+        if ($apply_promo) {
+            $has_deal = true;
+            $original_price = $price_from;
+            $final_price = $price_offer;
+            $discount_percentage = round((($price_from - $price_offer) / $price_from) * 100);
+            $deal_label = $discount_percentage . '% Off';
+        }
+
         // Generate automatic dates (3 years ahead)
         $automatic_dates = $this->generate_automatic_dates($months, $weekdays, $start_day, 3);
-        
+
         // Initialize with automatic dates
         $all_dates = [];
         foreach ($automatic_dates as $date_str) {
@@ -654,12 +674,12 @@ class DatesAndPrices
                 'date' => $date_str,
                 'return_date' => date('Y-m-d', strtotime("+{$duration} days", strtotime($date_str))),
                 'spots' => $default_spots,
-                'price' => $price_from,
+                'price' => $final_price,
                 'status' => 'available',
-                'has_deal' => false,
-                'original_price' => null,
-                'discount_percentage' => 0,
-                'deal_label' => '',
+                'has_deal' => $has_deal,
+                'original_price' => $original_price,
+                'discount_percentage' => $discount_percentage,
+                'deal_label' => $deal_label,
             ];
         }
         
@@ -1027,7 +1047,7 @@ class DatesAndPrices
      * @param string $anchor_id Anchor ID for fixed_week scroll action
      * @return array Transformed dates array
      */
-    private function transform_api_data_to_dates(array $api_data, int $duration, bool $promo_active, string $anchor_id): array
+    private function transform_api_data_to_dates(array $api_data, int $duration, bool $promo_active, float $cms_price_offer, string $anchor_id): array
     {
         $dates = [];
         $today = strtotime('today');
@@ -1038,6 +1058,21 @@ class DatesAndPrices
             $offer = isset($date_info['offer']) ? floatval($date_info['offer']) : null;
             $spots = intval($date_info['spots'] ?? 0);
             $single_supp = $date_info['singleSupp'] ?? '';
+
+            // Determine best offer price if promo is active
+            $best_offer = null;
+            if ($promo_active && $cms_price_offer > 0) {
+                // Start with CMS offer as base
+                $best_offer = $cms_price_offer;
+
+                // If API has offer and it's BETTER (lower), use API offer
+                if ($offer !== null && $offer > 0 && $offer < $best_offer) {
+                    $best_offer = $offer;
+                }
+            } elseif ($offer !== null && $offer > 0) {
+                // If promo not active, use API offer if exists
+                $best_offer = $offer;
+            }
 
             // Calculate days until departure
             $departure_timestamp = strtotime($date_str);
@@ -1112,12 +1147,12 @@ class DatesAndPrices
                     $date_entry['button_text'] = 'SOLD OUT';
                 }
 
-                // MODO OFERTA: Solo si promo está activo
-                if ($promo_active && $offer && $offer < $price) {
+                // MODO OFERTA: Usar best_offer (CMS o API, lo que sea menor)
+                if ($best_offer && $best_offer < $price) {
                     $date_entry['has_deal'] = true;
                     $date_entry['original_price'] = $price;
-                    $date_entry['price'] = $offer;
-                    $date_entry['discount_percentage'] = round((($price - $offer) / $price) * 100);
+                    $date_entry['price'] = $best_offer;
+                    $date_entry['discount_percentage'] = round((($price - $best_offer) / $price) * 100);
                     $date_entry['deal_label'] = $date_entry['discount_percentage'] . '% Off';
                     $date_entry['row_class'] = 'booking-row--promo-fixed-week';
                 }
@@ -1146,11 +1181,11 @@ class DatesAndPrices
 
                 // SIEMPRE fondo amarillo y MODO OFERTA
                 $date_entry['row_class'] = 'booking-row--promo-fixed-dates';
-                if ($offer && $offer < $price) {
+                if ($best_offer && $best_offer < $price) {
                     $date_entry['has_deal'] = true;
                     $date_entry['original_price'] = $price;
-                    $date_entry['price'] = $offer;
-                    $date_entry['discount_percentage'] = round((($price - $offer) / $price) * 100);
+                    $date_entry['price'] = $best_offer;
+                    $date_entry['discount_percentage'] = round((($price - $best_offer) / $price) * 100);
                     $date_entry['deal_label'] = $date_entry['discount_percentage'] . '% Off';
                 }
 
@@ -1177,7 +1212,8 @@ class DatesAndPrices
     {
         // Get package configuration
         $duration = intval(get_field('days', $post_id) ?: 4);
-        $promo_active = (bool)(get_field('promo', $post_id) ?? false);
+        $promo_active = (bool)(get_field('promo_enabled', $post_id) ?? false);
+        $cms_price_offer = floatval(get_field('price_offer', $post_id) ?: 0);
         $anchor_id = get_field('booking_anchor_id', $post_id) ?: '#booking-form';
 
         $all_dates = [];
@@ -1196,7 +1232,7 @@ class DatesAndPrices
                 $api_data = $this->fetch_api_calendar($tour_id, $year, $month);
 
                 if (!empty($api_data)) {
-                    $transformed = $this->transform_api_data_to_dates($api_data, $duration, $promo_active, $anchor_id);
+                    $transformed = $this->transform_api_data_to_dates($api_data, $duration, $promo_active, $cms_price_offer, $anchor_id);
                     $all_dates = array_merge($all_dates, $transformed);
                 }
             }

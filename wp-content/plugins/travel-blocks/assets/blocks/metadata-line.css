@@ -59,11 +59,11 @@
 
 /* Primary (Coral) */
 .metadata-line__content--primary {
-    color: var(--color-coral, #E78C85);
+    color: var(--wp--preset--color--secondary);
 }
 
 .metadata-line__content--primary .metadata-line__item svg {
-    color: var(--color-coral, #E78C85);
+    color: var(--wp--preset--color--secondary);
 }
 
 .metadata-line__content--primary .metadata-line__separator {
@@ -72,7 +72,7 @@
 
 /* Secondary (Purple) */
 .metadata-line__content--secondary {
-    color: var(--color-purple, #311A42);
+    color: var(--wp--preset--color--contrast-4);
 }
 
 .metadata-line__content--secondary .metadata-line__item svg {

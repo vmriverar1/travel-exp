@@ -107,7 +107,7 @@ defined('ABSPATH') || exit;
         <div class="wizard-room-types">
 
             <!-- TWIN Room -->
-            <label class="wizard-room-card wizard-room-card--selected">
+            <label class="wizard-room-card wizard-room-card--selected" data-room="twin">
                 <input type="radio" name="room_type" value="twin" checked class="wizard-room-card__radio" />
                 <div class="wizard-room-card__content">
                     <div class="wizard-room-card__text">
@@ -129,7 +129,7 @@ defined('ABSPATH') || exit;
             </label>
 
             <!-- SOLO Private Room -->
-            <label class="wizard-room-card">
+            <label class="wizard-room-card" data-room="solo">
                 <input type="radio" name="room_type" value="solo" class="wizard-room-card__radio" />
                 <div class="wizard-room-card__content">
                     <div class="wizard-room-card__text">

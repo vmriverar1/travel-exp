@@ -2,10 +2,28 @@
 /**
  * Block: FAQ Accordion
  *
- * Interactive accordion for FAQs with Schema markup.
+ * Interactive accordion for frequently asked questions with Schema.org markup for SEO.
+ * Generates FAQPage structured data for Google Rich Results.
  *
- * @package Travel\Blocks\Blocks
+ * Features:
+ * - Repeater field for unlimited FAQ items
+ * - WYSIWYG editor for rich-text answers
+ * - Optional "open by default" per item
+ * - Interactive accordion with JavaScript
+ * - Schema.org FAQPage JSON-LD markup
+ * - SEO-optimized for Google FAQ rich results
+ *
+ * SEO Benefits:
+ * - Automatic FAQPage schema generation
+ * - Google Rich Results eligible
+ * - Improved search visibility
+ *
+ * ⚠️ Note: Similar blocks exist in Package and Template namespaces.
+ * This is the ACF-based general-purpose FAQ accordion.
+ *
+ * @package Travel\Blocks\ACF
  * @since 1.0.0
+ * @version 1.1.0 - Refactored: namespace fix, improved Schema.org documentation
  */
 
 namespace Travel\Blocks\Blocks\ACF;
@@ -33,6 +51,14 @@ class FAQAccordion extends BlockBase
 
     /**
      * Register block and its ACF fields.
+     *
+     * Registers ACF block type and defines field group with:
+     * - section_title: Optional section heading
+     * - section_description: Optional intro text
+     * - faq_items: Repeater field for Q&A pairs
+     *   - question: FAQ question text (required)
+     *   - answer: WYSIWYG answer (required)
+     *   - open_default: Whether item starts expanded
      *
      * @return void
      */
@@ -113,9 +139,15 @@ class FAQAccordion extends BlockBase
     /**
      * Render the block output.
      *
-     * @param array  $block      Block settings
-     * @param string $content    Block content
-     * @param bool   $is_preview Whether in preview mode
+     * Generates interactive FAQ accordion with Schema.org markup:
+     * - Renders section title and description
+     * - Creates accordion items from repeater field
+     * - Generates FAQPage JSON-LD schema for SEO
+     * - Passes all data to template for rendering
+     *
+     * @param array  $block      Block settings and attributes
+     * @param string $content    Block content (unused)
+     * @param bool   $is_preview Whether block is being previewed in editor
      * @param int    $post_id    Current post ID
      *
      * @return void
@@ -142,11 +174,24 @@ class FAQAccordion extends BlockBase
     }
 
     /**
-     * Generate FAQ Schema markup.
+     * Generate FAQ Schema.org markup.
      *
-     * @param array $faq_items FAQ items
+     * Creates FAQPage structured data in JSON-LD format for Google Rich Results.
+     * Each FAQ item becomes a Question with an acceptedAnswer.
      *
-     * @return string JSON-LD schema
+     * Schema Structure:
+     * - @type: FAQPage
+     * - mainEntity: Array of Question objects
+     *   - Each Question has name (question text)
+     *   - Each Question has acceptedAnswer (Answer object with text)
+     *
+     * Sanitization:
+     * - Uses wp_strip_all_tags() to remove HTML from schema
+     * - Ensures clean text for search engines
+     *
+     * @param array $faq_items FAQ items from ACF repeater field
+     *
+     * @return string JSON-LD schema string, or empty if no items
      */
     private function generate_faq_schema(array $faq_items): string
     {
@@ -180,6 +225,12 @@ class FAQAccordion extends BlockBase
 
     /**
      * Enqueue block-specific assets.
+     *
+     * Loads CSS for accordion styling and JavaScript for:
+     * - Accordion expand/collapse functionality
+     * - Click event handling
+     * - Open/close animations
+     * - "Open by default" behavior
      *
      * @return void
      */

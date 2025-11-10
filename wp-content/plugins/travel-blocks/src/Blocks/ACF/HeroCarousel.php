@@ -1,101 +1,156 @@
 <?php
+/**
+ * Block: Hero Carousel
+ *
+ * Full-width hero carousel with InnerBlocks and flexible card grid.
+ *
+ * @package Travel\Blocks\ACF
+ * @since 1.0.0
+ * @version 2.1.0 - REFACTORED: Now inherits from CarouselBlockBase (FASE 3)
+ *
+ * Previous Issues (NOW RESOLVED):
+ * - Does NOT inherit from BlockBase ✅ NOW INHERITS CarouselBlockBase
+ * - Double asset registration ✅ FIXED
+ * - render_block() method name ✅ NOW render()
+ * - ~70% CODE DUPLICATION with FlexibleGridCarousel ✅ NOW RESOLVED via CarouselBlockBase
+ *
+ * Improvements in v2.1.0 (FASE 3):
+ * - Extends CarouselBlockBase (eliminates ~200+ lines of duplicated code)
+ * - Uses shared carousel/style fields methods
+ * - Uses shared dynamic content methods
+ * - register_fields() reduced significantly
+ *
+ * Features:
+ * - InnerBlocks for hero content (title, subtitle, buttons)
+ * - 4 layout variations: bottom, top, side_left, side_right
+ * - Negative margins for creative overlaps
+ * - Dynamic content via ContentQueryHelper (packages/posts/deals)
+ * - Manual content via ACF repeater
+ * - Desktop: Responsive grid (2-4 columns)
+ * - Mobile: Native scroll-snap carousel
+ * - Flexible column-span pattern
+ * - 6 button variants + 6 badge variants
+ * - Content proportion control (text vs cards)
+ */
 
 namespace Travel\Blocks\Blocks\ACF;
 
+use Travel\Blocks\Core\CarouselBlockBase;
 use Travel\Blocks\Helpers\ContentQueryHelper;
 
-class HeroCarousel {
+class HeroCarousel extends CarouselBlockBase
+{
+    /**
+     * Example data for block preview in editor
+     *
+     * @var array
+     */
+    public array $example;
 
-    public function __construct() {
-        // Los métodos se llaman directamente desde Plugin.php
+    /**
+     * Constructor - Initialize block properties.
+     *
+     * Sets up block configuration following BlockBase pattern.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->name        = 'hero-carousel';
+        $this->title       = __('Hero Carousel (Cards with Hero Background)', 'travel-blocks');
+        $this->description = __('Display cards in carousel/grid with hero background image', 'travel-blocks');
+        $this->category    = 'travel';
+        $this->icon        = 'slides';
+        $this->keywords    = ['hero', 'carousel', 'cards', 'background', 'slider'];
+        $this->mode        = 'preview';
+
+        $this->supports = [
+            'align' => ['wide', 'full'],
+            'mode' => true,
+            'jsx' => true,
+            'spacing' => [
+                'margin' => true,
+                'padding' => true,
+                'blockGap' => true,
+            ],
+            'color' => [
+                'background' => true,
+                'text' => true,
+                'gradients' => true,
+            ],
+            'typography' => [
+                'fontSize' => true,
+                'lineHeight' => true,
+            ],
+            'anchor' => true,
+            'customClassName' => true,
+        ];
+
+        // Default InnerBlocks example for editor
+        $this->example = [
+            'attributes' => [
+                'mode' => 'preview',
+                'data' => [
+                    'layout_variation' => 'bottom',
+                ],
+            ],
+            'innerBlocks' => [
+                [
+                    'core/heading',
+                    [
+                        'level' => 1,
+                        'content' => __('Discover Your Next Adventure', 'travel-blocks'),
+                        'textColor' => 'white',
+                    ],
+                ],
+                [
+                    'core/paragraph',
+                    [
+                        'content' => __('Explore amazing destinations and create unforgettable memories with our curated travel experiences.', 'travel-blocks'),
+                        'textColor' => 'white',
+                    ],
+                ],
+                [
+                    'core/buttons',
+                    [],
+                    [
+                        [
+                            'core/button',
+                            [
+                                'text' => __('Learn More', 'travel-blocks'),
+                                'url' => '#',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
     }
 
-    public function register() {
-        // Enqueue assets for both frontend and editor
-        add_action('enqueue_block_assets', [$this, 'enqueue_assets']);
-        add_action('enqueue_block_editor_assets', [$this, 'enqueue_assets']);
-
-        $this->register_block();
+    /**
+     * Register the block and its fields.
+     *
+     * ✅ REFACTORED: Now uses parent::register() from BlockBase
+     * ✅ FIXED: Removed duplicate asset registration
+     *
+     * @return void
+     */
+    public function register(): void
+    {
+        parent::register();
         $this->register_fields();
     }
 
-    public function register_block() {
-        if (function_exists('acf_register_block_type')) {
-            acf_register_block_type([
-                'name'              => 'hero-carousel',
-                'title'             => __('Hero Carousel (Cards with Hero Background)', 'acf-gutenberg-rest-blocks'),
-                'description'       => __('Display cards in carousel/grid with hero background image', 'acf-gutenberg-rest-blocks'),
-                'render_callback'   => [$this, 'render_block'],
-                'category'          => 'travel',
-                'icon'              => 'slides',
-                'keywords'          => ['hero', 'carousel', 'cards', 'background', 'slider'],
-                'mode'              => 'preview',
-                'supports'          => [
-                    'align' => ['wide', 'full'],
-                    'mode' => true,
-                    'jsx' => true,
-                    'spacing' => [
-                        'margin' => true,
-                        'padding' => true,
-                        'blockGap' => true,
-                    ],
-                    'color' => [
-                        'background' => true,
-                        'text' => true,
-                        'gradients' => true,
-                    ],
-                    'typography' => [
-                        'fontSize' => true,
-                        'lineHeight' => true,
-                    ],
-                    'anchor' => true,
-                    'customClassName' => true,
-                ],
-                'enqueue_assets'    => [$this, 'enqueue_assets'],
-                // Default InnerBlocks template
-                'example'           => [
-                    'attributes' => [
-                        'mode' => 'preview',
-                        'data' => [
-                            'layout_variation' => 'bottom',
-                        ],
-                    ],
-                    'innerBlocks' => [
-                        [
-                            'core/heading',
-                            [
-                                'level' => 1,
-                                'content' => __('Discover Your Next Adventure', 'acf-gutenberg-rest-blocks'),
-                                'textColor' => 'white',
-                            ],
-                        ],
-                        [
-                            'core/paragraph',
-                            [
-                                'content' => __('Explore amazing destinations and create unforgettable memories with our curated travel experiences.', 'acf-gutenberg-rest-blocks'),
-                                'textColor' => 'white',
-                            ],
-                        ],
-                        [
-                            'core/buttons',
-                            [],
-                            [
-                                [
-                                    'core/button',
-                                    [
-                                        'text' => __('Learn More', 'acf-gutenberg-rest-blocks'),
-                                        'url' => '#',
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ]);
-        }
-    }
-
-    public function enqueue_assets() {
+    /**
+     * Enqueue block assets.
+     *
+     * ✅ Kept from original - handles custom CSS and JS for HeroCarousel
+     * Note: BlockBase automatically calls this via 'enqueue_block_assets' action
+     *
+     * @return void
+     */
+    public function enqueue_assets(): void
+    {
         wp_enqueue_style(
             'hero-carousel-style',
             TRAVEL_BLOCKS_URL . 'assets/blocks/HeroCarousel/style.css',
@@ -123,7 +178,19 @@ class HeroCarousel {
         }
     }
 
-    public function render_block($block, $content = '', $is_preview = false) {
+    /**
+     * Render the block.
+     *
+     * ✅ RENAMED: render_block() → render() to match BlockBase signature
+     *
+     * @param array  $block      The block settings and attributes.
+     * @param string $content    The block inner HTML (from InnerBlocks).
+     * @param bool   $is_preview True during backend preview render.
+     * @param int    $post_id    The current post ID.
+     * @return void
+     */
+    public function render(array $block, string $content = '', bool $is_preview = false, int $post_id = 0): void
+    {
         // Get WordPress block attributes
         $block_wrapper_attributes = get_block_wrapper_attributes([
             'class' => 'hero-carousel-wrapper'
@@ -132,11 +199,8 @@ class HeroCarousel {
         // Get ACF fields (ACF automatically knows the context in preview mode)
         $layout_variation = get_field('layout_variation') ?: 'bottom';
 
-        // Global style settings
-        $button_color_variant = get_field('button_color_variant') ?: 'primary';
-        $badge_color_variant = get_field('badge_color_variant') ?: 'secondary';
-        $text_alignment = get_field('text_alignment') ?: 'left';
-        $button_alignment = get_field('button_alignment') ?: 'left';
+        // ✅ REFACTORED: Use shared style settings from CarouselBlockBase
+        $style_data = $this->get_style_data(true); // true = include alignments
 
         // Content proportion (text vs cards)
         $content_proportion = (int)(get_field('content_proportion') ?: 45);
@@ -164,93 +228,42 @@ class HeroCarousel {
         $hero_height_mobile = get_field('hero_height_mobile') ?: 60;
         $hero_height_tablet = get_field('hero_height_tablet') ?: 70;
         $hero_height_desktop = get_field('hero_height_desktop') ?: 80;
-        $show_arrows = get_field('show_arrows');
-        $show_dots = get_field('show_dots');
-        $enable_autoplay = get_field('enable_autoplay');
-        $autoplay_delay = get_field('autoplay_delay') ?: 5000;
 
-        // Check if using dynamic content from Package CPT, Blog Posts, or Deal
+        // ✅ REFACTORED: Get dynamic content using shared method from CarouselBlockBase
         $dynamic_source = get_field('hc_dynamic_source');
+        $cards = $this->get_dynamic_content('hc', $dynamic_source ?: 'none');
 
-        if ($dynamic_source === 'package') {
-            // Get dynamic packages from ContentQueryHelper with 'hc' prefix
-            $cards = ContentQueryHelper::get_content('hc', 'package');
-            if (function_exists('travel_info')) {
-                travel_info('Usando contenido dinámico de packages', [
-                    'cards_count' => count($cards),
-                ]);
-            }
-        } elseif ($dynamic_source === 'post') {
-            // Get dynamic blog posts from ContentQueryHelper with 'hc' prefix
-            $cards = ContentQueryHelper::get_content('hc', 'post');
-            if (function_exists('travel_info')) {
-                travel_info('Usando contenido dinámico de blog posts', [
-                    'cards_count' => count($cards),
-                ]);
-            }
-        } elseif ($dynamic_source === 'deal') {
-            // Dynamic content from selected deal's packages
-            $deal_id = get_field('hc_deal_selector');
-            if ($deal_id) {
-                $cards = ContentQueryHelper::get_deal_packages($deal_id, 'hc');
-                if (function_exists('travel_info')) {
-                    travel_info('Usando paquetes del deal seleccionado', [
-                        'deal_id' => $deal_id,
-                        'cards_count' => count($cards),
-                    ]);
-                }
-            } else {
-                $cards = [];
-            }
-        } else {
-            // Get cards (repeater) - Manual content
+        // If no dynamic content, use manual content
+        if (empty($cards)) {
             $cards = get_field('cards');
 
             // Si no hay cards, usar datos demo
             if (empty($cards)) {
                 $cards = $this->get_demo_cards();
             } else {
-                // Rellenar imágenes vacías con demo images
-                foreach ($cards as $index => &$card) {
-                    if (empty($card['image'])) {
-                        $random_id = 310 + $index + 1;
-                        $card['image'] = [
-                            'url' => 'https://picsum.photos/800/600?random=' . $random_id,
-                            'sizes' => [
-                                'large' => 'https://picsum.photos/800/600?random=' . $random_id,
-                                'medium' => 'https://picsum.photos/400/300?random=' . $random_id
-                            ],
-                            'alt' => $card['title'] ?? 'Card Image'
-                        ];
-                    }
-                }
-                unset($card); // Romper la referencia
+                // ✅ REFACTORED: Use shared method to fill demo images
+                $cards = $this->fill_demo_images($cards, 310);
             }
         }
 
-        // Determine if carousel is needed
+        // ✅ REFACTORED: Use shared carousel data method from CarouselBlockBase
         $total_cards = count($cards);
-        $is_carousel = $total_cards > $columns_desktop;
+        $carousel_data = $this->get_carousel_data($total_cards, $columns_desktop);
 
         // Get Display Fields (control what to show in each card)
         $display_fields_packages = get_field('hc_mat_dynamic_visible_fields') ?: [];
         $display_fields_posts = get_field('hc_mat_dynamic_visible_fields') ?: [];
 
-        // Pass variables to template
-        $template_data = [
+        // ✅ REFACTORED: Pass variables to template using shared data arrays
+        $template_data = array_merge([
             'block_wrapper_attributes' => $block_wrapper_attributes,
             'layout_variation' => $layout_variation,
-            'button_color_variant' => $button_color_variant,
-            'badge_color_variant' => $badge_color_variant,
-            'text_alignment' => $text_alignment,
-            'button_alignment' => $button_alignment,
             'content_proportion' => $content_proportion,
             'cards_proportion' => $cards_proportion,
             'hero_image' => $hero_image,
             'hero_content' => $content, // InnerBlocks rendered content
             'has_hero_text' => $has_hero_text,
             'cards' => $cards,
-            'columns_desktop' => $columns_desktop,
             'negative_margin' => $negative_margin,
             'cards_negative_margin_top' => $cards_negative_margin_top,
             'cards_negative_margin_bottom' => $cards_negative_margin_bottom,
@@ -261,15 +274,10 @@ class HeroCarousel {
             'hero_height_mobile' => $hero_height_mobile,
             'hero_height_tablet' => $hero_height_tablet,
             'hero_height_desktop' => $hero_height_desktop,
-            'show_arrows' => $show_arrows,
-            'show_dots' => $show_dots,
-            'enable_autoplay' => $enable_autoplay,
-            'autoplay_delay' => $autoplay_delay,
-            'is_carousel' => $is_carousel,
             'display_fields_packages' => $display_fields_packages,
             'display_fields_posts' => $display_fields_posts,
             'is_preview' => $is_preview,
-        ];
+        ], $style_data, $carousel_data); // Merge shared style and carousel data
 
         // Load template based on layout
         $template_file = TRAVEL_BLOCKS_PATH . 'src/Blocks/HeroCarousel/templates/' . $layout_variation . '.php';
@@ -293,144 +301,46 @@ class HeroCarousel {
         ];
     }
 
-    private function get_demo_cards() {
-        return [
-            [
-                'image' => [
-                    'url' => 'https://picsum.photos/800/600?random=311',
-                    'sizes' => [
-                        'large' => 'https://picsum.photos/800/600?random=311',
-                        'medium' => 'https://picsum.photos/400/300?random=311'
-                    ],
-                    'alt' => 'Adventure Tours'
-                ],
-                'category' => 'Adventure',
-                'title' => 'Adventure Tours',
-                'excerpt' => 'Embark on thrilling expeditions to remote destinations. Experience nature at its wildest with expert guides and safety equipment.',
-                'date' => 'December 15, 2024',
-                'link' => [
-                    'url' => '#',
-                    'title' => 'Read More',
-                    'target' => ''
-                ],
-                'cta_text' => 'Book Now',
-                'location' => 'Cusco, Peru',
-                'price' => '$299'
-            ],
-            [
-                'image' => [
-                    'url' => 'https://picsum.photos/800/600?random=312',
-                    'sizes' => [
-                        'large' => 'https://picsum.photos/800/600?random=312',
-                        'medium' => 'https://picsum.photos/400/300?random=312'
-                    ],
-                    'alt' => 'Cultural Experiences'
-                ],
-                'category' => 'Culture',
-                'title' => 'Cultural Experiences',
-                'excerpt' => 'Immerse yourself in local traditions and customs. Connect with communities and discover authentic cultural heritage.',
-                'date' => 'December 10, 2024',
-                'link' => [
-                    'url' => '#',
-                    'title' => 'Read More',
-                    'target' => ''
-                ],
-                'cta_text' => 'Explore',
-                'location' => 'Lima, Peru',
-                'price' => '$199'
-            ],
-            [
-                'image' => [
-                    'url' => 'https://picsum.photos/800/600?random=313',
-                    'sizes' => [
-                        'large' => 'https://picsum.photos/800/600?random=313',
-                        'medium' => 'https://picsum.photos/400/300?random=313'
-                    ],
-                    'alt' => 'Luxury Retreats'
-                ],
-                'category' => 'Luxury',
-                'title' => 'Luxury Retreats',
-                'excerpt' => 'Indulge in premium accommodations and world-class amenities. Relax in paradise with personalized service and exclusive experiences.',
-                'date' => 'December 5, 2024',
-                'link' => [
-                    'url' => '#',
-                    'title' => 'Read More',
-                    'target' => ''
-                ],
-                'cta_text' => 'Reserve',
-                'location' => 'Arequipa, Peru',
-                'price' => '$599'
-            ],
-            [
-                'image' => [
-                    'url' => 'https://picsum.photos/800/600?random=314',
-                    'sizes' => [
-                        'large' => 'https://picsum.photos/800/600?random=314',
-                        'medium' => 'https://picsum.photos/400/300?random=314'
-                    ],
-                    'alt' => 'Eco Tourism'
-                ],
-                'category' => 'Eco-Friendly',
-                'title' => 'Eco Tourism',
-                'excerpt' => 'Travel responsibly while supporting conservation efforts. Explore pristine environments with minimal environmental impact.',
-                'date' => 'November 30, 2024',
-                'link' => [
-                    'url' => '#',
-                    'title' => 'Read More',
-                    'target' => ''
-                ],
-                'cta_text' => 'Discover',
-                'location' => 'Amazon, Peru',
-                'price' => '$399'
-            ],
-            [
-                'image' => [
-                    'url' => 'https://picsum.photos/800/600?random=315',
-                    'sizes' => [
-                        'large' => 'https://picsum.photos/800/600?random=315',
-                        'medium' => 'https://picsum.photos/400/300?random=315'
-                    ],
-                    'alt' => 'Family Vacations'
-                ],
-                'category' => 'Family',
-                'title' => 'Family Vacations',
-                'excerpt' => 'Create lasting memories with activities for all ages. Safe, fun, and educational experiences the whole family will enjoy.',
-                'date' => 'November 25, 2024',
-                'link' => [
-                    'url' => '#',
-                    'title' => 'Read More',
-                    'target' => ''
-                ],
-                'cta_text' => 'Plan Trip',
-                'location' => 'Puno, Peru',
-                'price' => '$249'
-            ],
-            [
-                'image' => [
-                    'url' => 'https://picsum.photos/800/600?random=316',
-                    'sizes' => [
-                        'large' => 'https://picsum.photos/800/600?random=316',
-                        'medium' => 'https://picsum.photos/400/300?random=316'
-                    ],
-                    'alt' => 'Solo Travel'
-                ],
-                'category' => 'Solo',
-                'title' => 'Solo Travel',
-                'excerpt' => 'Discover yourself while exploring the world independently. Join group tours or venture out on personalized solo adventures.',
-                'date' => 'November 20, 2024',
-                'link' => [
-                    'url' => '#',
-                    'title' => 'Read More',
-                    'target' => ''
-                ],
-                'cta_text' => 'Start Journey',
-                'location' => 'Iquitos, Peru',
-                'price' => '$179'
-            ]
-        ];
+    /**
+     * Get demo cards from JSON file.
+     *
+     * ✅ REFACTORED: Moved 135 lines of hardcoded data to external JSON file.
+     * This improves maintainability and reduces file size.
+     *
+     * @return array Demo cards data
+     */
+    private function get_demo_cards(): array
+    {
+        $json_file = TRAVEL_BLOCKS_PATH . 'data/demo/hero-carousel-cards.json';
+
+        if (!file_exists($json_file)) {
+            // Fallback: return minimal demo data if JSON file not found
+            return [
+                [
+                    'image' => ['url' => 'https://picsum.photos/800/600?random=311'],
+                    'title' => 'Demo Card',
+                    'excerpt' => 'Demo content - JSON file not found',
+                    'cta_text' => 'Learn More'
+                ]
+            ];
+        }
+
+        $json_content = file_get_contents($json_file);
+        $cards = json_decode($json_content, true);
+
+        return is_array($cards) ? $cards : [];
     }
 
-    public function register_fields() {
+    /**
+     * Register ACF fields for the block.
+     *
+     * ✅ Made private (was public)
+     * Note: 691 lines - will consolidate with FlexibleGridCarousel in FASE 3
+     *
+     * @return void
+     */
+    private function register_fields(): void
+    {
         if (function_exists('acf_add_local_field_group')) {
             // Get dynamic content and filter fields from Helper (with 'hc' prefix)
             $dynamic_fields = ContentQueryHelper::get_dynamic_content_fields('hc');
@@ -465,25 +375,10 @@ class HeroCarousel {
                         'ui' => 1,
                         'return_format' => 'value',
                     ],
-
-                    // Columns Desktop
-                    [
-                        'key' => 'field_hc_columns_desktop',
-                        'label' => 'Columns (Desktop)',
-                        'name' => 'columns_desktop',
-                        'type' => 'select',
-                        'instructions' => 'Number of cards to show at once (if cards exceed this, carousel activates)',
-                        'required' => 0,
-                        'choices' => [
-                            '2' => '2 Columns',
-                            '3' => '3 Columns',
-                            '4' => '4 Columns',
-                        ],
-                        'default_value' => '3',
-                        'ui' => 1,
-                        'return_format' => 'value',
-                    ],
-
+                ],
+                // ✅ REFACTORED: Use shared grid columns field from CarouselBlockBase
+                $this->get_grid_columns_field('hc', 2, 4, 3), // min: 2, max: 4, default: 3
+                [
                     // Content Proportion (Text vs Cards)
                     [
                         'key' => 'field_hc_content_proportion',
@@ -499,83 +394,10 @@ class HeroCarousel {
                         'prepend' => 'Texto',
                         'append' => '%',
                     ],
-
-                    // ===== TAB: STYLES =====
-                    [
-                        'key' => 'field_hc_tab_styles',
-                        'label' => '🎨 Card Styles',
-                        'type' => 'tab',
-                        'placement' => 'top',
-                    ],
-
-                    [
-                        'key' => 'field_hc_button_color_variant',
-                        'label' => __('🎨 Button Color', 'acf-gutenberg-rest-blocks'),
-                        'name' => 'button_color_variant',
-                        'type' => 'select',
-                        'required' => 0,
-                        'choices' => [
-                            'primary' => __('Primary - Pink (#E78C85)', 'acf-gutenberg-rest-blocks'),
-                            'secondary' => __('Secondary - Purple (#311A42)', 'acf-gutenberg-rest-blocks'),
-                            'white' => __('White with black text', 'acf-gutenberg-rest-blocks'),
-                            'gold' => __('Gold (#CEA02D)', 'acf-gutenberg-rest-blocks'),
-                            'dark' => __('Dark (#1A1A1A)', 'acf-gutenberg-rest-blocks'),
-                            'transparent' => __('Transparent with white border', 'acf-gutenberg-rest-blocks'),
-                            'read-more' => __('Text "Read More" (no background)', 'acf-gutenberg-rest-blocks'),
-                        ],
-                        'default_value' => 'primary',
-                        'ui' => 1,
-                        'instructions' => __('Color applied to all card buttons', 'acf-gutenberg-rest-blocks'),
-                    ],
-                    [
-                        'key' => 'field_hc_badge_color_variant',
-                        'label' => __('🎨 Badge Color', 'acf-gutenberg-rest-blocks'),
-                        'name' => 'badge_color_variant',
-                        'type' => 'select',
-                        'required' => 0,
-                        'choices' => [
-                            'primary' => __('Primary - Pink (#E78C85)', 'acf-gutenberg-rest-blocks'),
-                            'secondary' => __('Secondary - Purple (#311A42)', 'acf-gutenberg-rest-blocks'),
-                            'white' => __('White with black text', 'acf-gutenberg-rest-blocks'),
-                            'gold' => __('Gold (#CEA02D)', 'acf-gutenberg-rest-blocks'),
-                            'dark' => __('Dark (#1A1A1A)', 'acf-gutenberg-rest-blocks'),
-                            'transparent' => __('Transparent with white border', 'acf-gutenberg-rest-blocks'),
-                        ],
-                        'default_value' => 'secondary',
-                        'ui' => 1,
-                        'instructions' => __('Color applied to all badges', 'acf-gutenberg-rest-blocks'),
-                    ],
-                    [
-                        'key' => 'field_hc_text_alignment',
-                        'label' => __('📐 Text Alignment', 'acf-gutenberg-rest-blocks'),
-                        'name' => 'text_alignment',
-                        'type' => 'select',
-                        'required' => 0,
-                        'choices' => [
-                            'left' => __('Left', 'acf-gutenberg-rest-blocks'),
-                            'center' => __('Center', 'acf-gutenberg-rest-blocks'),
-                            'right' => __('Right', 'acf-gutenberg-rest-blocks'),
-                        ],
-                        'default_value' => 'left',
-                        'ui' => 1,
-                        'instructions' => __('Text alignment (title, description, location, price)', 'acf-gutenberg-rest-blocks'),
-                    ],
-                    [
-                        'key' => 'field_hc_button_alignment',
-                        'label' => __('📍 Button Alignment', 'acf-gutenberg-rest-blocks'),
-                        'name' => 'button_alignment',
-                        'type' => 'select',
-                        'required' => 0,
-                        'choices' => [
-                            'left' => __('Left', 'acf-gutenberg-rest-blocks'),
-                            'center' => __('Center', 'acf-gutenberg-rest-blocks'),
-                            'right' => __('Right', 'acf-gutenberg-rest-blocks'),
-                        ],
-                        'default_value' => 'left',
-                        'ui' => 1,
-                        'instructions' => __('Button/CTA alignment', 'acf-gutenberg-rest-blocks'),
-                    ],
-
+                ],
+                // ✅ REFACTORED: Use shared style settings from CarouselBlockBase
+                $this->get_style_settings_fields('hc', true), // true = include text/button alignments
+                [
                     // ===== TAB: HERO CONTENT =====
                     [
                         'key' => 'field_hc_tab_hero',
@@ -878,72 +700,9 @@ class HeroCarousel {
                             ],
                         ],
                     ],
-
-                    // ===== TAB: CAROUSEL =====
-                    [
-                        'key' => 'field_hc_tab_carousel',
-                        'label' => '🎬 Carousel',
-                        'type' => 'tab',
-                        'placement' => 'top',
-                    ],
-
-                    // Show Arrows
-                    [
-                        'key' => 'field_hc_show_arrows',
-                        'label' => 'Show Navigation Arrows',
-                        'name' => 'show_arrows',
-                        'type' => 'true_false',
-                        'instructions' => 'Display prev/next arrows',
-                        'default_value' => 1,
-                        'ui' => 1,
-                    ],
-
-                    // Show Dots
-                    [
-                        'key' => 'field_hc_show_dots',
-                        'label' => 'Show Pagination Dots',
-                        'name' => 'show_dots',
-                        'type' => 'true_false',
-                        'instructions' => 'Display pagination dots',
-                        'default_value' => 1,
-                        'ui' => 1,
-                    ],
-
-                    // Enable Autoplay
-                    [
-                        'key' => 'field_hc_enable_autoplay',
-                        'label' => 'Enable Autoplay',
-                        'name' => 'enable_autoplay',
-                        'type' => 'true_false',
-                        'instructions' => 'Automatically advance slides',
-                        'default_value' => 0,
-                        'ui' => 1,
-                    ],
-
-                    // Autoplay Delay
-                    [
-                        'key' => 'field_hc_autoplay_delay',
-                        'label' => 'Autoplay Delay (ms)',
-                        'name' => 'autoplay_delay',
-                        'type' => 'number',
-                        'instructions' => 'Delay between slides in milliseconds',
-                        'required' => 0,
-                        'conditional_logic' => [
-                            [
-                                [
-                                    'field' => 'field_hc_enable_autoplay',
-                                    'operator' => '==',
-                                    'value' => '1',
-                                ],
-                            ],
-                        ],
-                        'default_value' => 5000,
-                        'min' => 1000,
-                        'max' => 30000,
-                        'step' => 1000,
-                    ],
-
                 ],
+                // ✅ REFACTORED: Use shared carousel settings from CarouselBlockBase
+                $this->get_carousel_settings_fields('hc'),
                 // Dynamic content fields
                 $dynamic_fields,
                 [
@@ -1121,5 +880,22 @@ class HeroCarousel {
                 ],
             ]);
         }
+    }
+
+    /**
+     * Get block-specific ACF fields (required by CarouselBlockBase).
+     *
+     * HeroCarousel's specific fields are already handled in register_fields().
+     * This method exists to satisfy the abstract requirement from CarouselBlockBase.
+     *
+     * @param string $prefix Field key prefix ('hc')
+     * @return array Empty array (fields are handled elsewhere)
+     */
+    protected function get_block_specific_fields(string $prefix): array
+    {
+        // All Hero-specific fields (layout, dimensions, hero content, cards repeater)
+        // are already defined in register_fields() method above.
+        // This method is required by CarouselBlockBase but not used in this implementation.
+        return [];
     }
 }

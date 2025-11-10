@@ -94,7 +94,7 @@
 }
 
 .static-cta__button.btn-primary {
-    background-color: #e74c3c;
+    background-color: var(--wp--preset--color--secondary);
     color: #fff;
 }
 
@@ -105,7 +105,7 @@
 }
 
 .static-cta__button.btn-secondary {
-    background-color: #3498db;
+    background-color: var(--wp--preset--color--primary);
     color: #fff;
 }
 

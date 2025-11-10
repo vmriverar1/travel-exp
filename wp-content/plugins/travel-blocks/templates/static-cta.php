@@ -15,6 +15,16 @@
  * @package Travel\Blocks
  */
 
+// Validate minimum required content
+if (empty($title) && empty($buttons)) {
+    if (defined('WP_DEBUG') && WP_DEBUG) {
+        echo '<div style="padding: 20px; background: #fff3cd; border: 2px solid #ffc107; margin: 20px 0;">';
+        echo '<p><strong>Static CTA:</strong> Configure título y botones para mostrar el bloque.</p>';
+        echo '</div>';
+    }
+    return;
+}
+
 // Generate unique block ID
 $block_id = 'static-cta-' . $block['id'];
 

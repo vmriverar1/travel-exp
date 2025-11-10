@@ -159,11 +159,11 @@
 
 /* Primary (Coral) */
 .product-metadata__meta-line--primary {
-    color: var(--color-coral, #E78C85);
+    color: var(--wp--preset--color--secondary);
 }
 
 .product-metadata__meta-line--primary .product-metadata__meta-item svg {
-    color: var(--color-coral, #E78C85);
+    color: var(--wp--preset--color--secondary);
 }
 
 .product-metadata__meta-line--primary .product-metadata__separator {
@@ -172,7 +172,7 @@
 
 /* Secondary (Purple) */
 .product-metadata__meta-line--secondary {
-    color: var(--color-purple, #311A42);
+    color: var(--wp--preset--color--contrast-4);
 }
 
 .product-metadata__meta-line--secondary .product-metadata__meta-item svg {
@@ -242,7 +242,7 @@
 /* ===== ACCESSIBILITY ===== */
 
 .product-metadata__tripadvisor-link:focus-visible {
-    outline: 2px solid var(--color-coral, #E78C85);
+    outline: 2px solid var(--wp--preset--color--secondary);
     outline-offset: 2px;
     border-radius: 4px;
 }

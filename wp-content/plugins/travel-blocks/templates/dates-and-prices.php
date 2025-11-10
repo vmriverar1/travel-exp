@@ -279,15 +279,28 @@ $day_names = [
                                     <?php if ($return_ts): ?>data-return-date="<?php echo esc_attr($date['return_date']); ?>"<?php endif; ?>
                                     data-action="<?php echo esc_attr($date['button_action'] ?? 'default'); ?>"
                                     <?php if (!empty($date['anchor_id'])): ?>data-anchor="<?php echo esc_attr($date['anchor_id']); ?>"<?php endif; ?>
+                                    data-price="<?php echo esc_attr($date['price']); ?>"
+                                    data-single-supp="<?php echo esc_attr($date['single_supp'] ?? '0'); ?>"
                                     type="button"
                                 >
                                     <?php echo esc_html($date['button_text'] ?? $button_text); ?>
                                 </button>
                             </div>
                         <?php else: ?>
-                            <!-- SOLD OUT: Centered status across all columns -->
-                            <div class="trip-status">
-                                <?php echo esc_html($status_text); ?>
+                            <!-- SOLD OUT: Keep same structure as normal rows -->
+                            <div class="trip-price">
+                                <!-- Status in price column position -->
+                                <div class="trip-status">
+                                    <?php echo esc_html($status_text); ?>
+                                </div>
+                            </div>
+
+                            <div class="trip-deal">
+                                <!-- Empty deal column -->
+                            </div>
+
+                            <div class="trip-cta">
+                                <!-- Empty CTA column -->
                             </div>
                         <?php endif; ?>
                     </li>
@@ -310,6 +323,7 @@ $day_names = [
             'month_names' => $month_names,
             'current_year' => $current_year,
             'current_month' => $current_month,
+            'package_id' => $package_id ?? null,
         ]); ?>
     </script>
 </section>

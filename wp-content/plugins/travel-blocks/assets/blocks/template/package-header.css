@@ -169,7 +169,7 @@
 
 .metadata-icon {
     flex-shrink: 0;
-    color: var(--color-coral, #E78C85);
+    color: var(--wp--preset--color--secondary);
     width: 20px;
     height: 20px;
 }

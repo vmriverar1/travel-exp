@@ -19,8 +19,8 @@ $overlay_style = sprintf(
 ?>
 
 <div id="<?php echo esc_attr($block_id); ?>" class="<?php echo esc_attr($class_name); ?>">
-    <div class="impact-section__background" style="<?php echo $background_style; ?>">
-        <div class="impact-section__overlay" style="<?php echo $overlay_style; ?>"></div>
+    <div class="impact-section__background" style="<?php echo esc_attr($background_style); ?>">
+        <div class="impact-section__overlay" style="<?php echo esc_attr($overlay_style); ?>"></div>
     </div>
 
     <div class="impact-section__inner">

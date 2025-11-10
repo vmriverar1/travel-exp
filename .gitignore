@@ -5,4 +5,6 @@ docs/
 docs/*
 */claude/*
 *.jpg
+*.md
+*.txt
 /wp-content/uploads/*

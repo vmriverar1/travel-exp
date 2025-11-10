@@ -45,6 +45,13 @@ add_action('plugins_loaded', function () {
 });
 
 /**
+ * Initialize Admin Pages
+ */
+if (is_admin()) {
+    \Travel\Blocks\Admin\ApiImportAdmin::init();
+}
+
+/**
  * Check if ACF Pro is active and supports blocks.
  */
 function acf_blocks_is_acf_active(): bool {

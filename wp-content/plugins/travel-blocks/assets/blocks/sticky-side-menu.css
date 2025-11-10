@@ -106,7 +106,7 @@
 
 /* Button Color Variants (reusing from PostsCarousel system) */
 .btn-cta--primary {
-    background: #E78C85;
+    background: var(--wp--preset--color--secondary);
     color: white;
 }
 
@@ -117,7 +117,7 @@
 }
 
 .btn-cta--secondary {
-    background: #311A42;
+    background: var(--wp--preset--color--contrast-4);
     color: white;
 }
 
@@ -139,7 +139,7 @@
 }
 
 .btn-cta--gold {
-    background: #CEA02D;
+    background: var(--wp--preset--color--contrast-1);
     color: white;
 }
 
@@ -283,15 +283,15 @@
 }
 
 .sticky-side-menu__menu a:hover {
-    color: #E78C85;
-    border-bottom-color: #E78C85;
+    color: var(--wp--preset--color--secondary);
+    border-bottom-color: var(--wp--preset--color--secondary);
     transform: translateX(8px);
 }
 
 .sticky-side-menu__menu .current-menu-item > a,
 .sticky-side-menu__menu .current_page_item > a {
-    color: #E78C85;
-    border-bottom-color: #E78C85;
+    color: var(--wp--preset--color--secondary);
+    border-bottom-color: var(--wp--preset--color--secondary);
 }
 
 /* Submenu styling */

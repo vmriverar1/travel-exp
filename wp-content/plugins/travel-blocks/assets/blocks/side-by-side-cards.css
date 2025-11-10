@@ -106,10 +106,10 @@
 }
 
 /* Badge Colors */
-.sbs-card__badge--primary { background: #E78C85; color: white; }
-.sbs-card__badge--secondary { background: #311A42; color: white; }
+.sbs-card__badge--primary { background: var(--wp--preset--color--secondary); color: white; }
+.sbs-card__badge--secondary { background: var(--wp--preset--color--contrast-4); color: white; }
 .sbs-card__badge--white { background: white; color: #1A1A1A; border: 1px solid #e0e0e0; }
-.sbs-card__badge--gold { background: #CEA02D; color: white; }
+.sbs-card__badge--gold { background: var(--wp--preset--color--contrast-1); color: white; }
 .sbs-card__badge--dark { background: #1A1A1A; color: white; }
 .sbs-card__badge--transparent { background: transparent; border: 1px solid currentColor; }
 
@@ -129,7 +129,7 @@
 }
 
 .sbs-card__title a:hover {
-  color: #E78C85;
+  color: var(--wp--preset--color--secondary);
 }
 
 /* Excerpt */
@@ -144,7 +144,7 @@
 .sbs-card__divider {
   width: 50px;
   height: 2px;
-  background: #E78C85;
+  background: var(--wp--preset--color--secondary);
   margin: 0;
 }
 
@@ -160,14 +160,14 @@
 
 .sbs-card__location svg {
   flex-shrink: 0;
-  color: #E78C85;
+  color: var(--wp--preset--color--secondary);
 }
 
 /* Price */
 .sbs-card__price {
   font-size: 18px;
   font-weight: 700;
-  color: #311A42;
+  color: var(--wp--preset--color--contrast-4);
   margin: 0;
 }
 
@@ -187,16 +187,16 @@
 }
 
 /* Button Colors */
-.sbs-card__button--primary { background: #E78C85; color: white; }
+.sbs-card__button--primary { background: var(--wp--preset--color--secondary); color: white; }
 .sbs-card__button--primary:hover { background: #d97a74; }
 
-.sbs-card__button--secondary { background: #311A42; color: white; }
+.sbs-card__button--secondary { background: var(--wp--preset--color--contrast-4); color: white; }
 .sbs-card__button--secondary:hover { background: #1f0f2a; }
 
 .sbs-card__button--white { background: white; color: #1A1A1A; border: 1px solid #e0e0e0; }
 .sbs-card__button--white:hover { background: #f5f5f5; }
 
-.sbs-card__button--gold { background: #CEA02D; color: white; }
+.sbs-card__button--gold { background: var(--wp--preset--color--contrast-1); color: white; }
 .sbs-card__button--gold:hover { background: #b58a25; }
 
 .sbs-card__button--dark { background: #1A1A1A; color: white; }
@@ -273,7 +273,7 @@
     inset: -2px;
     border-radius: 8px;
     padding: 2px;
-    background: linear-gradient(45deg, #E78C85, #CEA02D, #311A42);
+    background: linear-gradient(45deg, var(--wp--preset--color--secondary), var(--wp--preset--color--contrast-1), var(--wp--preset--color--contrast-4));
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
@@ -366,7 +366,7 @@
   .sbs-arrow--next { right: 10px; }
 
   .sbs-arrow:hover {
-    background: #E78C85;
+    background: var(--wp--preset--color--secondary);
     color: white;
   }
 
@@ -409,7 +409,7 @@
   }
 
   .sbs-dot.is-active {
-    background: #E78C85;
+    background: var(--wp--preset--color--secondary);
     width: 24px;
     border-radius: 4px;
   }

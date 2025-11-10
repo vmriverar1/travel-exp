@@ -4,10 +4,6 @@
    Mobile: Slider Material Design
 ========================================================= */
 
-/* ---- GOOGLE FONTS ---- */
-@import url('https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
-
 /* ---- VARIABLES CSS ---- */
 .posts-carousel {
   --card-gap: 24px; /* Override via inline style */
@@ -106,7 +102,7 @@
   top: 20px;
   left: 20px;
   z-index: 10;
-  background: #311A42;
+  background: var(--wp--preset--color--contrast-4);
   color: #fff;
   font-size: 13px;
   font-weight: 600;
@@ -146,7 +142,7 @@
 .pc-card__favorite:hover {
   background: #fff;
   transform: scale(1.1);
-  color: #e74c3c;
+  color: var(--wp--preset--color--secondary);
 }
 
 .pc-card__favorite:active {
@@ -154,7 +150,7 @@
 }
 
 .pc-card__favorite.is-active {
-  background: #e74c3c;
+  background: var(--wp--preset--color--secondary);
   color: #fff;
 }
 
@@ -470,16 +466,16 @@
   }
 
   .arrows-sides .pc-arrow--prev {
-    background: #E78C85;
-    border: 2px solid #E78C85;
+    background: var(--wp--preset--color--secondary);
+    border: 2px solid var(--wp--preset--color--secondary);
     color: #fff;
     order: -1;
   }
 
   .arrows-sides .pc-arrow--next {
     background: #fff;
-    border: 2px solid #E78C85;
-    color: #E78C85;
+    border: 2px solid var(--wp--preset--color--secondary);
+    color: var(--wp--preset--color--secondary);
     order: 1;
   }
 
@@ -511,16 +507,16 @@
 
   .arrows-overlay .pc-arrow--prev {
     left: 12px;
-    background: #E78C85;
-    border: 2px solid #E78C85;
+    background: var(--wp--preset--color--secondary);
+    border: 2px solid var(--wp--preset--color--secondary);
     color: #fff;
   }
 
   .arrows-overlay .pc-arrow--next {
     right: 12px;
     background: #fff;
-    border: 2px solid #E78C85;
-    color: #E78C85;
+    border: 2px solid var(--wp--preset--color--secondary);
+    color: var(--wp--preset--color--secondary);
   }
 
   .arrows-overlay .pc-arrow:active {
@@ -569,23 +565,23 @@
   }
 
   .arrows-bottom .pc-arrow--prev.pc-arrow--bottom {
-    background: #E78C85;
-    border: 2px solid #E78C85;
+    background: var(--wp--preset--color--secondary);
+    border: 2px solid var(--wp--preset--color--secondary);
     color: #fff;
     order: -1;
   }
 
   .arrows-bottom .pc-arrow--next.pc-arrow--bottom {
     background: #fff;
-    border: 2px solid #E78C85;
-    color: #E78C85;
+    border: 2px solid var(--wp--preset--color--secondary);
+    color: var(--wp--preset--color--secondary);
     order: 1;
   }
 
   /* Estilos comunes para todos los botones */
   .pc-arrow--prev:hover {
-    background: #dc7b74;
-    border-color: #dc7b74;
+    background: #d97a74;
+    border-color: #d97a74;
   }
 
   .pc-arrow--next:hover {
@@ -626,8 +622,8 @@
   .pc-dot.is-active {
     width: 24px;
     border-radius: 4px;
-    background: #E78C85;
-    border-color: #E78C85;
+    background: var(--wp--preset--color--secondary);
+    border-color: var(--wp--preset--color--secondary);
   }
 
   /* Ajustes de contenido en mobile */
@@ -740,7 +736,7 @@
 .pc-arrow:focus-visible,
 .pc-dot:focus-visible,
 .pc-card:focus-visible {
-  outline: 3px solid #1976d2;
+  outline: 3px solid var(--wp--preset--color--primary);
   outline-offset: 4px;
 }
 
@@ -829,7 +825,7 @@
 /* Button */
 .pc-card__button {
   padding: 10px 20px;
-  background: #E78C85;
+  background: var(--wp--preset--color--secondary);
   color: #fff;
   font-size: 14px;
   font-weight: 600;
@@ -844,7 +840,7 @@
 }
 
 .pc-card__button:hover {
-  background: #dc7b74;
+  background: #d97a74;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
@@ -857,19 +853,19 @@
    VARIACIONES DE COLOR - BOTONES
 ========================================================= */
 
-/* Botón variación Primary (Rosa #E78C85) - DEFAULT */
+/* Botón variación Primary (Rosa var(--wp--preset--color--secondary)) - DEFAULT */
 .pc-card__button--primary {
-  background: #E78C85;
+  background: var(--wp--preset--color--secondary);
   color: #fff;
 }
 
 .pc-card__button--primary:hover {
-  background: #dc7b74;
+  background: #d97a74;
 }
 
-/* Botón variación Secondary (Morado #311A42) */
+/* Botón variación Secondary (Morado var(--wp--preset--color--contrast-4)) */
 .pc-card__button--secondary {
-  background: #311A42;
+  background: var(--wp--preset--color--contrast-4);
   color: #fff;
 }
 
@@ -889,9 +885,9 @@
   color: #000;
 }
 
-/* Botón variación Gold (Dorado #CEA02D) */
+/* Botón variación Gold (Dorado var(--wp--preset--color--contrast-1)) */
 .pc-card__button--gold {
-  background: #CEA02D;
+  background: var(--wp--preset--color--contrast-1);
   color: #fff;
 }
 
@@ -925,7 +921,7 @@
 /* Botón variación Read More (Texto en negrita sin fondo) */
 .pc-card__button--read-more {
   background: transparent;
-  color: #1976d2;
+  color: var(--wp--preset--color--primary);
   font-weight: 700;
   padding: 0;
   box-shadow: none;
@@ -943,7 +939,7 @@
 /* Botón variación Line Arrow (Línea superior + Texto Rosa + Flecha) */
 .pc-card__button--line-arrow {
   background: transparent;
-  color: #E78C85;
+  color: var(--wp--preset--color--secondary);
   font-weight: 600;
   padding: 16px 0 0 0;
   box-shadow: none;
@@ -964,7 +960,7 @@
   transform: translateX(-50%);
   width: 90%;
   height: 2px;
-  background: #E78C85;
+  background: var(--wp--preset--color--secondary);
   transition: background 0.3s ease;
 }
 
@@ -977,13 +973,13 @@
 
 .pc-card__button--line-arrow:hover {
   background: transparent;
-  color: #dc7b74;
+  color: #d97a74;
   transform: none;
   box-shadow: none;
 }
 
 .pc-card__button--line-arrow:hover::before {
-  background: #dc7b74;
+  background: #d97a74;
 }
 
 .pc-card__button--line-arrow:hover::after {
@@ -994,19 +990,19 @@
    VARIACIONES DE COLOR - BADGES/ETIQUETAS
 ========================================================= */
 
-/* Badge variación Primary (Rosa #E78C85) */
+/* Badge variación Primary (Rosa var(--wp--preset--color--secondary)) */
 .pc-card__badge--primary {
-  background: #E78C85;
+  background: var(--wp--preset--color--secondary);
   color: #fff;
 }
 
 .pc-card__badge--primary:hover {
-  background: #dc7b74;
+  background: #d97a74;
 }
 
-/* Badge variación Secondary (Morado #311A42) - DEFAULT */
+/* Badge variación Secondary (Morado var(--wp--preset--color--contrast-4)) - DEFAULT */
 .pc-card__badge--secondary {
-  background: #311A42;
+  background: var(--wp--preset--color--contrast-4);
   color: #fff;
 }
 
@@ -1024,9 +1020,9 @@
   background: rgba(255, 255, 255, 0.9);
 }
 
-/* Badge variación Gold (Dorado #CEA02D) */
+/* Badge variación Gold (Dorado var(--wp--preset--color--contrast-1)) */
 .pc-card__badge--gold {
-  background: #CEA02D;
+  background: var(--wp--preset--color--contrast-1);
   color: #fff;
 }
 
@@ -1202,7 +1198,7 @@
 }
 
 .posts-carousel--vertical .pc-card__favorite:hover {
-  background: #E78C85;
+  background: var(--wp--preset--color--secondary);
   color: #fff;
   transform: scale(1.1);
 }

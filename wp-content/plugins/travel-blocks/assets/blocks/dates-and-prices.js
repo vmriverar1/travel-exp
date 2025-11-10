@@ -335,6 +335,18 @@
      * Initialize booking buttons
      */
     function initBookingButtons(block) {
+        // Get package ID from booking data
+        const dataScript = block.querySelector('.booking-data');
+        let packageId = null;
+        if (dataScript) {
+            try {
+                const bookingData = JSON.parse(dataScript.textContent);
+                packageId = bookingData.package_id || null;
+            } catch (err) {
+                console.warn('Could not parse booking data for package ID');
+            }
+        }
+
         const buttons = block.querySelectorAll('.btn-primary');
 
         buttons.forEach(button => {
@@ -388,20 +400,30 @@
                 if (action === 'open_purchase_aside') {
                     // Open purchase aside for fixed_dates
                     e.preventDefault();
+
+                    // Get price and single supplement from button
+                    const price = parseFloat(button.dataset.price || 0);
+                    const singleSupp = parseFloat(button.dataset.singleSupp || 0);
+
                     // Dispatch event for external purchase handler
                     const purchaseEvent = new CustomEvent('travelBlocksPurchaseRequested', {
                         detail: {
+                            packageId: packageId,
                             departureDate: departureDate,
                             returnDate: returnDate,
+                            price: price,
+                            singleSupp: singleSupp,
                         },
                         bubbles: true,
                     });
                     document.dispatchEvent(purchaseEvent);
 
-                    // TODO: Integrate with purchase aside/modal
-                    console.log('Purchase aside requested for dates:', {
+                    console.log('Purchase aside requested:', {
+                        packageId: packageId,
                         departure: departureDate,
-                        return: returnDate
+                        return: returnDate,
+                        price: price,
+                        singleSupp: singleSupp
                     });
                     return;
                 }

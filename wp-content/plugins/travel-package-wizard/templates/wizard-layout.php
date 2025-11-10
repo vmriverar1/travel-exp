@@ -31,17 +31,36 @@ $progress_percentage = round((($current_index + 1) / $total_steps) * 100);
             window.auroraWizardInit();
         }
 
-        // Hide ACF metaboxes initially (wizard will show/hide them)
+        // Hide ACF metaboxes initially (wizard will show/hide them by step)
         $('.acf-postbox').hide();
 
-        // Hide taxonomy metaboxes initially
-        $('.postbox[id*="div"]').each(function() {
-            var id = $(this).attr('id');
-            // Hide taxonomy metaboxes (destinationsdiv, faqdiv, etc.)
-            if (id && (id.endsWith('div') || id.startsWith('tagsdiv-'))) {
-                $(this).hide();
-            }
+        // Hide all current project taxonomies (they have their own wizard step)
+        // These are all taxonomies managed by the wizard for packages
+        var projectTaxonomies = [
+            'destinations',
+            'package_type',
+            'interest',
+            'optional_renting',
+            'included_services',
+            'day',
+            'additional_info',
+            'tag_locations',
+            'activity',
+            'type_service',
+            'hotel',
+            'spot_calendar',
+            'specialists',
+            'landing_packages',
+            'faq'
+        ];
+
+        // Hide both hierarchical ({taxonomy}div) and non-hierarchical (tagsdiv-{taxonomy}) metaboxes
+        projectTaxonomies.forEach(function(taxonomy) {
+            $('#' + taxonomy + 'div').hide(); // Hierarchical
+            $('#tagsdiv-' + taxonomy).hide(); // Non-hierarchical
         });
+
+        // Everything else (WordPress core, SEO plugins, future taxonomies) stays visible by default
 
         // Open all ACF field groups by default (no collapsed)
         $('.acf-postbox .handlediv').remove(); // Remove collapse handle
@@ -61,7 +80,22 @@ $progress_percentage = round((($current_index + 1) / $total_steps) * 100);
             // Show ACF metaboxes
             if (currentStepData.metaboxes) {
                 currentStepData.metaboxes.forEach(function(metaboxId) {
-                    $('#acf-' + metaboxId).show().wrap('<div class="wizard-step active" data-step="' + currentStep + '"></div>');
+                    var $metabox = $('#acf-' + metaboxId);
+                    $metabox.show().wrap('<div class="wizard-step active" data-step="' + currentStep + '"></div>');
+
+                    // Force ACF to initialize fields in this metabox
+                    if (typeof acf !== 'undefined') {
+                        // Trigger ACF initialization for image/gallery/repeater fields
+                        $metabox.find('.acf-field-image, .acf-field-gallery, .acf-field-repeater').each(function() {
+                            var field = acf.getField($(this).data('key'));
+                            if (field && typeof field.initialize === 'function') {
+                                field.initialize();
+                            }
+                        });
+
+                        // Alternative: trigger ACF do_action for field initialization
+                        acf.doAction('show', $metabox);
+                    }
                 });
             }
 
@@ -75,10 +109,39 @@ $progress_percentage = round((($current_index + 1) / $total_steps) * 100);
                 });
             }
         }
+
+        // Toggle WordPress sidebar visibility
+        $('#wizard-toggle-wp-sidebar').on('click', function() {
+            var $sidebar = $('#postbox-container-1');
+            var $button = $(this);
+
+            if ($sidebar.is(':visible')) {
+                $sidebar.fadeOut(200);
+                $button.find('.dashicons').removeClass('dashicons-wordpress').addClass('dashicons-hidden');
+                // Expand main content area
+                $('#post-body .postbox-container:not(#postbox-container-1)').css('width', '100%');
+            } else {
+                $sidebar.fadeIn(200);
+                $button.find('.dashicons').removeClass('dashicons-hidden').addClass('dashicons-wordpress');
+                // Restore normal layout
+                $('#post-body .postbox-container:not(#postbox-container-1)').css('width', '');
+            }
+        });
+
+        // Ensure sidebar is visible by default
+        $('#postbox-container-1').show();
     });
 </script>
 
 <div class="wizard-container" id="aurora-wizard-container">
+
+    <!-- WordPress Options Toggle -->
+    <div class="wizard-wp-options-toggle" style="margin-bottom: 15px; text-align: right;">
+        <button type="button" id="wizard-toggle-wp-sidebar" class="button button-secondary" style="background: #2271b1; color: white; border-color: #2271b1;">
+            <span class="dashicons dashicons-wordpress" style="vertical-align: middle;"></span>
+            Mostrar/Ocultar Opciones de WordPress
+        </button>
+    </div>
 
     <!-- Progress Bar -->
     <div class="wizard-progress-wrapper">

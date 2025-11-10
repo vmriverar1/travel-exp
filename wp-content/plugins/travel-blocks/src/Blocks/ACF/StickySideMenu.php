@@ -2,11 +2,25 @@
 /**
  * Block: Sticky Side Menu
  *
- * Menú lateral pegado a la derecha con comportamiento sticky.
- * Contiene: teléfono, botón CTA y menú hamburguesa.
+ * Floating sticky side menu with phone, CTA button, and hamburger menu trigger.
+ * Appears after configurable scroll offset with dynamic positioning (vh/px/%).
  *
- * @package Travel\Blocks\Blocks
+ * Features:
+ * - Phone display with optional icon
+ * - Customizable CTA button (6 style variants)
+ * - Hamburger menu integration with header aside menu
+ * - Configurable sticky behavior (offset: vh/px/%)
+ * - Shadow intensity control
+ * - Responsive with mobile hide option
+ *
+ * Integration:
+ * - Requires Header Aside Menu (#aside-menu)
+ * - Uses window.asideMenuToggle() for hamburger functionality
+ * - JavaScript provides fallback if global function not available
+ *
+ * @package Travel\Blocks\ACF
  * @since 1.0.0
+ * @version 1.1.1 - Enhanced: critical dependency documentation for header integration
  */
 
 namespace Travel\Blocks\Blocks\ACF;
@@ -36,6 +50,11 @@ class StickySideMenu extends BlockBase
     /**
      * Enqueue block-specific assets.
      *
+     * Loads CSS for sticky menu styling and JavaScript for:
+     * - Sticky behavior with dynamic offset calculation
+     * - Hamburger menu integration with header aside menu
+     * - Responsive handling and mobile detection
+     *
      * @return void
      */
     public function enqueue_assets(): void
@@ -60,6 +79,13 @@ class StickySideMenu extends BlockBase
 
     /**
      * Register block and its ACF fields.
+     *
+     * Registers ACF block type and defines field groups organized in tabs:
+     * - Phone: Toggle, number, and icon display
+     * - CTA Button: Text, URL, and 6 style variants
+     * - Hamburger: Toggle for aside menu integration
+     * - Positioning: Scroll offset (vh/px/%) for sticky appearance
+     * - Styles: Shadow intensity and mobile visibility
      *
      * @return void
      */
@@ -307,24 +333,30 @@ class StickySideMenu extends BlockBase
     }
 
     /**
-     * Get available WordPress menus as choices
+     * Render the block output.
      *
-     * @return array
-     */
-    private function get_menu_choices(): array
-    {
-        $menus = wp_get_nav_menus();
-        $choices = [];
-
-        foreach ($menus as $menu) {
-            $choices[$menu->term_id] = $menu->name;
-        }
-
-        return $choices;
-    }
-
-    /**
-     * Render block content.
+     * Generates floating sticky side menu with:
+     * - Phone section: Displays phone number with optional icon
+     * - CTA Button: Customizable button with 6 style variants
+     * - Hamburger Menu: Trigger for header aside menu integration
+     *
+     * Sticky Behavior:
+     * - Menu appears when scroll offset reached (configurable in vh/px/%)
+     * - JavaScript controls visibility with .is-visible class
+     * - Shadow intensity and mobile visibility configurable
+     *
+     * ⚠️ Integration Requirements (CRITICAL DEPENDENCY):
+     * - Requires #aside-menu element in header (DOM dependency)
+     * - Hamburger triggers window.asideMenuToggle() function
+     * - JavaScript provides fallback if global function not available
+     * - See sticky-side-menu.js lines 85-120 for integration logic
+     *
+     * @param array  $block      Block settings and attributes
+     * @param string $content    Block content (unused)
+     * @param bool   $is_preview Whether block is being previewed in editor
+     * @param int    $post_id    Current post ID
+     *
+     * @return void
      */
     public function render(array $block, string $content = '', bool $is_preview = false, int $post_id = 0): void
     {
@@ -342,7 +374,6 @@ class StickySideMenu extends BlockBase
         $cta_style = get_field('cta_style') ?: 'primary';
 
         $show_hamburger = get_field('show_hamburger') ?? true;
-        $menu_location = get_field('menu_location');
 
         $offset_value = get_field('offset_value') ?: 20;
         $offset_unit = get_field('offset_unit') ?: 'vh';
@@ -363,7 +394,6 @@ class StickySideMenu extends BlockBase
             'cta_url' => $cta_url,
             'cta_style' => $cta_style,
             'show_hamburger' => $show_hamburger,
-            'menu_location' => $menu_location,
             'offset_value' => $offset_value,
             'offset_unit' => $offset_unit,
             'shadow_intensity' => $shadow_intensity,

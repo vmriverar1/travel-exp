@@ -2,13 +2,22 @@
 /**
  * Block: Side by Side Cards (Horizontal Layout)
  *
- * Desktop: Grid horizontal (imagen + texto lado a lado)
- * Mobile: Slider nativo
- * Imagen con bordes redondeados, sin overlay
- * Posición de imagen configurable (izquierda/derecha)
+ * Horizontal cards with image and text side-by-side layout.
+ * Desktop: Flexible grid with column-span control.
+ * Mobile: Native scroll-snap slider with navigation.
  *
- * @package Travel\Blocks\Blocks
+ * Features:
+ * - Manual content or dynamic from packages/posts/deals
+ * - Flexible column-span pattern for dynamic content
+ * - Image position (left/right) and width control
+ * - 6 button color variants + 6 badge variants
+ * - Grid hover effects (squeeze/lift/glow/zoom/none)
+ * - Mobile slider with arrows, dots, and autoplay
+ * - ContentQueryHelper integration for dynamic queries
+ *
+ * @package Travel\Blocks\ACF
  * @since 1.0.0
+ * @version 1.1.0 - Refactored: namespace fix, improved docs, extracted column_span logic
  */
 
 namespace Travel\Blocks\Blocks\ACF;
@@ -38,6 +47,13 @@ class SideBySideCards extends BlockBase
 
     /**
      * Enqueue block-specific assets.
+     *
+     * Loads CSS for grid/slider styles and JavaScript for:
+     * - Mobile slider with scroll-snap behavior
+     * - Arrow and dot navigation
+     * - Autoplay functionality
+     *
+     * @return void
      */
     public function enqueue_assets(): void
     {
@@ -60,7 +76,12 @@ class SideBySideCards extends BlockBase
     }
 
     /**
-     * Get default placeholder image URL
+     * Get default placeholder image URL.
+     *
+     * Generates a random placeholder image URL from picsum.photos
+     * for demo cards when no image is provided.
+     *
+     * @return string Placeholder image URL
      */
     private function get_placeholder_image(): string
     {
@@ -69,6 +90,14 @@ class SideBySideCards extends BlockBase
 
     /**
      * Register block and its ACF fields.
+     *
+     * Registers ACF block type and defines comprehensive field groups organized in tabs:
+     * - Content: show_favorite, ContentQueryHelper fields, column_span_pattern, cards repeater
+     * - Slider (Mobile): show_arrows, show_dots, autoplay, autoplay_delay
+     * - Grid (Desktop): grid_columns, card_gap, hover_effect
+     * - Styles: image_position, image_width, image_border_radius, alignments, color variants
+     *
+     * @return void
      */
     public function register(): void
     {
@@ -495,7 +524,21 @@ class SideBySideCards extends BlockBase
     }
 
     /**
-     * Render block content.
+     * Render the block output.
+     *
+     * Generates horizontal cards with flexible layout:
+     * - Detects dynamic content source (packages/posts/deals) or uses manual cards
+     * - Applies column-span pattern for dynamic content
+     * - Loads demo cards if content is empty (preview mode)
+     * - Configures grid, slider, and style settings
+     * - Passes data to template for rendering
+     *
+     * @param array  $block      Block settings and attributes
+     * @param string $content    Block content (unused)
+     * @param bool   $is_preview Whether block is being previewed in editor
+     * @param int    $post_id    Current post ID
+     *
+     * @return void
      */
     public function render(array $block, string $content = '', bool $is_preview = false, int $post_id = 0): void
     {
@@ -526,31 +569,8 @@ class SideBySideCards extends BlockBase
 
             // Apply column_span pattern to dynamic cards
             if ($dynamic_source && $dynamic_source !== 'none') {
-                $column_span_pattern = get_field('column_span_pattern');
-                if (!empty($column_span_pattern)) {
-                    // Parse pattern: "1,2,1,1" -> [1, 2, 1, 1]
-                    $pattern = array_map('intval', array_map('trim', explode(',', $column_span_pattern)));
-
-                    // Filter out any invalid values (0 or negative)
-                    $pattern = array_filter($pattern, function($val) { return $val > 0; });
-
-                    if (!empty($pattern)) {
-                        // Apply pattern to cards (repeat pattern if needed)
-                        foreach ($cards as $index => &$card) {
-                            $pattern_index = $index % count($pattern);
-                            $card['column_span'] = array_values($pattern)[$pattern_index];
-                        }
-                        unset($card); // Break reference
-                    }
-                } else {
-                    // Si no hay patrón, asignar column_span 1 a todas las cards dinámicas
-                    foreach ($cards as &$card) {
-                        if (!isset($card['column_span'])) {
-                            $card['column_span'] = 1;
-                        }
-                    }
-                    unset($card);
-                }
+                $column_span_pattern = get_field('column_span_pattern') ?: '';
+                $cards = $this->apply_column_span_pattern($cards, $column_span_pattern);
             }
 
             // Get settings
@@ -621,7 +641,12 @@ class SideBySideCards extends BlockBase
     }
 
     /**
-     * Get demo cards con placeholders
+     * Get demo cards with placeholders.
+     *
+     * Provides sample cards for preview mode when no content is available.
+     * Includes varied column_span values to demonstrate grid flexibility.
+     *
+     * @return array Array of demo card data
      */
     private function get_demo_cards(): array
     {
@@ -660,5 +685,51 @@ class SideBySideCards extends BlockBase
                 'column_span' => 1,
             ],
         ];
+    }
+
+    /**
+     * Apply column-span pattern to cards array.
+     *
+     * Parses a comma-separated pattern (e.g., "1,2,1,1") and applies it
+     * cyclically to the cards array. If pattern is empty, defaults to 1.
+     *
+     * Pattern format: "1,2,1,1" means card 1 = 1 space, card 2 = 2 spaces, etc.
+     * Pattern repeats if there are more cards than pattern values.
+     *
+     * @param array  $cards   Array of card data
+     * @param string $pattern Comma-separated column span pattern
+     *
+     * @return array Cards array with column_span values applied
+     */
+    private function apply_column_span_pattern(array $cards, string $pattern): array
+    {
+        // If no pattern, set all cards to column_span = 1
+        if (empty($pattern)) {
+            foreach ($cards as &$card) {
+                if (!isset($card['column_span'])) {
+                    $card['column_span'] = 1;
+                }
+            }
+            return $cards;
+        }
+
+        // Parse pattern: "1,2,1,1" -> [1, 2, 1, 1]
+        $pattern_array = array_map('intval', array_map('trim', explode(',', $pattern)));
+
+        // Filter out invalid values (0 or negative)
+        $pattern_array = array_filter($pattern_array, fn($val) => $val > 0);
+
+        // If pattern is empty after filtering, return cards unchanged
+        if (empty($pattern_array)) {
+            return $cards;
+        }
+
+        // Apply pattern cyclically to cards
+        foreach ($cards as $index => &$card) {
+            $pattern_index = $index % count($pattern_array);
+            $card['column_span'] = array_values($pattern_array)[$pattern_index];
+        }
+
+        return $cards;
     }
 }

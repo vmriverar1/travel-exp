@@ -2,10 +2,19 @@
 /**
  * Block: Hero Section
  *
- * Full-width hero banner with image, title, subtitle, and CTA button.
+ * Full-width hero banner with background image, overlay, and call-to-action.
+ * Simple and clean implementation with proper BlockBase inheritance.
  *
- * @package Travel\Blocks\Blocks
+ * Features:
+ * - Background image with configurable overlay opacity
+ * - Title and subtitle with sensible defaults
+ * - Optional CTA button
+ * - Configurable height (small/medium/large/full)
+ * - Full-width and wide alignment support
+ *
+ * @package Travel\Blocks\ACF
  * @since 1.0.0
+ * @version 1.1.0 - Refactored: namespace fix, added validation, improved error handling
  */
 
 namespace Travel\Blocks\Blocks\ACF;
@@ -33,6 +42,15 @@ class HeroSection extends BlockBase
 
     /**
      * Register block and its ACF fields.
+     *
+     * Registers ACF block type and defines field group with:
+     * - background_image: Required background image (recommended 1920x800px)
+     * - overlay_opacity: Dark overlay for text readability (0-100%, default 40%)
+     * - title: Required hero title
+     * - subtitle: Optional hero subtitle
+     * - cta_text: CTA button text
+     * - cta_url: CTA button URL
+     * - height: Hero height (small/medium/large/full)
      *
      * @return void
      */
@@ -128,43 +146,81 @@ class HeroSection extends BlockBase
     /**
      * Render the block output.
      *
-     * @param array  $block      Block settings
-     * @param string $content    Block content
-     * @param bool   $is_preview Whether in preview mode
+     * Generates full-width hero banner with:
+     * - Background image with configurable overlay
+     * - Centered title and subtitle
+     * - Optional CTA button
+     * - Variable height options
+     *
+     * Validates required fields (background_image, title) before rendering.
+     * Falls back to error message if critical fields are missing.
+     *
+     * @param array  $block      Block settings and attributes
+     * @param string $content    Block content (unused)
+     * @param bool   $is_preview Whether block is being previewed in editor
      * @param int    $post_id    Current post ID
      *
      * @return void
      */
     public function render(array $block, string $content = '', bool $is_preview = false, int $post_id = 0): void
     {
-        // Get field values
-        $background_image = get_field('background_image');
-        $overlay_opacity = get_field('overlay_opacity') ?: 40;
-        $title = get_field('title');
-        $subtitle = get_field('subtitle');
-        $cta_text = get_field('cta_text');
-        $cta_url = get_field('cta_url');
-        $height = get_field('height') ?: 'large';
+        try {
+            // Get field values
+            $background_image = get_field('background_image');
+            $title = get_field('title');
 
-        // Prepare template data
-        $data = [
-            'block'            => $block,
-            'is_preview'       => $is_preview,
-            'background_image' => $background_image,
-            'overlay_opacity'  => $overlay_opacity,
-            'title'            => $title,
-            'subtitle'         => $subtitle,
-            'cta_text'         => $cta_text,
-            'cta_url'          => $cta_url,
-            'height'           => $height,
-        ];
+            // Validate required fields
+            if (!$background_image || !$title) {
+                if ($is_preview && (defined('WP_DEBUG') && WP_DEBUG)) {
+                    echo '<div style="padding: 20px; background: #fff3cd; border: 2px solid #856404; border-radius: 4px;">';
+                    echo '<h3 style="margin: 0 0 10px; color: #856404;">Hero Section: Missing Required Fields</h3>';
+                    echo '<p style="margin: 0;">Please configure both Background Image and Title fields.</p>';
+                    echo '</div>';
+                }
+                return;
+            }
 
-        // Load template
-        $this->load_template('hero-section', $data);
+            $overlay_opacity = get_field('overlay_opacity') ?: 40;
+            $subtitle = get_field('subtitle');
+            $cta_text = get_field('cta_text');
+            $cta_url = get_field('cta_url');
+            $height = get_field('height') ?: 'large';
+
+            // Prepare template data
+            $data = [
+                'block'            => $block,
+                'is_preview'       => $is_preview,
+                'background_image' => $background_image,
+                'overlay_opacity'  => $overlay_opacity,
+                'title'            => $title,
+                'subtitle'         => $subtitle,
+                'cta_text'         => $cta_text,
+                'cta_url'          => $cta_url,
+                'height'           => $height,
+            ];
+
+            // Load template
+            $this->load_template('hero-section', $data);
+
+        } catch (\Exception $e) {
+            // Error handling
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                echo '<div style="padding: 20px; background: #ffebee; border: 2px solid #f44336; border-radius: 4px;">';
+                echo '<h3 style="margin: 0 0 10px; color: #c62828;">Error in Hero Section</h3>';
+                echo '<p style="margin: 0; font-family: monospace; font-size: 13px;">' . esc_html($e->getMessage()) . '</p>';
+                echo '</div>';
+            }
+        }
     }
 
     /**
      * Enqueue block-specific assets.
+     *
+     * Loads CSS for hero section styling including:
+     * - Background image and overlay styles
+     * - Height variants (small/medium/large/full)
+     * - Responsive behavior
+     * - CTA button styles
      *
      * @return void
      */

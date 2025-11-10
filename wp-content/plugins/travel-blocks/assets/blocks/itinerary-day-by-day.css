@@ -224,7 +224,7 @@
     content: '•';
     position: absolute;
     left: 0.5rem;
-    color: var(--color-coral, #E78C85);
+    color: var(--wp--preset--color--secondary);
     font-weight: 700;
 }
 
@@ -341,7 +341,7 @@
 
 .itinerary-gallery-slider .swiper-pagination-bullet-active,
 .editor-styles-wrapper .itinerary-gallery-slider .swiper-pagination-bullet-active {
-    background: var(--color-coral, #E78C85);
+    background: var(--wp--preset--color--secondary);
     opacity: 1;
 }
 
@@ -370,7 +370,7 @@
     content: '•';
     position: absolute;
     left: 0.5rem;
-    color: var(--color-coral, #E78C85);
+    color: var(--wp--preset--color--secondary);
     font-weight: 700;
 }
 
@@ -423,7 +423,7 @@
 /* ===== ACCESSIBILITY ===== */
 
 .itinerary-day__header:focus-visible {
-    outline: 2px solid var(--color-coral, #E78C85);
+    outline: 2px solid var(--wp--preset--color--secondary);
     outline-offset: 2px;
 }
 

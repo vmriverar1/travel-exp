@@ -110,7 +110,7 @@
 }
 
 .related-posts-grid__read-more {
-    background: var(--color-coral, #E78C85);
+    background: var(--wp--preset--color--secondary);
     color: white;
     padding: 0.625rem 1.5rem;
     border-radius: var(--border-radius-sm, 4px);

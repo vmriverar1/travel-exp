@@ -5,9 +5,6 @@
  * @since 1.4.0
  */
 
-/* Import Poppins font (similar to Futura) */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
 /* ===================================
    ROOT & CSS VARIABLES
    =================================== */
@@ -15,7 +12,7 @@
     --color-primary-green-dark: #0a797e;
     --color-primary-green-medium: #1a8a8f;
     --color-accent-yellow: #FFE500;
-    --color-accent-pink: #e78c85;
+    --color-accent-pink: var(--wp--preset--color--secondary);
     --color-text-dark: #1F2937;
     --color-text-gray: #6B7280;
     --color-border-light: #E5E7EB;
@@ -492,8 +489,8 @@
 
 /* Left arrow - Pink background with white icon */
 .deals-slider__arrow--prev {
-    background: #E78C85;
-    border-color: #E78C85;
+    background: var(--wp--preset--color--secondary);
+    border-color: var(--wp--preset--color--secondary);
 }
 
 .deals-slider__arrow--prev svg {

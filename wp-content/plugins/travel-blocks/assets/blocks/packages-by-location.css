@@ -1,0 +1,390 @@
+/**
+ * Packages by Location Block Styles
+ *
+ * Displays travel packages organized by location/destination
+ * Uses theme.json color variables from the start
+ *
+ * @package Travel\Blocks
+ * @since 1.0.0
+ */
+
+/* ===== CONTAINER ===== */
+
+.packages-by-location {
+    width: 100%;
+    padding: 4rem 0;
+}
+
+.packages-by-location__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ===== HEADER ===== */
+
+.packages-by-location__header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.packages-by-location__title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--color-gray-900, #212121);
+    margin: 0 0 1rem 0;
+    line-height: 1.2;
+}
+
+.packages-by-location__subtitle {
+    font-size: 1.125rem;
+    color: var(--color-gray-600, #757575);
+    margin: 0;
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .packages-by-location__title {
+        font-size: 1.75rem;
+    }
+
+    .packages-by-location__subtitle {
+        font-size: 1rem;
+    }
+}
+
+/* ===== LOCATION TABS ===== */
+
+.packages-by-location__tabs {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+}
+
+.packages-by-location__tab {
+    padding: 0.75rem 1.5rem;
+    border: 2px solid var(--color-gray-300, #E0E0E0);
+    background: white;
+    border-radius: var(--border-radius-full, 50px);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--color-gray-700, #616161);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.packages-by-location__tab:hover {
+    border-color: var(--wp--preset--color--secondary);
+    color: var(--wp--preset--color--secondary);
+}
+
+.packages-by-location__tab.active {
+    background: var(--wp--preset--color--secondary);
+    border-color: var(--wp--preset--color--secondary);
+    color: white;
+}
+
+/* ===== GRID ===== */
+
+.packages-by-location__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+    .packages-by-location__grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
+
+/* ===== PACKAGE CARD ===== */
+
+.packages-by-location__card {
+    position: relative;
+    background: white;
+    border-radius: var(--border-radius-lg, 12px);
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.packages-by-location__card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    transform: translateY(-4px);
+}
+
+/* ===== CARD IMAGE ===== */
+
+.packages-by-location__image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    background: var(--color-gray-200, #E0E0E0);
+}
+
+.packages-by-location__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.packages-by-location__card:hover .packages-by-location__image {
+    transform: scale(1.05);
+}
+
+/* ===== LOCATION BADGE ===== */
+
+.packages-by-location__badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: var(--wp--preset--color--contrast-4);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius-sm, 4px);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    z-index: 1;
+}
+
+/* ===== CARD CONTENT ===== */
+
+.packages-by-location__content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    flex: 1;
+}
+
+.packages-by-location__package-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--color-gray-900, #212121);
+    margin: 0;
+    transition: color 0.3s ease;
+}
+
+.packages-by-location__card:hover .packages-by-location__package-title {
+    color: var(--wp--preset--color--secondary);
+}
+
+.packages-by-location__description {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-gray-600, #757575);
+    margin: 0;
+    flex: 1;
+}
+
+/* ===== CARD META ===== */
+
+.packages-by-location__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-gray-200, #E0E0E0);
+    margin-top: auto;
+}
+
+.packages-by-location__duration {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--color-gray-700, #616161);
+}
+
+.packages-by-location__duration svg {
+    flex-shrink: 0;
+}
+
+.packages-by-location__price {
+    font-size: 0.875rem;
+    color: var(--color-gray-700, #616161);
+}
+
+.packages-by-location__price-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--wp--preset--color--contrast-1);
+    display: block;
+}
+
+/* ===== LINK ===== */
+
+.packages-by-location__link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* ===== CTA BUTTON ===== */
+
+.packages-by-location__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--wp--preset--color--secondary);
+    color: white;
+    border-radius: var(--border-radius-sm, 4px);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+    margin-top: 1rem;
+}
+
+.packages-by-location__cta:hover {
+    background: color-mix(in srgb, var(--wp--preset--color--secondary) 85%, black);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--wp--preset--color--secondary) 30%, transparent);
+}
+
+.packages-by-location__cta svg {
+    flex-shrink: 0;
+}
+
+/* ===== VIEW ALL BUTTON ===== */
+
+.packages-by-location__footer {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.packages-by-location__view-all {
+    display: inline-block;
+    padding: 0.875rem 2.5rem;
+    background: transparent;
+    border: 2px solid var(--wp--preset--color--secondary);
+    border-radius: var(--border-radius-md, 6px);
+    color: var(--wp--preset--color--secondary);
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.packages-by-location__view-all:hover {
+    background: var(--wp--preset--color--secondary);
+    color: white;
+}
+
+/* ===== PLACEHOLDER ===== */
+
+.packages-by-location-placeholder {
+    padding: 3rem;
+    text-align: center;
+    background: var(--color-gray-50, #FAFAFA);
+    border-radius: var(--border-radius-lg, 8px);
+}
+
+.packages-by-location-placeholder p {
+    margin: 0;
+    color: var(--color-gray-600, #757575);
+    font-size: 1rem;
+}
+
+/* ===== NO PACKAGES MESSAGE ===== */
+
+.packages-by-location__no-packages {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--color-gray-600, #757575);
+}
+
+.packages-by-location__no-packages p {
+    margin: 0;
+    font-size: 1.125rem;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 1024px) {
+    .packages-by-location {
+        padding: 3rem 0;
+    }
+
+    .packages-by-location__header {
+        margin-bottom: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .packages-by-location {
+        padding: 2rem 0;
+    }
+
+    .packages-by-location__tabs {
+        gap: 0.5rem;
+    }
+
+    .packages-by-location__tab {
+        padding: 0.625rem 1.25rem;
+        font-size: 0.875rem;
+    }
+}
+
+/* ===== PRINT STYLES ===== */
+
+@media print {
+    .packages-by-location__tabs,
+    .packages-by-location__cta,
+    .packages-by-location__view-all {
+        display: none;
+    }
+
+    .packages-by-location__card {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+}
+
+/* ===== ACCESSIBILITY ===== */
+
+.packages-by-location__tab:focus-visible,
+.packages-by-location__cta:focus-visible,
+.packages-by-location__view-all:focus-visible {
+    outline: 2px solid var(--wp--preset--color--secondary);
+    outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .packages-by-location__card {
+        border: 1px solid var(--color-gray-900, #212121);
+    }
+
+    .packages-by-location__package-title,
+    .packages-by-location__description {
+        font-weight: 600;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .packages-by-location__card,
+    .packages-by-location__image,
+    .packages-by-location__tab,
+    .packages-by-location__cta,
+    .packages-by-location__view-all {
+        transition: none;
+    }
+}
