@@ -1047,7 +1047,7 @@ class DatesAndPrices
      * @param string $anchor_id Anchor ID for fixed_week scroll action
      * @return array Transformed dates array
      */
-    private function transform_api_data_to_dates(array $api_data, int $duration, bool $promo_active, string $anchor_id): array
+    private function transform_api_data_to_dates(array $api_data, int $duration, bool $promo_active, float $cms_price_offer, string $anchor_id): array
     {
         $dates = [];
         $today = strtotime('today');
@@ -1058,6 +1058,21 @@ class DatesAndPrices
             $offer = isset($date_info['offer']) ? floatval($date_info['offer']) : null;
             $spots = intval($date_info['spots'] ?? 0);
             $single_supp = $date_info['singleSupp'] ?? '';
+
+            // Determine best offer price if promo is active
+            $best_offer = null;
+            if ($promo_active && $cms_price_offer > 0) {
+                // Start with CMS offer as base
+                $best_offer = $cms_price_offer;
+
+                // If API has offer and it's BETTER (lower), use API offer
+                if ($offer !== null && $offer > 0 && $offer < $best_offer) {
+                    $best_offer = $offer;
+                }
+            } elseif ($offer !== null && $offer > 0) {
+                // If promo not active, use API offer if exists
+                $best_offer = $offer;
+            }
 
             // Calculate days until departure
             $departure_timestamp = strtotime($date_str);
@@ -1132,12 +1147,12 @@ class DatesAndPrices
                     $date_entry['button_text'] = 'SOLD OUT';
                 }
 
-                // MODO OFERTA: Solo si promo está activo
-                if ($promo_active && $offer && $offer < $price) {
+                // MODO OFERTA: Usar best_offer (CMS o API, lo que sea menor)
+                if ($best_offer && $best_offer < $price) {
                     $date_entry['has_deal'] = true;
                     $date_entry['original_price'] = $price;
-                    $date_entry['price'] = $offer;
-                    $date_entry['discount_percentage'] = round((($price - $offer) / $price) * 100);
+                    $date_entry['price'] = $best_offer;
+                    $date_entry['discount_percentage'] = round((($price - $best_offer) / $price) * 100);
                     $date_entry['deal_label'] = $date_entry['discount_percentage'] . '% Off';
                     $date_entry['row_class'] = 'booking-row--promo-fixed-week';
                 }
@@ -1166,11 +1181,11 @@ class DatesAndPrices
 
                 // SIEMPRE fondo amarillo y MODO OFERTA
                 $date_entry['row_class'] = 'booking-row--promo-fixed-dates';
-                if ($offer && $offer < $price) {
+                if ($best_offer && $best_offer < $price) {
                     $date_entry['has_deal'] = true;
                     $date_entry['original_price'] = $price;
-                    $date_entry['price'] = $offer;
-                    $date_entry['discount_percentage'] = round((($price - $offer) / $price) * 100);
+                    $date_entry['price'] = $best_offer;
+                    $date_entry['discount_percentage'] = round((($price - $best_offer) / $price) * 100);
                     $date_entry['deal_label'] = $date_entry['discount_percentage'] . '% Off';
                 }
 
@@ -1197,7 +1212,8 @@ class DatesAndPrices
     {
         // Get package configuration
         $duration = intval(get_field('days', $post_id) ?: 4);
-        $promo_active = (bool)(get_field('promo', $post_id) ?? false);
+        $promo_active = (bool)(get_field('promo_enabled', $post_id) ?? false);
+        $cms_price_offer = floatval(get_field('price_offer', $post_id) ?: 0);
         $anchor_id = get_field('booking_anchor_id', $post_id) ?: '#booking-form';
 
         $all_dates = [];
@@ -1216,7 +1232,7 @@ class DatesAndPrices
                 $api_data = $this->fetch_api_calendar($tour_id, $year, $month);
 
                 if (!empty($api_data)) {
-                    $transformed = $this->transform_api_data_to_dates($api_data, $duration, $promo_active, $anchor_id);
+                    $transformed = $this->transform_api_data_to_dates($api_data, $duration, $promo_active, $cms_price_offer, $anchor_id);
                     $all_dates = array_merge($all_dates, $transformed);
                 }
             }
