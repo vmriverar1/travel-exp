@@ -132,7 +132,7 @@ class FlexibleGridCarousel extends CarouselBlockBase
      *
      * @return void
      */
-    public function render($block, $content = '', $is_preview = false, $post_id = 0)
+        public function render(array $block, string $content = '', bool $is_preview = false, int $post_id = 0): void
     {
         // Get WordPress block attributes
         $block_wrapper_attributes = get_block_wrapper_attributes([

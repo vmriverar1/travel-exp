@@ -709,7 +709,7 @@ class TaxonomyTabs extends BlockBase
      *
      * @return void
      */
-    public function render($block, $content = '', $is_preview = false, $post_id = 0): void
+    public function render(array $block, string $content = '', bool $is_preview = false, int $post_id = 0): void
     {
         // 1. Extract block data (from Gutenberg or ACF)
         $block_data = $this->extract_block_data($block);

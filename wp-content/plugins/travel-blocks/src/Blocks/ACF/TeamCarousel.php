@@ -125,7 +125,7 @@ class TeamCarousel extends BlockBase
      *
      * @return void
      */
-    public function render($block, $content = '', $is_preview = false, $post_id = 0)
+    public function render(array $block, string $content = '', bool $is_preview = false, int $post_id = 0): void
     {
         // Get ACF fields (ACF automatically knows the context in preview mode)
         $layout_style = get_field('layout_style') ?: 'profile_card';

@@ -41,6 +41,13 @@ use Travel\Blocks\Helpers\ContentQueryHelper;
 class HeroCarousel extends CarouselBlockBase
 {
     /**
+     * Example data for block preview in editor
+     *
+     * @var array
+     */
+    public array $example;
+
+    /**
      * Constructor - Initialize block properties.
      *
      * Sets up block configuration following BlockBase pattern.
@@ -142,7 +149,7 @@ class HeroCarousel extends CarouselBlockBase
      *
      * @return void
      */
-    public function enqueue_assets()
+    public function enqueue_assets(): void
     {
         wp_enqueue_style(
             'hero-carousel-style',
@@ -182,7 +189,7 @@ class HeroCarousel extends CarouselBlockBase
      * @param int    $post_id    The current post ID.
      * @return void
      */
-    public function render($block, $content = '', $is_preview = false, $post_id = 0)
+    public function render(array $block, string $content = '', bool $is_preview = false, int $post_id = 0): void
     {
         // Get WordPress block attributes
         $block_wrapper_attributes = get_block_wrapper_attributes([

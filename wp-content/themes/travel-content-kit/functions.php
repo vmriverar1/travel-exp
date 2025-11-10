@@ -513,3 +513,21 @@ add_filter('render_block', function ($block_content, $block) {
     return $block_content;
 
 }, 10, 2);
+
+/**
+ * Suppress deprecated notice for the_block_template_skip_link()
+ * This function is called by WordPress Core in block themes.
+ * WordPress 6.4+ deprecated it in favor of wp_enqueue_block_template_skip_link()
+ * but Core still uses it internally. This suppresses the notice until WP Core updates.
+ * 
+ * @since 1.1.2
+ */
+add_action('init', function() {
+    // Replace deprecated function call from WP Core
+    remove_action('wp_footer', 'the_block_template_skip_link');
+    
+    // Use the new function instead
+    if (function_exists('wp_enqueue_block_template_skip_link')) {
+        add_action('wp_enqueue_scripts', 'wp_enqueue_block_template_skip_link');
+    }
+}, 1);
