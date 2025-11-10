@@ -385,20 +385,9 @@ class BookingWizard
         }
 
         // Create passengers array from billing data (step3)
-        // For now, create one passenger entry for the main contact
+        // Note: Send empty array [] as per API docs - passengers are optional
+        // The API uses billing data from 'details' for contact info
         $passengers = [];
-        if (!empty($step3)) {
-            $passengers[] = [
-                'first_name' => $step3['firstName'] ?? '',
-                'last_name' => $step3['lastName'] ?? '',
-                'email' => $step3['email'] ?? '',
-                'phone' => $step3['phone'] ?? '',
-                'document_type' => $step3['document'] ?? '',
-                'document_number' => $step3['documentNumber'] ?? '',
-                'dob' => $step3['dob'] ?? '',
-                'country' => $step3['country'] ?? '',
-            ];
-        }
 
         // Format billing data for details
         $billing_data = [
