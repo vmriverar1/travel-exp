@@ -410,7 +410,19 @@ class ApiImportProcessor
         try {
             $images_processed = 0;
 
-            // 1. Process featured image (map_image)
+            // 1. Process WordPress Featured Image (thumbnail from API)
+            if (!empty($mapped_data['meta_fields']['thumbnail_url'])) {
+                $thumbnail_url = $mapped_data['meta_fields']['thumbnail_url'];
+                $attachment_id = $this->image_service->import_image($thumbnail_url, $post_id, 'Featured Image');
+
+                if ($attachment_id) {
+                    set_post_thumbnail($post_id, $attachment_id);
+                    $images_processed++;
+                    $this->log_debug("Featured image set (ID: {$attachment_id}) for post_id={$post_id}");
+                }
+            }
+
+            // 2. Process map image (map_image field)
             if (!empty($mapped_data['meta_fields']['map_image'])) {
                 $map_image_url = $mapped_data['meta_fields']['map_image'];
                 $attachment_id = $this->image_service->import_image($map_image_url, $post_id, 'Map Image');
@@ -418,11 +430,11 @@ class ApiImportProcessor
                 if ($attachment_id) {
                     update_field('map_image', $attachment_id, $post_id);
                     $images_processed++;
-                    $this->log_debug("Featured image imported (ID: {$attachment_id}) for post_id={$post_id}");
+                    $this->log_debug("Map image imported (ID: {$attachment_id}) for post_id={$post_id}");
                 }
             }
 
-            // 2. Process gallery
+            // 3. Process gallery
             if (!empty($mapped_data['repeaters']['gallery']) && is_array($mapped_data['repeaters']['gallery'])) {
                 $gallery_images = $mapped_data['repeaters']['gallery'];
                 $attachment_ids = $this->image_service->import_gallery($gallery_images, $post_id);
@@ -442,7 +454,7 @@ class ApiImportProcessor
                 }
             }
 
-            // 3. Process itinerary images
+            // 4. Process itinerary images
             if (!empty($mapped_data['repeaters']['itinerary']) && is_array($mapped_data['repeaters']['itinerary'])) {
                 $itinerary = $mapped_data['repeaters']['itinerary'];
                 $updated_itinerary = [];

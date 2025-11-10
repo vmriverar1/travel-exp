@@ -80,6 +80,7 @@ class ApiDataMapper
             'not_included' => $this->sanitize_html($api_data['whatsNotIncluded'] ?? ''),
 
             // Media
+            'thumbnail_url' => $this->map_thumbnail($api_data['thumbnail'] ?? null),
             'map_image' => $this->map_image($api_data['mapImage'] ?? ''),
             'video_url' => $this->sanitize_url($api_data['video_URL'] ?? ''),
 
@@ -569,6 +570,26 @@ class ApiDataMapper
     {
         // Return image data - will be processed by ImageImportService
         return $images;
+    }
+
+    /**
+     * Map thumbnail (featured image)
+     * Returns URL of original image from thumbnail object
+     */
+    private function map_thumbnail(?array $thumbnail): ?string
+    {
+        if (empty($thumbnail)) {
+            return null;
+        }
+
+        // Thumbnail has same structure as images[] - extract originalImage
+        $url = $thumbnail['originalImage'] ?? $thumbnail['image'] ?? '';
+
+        if (empty($url)) {
+            return null;
+        }
+
+        return $this->sanitize_url($url);
     }
 
     /**
