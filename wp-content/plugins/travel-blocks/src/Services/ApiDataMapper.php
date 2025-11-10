@@ -1,0 +1,625 @@
+<?php
+
+namespace Travel\Blocks\Services;
+
+/**
+ * API Data Mapper
+ *
+ * Transforms data from Valencia Travel API to WordPress CPT Package format.
+ * Handles mapping of simple fields, taxonomies, post objects, and repeaters.
+ *
+ * @package Travel\Blocks\Services
+ * @since 1.0.0
+ */
+class ApiDataMapper
+{
+    /**
+     * Map API data to CPT package structure
+     *
+     * @param array $api_data Raw data from Valencia API
+     * @return array Mapped data ready for WordPress
+     */
+    public function map_to_package(array $api_data): array
+    {
+        if (empty($api_data)) {
+            return [];
+        }
+
+        return [
+            'post_data' => $this->map_post_data($api_data),
+            'meta_fields' => $this->map_meta_fields($api_data),
+            'taxonomies' => $this->map_taxonomies($api_data),
+            'post_objects' => $this->map_post_objects($api_data),
+            'repeaters' => $this->map_repeaters($api_data),
+        ];
+    }
+
+    /**
+     * Map post data (title, content, status)
+     *
+     * @param array $api_data
+     * @return array
+     */
+    private function map_post_data(array $api_data): array
+    {
+        return [
+            'post_title' => $this->sanitize_text($api_data['title'] ?? ''),
+            'post_content' => '', // ACF handles content
+            'post_status' => 'publish',
+            'post_type' => 'package',
+        ];
+    }
+
+    /**
+     * Map simple meta fields
+     *
+     * @param array $api_data
+     * @return array
+     */
+    private function map_meta_fields(array $api_data): array
+    {
+        return [
+            // ID from API
+            'tour_id' => (int) ($api_data['id'] ?? 0),
+
+            // Basic info
+            'summary' => $this->sanitize_textarea($api_data['summary'] ?? ''),
+            'description' => $this->sanitize_html($api_data['description'] ?? ''),
+            'duration' => $this->sanitize_text($api_data['duration'] ?? ''),
+
+            // Pricing
+            'price_from' => $this->parse_price($api_data['price'] ?? 0),
+            'price_offer' => $this->parse_price($api_data['offer'] ?? 0),
+            'price_single_supplement' => $this->parse_price($api_data['singleSupp'] ?? 0),
+
+            // Physical difficulty
+            'physical_difficulty' => $this->map_physical_difficulty($api_data['physicalRating'] ?? ''),
+
+            // Included/Not Included
+            'included' => $this->sanitize_html($api_data['whatsIncluded'] ?? ''),
+            'not_included' => $this->sanitize_html($api_data['whatsNotIncluded'] ?? ''),
+
+            // Media
+            'map_image' => $this->map_image($api_data['mapImage'] ?? ''),
+            'video_url' => $this->sanitize_url($api_data['video_URL'] ?? ''),
+
+            // Months
+            'months' => $this->map_months($api_data['month'] ?? []),
+
+            // Promo
+            'promo_enabled' => !empty($api_data['promo']),
+
+            // Calendar
+            'free_spot_calendar' => (int) ($api_data['freeSpotCalendar'] ?? 0),
+            'free_spot_start_day' => (int) ($api_data['freeSpotStartDay'] ?? 0),
+
+            // Prepayment
+            'is_prepayment' => !empty($api_data['isPrepayment']),
+
+            // Custom titles
+            'title_overview' => $this->sanitize_text($api_data['titleOverview'] ?? ''),
+            'title_itinerary' => $this->sanitize_text($api_data['titleItinerary'] ?? ''),
+            'title_dates' => $this->sanitize_text($api_data['titleDates'] ?? ''),
+            'title_included' => $this->sanitize_text($api_data['titleIncluded'] ?? ''),
+            'title_optional_act' => $this->sanitize_text($api_data['titleOptionalAct'] ?? ''),
+            'title_additional_info' => $this->sanitize_text($api_data['titleAdditionalInfo'] ?? ''),
+
+            // Defaults for fields not in API
+            'active' => true,
+            'featured_package' => false,
+            'show_on_homepage' => false,
+        ];
+    }
+
+    /**
+     * Map taxonomies
+     *
+     * @param array $api_data
+     * @return array
+     */
+    private function map_taxonomies(array $api_data): array
+    {
+        return [
+            'interest' => $this->map_interests($api_data['interests'] ?? []),
+            'included_services' => $this->map_included_services($api_data['includedServices'] ?? []),
+        ];
+    }
+
+    /**
+     * Map post object relationships
+     *
+     * @param array $api_data
+     * @return array
+     */
+    private function map_post_objects(array $api_data): array
+    {
+        return [
+            'locations' => $this->map_locations($api_data['locations'] ?? []),
+            'tag_locations' => $this->map_tag_locations($api_data['tagLocations'] ?? []),
+            'flights' => $this->map_flights($api_data['flights'] ?? []),
+        ];
+    }
+
+    /**
+     * Map repeater fields
+     *
+     * @param array $api_data
+     * @return array
+     */
+    private function map_repeaters(array $api_data): array
+    {
+        return [
+            'itinerary' => $this->map_itinerary($api_data['itineraries'] ?? []),
+            'gallery' => $this->map_gallery($api_data['images'] ?? []),
+            'price_tiers' => $this->map_price_tiers($api_data['prices']['values'] ?? []),
+            'highlights' => $this->map_highlights($api_data),
+            'additional_sections' => $this->map_additional_sections($api_data['additionalInfo'] ?? []),
+        ];
+    }
+
+    // ============================================
+    // SANITIZATION METHODS
+    // ============================================
+
+    /**
+     * Sanitize plain text
+     */
+    private function sanitize_text(string $text): string
+    {
+        return sanitize_text_field($text);
+    }
+
+    /**
+     * Sanitize textarea
+     */
+    private function sanitize_textarea(string $text): string
+    {
+        return sanitize_textarea_field($text);
+    }
+
+    /**
+     * Sanitize HTML content
+     */
+    private function sanitize_html(string $html): string
+    {
+        return wp_kses_post($html);
+    }
+
+    /**
+     * Sanitize URL
+     */
+    private function sanitize_url(string $url): string
+    {
+        return esc_url_raw($url);
+    }
+
+    /**
+     * Parse price string to float
+     */
+    private function parse_price($price): float
+    {
+        if (is_numeric($price)) {
+            return (float) $price;
+        }
+
+        // Remove currency symbols and convert to float
+        $cleaned = preg_replace('/[^0-9.]/', '', (string) $price);
+        return (float) $cleaned;
+    }
+
+    // ============================================
+    // FIELD MAPPERS - SIMPLE
+    // ============================================
+
+    /**
+     * Map physical difficulty rating
+     */
+    private function map_physical_difficulty(string $rating): string
+    {
+        $map = [
+            'Easy' => 'easy',
+            'Moderate' => 'moderate',
+            'Moderate - Demanding' => 'moderate_demanding',
+            'Demanding' => 'difficult',
+            'Very Difficult' => 'very_difficult',
+        ];
+
+        return $map[$rating] ?? 'moderate';
+    }
+
+    /**
+     * Map months array to select values
+     */
+    private function map_months(array $months): array
+    {
+        $month_names = [
+            1 => 'january', 2 => 'february', 3 => 'march', 4 => 'april',
+            5 => 'may', 6 => 'june', 7 => 'july', 8 => 'august',
+            9 => 'september', 10 => 'october', 11 => 'november', 12 => 'december'
+        ];
+
+        $mapped = [];
+        foreach ($months as $month_num) {
+            if (isset($month_names[$month_num])) {
+                $mapped[] = $month_names[$month_num];
+            }
+        }
+
+        return $mapped;
+    }
+
+    /**
+     * Map image URL to ACF format
+     */
+    private function map_image(string $url): ?int
+    {
+        if (empty($url)) {
+            return null;
+        }
+
+        // In Phase 4-5 we'll implement actual image download/attachment
+        // For now, just store the URL in a meta field
+        return null;
+    }
+
+    // ============================================
+    // TAXONOMY MAPPERS
+    // ============================================
+
+    /**
+     * Map interests to taxonomy terms
+     */
+    private function map_interests(array $interests): array
+    {
+        return array_map(function($interest) {
+            return $this->get_or_create_term($interest, 'interest');
+        }, $interests);
+    }
+
+    /**
+     * Map included services to taxonomy terms
+     */
+    private function map_included_services(array $services): array
+    {
+        $term_ids = [];
+
+        foreach ($services as $service) {
+            if (isset($service['title'])) {
+                $term_id = $this->get_or_create_term($service['title'], 'included_services');
+                if ($term_id) {
+                    $term_ids[] = $term_id;
+                }
+            }
+        }
+
+        return $term_ids;
+    }
+
+    /**
+     * Get or create taxonomy term
+     */
+    private function get_or_create_term(string $term_name, string $taxonomy): ?int
+    {
+        if (empty($term_name)) {
+            return null;
+        }
+
+        // Check if term exists
+        $term = get_term_by('name', $term_name, $taxonomy);
+
+        if ($term) {
+            return $term->term_id;
+        }
+
+        // Create new term
+        $result = wp_insert_term($term_name, $taxonomy);
+
+        if (is_wp_error($result)) {
+            $this->log_error("Failed to create term '{$term_name}' in taxonomy '{$taxonomy}': " . $result->get_error_message());
+            return null;
+        }
+
+        return $result['term_id'];
+    }
+
+    // ============================================
+    // POST OBJECT MAPPERS
+    // ============================================
+
+    /**
+     * Map locations array to location post IDs
+     */
+    private function map_locations(array $locations): array
+    {
+        $location_ids = [];
+
+        foreach ($locations as $location) {
+            $title = $location['title'] ?? '';
+            $slug = $location['slug'] ?? '';
+
+            if ($title) {
+                $location_id = $this->find_or_create_location($title, $slug);
+                if ($location_id) {
+                    $location_ids[] = $location_id;
+                }
+            }
+        }
+
+        return $location_ids;
+    }
+
+    /**
+     * Map tag locations to location post IDs
+     */
+    private function map_tag_locations(array $tag_locations): array
+    {
+        $location_ids = [];
+
+        foreach ($tag_locations as $location) {
+            $title = $location['title'] ?? '';
+            $slug = $location['slug'] ?? '';
+
+            if ($title) {
+                $location_id = $this->find_or_create_location($title, $slug);
+                if ($location_id) {
+                    $location_ids[] = $location_id;
+                }
+            }
+        }
+
+        return $location_ids;
+    }
+
+    /**
+     * Map flights to location post IDs
+     */
+    private function map_flights(array $flights): array
+    {
+        // Same structure as locations
+        return $this->map_locations($flights);
+    }
+
+    /**
+     * Find or create location post
+     */
+    private function find_or_create_location(string $title, string $slug = ''): ?int
+    {
+        if (empty($title)) {
+            return null;
+        }
+
+        // Try to find by slug first
+        if ($slug) {
+            $post = get_page_by_path($slug, OBJECT, 'location');
+            if ($post) {
+                return $post->ID;
+            }
+        }
+
+        // Try to find by title
+        $args = [
+            'post_type' => 'location',
+            'post_status' => 'any',
+            'title' => $title,
+            'posts_per_page' => 1,
+            'fields' => 'ids',
+        ];
+
+        $query = new \WP_Query($args);
+
+        if (!empty($query->posts)) {
+            return $query->posts[0];
+        }
+
+        // Create new location
+        $post_id = wp_insert_post([
+            'post_title' => $title,
+            'post_name' => $slug ?: sanitize_title($title),
+            'post_type' => 'location',
+            'post_status' => 'publish',
+        ]);
+
+        if (is_wp_error($post_id)) {
+            $this->log_error("Failed to create location '{$title}': " . $post_id->get_error_message());
+            return null;
+        }
+
+        return $post_id;
+    }
+
+    // ============================================
+    // REPEATER MAPPERS
+    // ============================================
+
+    /**
+     * Map itinerary repeater
+     */
+    private function map_itinerary(array $itineraries): array
+    {
+        $mapped = [];
+
+        foreach ($itineraries as $day) {
+            $mapped[] = [
+                'title' => $this->sanitize_text($day['subtitle'] ?? ''),
+                'content' => $this->sanitize_html($day['content'] ?? ''),
+                'order' => (int) ($day['order'] ?? 0),
+                'active' => !empty($day['active']),
+                'limit' => (int) ($day['limit'] ?? 0),
+                'gallery' => $this->map_itinerary_images($day['images'] ?? []),
+                'items' => $this->map_itinerary_items($day['items'] ?? []),
+            ];
+        }
+
+        return $mapped;
+    }
+
+    /**
+     * Map itinerary images
+     */
+    private function map_itinerary_images(array $images): array
+    {
+        // For now, return empty array
+        // In Phase 4-5 we'll implement actual image download
+        return [];
+    }
+
+    /**
+     * Map itinerary items (services)
+     */
+    private function map_itinerary_items(array $items): array
+    {
+        $mapped = [];
+
+        foreach ($items as $item) {
+            $mapped[] = [
+                'text' => $this->sanitize_text($item['text'] ?? ''),
+                'order' => (int) ($item['order'] ?? 0),
+                'type_service' => $this->map_type_service($item['typeService'] ?? []),
+                'hotel' => $this->map_hotel($item['hotel'] ?? []),
+            ];
+        }
+
+        return $mapped;
+    }
+
+    /**
+     * Map type service to taxonomy term ID
+     */
+    private function map_type_service(array $type_service): ?int
+    {
+        if (empty($type_service['title'])) {
+            return null;
+        }
+
+        return $this->get_or_create_term($type_service['title'], 'type_service');
+    }
+
+    /**
+     * Map hotel to taxonomy term ID
+     */
+    private function map_hotel(array $hotel): ?int
+    {
+        if (empty($hotel['title'])) {
+            return null;
+        }
+
+        return $this->get_or_create_term($hotel['title'], 'hotel');
+    }
+
+    /**
+     * Map gallery images
+     */
+    private function map_gallery(array $images): array
+    {
+        // For now, return empty array
+        // In Phase 4-5 we'll implement actual image download
+        return [];
+    }
+
+    /**
+     * Map price tiers
+     */
+    private function map_price_tiers(array $values): array
+    {
+        $mapped = [];
+
+        foreach ($values as $tier) {
+            $mapped[] = [
+                'min_passengers' => (int) ($tier['minPassengers'] ?? 1),
+                'price' => $this->parse_price($tier['normal'] ?? 0),
+                'offer' => $this->parse_price($tier['offer'] ?? 0),
+            ];
+        }
+
+        return $mapped;
+    }
+
+    /**
+     * Map highlights (extract from description or API data)
+     */
+    private function map_highlights(array $api_data): array
+    {
+        // API doesn't have explicit highlights field
+        // Return empty for now, can be added manually
+        return [];
+    }
+
+    /**
+     * Map additional sections (FAQ, tips, etc.)
+     */
+    private function map_additional_sections(array $additional_info): array
+    {
+        $mapped = [];
+        $order = 1;
+
+        foreach ($additional_info as $section) {
+            $items = [];
+
+            foreach ($section['items'] ?? [] as $item) {
+                $items[] = [
+                    'label' => $this->sanitize_text($item['title'] ?? ''),
+                    'content' => $this->sanitize_html($item['content'] ?? ''),
+                ];
+            }
+
+            $mapped[] = [
+                'title' => $this->sanitize_text($section['title'] ?? ''),
+                'type' => $this->determine_section_type($section),
+                'items' => $items,
+                'order' => $order++,
+                'active' => true,
+                'style' => 'accordion',
+            ];
+        }
+
+        return $mapped;
+    }
+
+    /**
+     * Determine section type from additional info
+     */
+    private function determine_section_type(array $section): string
+    {
+        $title = strtolower($section['title'] ?? '');
+
+        if (strpos($title, 'faq') !== false || strpos($title, 'frequently') !== false) {
+            return 'faq';
+        } elseif (strpos($title, 'tip') !== false || strpos($title, 'advice') !== false) {
+            return 'tips';
+        } elseif (strpos($title, 'equipment') !== false || strpos($title, 'gear') !== false) {
+            return 'equipment';
+        } elseif (strpos($title, 'requirement') !== false) {
+            return 'requirements';
+        } elseif (strpos($title, 'insurance') !== false) {
+            return 'insurance';
+        } elseif (strpos($title, 'cancellation') !== false) {
+            return 'cancellation';
+        }
+
+        return 'custom';
+    }
+
+    // ============================================
+    // LOGGING
+    // ============================================
+
+    /**
+     * Log error message
+     */
+    private function log_error(string $message): void
+    {
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('ApiDataMapper: ' . $message);
+        }
+    }
+
+    /**
+     * Log debug message
+     */
+    private function log_debug(string $message): void
+    {
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('ApiDataMapper: ' . $message);
+        }
+    }
+}
