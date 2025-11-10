@@ -461,9 +461,12 @@
         }
 
         /**
-         * Submit booking to backend
+         * Submit booking to backend and process payment
          */
         submitBooking() {
+            const paymentMethod = this.wizardData.step4.paymentMethod;
+
+            // First create the booking
             $.ajax({
                 url: bookingWizardConfig.ajaxUrl,
                 type: 'POST',
@@ -473,25 +476,332 @@
                     wizardData: this.wizardData
                 },
                 beforeSend: () => {
-                    // Show loading state
-                    $('.wizard-payment-btn').prop('disabled', true).text('Processing...');
+                    $('.wizard-payment-btn').prop('disabled', true).text('Creating booking...');
                 },
                 success: (response) => {
                     if (response.success) {
-                        alert(response.data.message);
-                        this.close();
-                        // Redirect or show confirmation
+                        // Booking created, now process payment
+                        const bookingData = response.data;
+                        this.wizardData.bookingId = bookingData.bookingId;
+                        this.wizardData.bookingUuid = bookingData.bookingUuid;
+                        this.wizardData.bookingReference = bookingData.bookingReference;
+
+                        console.log('[Wizard] Booking created:', bookingData);
+
+                        // Process payment based on method
+                        if (paymentMethod === 'flywire') {
+                            this.processFlywirePayment(bookingData);
+                        } else if (paymentMethod === 'stripe' || paymentMethod === 'stripe-embedded') {
+                            this.processStripePayment(bookingData);
+                        } else {
+                            alert('Invalid payment method selected');
+                            $('.wizard-payment-btn').prop('disabled', false).text('Pay Now');
+                        }
                     } else {
-                        alert('Error: ' + response.data.message);
+                        alert('Error creating booking: ' + response.data.message);
+                        $('.wizard-payment-btn').prop('disabled', false).text('Pay Now');
                     }
                 },
-                error: () => {
+                error: (xhr, status, error) => {
+                    console.error('[Wizard] Booking creation failed:', error);
                     alert('An error occurred. Please try again.');
-                },
-                complete: () => {
                     $('.wizard-payment-btn').prop('disabled', false).text('Pay Now');
                 }
             });
+        }
+
+        /**
+         * Process Flywire payment
+         */
+        processFlywirePayment(bookingData) {
+            console.log('[Wizard] Processing Flywire payment');
+
+            // Calculate totals
+            const totals = this.calculateTotals();
+            const billing = this.wizardData.step4.billing;
+            const packageTitle = this.wizardData.packageData?.title || 'Tour Package';
+
+            // Prepare Flywire configuration
+            const config = {
+                env: bookingWizardConfig.flywire.env,
+                recipientCode: bookingWizardConfig.flywire.portalCode,
+                amount: totals.total,
+
+                // Pre-fill payer information
+                firstName: billing.first_name,
+                lastName: billing.last_name,
+                email: billing.email,
+                phone: billing.phone,
+                address: billing.address,
+                city: billing.city,
+                state: billing.state,
+                zip: billing.zip,
+                country: billing.country,
+
+                // Recipient fields
+                recipientFields: {
+                    trip_name: packageTitle,
+                    booking_number: bookingData.bookingId,
+                    additional_comments: billing.notes || '',
+                    booking_reference: bookingData.bookingReference,
+                    type: this.wizardData.step4.paymentOption === 'full' ? 1 : 4
+                },
+
+                // Payment options
+                paymentOptionsConfig: {
+                    filters: {
+                        type: ['online', 'credit_card']
+                    }
+                },
+
+                // Request info
+                requestPayerInfo: true,
+                requestRecipientInfo: true,
+                skipCompletedSteps: true,
+
+                // Callback configuration
+                callbackId: bookingData.bookingReference,
+                callbackUrl: `${bookingWizardConfig.flywire.apiUrl}/flywire-notifications`,
+                callbackVersion: '2',
+
+                // Input validation handler
+                onInvalidInput: (errors) => {
+                    errors.forEach((error) => {
+                        console.error('[Flywire] Validation error:', error.msg);
+                    });
+                },
+
+                // Completion callback
+                onCompleteCallback: async (args) => {
+                    const { reference, status } = args;
+
+                    console.log('[Flywire] Payment completed:', { reference, status });
+
+                    // Update invoice with payment details
+                    await this.updateFlywireInvoice({
+                        payment_id: reference,
+                        first_name: billing.first_name,
+                        last_name: billing.last_name,
+                        email: billing.email,
+                        phone: billing.phone,
+                        address: billing.address,
+                        city: billing.city,
+                        state: billing.state,
+                        zip: billing.zip,
+                        country: billing.country,
+                        fields: {},
+                        payment_method: {},
+                        external_reference: bookingData.bookingReference
+                    });
+
+                    // Close wizard
+                    this.close();
+
+                    // Redirect to confirmation page
+                    window.location.href = `/booking/confirmation?status=${status}&invoice=${reference}`;
+                }
+            };
+
+            // Initialize and render Flywire modal
+            try {
+                if (window.FlywirePayment) {
+                    const modal = window.FlywirePayment.initiate(config);
+                    modal?.render();
+                } else {
+                    console.error('[Wizard] Flywire script not loaded');
+                    alert('Payment system not available. Please try again.');
+                    $('.wizard-payment-btn').prop('disabled', false).text('Pay Now');
+                }
+            } catch (error) {
+                console.error('[Wizard] Flywire error:', error);
+                alert('An error occurred with the payment system. Please try again.');
+                $('.wizard-payment-btn').prop('disabled', false).text('Pay Now');
+            }
+        }
+
+        /**
+         * Update Flywire invoice
+         */
+        updateFlywireInvoice(data) {
+            return $.ajax({
+                url: bookingWizardConfig.flywire.apiUrl + '/flywire-notifications',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ data: data }),
+                success: (result) => {
+                    console.log('[Wizard] Invoice updated:', result);
+                },
+                error: (error) => {
+                    console.error('[Wizard] Invoice update failed:', error);
+                }
+            });
+        }
+
+        /**
+         * Process Stripe payment
+         */
+        async processStripePayment(bookingData) {
+            console.log('[Wizard] Processing Stripe payment');
+
+            // Calculate totals
+            const totals = this.calculateTotals();
+            const billing = this.wizardData.step4.billing;
+            const packageTitle = this.wizardData.packageData?.title || 'Tour Package';
+            const travellers = this.wizardData.step1.travellers || 1;
+
+            // Prepare checkout data
+            const checkoutData = {
+                customerEmail: billing.email,
+                customerName: `${billing.first_name} ${billing.last_name}`,
+                totalPrice: totals.total,
+                packageName: packageTitle,
+                packageDetails: `${travellers} traveller(s)`,
+                packageId: this.wizardData.packageId,
+                bookingId: bookingData.bookingId,
+                bookingReference: bookingData.bookingReference,
+                currency: 'usd',
+                passengerCount: travellers
+            };
+
+            // Create Stripe checkout session
+            $.ajax({
+                url: bookingWizardConfig.ajaxUrl,
+                type: 'POST',
+                data: {
+                    action: 'create_stripe_checkout',
+                    nonce: bookingWizardConfig.nonce,
+                    checkoutData: checkoutData,
+                    bookingData: bookingData
+                },
+                success: async (response) => {
+                    if (response.success) {
+                        console.log('[Wizard] Stripe session created:', response.data);
+
+                        // Initialize Stripe
+                        const stripe = await this.getStripeInstance();
+                        if (!stripe) {
+                            alert('Payment system not available. Please try again.');
+                            $('.wizard-payment-btn').prop('disabled', false).text('Pay Now');
+                            return;
+                        }
+
+                        // Initialize embedded checkout
+                        const checkout = await stripe.initEmbeddedCheckout({
+                            clientSecret: response.data.clientSecret
+                        });
+
+                        // Mount checkout in the wizard
+                        // Note: You'll need to add a container in the template
+                        const checkoutContainer = $('#stripe-checkout-container');
+                        if (checkoutContainer.length) {
+                            // Hide wizard content, show checkout
+                            $('.wizard-step').hide();
+                            checkoutContainer.show();
+                            checkout.mount(checkoutContainer[0]);
+                        } else {
+                            // Fallback: redirect to hosted checkout
+                            if (response.data.url) {
+                                window.location.href = response.data.url;
+                            } else {
+                                alert('Payment URL not available');
+                                $('.wizard-payment-btn').prop('disabled', false).text('Pay Now');
+                            }
+                        }
+                    } else {
+                        alert('Error creating payment session: ' + response.data.message);
+                        $('.wizard-payment-btn').prop('disabled', false).text('Pay Now');
+                    }
+                },
+                error: (xhr, status, error) => {
+                    console.error('[Wizard] Stripe session creation failed:', error);
+                    alert('An error occurred. Please try again.');
+                    $('.wizard-payment-btn').prop('disabled', false).text('Pay Now');
+                }
+            });
+        }
+
+        /**
+         * Get Stripe instance (cached)
+         */
+        async getStripeInstance() {
+            if (this.stripeInstance) {
+                return this.stripeInstance;
+            }
+
+            if (!window.Stripe) {
+                console.error('[Wizard] Stripe.js not loaded');
+                return null;
+            }
+
+            const publishableKey = bookingWizardConfig.stripe.publishableKey;
+            if (!publishableKey) {
+                console.error('[Wizard] Stripe publishable key not configured');
+                return null;
+            }
+
+            this.stripeInstance = window.Stripe(publishableKey);
+            return this.stripeInstance;
+        }
+
+        /**
+         * Calculate totals for payment
+         */
+        calculateTotals() {
+            const step1 = this.wizardData.step1 || {};
+            const step2 = this.wizardData.step2 || {};
+            const step4 = this.wizardData.step4 || {};
+
+            const travellers = parseInt(step1.travellers) || 1;
+            const roomType = step1.roomType || 'twin';
+            const selectedPrice = parseFloat(this.wizardData.selectedPrice) || 0;
+            const singleSupp = parseFloat(this.wizardData.singleSupp) || 0;
+
+            // Calculate base package cost
+            let packageCost = selectedPrice * travellers;
+
+            // Add solo supplement if applicable
+            if (roomType === 'solo' && travellers === 1) {
+                packageCost += singleSupp;
+            } else if (travellers > 1 && travellers % 2 !== 0) {
+                // Odd number, last person gets solo supplement
+                packageCost += singleSupp;
+            }
+
+            // Calculate extras
+            let extrasTotal = 0;
+            if (step2.extras) {
+                step2.extras.forEach(extra => {
+                    extrasTotal += (parseFloat(extra.price) || 0) * (parseInt(extra.quantity) || 0);
+                });
+            }
+
+            // Calculate addons
+            let addonsTotal = 0;
+            if (step2.addons) {
+                step2.addons.forEach(addon => {
+                    addonsTotal += (parseFloat(addon.price) || 0) * (parseInt(addon.quantity) || 0);
+                });
+            }
+
+            const subtotal = packageCost + extrasTotal + addonsTotal;
+
+            // Determine amount to pay
+            const paymentOption = step4.paymentOption || 'full';
+            const amountToPay = (paymentOption === 'deposit') ? 200.00 : subtotal;
+
+            // Calculate fee (4%)
+            const fee = parseFloat((amountToPay * 0.04).toFixed(2));
+            const total = amountToPay + fee;
+
+            return {
+                packageCost: packageCost,
+                extrasTotal: extrasTotal,
+                addonsTotal: addonsTotal,
+                subtotal: subtotal,
+                amountToPay: amountToPay,
+                fee: fee,
+                total: total
+            };
         }
 
         /**
