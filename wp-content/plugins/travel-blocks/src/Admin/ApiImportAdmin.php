@@ -145,13 +145,10 @@ class ApiImportAdmin
                                 </p>
                             </div>
 
-                            <div class="form-field">
-                                <label>
-                                    <input type="checkbox" id="import_images" name="import_images" value="1">
-                                    <?php _e('Importar imágenes (Featured Image, Gallery, Map, Itinerary)', 'travel-blocks'); ?>
-                                </label>
+                            <div class="form-field info-field">
                                 <p class="description">
-                                    <?php _e('Si está marcado, descargará e importará todas las imágenes del tour. Esto puede aumentar significativamente el tiempo de importación. Las imágenes duplicadas se detectan automáticamente.', 'travel-blocks'); ?>
+                                    <span class="dashicons dashicons-info"></span>
+                                    <?php _e('Las imágenes (Featured Image, Gallery, Map, Itinerary) se importarán automáticamente. Las imágenes duplicadas se detectan y reutilizan.', 'travel-blocks'); ?>
                                 </p>
                             </div>
 
@@ -254,7 +251,6 @@ class ApiImportAdmin
         // Get parameters
         $tour_ids_raw = isset($_POST['tour_ids']) ? (array) $_POST['tour_ids'] : [];
         $update_existing = isset($_POST['update_existing']) && $_POST['update_existing'] === 'true';
-        $import_images = isset($_POST['import_images']) && $_POST['import_images'] === 'true';
 
         // Validate and sanitize tour IDs
         $tour_ids = [];
@@ -292,12 +288,12 @@ class ApiImportAdmin
             ]);
         }
 
-        // Process imports
+        // Process imports - images are always imported
         $processor = new \Travel\Blocks\Services\ApiImportProcessor();
         $processor->set_options([
             'update_existing' => $update_existing,
             'dry_run' => false,
-            'skip_images' => !$import_images, // Invert: if import_images is true, skip_images is false
+            'skip_images' => false, // Always import images
         ]);
 
         $results = [];

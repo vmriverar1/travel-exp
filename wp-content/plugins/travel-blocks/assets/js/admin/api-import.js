@@ -39,7 +39,6 @@
         $logs: null,
         $statsCard: null,
         $updateExisting: null,
-        $importImages: null,
 
         /**
          * Initialize the handler
@@ -68,7 +67,6 @@
             this.$logs = $('#import_logs');
             this.$statsCard = $('.travel-api-stats');
             this.$updateExisting = $('#update_existing');
-            this.$importImages = $('#import_images');
         },
 
         /**
@@ -226,7 +224,6 @@
             // Log start
             this.log('info', `Iniciando importación de ${this.tourIds.length} tour(s) válido(s): [${this.tourIds.join(', ')}]`);
             this.log('info', `Actualizar existentes: ${this.$updateExisting.is(':checked') ? 'Sí' : 'No'}`);
-            this.log('info', `Importar imágenes: ${this.$importImages.is(':checked') ? 'Sí' : 'No'}`);
 
             // Start AJAX processing in chunks
             this.processNextChunk();
@@ -252,7 +249,6 @@
                 this.$stopBtn.show();
                 this.$tourIdsInput.prop('disabled', true);
                 this.$updateExisting.prop('disabled', true);
-                this.$importImages.prop('disabled', true);
                 this.$progressContainer.show();
                 this.$statsCard.show();
             } else {
@@ -260,7 +256,6 @@
                 this.$stopBtn.hide();
                 this.$tourIdsInput.prop('disabled', false);
                 this.$updateExisting.prop('disabled', false);
-                this.$importImages.prop('disabled', false);
                 this.isProcessing = false;
             }
         },
@@ -360,8 +355,8 @@
                 return;
             }
 
-            // Get next chunk (process 3 at a time to avoid timeouts)
-            const chunkSize = 3;
+            // Get next chunk (process 1 at a time for real-time feedback)
+            const chunkSize = 1;
             const chunk = this.tourIds.slice(this.currentIndex, this.currentIndex + chunkSize);
 
             // Make AJAX request
@@ -372,8 +367,7 @@
                     action: 'travel_api_import_process',
                     nonce: window.travelApiImport.nonce,
                     tour_ids: chunk,
-                    update_existing: this.$updateExisting.is(':checked'),
-                    import_images: this.$importImages.is(':checked')
+                    update_existing: this.$updateExisting.is(':checked')
                 },
                 timeout: 120000, // 2 minutes timeout
                 success: (response) => {
@@ -389,7 +383,7 @@
                     this.updateStats();
 
                     // Process next chunk after a small delay
-                    setTimeout(() => this.processNextChunk(), 500);
+                    setTimeout(() => this.processNextChunk(), 300);
                 },
                 error: (jqXHR, textStatus, errorThrown) => {
                     this.log('error', `Error AJAX: ${textStatus} - ${errorThrown}`);
@@ -404,7 +398,7 @@
                     this.updateProgress(this.currentIndex);
                     this.updateStats();
 
-                    // Continue with next chunk
+                    // Continue with next chunk after longer delay
                     setTimeout(() => this.processNextChunk(), 1000);
                 }
             });
@@ -425,16 +419,11 @@
                     let logMessage = `✓ Tour ID ${tourId}: ${action} - "${result.title}" (ID: ${result.post_id})`;
 
                     // Add images status
-                    if (result.images_skipped) {
-                        // Images were intentionally skipped (checkbox not checked)
-                        logMessage += ` - Imágenes omitidas (opción deshabilitada)`;
-                    } else if (result.images_count && result.images_count > 0) {
-                        // Images were imported
-                        logMessage += ` - ${result.images_count} imagen(es) importada(s)`;
+                    if (result.images_count && result.images_count > 0) {
+                        logMessage += ` - ${result.images_count} imagen(es)`;
                         this.stats.totalImages += result.images_count;
-                    } else if (result.images_count === 0 && !result.images_skipped) {
-                        // Images enabled but 0 found/processed
-                        logMessage += ` - Sin imágenes para importar`;
+                    } else {
+                        logMessage += ` - Sin imágenes`;
                     }
 
                     this.log('success', logMessage);
@@ -459,7 +448,7 @@
 
                 // Add images info if any were processed
                 if (this.stats.totalImages > 0) {
-                    summaryMessage += `, ${this.stats.totalImages} imágenes importadas`;
+                    summaryMessage += `, ${this.stats.totalImages} imágenes`;
                 }
 
                 this.log('success', summaryMessage);
