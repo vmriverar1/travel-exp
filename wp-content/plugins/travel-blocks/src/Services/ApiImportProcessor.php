@@ -169,8 +169,9 @@ class ApiImportProcessor
         }
 
         // Process images (after package is saved)
+        $images_count = 0;
         if (!$this->options['skip_images']) {
-            $this->process_images($post_id, $mapped_data);
+            $images_count = $this->process_images($post_id, $mapped_data);
         }
 
         $this->log_debug("Created package post_id={$post_id} for tour_id={$tour_id}");
@@ -180,6 +181,7 @@ class ApiImportProcessor
             'post_id' => $post_id,
             'title' => $mapped_data['post_data']['post_title'],
             'url' => get_permalink($post_id),
+            'images_count' => $images_count,
         ]);
     }
 
@@ -216,8 +218,9 @@ class ApiImportProcessor
         }
 
         // Process images (after package is saved)
+        $images_count = 0;
         if (!$this->options['skip_images']) {
-            $this->process_images($post_id, $mapped_data);
+            $images_count = $this->process_images($post_id, $mapped_data);
         }
 
         $this->log_debug("Updated package post_id={$post_id} for tour_id={$tour_id}");
@@ -227,6 +230,7 @@ class ApiImportProcessor
             'post_id' => $post_id,
             'title' => $mapped_data['post_data']['post_title'],
             'url' => get_permalink($post_id),
+            'images_count' => $images_count,
         ]);
     }
 
@@ -414,9 +418,9 @@ class ApiImportProcessor
      *
      * @param int $post_id WordPress post ID
      * @param array $mapped_data Mapped data containing image URLs
-     * @return void
+     * @return int Number of images processed
      */
-    private function process_images(int $post_id, array $mapped_data): void
+    private function process_images(int $post_id, array $mapped_data): int
     {
         try {
             $images_processed = 0;
@@ -506,9 +510,12 @@ class ApiImportProcessor
                 $this->log_debug("Total images processed: {$images_processed} for post_id={$post_id}");
             }
 
+            return $images_processed;
+
         } catch (\Exception $e) {
             $this->log_error("Image processing error for post_id={$post_id}: " . $e->getMessage());
             // Don't throw - we don't want to fail the entire import if images fail
+            return 0;
         }
     }
 }

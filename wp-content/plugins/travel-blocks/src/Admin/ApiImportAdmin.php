@@ -145,6 +145,16 @@ class ApiImportAdmin
                                 </p>
                             </div>
 
+                            <div class="form-field">
+                                <label>
+                                    <input type="checkbox" id="import_images" name="import_images" value="1">
+                                    <?php _e('Importar imágenes (Featured Image, Gallery, Map, Itinerary)', 'travel-blocks'); ?>
+                                </label>
+                                <p class="description">
+                                    <?php _e('Si está marcado, descargará e importará todas las imágenes del tour. Esto puede aumentar significativamente el tiempo de importación. Las imágenes duplicadas se detectan automáticamente.', 'travel-blocks'); ?>
+                                </p>
+                            </div>
+
                             <div class="form-actions">
                                 <button type="submit" class="button button-primary button-large" id="start_import_btn">
                                     <span class="dashicons dashicons-download"></span>
@@ -244,6 +254,7 @@ class ApiImportAdmin
         // Get parameters
         $tour_ids_raw = isset($_POST['tour_ids']) ? (array) $_POST['tour_ids'] : [];
         $update_existing = isset($_POST['update_existing']) && $_POST['update_existing'] === 'true';
+        $import_images = isset($_POST['import_images']) && $_POST['import_images'] === 'true';
 
         // Validate and sanitize tour IDs
         $tour_ids = [];
@@ -286,7 +297,7 @@ class ApiImportAdmin
         $processor->set_options([
             'update_existing' => $update_existing,
             'dry_run' => false,
-            'skip_images' => true,
+            'skip_images' => !$import_images, // Invert: if import_images is true, skip_images is false
         ]);
 
         $results = [];
@@ -312,6 +323,7 @@ class ApiImportAdmin
             'post_id' => $result['data']['post_id'] ?? null,
             'title' => $result['data']['title'] ?? null,
             'action' => $result['data']['action'] ?? null,
+            'images_count' => $result['data']['images_count'] ?? 0,
             'execution_time' => $result['execution_time'] ?? 0,
         ];
     }

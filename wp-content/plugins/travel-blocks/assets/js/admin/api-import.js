@@ -38,6 +38,7 @@
         $logs: null,
         $statsCard: null,
         $updateExisting: null,
+        $importImages: null,
 
         /**
          * Initialize the handler
@@ -66,6 +67,7 @@
             this.$logs = $('#import_logs');
             this.$statsCard = $('.travel-api-stats');
             this.$updateExisting = $('#update_existing');
+            this.$importImages = $('#import_images');
         },
 
         /**
@@ -222,6 +224,7 @@
             // Log start
             this.log('info', `Iniciando importación de ${this.tourIds.length} tour(s) válido(s): [${this.tourIds.join(', ')}]`);
             this.log('info', `Actualizar existentes: ${this.$updateExisting.is(':checked') ? 'Sí' : 'No'}`);
+            this.log('info', `Importar imágenes: ${this.$importImages.is(':checked') ? 'Sí' : 'No'}`);
 
             // Start AJAX processing in chunks
             this.processNextChunk();
@@ -247,6 +250,7 @@
                 this.$stopBtn.show();
                 this.$tourIdsInput.prop('disabled', true);
                 this.$updateExisting.prop('disabled', true);
+                this.$importImages.prop('disabled', true);
                 this.$progressContainer.show();
                 this.$statsCard.show();
             } else {
@@ -254,6 +258,7 @@
                 this.$stopBtn.hide();
                 this.$tourIdsInput.prop('disabled', false);
                 this.$updateExisting.prop('disabled', false);
+                this.$importImages.prop('disabled', false);
                 this.isProcessing = false;
             }
         },
@@ -365,7 +370,8 @@
                     action: 'travel_api_import_process',
                     nonce: window.travelApiImport.nonce,
                     tour_ids: chunk,
-                    update_existing: this.$updateExisting.is(':checked')
+                    update_existing: this.$updateExisting.is(':checked'),
+                    import_images: this.$importImages.is(':checked')
                 },
                 timeout: 120000, // 2 minutes timeout
                 success: (response) => {
@@ -414,7 +420,14 @@
                 if (status === 'success') {
                     this.stats.success++;
                     const action = result.action === 'create' ? 'Creado' : 'Actualizado';
-                    this.log('success', `✓ Tour ID ${tourId}: ${action} - "${result.title}" (ID: ${result.post_id})`);
+                    let logMessage = `✓ Tour ID ${tourId}: ${action} - "${result.title}" (ID: ${result.post_id})`;
+
+                    // Add images count if imported
+                    if (result.images_count && result.images_count > 0) {
+                        logMessage += ` - ${result.images_count} imagen(es) importada(s)`;
+                    }
+
+                    this.log('success', logMessage);
                 } else if (status === 'error') {
                     this.stats.errors++;
                     this.log('error', `✗ Tour ID ${tourId}: ${message}`);
