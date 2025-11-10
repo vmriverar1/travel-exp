@@ -14,15 +14,6 @@ class PackageSEO extends FieldGroup
             'title' => '🔍 Package - SEO & Meta',
             'fields' => [
 
-                // ===== SEO PLUGINS INFO =====
-                [
-                    'key' => 'field_package_seo_plugins_note',
-                    'label' => '💡 SEO Plugins',
-                    'name' => '',
-                    'type' => 'message',
-                    'message' => 'If you have installed an SEO plugin like <strong>Yoast SEO</strong>, <strong>Rank Math</strong>, or <strong>All in One SEO</strong>, you can find their settings in the <strong>right sidebar</strong>. You can use either the plugin settings or the fields below.',
-                ],
-
                 // ===== META TITLE =====
                 [
                     'key' => 'field_package_seo_title',

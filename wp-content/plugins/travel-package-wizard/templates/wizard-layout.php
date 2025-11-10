@@ -31,38 +31,14 @@ $progress_percentage = round((($current_index + 1) / $total_steps) * 100);
             window.auroraWizardInit();
         }
 
-        // Hide ACF metaboxes initially (wizard will show/hide them)
+        // Hide ACF metaboxes initially (wizard will show/hide them by step)
         $('.acf-postbox').hide();
 
-        // Keep WordPress core metaboxes visible in sidebar
-        // DON'T hide: submitdiv (Publish), postimagediv (Featured Image), pageparentdiv, etc.
-        var keepVisible = ['submitdiv', 'postimagediv', 'pageparentdiv', 'authordiv'];
+        // Hide only project-specific taxonomy metaboxes (they have their own wizard step)
+        $('#destinationsdiv, #package_typediv, #interestdiv, #faqdiv').hide();
+        $('#tagsdiv-destinations, #tagsdiv-package_type, #tagsdiv-interest, #tagsdiv-faq').hide();
 
-        // Keep common SEO plugin metaboxes visible
-        var seoPluginMetaboxes = [
-            'wpseo_meta',           // Yoast SEO
-            'rankmath_metabox',     // Rank Math
-            'aioseo-settings',      // All in One SEO
-            'semrush_seo_metabox'  // SEMrush
-        ];
-
-        // Merge both lists
-        var allKeepVisible = keepVisible.concat(seoPluginMetaboxes);
-
-        // Hide taxonomy metaboxes initially (but NOT core WP metaboxes or SEO plugins)
-        $('.postbox[id*="div"]').each(function() {
-            var id = $(this).attr('id');
-
-            // Skip WordPress core metaboxes and SEO plugin metaboxes
-            if (allKeepVisible.indexOf(id) !== -1) {
-                return; // Don't hide these
-            }
-
-            // Hide taxonomy metaboxes (destinationsdiv, faqdiv, etc.)
-            if (id && (id.endsWith('div') || id.startsWith('tagsdiv-'))) {
-                $(this).hide();
-            }
-        });
+        // Everything else (WordPress core, SEO plugins, other plugins) stays visible by default
 
         // Open all ACF field groups by default (no collapsed)
         $('.acf-postbox .handlediv').remove(); // Remove collapse handle

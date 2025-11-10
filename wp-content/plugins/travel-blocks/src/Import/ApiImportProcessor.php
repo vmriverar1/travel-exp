@@ -489,15 +489,8 @@ class ApiImportProcessor
                 $attachment_ids = $this->image_service->import_gallery($gallery_images, $post_id);
 
                 if (!empty($attachment_ids)) {
-                    // Update gallery field with attachment IDs
-                    $gallery_data = [];
-                    foreach ($attachment_ids as $attachment_id) {
-                        $gallery_data[] = [
-                            'image' => $attachment_id,
-                        ];
-                    }
-
-                    update_field('gallery', $gallery_data, $post_id);
+                    // Gallery field expects a simple array of attachment IDs
+                    update_field('gallery', $attachment_ids, $post_id);
                     $images_processed += count($attachment_ids);
                     $this->log_debug("Gallery processed: " . count($attachment_ids) . " images for post_id={$post_id}");
                 }
@@ -517,15 +510,8 @@ class ApiImportProcessor
                         $day_attachment_ids = $this->image_service->import_gallery($day_gallery_images, $post_id);
 
                         if (!empty($day_attachment_ids)) {
-                            // Update day gallery with attachment IDs
-                            $day_gallery_data = [];
-                            foreach ($day_attachment_ids as $attachment_id) {
-                                $day_gallery_data[] = [
-                                    'image' => $attachment_id,
-                                ];
-                            }
-
-                            $updated_day['gallery'] = $day_gallery_data;
+                            // Gallery field expects a simple array of attachment IDs
+                            $updated_day['gallery'] = $day_attachment_ids;
                             $images_processed += count($day_attachment_ids);
                         }
                     }

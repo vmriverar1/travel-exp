@@ -735,24 +735,6 @@ body.post-type-package #postbox-container-1 .postbox h3 {
     margin: 0;
 }
 
-/* Ensure SEO plugin metaboxes are visible and styled */
-body.post-type-package #wpseo_meta,
-body.post-type-package #rankmath_metabox,
-body.post-type-package #aioseo-settings,
-body.post-type-package #semrush_seo_metabox {
-    display: block !important;
-    visibility: visible !important;
-}
-
-/* Style SEO plugin metabox headers */
-body.post-type-package #postbox-container-1 #wpseo_meta h2,
-body.post-type-package #postbox-container-1 #rankmath_metabox h2,
-body.post-type-package #postbox-container-1 #aioseo-settings h2,
-body.post-type-package #postbox-container-1 #semrush_seo_metabox h2 {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: #fff;
-}
-
 /* Improve submit box (Publish metabox) styling */
 body.post-type-package #submitdiv .inside {
     padding: 15px;

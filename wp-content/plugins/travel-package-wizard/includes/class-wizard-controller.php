@@ -59,7 +59,22 @@ class Aurora_Wizard_Controller {
             'label' => 'Categories & Tags',
             'icon' => '🏷️',
             'metaboxes' => [],
-            'taxonomies' => ['destinations', 'package_type', 'interest', 'faq'], // Taxonomías a mostrar
+            'taxonomies' => [
+                'package_type',
+                'interest',
+                'optional_renting',
+                'included_services',
+                'day',
+                'additional_info',
+                'tag_locations',
+                'activity',
+                'type_service',
+                'hotel',
+                'spot_calendar',
+                'specialists',
+                'landing_packages',
+                'faq',
+            ],
             'fields' => '*',
         ],
     ];
