@@ -94,11 +94,20 @@
                 packageId: data.packageId || null,
                 departureDate: data.departureDate || null,
                 returnDate: data.returnDate || null,
+                selectedPrice: parseFloat(data.price) || 0,
+                singleSupp: parseFloat(data.singleSupp) || 0,
                 ...data
             };
 
             // Populate package data
             this.populatePackageData();
+
+            // Initialize travellers to 1
+            $('#wizard-travellers').val(1);
+            $('.wizard-stepper__btn[data-action="decrement"]').prop('disabled', true);
+
+            // Initialize room type logic
+            this.updateRoomTypeAvailability();
 
             // Show wizard
             this.overlay.addClass('is-visible');
@@ -345,6 +354,9 @@
             // Update button states
             $stepper.find('[data-action="decrement"]').prop('disabled', newValue <= min);
             $stepper.find('[data-action="increment"]').prop('disabled', newValue >= max);
+
+            // Update room type availability and prices
+            this.updateRoomTypeAvailability();
         }
 
         /**
@@ -572,6 +584,74 @@
             return price.toLocaleString('en-US', {
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 0
+            });
+        }
+
+        /**
+         * Update room type availability based on number of travellers
+         */
+        updateRoomTypeAvailability() {
+            const travellers = parseInt($('#wizard-travellers').val()) || 1;
+            const selectedPrice = this.wizardData.selectedPrice || 0;
+            const singleSupp = this.wizardData.singleSupp || 0;
+            const priceNormal = this.wizardData.packageData?.price_normal || selectedPrice;
+
+            // Calculate prices based on travellers logic
+            let twinPrice = 0;
+            let soloPrice = 0;
+
+            if (travellers === 1) {
+                // 1 person: can choose TWIN or SOLO
+                twinPrice = selectedPrice;
+                soloPrice = priceNormal + singleSupp;
+
+                // Enable room selection
+                $('input[name="room_type"]').prop('disabled', false);
+                $('.wizard-room-card').removeClass('wizard-room-card--disabled');
+
+            } else {
+                // 2+ people: TWIN for pairs, SOLO for odd person
+                const pairs = Math.floor(travellers / 2);
+                const hasOddPerson = travellers % 2 !== 0;
+
+                twinPrice = pairs * 2 * selectedPrice;
+                if (hasOddPerson) {
+                    twinPrice += (pairs * 2 * selectedPrice); // Twin price for pairs
+                    soloPrice = priceNormal + singleSupp; // Solo price for odd person
+                }
+
+                // Total for all travellers
+                const totalPrice = twinPrice + (hasOddPerson ? soloPrice : 0);
+
+                // Disable room selection and force TWIN
+                $('input[name="room_type"]').prop('disabled', true);
+                $('input[name="room_type"][value="twin"]').prop('checked', true).prop('disabled', false);
+                $('.wizard-room-card').addClass('wizard-room-card--disabled');
+                $('.wizard-room-card[data-room="twin"]').removeClass('wizard-room-card--disabled').addClass('wizard-room-card--selected');
+                $('.wizard-room-card[data-room="solo"]').removeClass('wizard-room-card--selected');
+
+                // Update TWIN card to show total
+                twinPrice = totalPrice;
+                soloPrice = 0; // Not selectable
+            }
+
+            // Update prices in UI
+            const formattedTwin = `USD $ ${this.formatPrice(twinPrice)}`;
+            const formattedSolo = soloPrice > 0 ? `USD $ ${this.formatPrice(soloPrice)}` : 'N/A';
+
+            $('.wizard-room-card[data-room="twin"] .price-amount').text(formattedTwin);
+            if (travellers === 1) {
+                $('.wizard-room-card[data-room="solo"] .price-amount').text(formattedSolo);
+            } else {
+                $('.wizard-room-card[data-room="solo"] .price-amount').text('Auto-calculated');
+            }
+
+            console.log('[Wizard] Room prices updated:', {
+                travellers: travellers,
+                selectedPrice: selectedPrice,
+                singleSupp: singleSupp,
+                twinPrice: twinPrice,
+                soloPrice: soloPrice
             });
         }
 

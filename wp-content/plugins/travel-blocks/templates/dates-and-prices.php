@@ -279,6 +279,8 @@ $day_names = [
                                     <?php if ($return_ts): ?>data-return-date="<?php echo esc_attr($date['return_date']); ?>"<?php endif; ?>
                                     data-action="<?php echo esc_attr($date['button_action'] ?? 'default'); ?>"
                                     <?php if (!empty($date['anchor_id'])): ?>data-anchor="<?php echo esc_attr($date['anchor_id']); ?>"<?php endif; ?>
+                                    data-price="<?php echo esc_attr($date['price']); ?>"
+                                    data-single-supp="<?php echo esc_attr($date['single_supp'] ?? '0'); ?>"
                                     type="button"
                                 >
                                     <?php echo esc_html($date['button_text'] ?? $button_text); ?>
