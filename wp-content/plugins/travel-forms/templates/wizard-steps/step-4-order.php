@@ -121,17 +121,6 @@ defined('ABSPATH') || exit;
         <div class="wizard-section-title"><?php esc_html_e('Final Step: Select Payment Method', 'travel-forms'); ?></div>
 
         <div class="wizard-payment-buttons">
-            <!-- PayPal -->
-            <button type="button" class="wizard-payment-btn wizard-payment-btn--paypal" data-method="paypal">
-                <span class="wizard-payment-btn__logo">
-                    <svg width="80" height="24" viewBox="0 0 80 24" fill="#003087">
-                        <text x="0" y="18" font-size="18" font-weight="bold">PayPal</text>
-                    </svg>
-                </span>
-                <span class="wizard-payment-btn__label"><?php esc_html_e('CHECK OUT', 'travel-forms'); ?></span>
-                <span class="wizard-payment-btn__arrows">»»»</span>
-            </button>
-
             <!-- Flywire -->
             <button type="button" class="wizard-payment-btn wizard-payment-btn--flywire" data-method="flywire">
                 <span class="wizard-payment-btn__logo">F</span>
