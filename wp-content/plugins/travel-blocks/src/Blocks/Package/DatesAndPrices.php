@@ -636,15 +636,37 @@ class DatesAndPrices
         $weekdays = get_field('fixed_departures', $post_id) ?: [];
         $start_day = intval(get_field('free_spot_start_day', $post_id) ?: 1);
         $duration = intval(get_field('days', $post_id) ?: 1);
-        
+
         // Get default values
         $default_spots = intval(get_field('default_spots', $post_id) ?: 12);
         $price_from = floatval(get_field('price_from', $post_id) ?: 0);
         $price_normal = floatval(get_field('price_normal', $post_id) ?: 0);
-        
+
+        // Check if promo is active
+        $promo_enabled = boolval(get_field('promo_enabled', $post_id) ?: false);
+        $price_offer = floatval(get_field('price_offer', $post_id) ?: 0);
+
+        // Determine if we should apply promo to all automatic dates
+        $apply_promo = $promo_enabled && $price_offer > 0 && $price_offer < $price_from;
+
+        // Calculate promo details if applicable
+        $has_deal = false;
+        $original_price = null;
+        $discount_percentage = 0;
+        $deal_label = '';
+        $final_price = $price_from;
+
+        if ($apply_promo) {
+            $has_deal = true;
+            $original_price = $price_from;
+            $final_price = $price_offer;
+            $discount_percentage = round((($price_from - $price_offer) / $price_from) * 100);
+            $deal_label = $discount_percentage . '% Off';
+        }
+
         // Generate automatic dates (3 years ahead)
         $automatic_dates = $this->generate_automatic_dates($months, $weekdays, $start_day, 3);
-        
+
         // Initialize with automatic dates
         $all_dates = [];
         foreach ($automatic_dates as $date_str) {
@@ -652,12 +674,12 @@ class DatesAndPrices
                 'date' => $date_str,
                 'return_date' => date('Y-m-d', strtotime("+{$duration} days", strtotime($date_str))),
                 'spots' => $default_spots,
-                'price' => $price_from,
+                'price' => $final_price,
                 'status' => 'available',
-                'has_deal' => false,
-                'original_price' => null,
-                'discount_percentage' => 0,
-                'deal_label' => '',
+                'has_deal' => $has_deal,
+                'original_price' => $original_price,
+                'discount_percentage' => $discount_percentage,
+                'deal_label' => $deal_label,
             ];
         }
         
