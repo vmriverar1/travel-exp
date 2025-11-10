@@ -296,7 +296,7 @@ class ApiDataMapper
     }
 
     /**
-     * Get or create taxonomy term
+     * Get or create taxonomy term (with duplicate prevention)
      */
     private function get_or_create_term(string $term_name, string $taxonomy): ?int
     {
@@ -304,17 +304,48 @@ class ApiDataMapper
             return null;
         }
 
-        // Check if term exists
-        $term = get_term_by('name', $term_name, $taxonomy);
+        // Normalize for comparison
+        $normalized = $this->normalize_string($term_name);
 
+        // Try to find existing term using multiple methods
+        // 1. Check by exact name
+        $term = get_term_by('name', $term_name, $taxonomy);
         if ($term) {
             return $term->term_id;
         }
 
-        // Create new term
+        // 2. Check by slug (auto-generated from name)
+        $slug = sanitize_title($term_name);
+        $term = get_term_by('slug', $slug, $taxonomy);
+        if ($term) {
+            return $term->term_id;
+        }
+
+        // 3. Search all terms and compare normalized versions
+        $all_terms = get_terms([
+            'taxonomy' => $taxonomy,
+            'hide_empty' => false,
+            'number' => 0,
+        ]);
+
+        if (!is_wp_error($all_terms)) {
+            foreach ($all_terms as $existing_term) {
+                if ($this->normalize_string($existing_term->name) === $normalized) {
+                    // Found a match with normalized comparison
+                    return $existing_term->term_id;
+                }
+            }
+        }
+
+        // 4. No match found, create new term
         $result = wp_insert_term($term_name, $taxonomy);
 
         if (is_wp_error($result)) {
+            // Check if error is "term already exists"
+            if (isset($result->error_data['term_exists'])) {
+                return $result->error_data['term_exists'];
+            }
+
             $this->log_error("Failed to create term '{$term_name}' in taxonomy '{$taxonomy}': " . $result->get_error_message());
             return null;
         }
@@ -380,7 +411,7 @@ class ApiDataMapper
     }
 
     /**
-     * Find or create location post
+     * Find or create location post (with duplicate prevention)
      */
     private function find_or_create_location(string $title, string $slug = ''): ?int
     {
@@ -388,7 +419,10 @@ class ApiDataMapper
             return null;
         }
 
-        // Try to find by slug first
+        // Normalize for comparison
+        $normalized_title = $this->normalize_string($title);
+
+        // 1. Try to find by slug first
         if ($slug) {
             $post = get_page_by_path($slug, OBJECT, 'location');
             if ($post) {
@@ -396,7 +430,14 @@ class ApiDataMapper
             }
         }
 
-        // Try to find by title
+        // 2. Try to find by auto-generated slug
+        $auto_slug = sanitize_title($title);
+        $post = get_page_by_path($auto_slug, OBJECT, 'location');
+        if ($post) {
+            return $post->ID;
+        }
+
+        // 3. Search by exact title
         $args = [
             'post_type' => 'location',
             'post_status' => 'any',
@@ -406,15 +447,30 @@ class ApiDataMapper
         ];
 
         $query = new \WP_Query($args);
-
         if (!empty($query->posts)) {
             return $query->posts[0];
         }
 
-        // Create new location
+        // 4. Search all locations and compare normalized titles
+        $all_locations = get_posts([
+            'post_type' => 'location',
+            'post_status' => 'any',
+            'posts_per_page' => -1,
+            'fields' => 'ids',
+        ]);
+
+        foreach ($all_locations as $location_id) {
+            $location_title = get_the_title($location_id);
+            if ($this->normalize_string($location_title) === $normalized_title) {
+                // Found a match with normalized comparison
+                return $location_id;
+            }
+        }
+
+        // 5. No match found, create new location
         $post_id = wp_insert_post([
             'post_title' => $title,
-            'post_name' => $slug ?: sanitize_title($title),
+            'post_name' => $slug ?: $auto_slug,
             'post_type' => 'location',
             'post_status' => 'publish',
         ]);
@@ -423,6 +479,8 @@ class ApiDataMapper
             $this->log_error("Failed to create location '{$title}': " . $post_id->get_error_message());
             return null;
         }
+
+        $this->log_debug("Created new location: '{$title}' (ID: {$post_id})");
 
         return $post_id;
     }
@@ -597,6 +655,65 @@ class ApiDataMapper
         }
 
         return 'custom';
+    }
+
+    // ============================================
+    // NORMALIZATION & COMPARISON
+    // ============================================
+
+    /**
+     * Normalize string for comparison (prevent duplicates)
+     *
+     * Converts to lowercase, removes accents, trims, and normalizes special characters
+     */
+    private function normalize_string(string $text): string
+    {
+        // 1. Decode HTML entities (&amp; → &, &quot; → ", etc.)
+        $text = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
+        // 2. Convert to lowercase
+        $text = mb_strtolower($text, 'UTF-8');
+
+        // 3. Remove accents/diacritics
+        $text = $this->remove_accents($text);
+
+        // 4. Normalize whitespace (múltiples espacios → un espacio)
+        $text = preg_replace('/\s+/', ' ', $text);
+
+        // 5. Trim
+        $text = trim($text);
+
+        // 6. Remove special characters (keep letters, numbers, spaces, basic punctuation)
+        $text = preg_replace('/[^\p{L}\p{N}\s\-_&]/u', '', $text);
+
+        return $text;
+    }
+
+    /**
+     * Remove accents from string
+     */
+    private function remove_accents(string $text): string
+    {
+        // Use WordPress function if available
+        if (function_exists('remove_accents')) {
+            return remove_accents($text);
+        }
+
+        // Fallback: manual accent removal
+        $accents = [
+            'á' => 'a', 'é' => 'e', 'í' => 'i', 'ó' => 'o', 'ú' => 'u',
+            'à' => 'a', 'è' => 'e', 'ì' => 'i', 'ò' => 'o', 'ù' => 'u',
+            'ä' => 'a', 'ë' => 'e', 'ï' => 'i', 'ö' => 'o', 'ü' => 'u',
+            'â' => 'a', 'ê' => 'e', 'î' => 'i', 'ô' => 'o', 'û' => 'u',
+            'ã' => 'a', 'õ' => 'o', 'ñ' => 'n', 'ç' => 'c',
+            'Á' => 'A', 'É' => 'E', 'Í' => 'I', 'Ó' => 'O', 'Ú' => 'U',
+            'À' => 'A', 'È' => 'E', 'Ì' => 'I', 'Ò' => 'O', 'Ù' => 'U',
+            'Ä' => 'A', 'Ë' => 'E', 'Ï' => 'I', 'Ö' => 'O', 'Ü' => 'U',
+            'Â' => 'A', 'Ê' => 'E', 'Î' => 'I', 'Ô' => 'O', 'Û' => 'U',
+            'Ã' => 'A', 'Õ' => 'O', 'Ñ' => 'N', 'Ç' => 'C',
+        ];
+
+        return strtr($text, $accents);
     }
 
     // ============================================
