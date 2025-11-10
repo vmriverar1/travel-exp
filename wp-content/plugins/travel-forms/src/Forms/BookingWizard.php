@@ -131,7 +131,8 @@ class BookingWizard
         $data = [
             'id' => $package_id,
             'title' => $package->post_title,
-            'thumbnail' => get_the_post_thumbnail_url($package_id, 'medium'),
+            'permalink' => get_permalink($package_id),
+            'thumbnail' => get_the_post_thumbnail_url($package_id, 'medium') ?: get_the_post_thumbnail_url($package_id, 'thumbnail'),
             'price_from' => floatval(get_field('price_from', $package_id) ?: 0),
             'price_normal' => floatval(get_field('price_normal', $package_id) ?: 0),
             'duration' => intval(get_field('days', $package_id) ?: 1),

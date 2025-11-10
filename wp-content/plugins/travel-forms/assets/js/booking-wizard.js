@@ -525,28 +525,54 @@
          * Update package display with real data
          */
         updatePackageDisplay(packageData) {
-            // Update package title
+            // Update package title and link
             if (packageData.title) {
-                $('#wizard-package-name').text(packageData.title);
+                $('.wizard-package-link').text(packageData.title);
+                if (packageData.permalink) {
+                    $('.wizard-package-link').attr('href', packageData.permalink);
+                }
             }
 
             // Update package image
             if (packageData.thumbnail) {
-                $('#wizard-package-image').attr('src', packageData.thumbnail);
+                $('.wizard-package-info__thumbnail img').attr('src', packageData.thumbnail);
+                $('.wizard-package-info__thumbnail img').attr('alt', packageData.title || 'Package thumbnail');
             }
 
-            // Update price
+            // Update price (update all instances in TWIN and SOLO rooms)
             if (packageData.price_from) {
-                $('#wizard-package-price').text(`USD $${packageData.price_from.toFixed(2)}`);
+                const formattedPrice = `USD $ ${this.formatPrice(packageData.price_from)}`;
+                $('.wizard-room-card[data-room="twin"] .price-amount').text(formattedPrice);
+                $('.price-amount').first().text(formattedPrice);
             }
 
-            // Update duration
+            // Update duration (days and nights)
             if (packageData.duration) {
-                $('#wizard-package-duration').text(`${packageData.duration} days`);
+                const days = packageData.duration;
+                const nights = days - 1;
+                $('.duration-days').text(days);
+                $('.duration-nights').text(nights);
+            }
+
+            // Update max travellers
+            if (packageData.max_people) {
+                $('#wizard-travellers').attr('max', packageData.max_people);
             }
 
             // Store package data for later use
             this.wizardData.packageData = packageData;
+
+            console.log('[Wizard] Package display updated:', packageData);
+        }
+
+        /**
+         * Format price with thousands separator
+         */
+        formatPrice(price) {
+            return price.toLocaleString('en-US', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            });
         }
 
         /**
