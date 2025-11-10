@@ -881,6 +881,109 @@ class GlobalOptions extends FieldGroup
                     ],
                 ],
             ],
+
+            // ========== TAB: PAYMENT APIs ==========
+            [
+                'key' => 'field_tab_payment_apis',
+                'label' => __('💳 Payment APIs', 'travel'),
+                'name' => '',
+                'type' => 'tab',
+                'placement' => 'left',
+            ],
+
+            // --- Stripe Configuration ---
+            [
+                'key' => 'field_stripe_heading',
+                'label' => __('Stripe Configuration', 'travel'),
+                'name' => '',
+                'type' => 'message',
+                'message' => '<strong>Stripe Payment Gateway Settings</strong><br>Configure your Stripe API keys for processing credit card payments.',
+            ],
+            [
+                'key' => 'field_stripe_secret_key',
+                'label' => __('Stripe Secret Key', 'travel'),
+                'name' => 'stripe_secret_key',
+                'type' => 'text',
+                'instructions' => __('Your Stripe secret key (starts with sk_test_ or sk_live_). Keep this secure!', 'travel'),
+                'placeholder' => 'sk_test_xxxxxxxxxxxxx',
+                'wrapper' => ['width' => 50],
+            ],
+            [
+                'key' => 'field_stripe_publishable_key',
+                'label' => __('Stripe Publishable Key', 'travel'),
+                'name' => 'stripe_publishable_key',
+                'type' => 'text',
+                'instructions' => __('Your Stripe publishable key (starts with pk_test_ or pk_live_). Used in frontend.', 'travel'),
+                'placeholder' => 'pk_test_xxxxxxxxxxxxx',
+                'wrapper' => ['width' => 50],
+            ],
+            [
+                'key' => 'field_stripe_webhook_secret',
+                'label' => __('Stripe Webhook Secret', 'travel'),
+                'name' => 'stripe_webhook_secret',
+                'type' => 'text',
+                'instructions' => __('Your Stripe webhook signing secret (starts with whsec_). Used to verify webhook signatures.', 'travel'),
+                'placeholder' => 'whsec_xxxxxxxxxxxxx',
+            ],
+
+            // --- Flywire Configuration ---
+            [
+                'key' => 'field_flywire_heading',
+                'label' => __('Flywire Configuration', 'travel'),
+                'name' => '',
+                'type' => 'message',
+                'message' => '<strong>Flywire Payment Gateway Settings</strong><br>Configure your Flywire payment processor settings.',
+            ],
+            [
+                'key' => 'field_flywire_env',
+                'label' => __('Flywire Environment', 'travel'),
+                'name' => 'flywire_env',
+                'type' => 'select',
+                'instructions' => __('Select the Flywire environment', 'travel'),
+                'choices' => [
+                    'demo' => 'Demo (Testing)',
+                    'production' => 'Production (Live)',
+                ],
+                'default_value' => 'demo',
+                'wrapper' => ['width' => 50],
+            ],
+            [
+                'key' => 'field_flywire_portal_code',
+                'label' => __('Flywire Portal Code', 'travel'),
+                'name' => 'flywire_portal_code',
+                'type' => 'text',
+                'instructions' => __('Your Flywire portal code (e.g., VTR)', 'travel'),
+                'placeholder' => 'VTR',
+                'default_value' => 'VTR',
+                'wrapper' => ['width' => 50],
+            ],
+
+            // --- API Configuration ---
+            [
+                'key' => 'field_api_heading',
+                'label' => __('API Configuration', 'travel'),
+                'name' => '',
+                'type' => 'message',
+                'message' => '<strong>External API Settings</strong><br>Configure URLs for external APIs and services.',
+            ],
+            [
+                'key' => 'field_package_api_base_url',
+                'label' => __('Package API Base URL', 'travel'),
+                'name' => 'package_api_base_url',
+                'type' => 'url',
+                'instructions' => __('Base URL for the Valencia Travel CMS API (e.g., https://cms.valenciatravelcusco.com)', 'travel'),
+                'default_value' => 'https://cms.valenciatravelcusco.com',
+                'placeholder' => 'https://cms.valenciatravelcusco.com',
+            ],
+            [
+                'key' => 'field_public_domain',
+                'label' => __('Public Domain', 'travel'),
+                'name' => 'public_domain',
+                'type' => 'url',
+                'instructions' => __('Your website public domain (e.g., https://www.valenciatravelcusco.com)', 'travel'),
+                'default_value' => 'https://www.valenciatravelcusco.com',
+                'placeholder' => 'https://www.valenciatravelcusco.com',
+            ],
         ];
 
         // Location: Options Page
