@@ -194,9 +194,15 @@ class ApiImportProcessor
     {
         $tour_id = $mapped_data['meta_fields']['tour_id'] ?? 0;
 
-        // Update post data
-        $mapped_data['post_data']['ID'] = $post_id;
-        $result = wp_update_post($mapped_data['post_data'], true);
+        // Prepare update data (remove post_date to preserve original)
+        $update_data = $mapped_data['post_data'];
+        $update_data['ID'] = $post_id;
+
+        // Don't update post_date on existing posts - preserve original creation date
+        unset($update_data['post_date']);
+        unset($update_data['post_date_gmt']);
+
+        $result = wp_update_post($update_data, true);
 
         if (is_wp_error($result)) {
             return $this->error_result($tour_id, 'Failed to update post: ' . $result->get_error_message());

@@ -35,19 +35,49 @@ class ApiDataMapper
     }
 
     /**
-     * Map post data (title, content, status)
+     * Map post data (title, content, status, excerpt, slug, date)
+     *
+     * Maps API data to WordPress native post fields:
+     * - title → post_title
+     * - summary → post_excerpt
+     * - slugs.en → post_name
+     * - created → post_date
      *
      * @param array $api_data
      * @return array
      */
     private function map_post_data(array $api_data): array
     {
-        return [
+        $post_data = [
             'post_title' => $this->sanitize_text($api_data['title'] ?? ''),
-            'post_content' => '', // ACF handles content
-            'post_status' => 'publish',
             'post_type' => 'package',
+            'post_status' => 'publish',
+            'comment_status' => 'closed', // Packages don't need comments
+            'ping_status' => 'closed',
         ];
+
+        // Post excerpt (summary)
+        if (!empty($api_data['summary'])) {
+            $post_data['post_excerpt'] = $this->sanitize_text($api_data['summary']);
+        }
+
+        // Post slug (prefer English slug)
+        if (!empty($api_data['slugs']['en'])) {
+            $post_data['post_name'] = sanitize_title($api_data['slugs']['en']);
+        } elseif (!empty($api_data['slugs']['es'])) {
+            $post_data['post_name'] = sanitize_title($api_data['slugs']['es']);
+        }
+
+        // Post date (created date from API)
+        if (!empty($api_data['created'])) {
+            $date = $this->parse_date($api_data['created']);
+            if ($date) {
+                $post_data['post_date'] = $date;
+                $post_data['post_date_gmt'] = get_gmt_from_date($date);
+            }
+        }
+
+        return $post_data;
     }
 
     /**
@@ -574,22 +604,34 @@ class ApiDataMapper
 
     /**
      * Map thumbnail (featured image)
-     * Returns URL of original image from thumbnail object
+     * Returns URL of original image from thumbnail object or string
+     *
+     * @param array|string|null $thumbnail Thumbnail data (can be array or string URL)
+     * @return string|null
      */
-    private function map_thumbnail(?array $thumbnail): ?string
+    private function map_thumbnail($thumbnail): ?string
     {
         if (empty($thumbnail)) {
             return null;
         }
 
-        // Thumbnail has same structure as images[] - extract originalImage
-        $url = $thumbnail['originalImage'] ?? $thumbnail['image'] ?? '';
-
-        if (empty($url)) {
-            return null;
+        // If thumbnail is already a string URL
+        if (is_string($thumbnail)) {
+            return $this->sanitize_url($thumbnail);
         }
 
-        return $this->sanitize_url($url);
+        // If thumbnail is an array - extract originalImage
+        if (is_array($thumbnail)) {
+            $url = $thumbnail['originalImage'] ?? $thumbnail['image'] ?? '';
+
+            if (empty($url)) {
+                return null;
+            }
+
+            return $this->sanitize_url($url);
+        }
+
+        return null;
     }
 
     /**
@@ -732,6 +774,30 @@ class ApiDataMapper
         ];
 
         return strtr($text, $accents);
+    }
+
+    // ============================================
+    // DATE PARSING
+    // ============================================
+
+    /**
+     * Parse ISO 8601 date to WordPress format
+     *
+     * @param string $date_string ISO 8601 date string
+     * @return string|null WordPress date format (Y-m-d H:i:s) or null
+     */
+    private function parse_date(string $date_string): ?string
+    {
+        try {
+            // Try to parse ISO 8601 date
+            $date = new \DateTime($date_string);
+
+            // Return in WordPress format
+            return $date->format('Y-m-d H:i:s');
+        } catch (\Exception $e) {
+            $this->log_error("Failed to parse date: {$date_string}");
+            return null;
+        }
     }
 
     // ============================================
