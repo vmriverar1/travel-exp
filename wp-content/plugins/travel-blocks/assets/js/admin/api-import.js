@@ -15,6 +15,7 @@
         isStopped: false,
         tourIds: [],
         currentIndex: 0,
+        startTime: 0,
         stats: {
             total: 0,
             success: 0,
@@ -157,6 +158,7 @@
             this.isProcessing = true;
             this.isStopped = false;
             this.currentIndex = 0;
+            this.startTime = Date.now();
             this.stats = {
                 total: this.tourIds.length,
                 success: 0,
@@ -173,12 +175,8 @@
             this.log('info', `Iniciando importación de ${this.tourIds.length} tour(s): [${this.tourIds.join(', ')}]`);
             this.log('info', `Actualizar existentes: ${this.$updateExisting.is(':checked') ? 'Sí' : 'No'}`);
 
-            // In Phase 1, we just show the UI
-            // Actual AJAX processing will be implemented in later phases
-            this.log('warning', 'FASE 1: UI preparada. La lógica de importación se implementará en las siguientes fases.');
-
-            // Simulate processing for demo (remove in later phases)
-            this.simulateProcessing();
+            // Start AJAX processing in chunks
+            this.processNextChunk();
         },
 
         /**
@@ -292,46 +290,104 @@
         },
 
         /**
-         * Simulate processing for Phase 1 demo
-         * This will be replaced with real AJAX calls in later phases
+         * Process next chunk of tour IDs via AJAX
          */
-        simulateProcessing() {
-            let processed = 0;
+        processNextChunk() {
+            if (this.isStopped) {
+                this.log('warning', 'Importación detenida por el usuario');
+                this.finishImport();
+                return;
+            }
 
-            const processNext = () => {
-                if (this.isStopped || processed >= this.tourIds.length) {
-                    if (!this.isStopped) {
-                        this.log('success', `✓ Importación completada: ${this.stats.success} exitosos, ${this.stats.errors} errores, ${this.stats.skipped} omitidos`);
+            // Check if we're done
+            if (this.currentIndex >= this.tourIds.length) {
+                this.finishImport();
+                return;
+            }
+
+            // Get next chunk (process 3 at a time to avoid timeouts)
+            const chunkSize = 3;
+            const chunk = this.tourIds.slice(this.currentIndex, this.currentIndex + chunkSize);
+
+            // Make AJAX request
+            $.ajax({
+                url: window.travelApiImport.ajaxUrl,
+                type: 'POST',
+                data: {
+                    action: 'travel_api_import_process',
+                    nonce: window.travelApiImport.nonce,
+                    tour_ids: chunk,
+                    update_existing: this.$updateExisting.is(':checked')
+                },
+                timeout: 120000, // 2 minutes timeout
+                success: (response) => {
+                    if (response.success && response.data.results) {
+                        this.handleResults(response.data.results);
+                    } else {
+                        this.log('error', `Error en respuesta del servidor: ${response.data?.message || 'Sin mensaje'}`);
+                        this.stats.errors += chunk.length;
                     }
-                    this.updateUIState('idle');
-                    return;
+
+                    this.currentIndex += chunk.length;
+                    this.updateProgress(this.currentIndex);
+                    this.updateStats();
+
+                    // Process next chunk after a small delay
+                    setTimeout(() => this.processNextChunk(), 500);
+                },
+                error: (jqXHR, textStatus, errorThrown) => {
+                    this.log('error', `Error AJAX: ${textStatus} - ${errorThrown}`);
+
+                    // Mark all tours in this chunk as errors
+                    chunk.forEach(tourId => {
+                        this.log('error', `Tour ID ${tourId}: Error de conexión`);
+                    });
+
+                    this.stats.errors += chunk.length;
+                    this.currentIndex += chunk.length;
+                    this.updateProgress(this.currentIndex);
+                    this.updateStats();
+
+                    // Continue with next chunk
+                    setTimeout(() => this.processNextChunk(), 1000);
                 }
+            });
+        },
 
-                const tourId = this.tourIds[processed];
-                processed++;
+        /**
+         * Handle results from AJAX response
+         */
+        handleResults(results) {
+            results.forEach(result => {
+                const tourId = result.tour_id;
+                const status = result.status;
+                const message = result.message;
 
-                // Simulate random result
-                const rand = Math.random();
-                if (rand > 0.8) {
-                    this.stats.errors++;
-                    this.log('error', `Tour ID ${tourId}: Error simulado (DEMO)`);
-                } else if (rand > 0.6) {
-                    this.stats.skipped++;
-                    this.log('warning', `Tour ID ${tourId}: Omitido (DEMO)`);
-                } else {
+                if (status === 'success') {
                     this.stats.success++;
-                    this.log('success', `Tour ID ${tourId}: Importado exitosamente (DEMO)`);
+                    const action = result.action === 'create' ? 'Creado' : 'Actualizado';
+                    this.log('success', `✓ Tour ID ${tourId}: ${action} - "${result.title}" (ID: ${result.post_id})`);
+                } else if (status === 'error') {
+                    this.stats.errors++;
+                    this.log('error', `✗ Tour ID ${tourId}: ${message}`);
+                } else if (status === 'skipped') {
+                    this.stats.skipped++;
+                    this.log('warning', `⊘ Tour ID ${tourId}: ${message}`);
                 }
+            });
+        },
 
-                this.updateProgress(processed);
-                this.updateStats();
+        /**
+         * Finish import process
+         */
+        finishImport() {
+            const totalTime = ((Date.now() - this.startTime) / 1000).toFixed(2);
 
-                // Continue with next
-                setTimeout(processNext, 500);
-            };
+            if (!this.isStopped) {
+                this.log('success', `✓ Importación completada en ${totalTime}s: ${this.stats.success} exitosos, ${this.stats.errors} errores, ${this.stats.skipped} omitidos`);
+            }
 
-            // Start processing
-            setTimeout(processNext, 500);
+            this.updateUIState('idle');
         }
     };
 

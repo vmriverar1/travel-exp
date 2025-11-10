@@ -31,6 +31,9 @@ class ApiImportAdmin
     {
         add_action('admin_menu', [__CLASS__, 'register_admin_menu']);
         add_action('admin_enqueue_scripts', [__CLASS__, 'enqueue_assets']);
+
+        // Register AJAX handlers
+        add_action('wp_ajax_travel_api_import_process', [__CLASS__, 'ajax_process_import']);
     }
 
     /**
@@ -221,5 +224,66 @@ class ApiImportAdmin
             </div>
         </div>
         <?php
+    }
+
+    /**
+     * AJAX handler for processing import
+     */
+    public static function ajax_process_import(): void
+    {
+        // Verify nonce
+        check_ajax_referer('travel_api_import', 'nonce');
+
+        // Check permissions
+        if (!current_user_can(self::REQUIRED_CAPABILITY)) {
+            wp_send_json_error([
+                'message' => __('No tienes permisos para realizar esta acción.', 'travel-blocks'),
+            ]);
+        }
+
+        // Get parameters
+        $tour_ids = isset($_POST['tour_ids']) ? array_map('intval', (array) $_POST['tour_ids']) : [];
+        $update_existing = isset($_POST['update_existing']) && $_POST['update_existing'] === 'true';
+
+        // Validate
+        if (empty($tour_ids)) {
+            wp_send_json_error([
+                'message' => __('No se recibieron IDs de tours.', 'travel-blocks'),
+            ]);
+        }
+
+        // Process imports
+        $processor = new \Travel\Blocks\Services\ApiImportProcessor();
+        $processor->set_options([
+            'update_existing' => $update_existing,
+            'dry_run' => false,
+            'skip_images' => true,
+        ]);
+
+        $results = [];
+        foreach ($tour_ids as $tour_id) {
+            $result = $processor->process_single($tour_id);
+            $results[] = self::format_ajax_result($result);
+        }
+
+        wp_send_json_success([
+            'results' => $results,
+        ]);
+    }
+
+    /**
+     * Format processor result for AJAX response
+     */
+    private static function format_ajax_result(array $result): array
+    {
+        return [
+            'tour_id' => $result['tour_id'],
+            'status' => $result['status'],
+            'message' => $result['message'],
+            'post_id' => $result['data']['post_id'] ?? null,
+            'title' => $result['data']['title'] ?? null,
+            'action' => $result['data']['action'] ?? null,
+            'execution_time' => $result['execution_time'] ?? 0,
+        ];
     }
 }
