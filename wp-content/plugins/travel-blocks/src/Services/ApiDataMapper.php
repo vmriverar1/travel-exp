@@ -288,6 +288,9 @@ class ApiDataMapper
             return null;
         }
 
+        // Convert relative URLs to absolute
+        $url = $this->normalize_image_url($url);
+
         // Return URL - will be processed by ImageImportService
         return $this->sanitize_url($url);
     }
@@ -617,7 +620,9 @@ class ApiDataMapper
 
         // If thumbnail is already a string URL
         if (is_string($thumbnail)) {
-            return $this->sanitize_url($thumbnail);
+            // Convert relative URLs to absolute
+            $url = $this->normalize_image_url($thumbnail);
+            return $this->sanitize_url($url);
         }
 
         // If thumbnail is an array - extract originalImage
@@ -628,10 +633,58 @@ class ApiDataMapper
                 return null;
             }
 
+            // URLs from API objects are usually absolute, but normalize anyway
+            $url = $this->normalize_image_url($url);
             return $this->sanitize_url($url);
         }
 
         return null;
+    }
+
+    /**
+     * Normalize image URL - convert relative URLs to absolute
+     *
+     * @param string $url Image URL (can be relative or absolute)
+     * @return string Absolute URL
+     */
+    private function normalize_image_url(string $url): string
+    {
+        if (empty($url)) {
+            return '';
+        }
+
+        // Already absolute URL
+        if (preg_match('/^https?:\/\//', $url)) {
+            return $url;
+        }
+
+        // Relative URL starting with / - prepend API base URL
+        if (strpos($url, '/') === 0) {
+            $base_url = $this->get_api_base_url();
+            return rtrim($base_url, '/') . $url;
+        }
+
+        // Other cases - return as is
+        return $url;
+    }
+
+    /**
+     * Get API base URL
+     *
+     * @return string API base URL
+     */
+    private function get_api_base_url(): string
+    {
+        // Try to get from ACF Global Options
+        $api_url = function_exists('get_field') ? get_field('package_api_base_url', 'option') : '';
+
+        // Validate and sanitize URL
+        if (!empty($api_url) && filter_var($api_url, FILTER_VALIDATE_URL)) {
+            return rtrim($api_url, '/');
+        }
+
+        // Fallback to default
+        return 'https://cms.valenciatravelcusco.com';
     }
 
     /**
