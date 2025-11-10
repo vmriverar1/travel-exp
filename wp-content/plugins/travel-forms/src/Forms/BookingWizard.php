@@ -347,9 +347,14 @@ class BookingWizard
         // Get package data
         $package_id = intval($wizard_data['packageId'] ?? 0);
         $tour_name = '';
+        $tour_id = null;
+
         if ($package_id) {
             $package = get_post($package_id);
             $tour_name = $package ? $package->post_title : '';
+
+            // Get the tour_id from ACF (this is the ID in the external API)
+            $tour_id = get_field('tour_id', $package_id);
         }
 
         // Calculate totals
@@ -408,10 +413,13 @@ class BookingWizard
             'country' => $step3['country'] ?? '',
         ];
 
-        // Prepare data according to API specification
-        return [
+        // Prepare package/landing/external fields
+        // Use tour_id if available (external API ID), otherwise undefined
+        $package_field = $tour_id ? intval($tour_id) : null;
+
+        // Build the data array
+        $booking_data = [
             'payment_method' => $step4['paymentMethod'] ?? 'flywire',
-            'package' => $package_id,
             'tour_name' => $tour_name,
             'flight' => '',  // No flight field in current wizard
             'travel_date' => $wizard_data['departureDate'] ?? '',
@@ -433,6 +441,13 @@ class BookingWizard
                 'billingData' => $billing_data,
             ],
         ];
+
+        // Add package/landing/external only if tour_id exists
+        if ($package_field) {
+            $booking_data['package'] = $package_field;
+        }
+
+        return $booking_data;
     }
 
     /**
