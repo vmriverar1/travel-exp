@@ -20,7 +20,8 @@
             total: 0,
             success: 0,
             errors: 0,
-            skipped: 0
+            skipped: 0,
+            totalImages: 0
         },
 
         // DOM Elements (cached)
@@ -213,7 +214,8 @@
                 total: this.tourIds.length,
                 success: 0,
                 errors: 0,
-                skipped: 0
+                skipped: 0,
+                totalImages: 0
             };
 
             // Update UI
@@ -422,9 +424,17 @@
                     const action = result.action === 'create' ? 'Creado' : 'Actualizado';
                     let logMessage = `✓ Tour ID ${tourId}: ${action} - "${result.title}" (ID: ${result.post_id})`;
 
-                    // Add images count if imported
-                    if (result.images_count && result.images_count > 0) {
+                    // Add images status
+                    if (result.images_skipped) {
+                        // Images were intentionally skipped (checkbox not checked)
+                        logMessage += ` - Imágenes omitidas (opción deshabilitada)`;
+                    } else if (result.images_count && result.images_count > 0) {
+                        // Images were imported
                         logMessage += ` - ${result.images_count} imagen(es) importada(s)`;
+                        this.stats.totalImages += result.images_count;
+                    } else if (result.images_count === 0 && !result.images_skipped) {
+                        // Images enabled but 0 found/processed
+                        logMessage += ` - Sin imágenes para importar`;
                     }
 
                     this.log('success', logMessage);
@@ -445,7 +455,14 @@
             const totalTime = ((Date.now() - this.startTime) / 1000).toFixed(2);
 
             if (!this.isStopped) {
-                this.log('success', `✓ Importación completada en ${totalTime}s: ${this.stats.success} exitosos, ${this.stats.errors} errores, ${this.stats.skipped} omitidos`);
+                let summaryMessage = `✓ Importación completada en ${totalTime}s: ${this.stats.success} exitosos, ${this.stats.errors} errores, ${this.stats.skipped} omitidos`;
+
+                // Add images info if any were processed
+                if (this.stats.totalImages > 0) {
+                    summaryMessage += `, ${this.stats.totalImages} imágenes importadas`;
+                }
+
+                this.log('success', summaryMessage);
             }
 
             this.updateUIState('idle');

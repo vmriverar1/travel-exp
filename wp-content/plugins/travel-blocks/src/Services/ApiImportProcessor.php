@@ -182,6 +182,7 @@ class ApiImportProcessor
             'title' => $mapped_data['post_data']['post_title'],
             'url' => get_permalink($post_id),
             'images_count' => $images_count,
+            'images_skipped' => $this->options['skip_images'],
         ]);
     }
 
@@ -231,6 +232,7 @@ class ApiImportProcessor
             'title' => $mapped_data['post_data']['post_title'],
             'url' => get_permalink($post_id),
             'images_count' => $images_count,
+            'images_skipped' => $this->options['skip_images'],
         ]);
     }
 
