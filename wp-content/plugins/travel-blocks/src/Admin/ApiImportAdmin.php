@@ -10,6 +10,8 @@
 
 namespace Travel\Blocks\Admin;
 
+use Travel\Blocks\Import\ApiImportProcessor;
+
 defined('ABSPATH') || exit;
 
 class ApiImportAdmin
@@ -289,7 +291,7 @@ class ApiImportAdmin
         }
 
         // Process imports - images are always imported
-        $processor = new \Travel\Blocks\Services\ApiImportProcessor();
+        $processor = new ApiImportProcessor();
         $processor->set_options([
             'update_existing' => $update_existing,
             'dry_run' => false,

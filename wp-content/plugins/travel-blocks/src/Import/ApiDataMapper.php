@@ -1,6 +1,6 @@
 <?php
 
-namespace Travel\Blocks\Services;
+namespace Travel\Blocks\Import;
 
 /**
  * API Data Mapper
@@ -8,7 +8,7 @@ namespace Travel\Blocks\Services;
  * Transforms data from Valencia Travel API to WordPress CPT Package format.
  * Handles mapping of simple fields, taxonomies, post objects, and repeaters.
  *
- * @package Travel\Blocks\Services
+ * @package Travel\Blocks\Import
  * @since 1.0.0
  */
 class ApiDataMapper

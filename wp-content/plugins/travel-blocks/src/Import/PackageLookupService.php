@@ -1,6 +1,6 @@
 <?php
 
-namespace Travel\Blocks\Services;
+namespace Travel\Blocks\Import;
 
 /**
  * Package Lookup Service
@@ -8,7 +8,7 @@ namespace Travel\Blocks\Services;
  * Handles searching for packages in the local WordPress database by tour_id.
  * Provides methods to check if a package exists and retrieve package post IDs.
  *
- * @package Travel\Blocks\Services
+ * @package Travel\Blocks\Import
  * @since 1.0.0
  */
 class PackageLookupService

@@ -1,6 +1,6 @@
 <?php
 
-namespace Travel\Blocks\Services;
+namespace Travel\Blocks\Import;
 
 /**
  * Image Import Service
@@ -8,7 +8,7 @@ namespace Travel\Blocks\Services;
  * Handles downloading images from external URLs and creating WordPress attachments.
  * Includes duplicate detection to avoid re-downloading existing images.
  *
- * @package Travel\Blocks\Services
+ * @package Travel\Blocks\Import
  * @since 1.0.0
  */
 class ImageImportService

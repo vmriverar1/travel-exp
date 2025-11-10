@@ -1,6 +1,8 @@
 <?php
 
-namespace Travel\Blocks\Services;
+namespace Travel\Blocks\Import;
+
+use Travel\Blocks\Services\PackageApiService;
 
 /**
  * API Import Processor
@@ -8,7 +10,7 @@ namespace Travel\Blocks\Services;
  * Handles the complete import process from Valencia API to WordPress packages.
  * Processes tours individually with full error handling and reporting.
  *
- * @package Travel\Blocks\Services
+ * @package Travel\Blocks\Import
  * @since 1.0.0
  */
 class ApiImportProcessor
