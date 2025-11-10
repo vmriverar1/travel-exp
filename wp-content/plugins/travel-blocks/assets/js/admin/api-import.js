@@ -187,13 +187,13 @@
 
             // Log warnings about duplicates and invalid IDs
             if (duplicates.length > 0) {
-                this.log('warning', `Se removieron ${duplicates.length} ID(s) duplicado(s): [${duplicates.join(', ')}]`);
+                this.log('warning', `Se removieron ${duplicates.length} duplicado(s)`);
+                console.warn('[Import] IDs duplicados removidos:', duplicates);
             }
 
             if (invalid.length > 0) {
-                const invalidPreview = invalid.slice(0, 10).join(', ');
-                const moreCount = invalid.length > 10 ? ` (+${invalid.length - 10} más)` : '';
-                this.log('error', `Se ignoraron ${invalid.length} ID(s) inválido(s): [${invalidPreview}${moreCount}]`);
+                this.log('error', `Se ignoraron ${invalid.length} ID(s) inválido(s)`);
+                console.error('[Import] IDs inválidos:', invalid);
             }
 
             if (validIds.length === 0) {
@@ -222,8 +222,15 @@
             this.updateProgress(0);
 
             // Log start
-            this.log('info', `Iniciando importación de ${this.tourIds.length} tour(s) válido(s): [${this.tourIds.join(', ')}]`);
-            this.log('info', `Actualizar existentes: ${this.$updateExisting.is(':checked') ? 'Sí' : 'No'}`);
+            const tourCount = this.tourIds.length;
+            this.log('info', `Iniciando importación de ${tourCount} ${tourCount === 1 ? 'tour' : 'tours'}...`);
+
+            // Technical details to console
+            console.log('[Import] Iniciando importación:', {
+                tour_ids: this.tourIds,
+                total: this.tourIds.length,
+                update_existing: this.$updateExisting.is(':checked')
+            });
 
             // Start AJAX processing in chunks
             this.processNextChunk();
@@ -416,28 +423,41 @@
                 if (status === 'success') {
                     this.stats.success++;
                     const action = result.action === 'create' ? 'Creado' : 'Actualizado';
-                    let logMessage = `✓ Tour ID ${tourId}: ${action} - "${result.title}" (ID: ${result.post_id})`;
 
-                    // Add images status
+                    // Simple message for UI
+                    let logMessage = `✓ "${result.title}"`;
+
                     if (result.images_count && result.images_count > 0) {
-                        logMessage += ` - ${result.images_count} imagen(es)`;
+                        logMessage += ` - ${result.images_count} ${result.images_count === 1 ? 'imagen' : 'imágenes'}`;
                         this.stats.totalImages += result.images_count;
-                    } else {
-                        logMessage += ` - Sin imágenes`;
-                    }
-
-                    // Add debug info if available
-                    if (result.debug) {
-                        logMessage += ` [DEBUG: ${result.debug}]`;
                     }
 
                     this.log('success', logMessage);
+
+                    // Technical details to browser console
+                    console.log(`[Import] Tour ${tourId} - ${action}:`, {
+                        post_id: result.post_id,
+                        title: result.title,
+                        action: result.action,
+                        images_count: result.images_count,
+                        execution_time: result.execution_time ? result.execution_time.toFixed(2) + 's' : 'N/A',
+                        debug: result.debug || 'N/A'
+                    });
                 } else if (status === 'error') {
                     this.stats.errors++;
-                    this.log('error', `✗ Tour ID ${tourId}: ${message}`);
+                    this.log('error', `✗ Tour ${tourId}: ${message}`);
+
+                    // Error details to console
+                    console.error(`[Import Error] Tour ${tourId}:`, {
+                        message: message,
+                        result: result
+                    });
                 } else if (status === 'skipped') {
                     this.stats.skipped++;
-                    this.log('warning', `⊘ Tour ID ${tourId}: ${message}`);
+                    this.log('warning', `⊘ Tour ${tourId}: ${message}`);
+
+                    // Skipped details to console
+                    console.warn(`[Import Skipped] Tour ${tourId}:`, message);
                 }
             });
         },
@@ -449,14 +469,27 @@
             const totalTime = ((Date.now() - this.startTime) / 1000).toFixed(2);
 
             if (!this.isStopped) {
-                let summaryMessage = `✓ Importación completada en ${totalTime}s: ${this.stats.success} exitosos, ${this.stats.errors} errores, ${this.stats.skipped} omitidos`;
+                // Simple message for UI
+                let summaryMessage = '✓ Importación completada';
 
-                // Add images info if any were processed
+                if (this.stats.success > 0) {
+                    summaryMessage += ` - ${this.stats.success} ${this.stats.success === 1 ? 'tour' : 'tours'}`;
+                }
+
                 if (this.stats.totalImages > 0) {
-                    summaryMessage += `, ${this.stats.totalImages} imágenes`;
+                    summaryMessage += `, ${this.stats.totalImages} ${this.stats.totalImages === 1 ? 'imagen' : 'imágenes'}`;
                 }
 
                 this.log('success', summaryMessage);
+
+                // Detailed stats to console
+                console.log('[Import] Completado:', {
+                    total_time: totalTime + 's',
+                    success: this.stats.success,
+                    errors: this.stats.errors,
+                    skipped: this.stats.skipped,
+                    total_images: this.stats.totalImages
+                });
             }
 
             this.updateUIState('idle');

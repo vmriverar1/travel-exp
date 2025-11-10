@@ -34,11 +34,33 @@ $progress_percentage = round((($current_index + 1) / $total_steps) * 100);
         // Hide ACF metaboxes initially (wizard will show/hide them by step)
         $('.acf-postbox').hide();
 
-        // Hide only project-specific taxonomy metaboxes (they have their own wizard step)
-        $('#destinationsdiv, #package_typediv, #interestdiv, #faqdiv').hide();
-        $('#tagsdiv-destinations, #tagsdiv-package_type, #tagsdiv-interest, #tagsdiv-faq').hide();
+        // Hide all current project taxonomies (they have their own wizard step)
+        // These are all taxonomies managed by the wizard for packages
+        var projectTaxonomies = [
+            'destinations',
+            'package_type',
+            'interest',
+            'optional_renting',
+            'included_services',
+            'day',
+            'additional_info',
+            'tag_locations',
+            'activity',
+            'type_service',
+            'hotel',
+            'spot_calendar',
+            'specialists',
+            'landing_packages',
+            'faq'
+        ];
 
-        // Everything else (WordPress core, SEO plugins, other plugins) stays visible by default
+        // Hide both hierarchical ({taxonomy}div) and non-hierarchical (tagsdiv-{taxonomy}) metaboxes
+        projectTaxonomies.forEach(function(taxonomy) {
+            $('#' + taxonomy + 'div').hide(); // Hierarchical
+            $('#tagsdiv-' + taxonomy).hide(); // Non-hierarchical
+        });
+
+        // Everything else (WordPress core, SEO plugins, future taxonomies) stays visible by default
 
         // Open all ACF field groups by default (no collapsed)
         $('.acf-postbox .handlediv').remove(); // Remove collapse handle

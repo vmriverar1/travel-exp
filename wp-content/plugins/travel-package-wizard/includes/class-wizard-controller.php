@@ -60,6 +60,7 @@ class Aurora_Wizard_Controller {
             'icon' => '🏷️',
             'metaboxes' => [],
             'taxonomies' => [
+                'destinations',
                 'package_type',
                 'interest',
                 'optional_renting',
