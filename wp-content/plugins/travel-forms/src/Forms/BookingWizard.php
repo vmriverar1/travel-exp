@@ -288,14 +288,20 @@ class BookingWizard
             return ['valid' => false, 'error' => __('Departure date is required', 'travel-forms')];
         }
 
-        // Check step 3 data
-        if (empty($data['step3']['passengers']) || !is_array($data['step3']['passengers'])) {
-            return ['valid' => false, 'error' => __('Passenger information is required', 'travel-forms')];
+        // Check step 3 data (billing information)
+        // Note: step3 contains billing info, not passengers array
+        if (empty($data['step3'])) {
+            return ['valid' => false, 'error' => __('Billing information is required', 'travel-forms')];
         }
 
-        // Check step 4 data
-        if (empty($data['step4']['billing'])) {
-            return ['valid' => false, 'error' => __('Billing information is required', 'travel-forms')];
+        // Validate essential billing fields
+        if (empty($data['step3']['email']) || empty($data['step3']['firstName']) || empty($data['step3']['lastName'])) {
+            return ['valid' => false, 'error' => __('Name and email are required', 'travel-forms')];
+        }
+
+        // Check step 4 data (payment method selection)
+        if (empty($data['step4']['paymentMethod'])) {
+            return ['valid' => false, 'error' => __('Payment method is required', 'travel-forms')];
         }
 
         return ['valid' => true];
@@ -312,9 +318,8 @@ class BookingWizard
     {
         $step1 = $wizard_data['step1'] ?? [];
         $step2 = $wizard_data['step2'] ?? [];
-        $step3 = $wizard_data['step3'] ?? [];
+        $step3 = $wizard_data['step3'] ?? []; // Billing information
         $step4 = $wizard_data['step4'] ?? [];
-        $billing = $step4['billing'] ?? [];
 
         // Get package data
         $package_id = intval($wizard_data['packageId'] ?? 0);
@@ -351,12 +356,41 @@ class BookingWizard
             $solo_upgrade_unit_price = floatval($wizard_data['singleSupp'] ?? 0);
         }
 
+        // Create passengers array from billing data (step3)
+        // For now, create one passenger entry for the main contact
+        $passengers = [];
+        if (!empty($step3)) {
+            $passengers[] = [
+                'first_name' => $step3['firstName'] ?? '',
+                'last_name' => $step3['lastName'] ?? '',
+                'email' => $step3['email'] ?? '',
+                'phone' => $step3['phone'] ?? '',
+                'document_type' => $step3['document'] ?? '',
+                'document_number' => $step3['documentNumber'] ?? '',
+                'dob' => $step3['dob'] ?? '',
+                'country' => $step3['country'] ?? '',
+            ];
+        }
+
+        // Format billing data for details
+        $billing_data = [
+            'first_name' => $step3['firstName'] ?? '',
+            'last_name' => $step3['lastName'] ?? '',
+            'email' => $step3['email'] ?? '',
+            'phone' => $step3['phone'] ?? '',
+            'address' => $step3['address'] ?? '',
+            'city' => $step3['city'] ?? '',
+            'state' => $step3['state'] ?? '',
+            'zip' => $step3['zip'] ?? '',
+            'country' => $step3['country'] ?? '',
+        ];
+
         // Prepare data according to API specification
         return [
             'payment_method' => $step4['paymentMethod'] ?? 'flywire',
             'package' => $package_id,
             'tour_name' => $tour_name,
-            'flight' => $billing['flight'] ?? '',
+            'flight' => '',  // No flight field in current wizard
             'travel_date' => $wizard_data['departureDate'] ?? '',
             'payment_type' => $payment_type,
             'total' => $totals['subtotal'],
@@ -370,10 +404,10 @@ class BookingWizard
             'product_unit_price' => floatval($wizard_data['selectedPrice'] ?? 0),
             'extra_services' => $this->format_extra_items($step2['extras'] ?? []),
             'optional_activities' => $this->format_extra_items($step2['addons'] ?? []),
-            'passengers' => $step3['passengers'] ?? [],
+            'passengers' => $passengers,
             'passengers_count' => $travellers,
             'details' => [
-                'billingData' => $billing,
+                'billingData' => $billing_data,
             ],
         ];
     }

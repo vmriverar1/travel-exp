@@ -518,7 +518,7 @@
 
             // Calculate totals
             const totals = this.calculateTotals();
-            const billing = this.wizardData.step4.billing;
+            const billing = this.wizardData.step3; // Step 3 contains billing info
             const packageTitle = this.wizardData.packageData?.title || 'Tour Package';
 
             // Prepare Flywire configuration
@@ -527,9 +527,9 @@
                 recipientCode: bookingWizardConfig.flywire.portalCode,
                 amount: totals.total,
 
-                // Pre-fill payer information
-                firstName: billing.first_name,
-                lastName: billing.last_name,
+                // Pre-fill payer information (from step3)
+                firstName: billing.firstName,
+                lastName: billing.lastName,
                 email: billing.email,
                 phone: billing.phone,
                 address: billing.address,
@@ -580,8 +580,8 @@
                     // Update invoice with payment details
                     await this.updateFlywireInvoice({
                         payment_id: reference,
-                        first_name: billing.first_name,
-                        last_name: billing.last_name,
+                        first_name: billing.firstName,
+                        last_name: billing.lastName,
                         email: billing.email,
                         phone: billing.phone,
                         address: billing.address,
@@ -645,14 +645,14 @@
 
             // Calculate totals
             const totals = this.calculateTotals();
-            const billing = this.wizardData.step4.billing;
+            const billing = this.wizardData.step3; // Step 3 contains billing info
             const packageTitle = this.wizardData.packageData?.title || 'Tour Package';
             const travellers = this.wizardData.step1.travellers || 1;
 
             // Prepare checkout data
             const checkoutData = {
                 customerEmail: billing.email,
-                customerName: `${billing.first_name} ${billing.last_name}`,
+                customerName: `${billing.firstName} ${billing.lastName}`,
                 totalPrice: totals.total,
                 packageName: packageTitle,
                 packageDetails: `${travellers} traveller(s)`,
