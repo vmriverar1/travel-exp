@@ -249,17 +249,16 @@ class ApiDataMapper
     }
 
     /**
-     * Map image URL to ACF format
+     * Map image URL (returns URL for later processing)
      */
-    private function map_image(string $url): ?int
+    private function map_image(string $url): ?string
     {
         if (empty($url)) {
             return null;
         }
 
-        // In Phase 4-5 we'll implement actual image download/attachment
-        // For now, just store the URL in a meta field
-        return null;
+        // Return URL - will be processed by ImageImportService
+        return $this->sanitize_url($url);
     }
 
     // ============================================
@@ -512,13 +511,12 @@ class ApiDataMapper
     }
 
     /**
-     * Map itinerary images
+     * Map itinerary images (returns image data for later processing)
      */
     private function map_itinerary_images(array $images): array
     {
-        // For now, return empty array
-        // In Phase 4-5 we'll implement actual image download
-        return [];
+        // Return image data - will be processed by ImageImportService
+        return $images;
     }
 
     /**
@@ -565,13 +563,12 @@ class ApiDataMapper
     }
 
     /**
-     * Map gallery images
+     * Map gallery images (returns image data for later processing)
      */
     private function map_gallery(array $images): array
     {
-        // For now, return empty array
-        // In Phase 4-5 we'll implement actual image download
-        return [];
+        // Return image data - will be processed by ImageImportService
+        return $images;
     }
 
     /**

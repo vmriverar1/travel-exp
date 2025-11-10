@@ -29,6 +29,11 @@ class ApiImportProcessor
     private ApiDataMapper $mapper;
 
     /**
+     * Image Import Service
+     */
+    private ImageImportService $image_service;
+
+    /**
      * Options for processing
      */
     private array $options = [];
@@ -41,6 +46,7 @@ class ApiImportProcessor
         $this->api_service = new PackageApiService();
         $this->lookup_service = new PackageLookupService();
         $this->mapper = new ApiDataMapper();
+        $this->image_service = new ImageImportService();
     }
 
     /**
@@ -157,6 +163,11 @@ class ApiImportProcessor
             return $this->error_result($tour_id, 'Failed to save data: ' . $save_result['message']);
         }
 
+        // Process images (after package is saved)
+        if (!$this->options['skip_images']) {
+            $this->process_images($post_id, $mapped_data);
+        }
+
         $this->log_debug("Created package post_id={$post_id} for tour_id={$tour_id}");
 
         return $this->success_result($tour_id, 'Package created successfully', [
@@ -191,6 +202,11 @@ class ApiImportProcessor
 
         if (!$save_result['success']) {
             return $this->error_result($tour_id, 'Failed to update data: ' . $save_result['message']);
+        }
+
+        // Process images (after package is saved)
+        if (!$this->options['skip_images']) {
+            $this->process_images($post_id, $mapped_data);
         }
 
         $this->log_debug("Updated package post_id={$post_id} for tour_id={$tour_id}");
@@ -375,6 +391,101 @@ class ApiImportProcessor
     {
         if (defined('WP_DEBUG') && WP_DEBUG) {
             error_log('ApiImportProcessor: ' . $message);
+        }
+    }
+
+    // ============================================
+    // IMAGE PROCESSING
+    // ============================================
+
+    /**
+     * Process and import images for a package
+     *
+     * @param int $post_id WordPress post ID
+     * @param array $mapped_data Mapped data containing image URLs
+     * @return void
+     */
+    private function process_images(int $post_id, array $mapped_data): void
+    {
+        try {
+            $images_processed = 0;
+
+            // 1. Process featured image (map_image)
+            if (!empty($mapped_data['meta_fields']['map_image'])) {
+                $map_image_url = $mapped_data['meta_fields']['map_image'];
+                $attachment_id = $this->image_service->import_image($map_image_url, $post_id, 'Map Image');
+
+                if ($attachment_id) {
+                    update_field('map_image', $attachment_id, $post_id);
+                    $images_processed++;
+                    $this->log_debug("Featured image imported (ID: {$attachment_id}) for post_id={$post_id}");
+                }
+            }
+
+            // 2. Process gallery
+            if (!empty($mapped_data['repeaters']['gallery']) && is_array($mapped_data['repeaters']['gallery'])) {
+                $gallery_images = $mapped_data['repeaters']['gallery'];
+                $attachment_ids = $this->image_service->import_gallery($gallery_images, $post_id);
+
+                if (!empty($attachment_ids)) {
+                    // Update gallery field with attachment IDs
+                    $gallery_data = [];
+                    foreach ($attachment_ids as $attachment_id) {
+                        $gallery_data[] = [
+                            'image' => $attachment_id,
+                        ];
+                    }
+
+                    update_field('gallery', $gallery_data, $post_id);
+                    $images_processed += count($attachment_ids);
+                    $this->log_debug("Gallery processed: " . count($attachment_ids) . " images for post_id={$post_id}");
+                }
+            }
+
+            // 3. Process itinerary images
+            if (!empty($mapped_data['repeaters']['itinerary']) && is_array($mapped_data['repeaters']['itinerary'])) {
+                $itinerary = $mapped_data['repeaters']['itinerary'];
+                $updated_itinerary = [];
+
+                foreach ($itinerary as $day_index => $day) {
+                    $updated_day = $day;
+
+                    // Process gallery for this itinerary day
+                    if (!empty($day['gallery']) && is_array($day['gallery'])) {
+                        $day_gallery_images = $day['gallery'];
+                        $day_attachment_ids = $this->image_service->import_gallery($day_gallery_images, $post_id);
+
+                        if (!empty($day_attachment_ids)) {
+                            // Update day gallery with attachment IDs
+                            $day_gallery_data = [];
+                            foreach ($day_attachment_ids as $attachment_id) {
+                                $day_gallery_data[] = [
+                                    'image' => $attachment_id,
+                                ];
+                            }
+
+                            $updated_day['gallery'] = $day_gallery_data;
+                            $images_processed += count($day_attachment_ids);
+                        }
+                    }
+
+                    $updated_itinerary[] = $updated_day;
+                }
+
+                // Update itinerary with new attachment IDs
+                if ($images_processed > 0) {
+                    update_field('itinerary', $updated_itinerary, $post_id);
+                    $this->log_debug("Itinerary images processed for post_id={$post_id}");
+                }
+            }
+
+            if ($images_processed > 0) {
+                $this->log_debug("Total images processed: {$images_processed} for post_id={$post_id}");
+            }
+
+        } catch (\Exception $e) {
+            $this->log_error("Image processing error for post_id={$post_id}: " . $e->getMessage());
+            // Don't throw - we don't want to fail the entire import if images fail
         }
     }
 }
