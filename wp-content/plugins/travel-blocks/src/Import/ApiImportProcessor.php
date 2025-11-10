@@ -263,6 +263,7 @@ class ApiImportProcessor
 
     /**
      * Save all package data (meta fields, taxonomies, relations, repeaters)
+     * Only updates fields that have non-empty values from API to preserve existing data
      *
      * @param int $post_id WordPress post ID
      * @param array $mapped_data Mapped data
@@ -271,26 +272,30 @@ class ApiImportProcessor
     private function save_package_data(int $post_id, array $mapped_data): array
     {
         try {
-            // 1. Save simple meta fields
+            // 1. Save simple meta fields (only if value is not empty)
             foreach ($mapped_data['meta_fields'] as $field_key => $field_value) {
-                update_field($field_key, $field_value, $post_id);
+                // Only update if API provides a non-empty value
+                // This prevents overwriting existing data with empty values
+                if ($this->should_update_field($field_value)) {
+                    update_field($field_key, $field_value, $post_id);
+                }
             }
 
-            // 2. Assign taxonomies
+            // 2. Assign taxonomies (only if terms provided)
             foreach ($mapped_data['taxonomies'] as $taxonomy => $term_ids) {
                 if (!empty($term_ids)) {
                     wp_set_object_terms($post_id, $term_ids, $taxonomy);
                 }
             }
 
-            // 3. Save post object relations
+            // 3. Save post object relations (only if IDs provided)
             foreach ($mapped_data['post_objects'] as $field_key => $post_ids) {
                 if (!empty($post_ids)) {
                     update_field($field_key, $post_ids, $post_id);
                 }
             }
 
-            // 4. Save repeater fields
+            // 4. Save repeater fields (only if data provided)
             foreach ($mapped_data['repeaters'] as $field_key => $repeater_data) {
                 if (!empty($repeater_data)) {
                     update_field($field_key, $repeater_data, $post_id);
@@ -310,6 +315,35 @@ class ApiImportProcessor
                 'message' => $e->getMessage(),
             ];
         }
+    }
+
+    /**
+     * Determine if a field value should update existing data
+     * Returns false if value is empty/null to preserve existing WordPress data
+     *
+     * @param mixed $value Value to check
+     * @return bool True if should update, false to skip
+     */
+    private function should_update_field($value): bool
+    {
+        // Null or false = skip
+        if ($value === null || $value === false) {
+            return false;
+        }
+
+        // Empty string = skip
+        if (is_string($value) && trim($value) === '') {
+            return false;
+        }
+
+        // Empty array = skip
+        if (is_array($value) && empty($value)) {
+            return false;
+        }
+
+        // 0 and "0" are valid values, update them
+        // Any other non-empty value = update
+        return true;
     }
 
     // ============================================
