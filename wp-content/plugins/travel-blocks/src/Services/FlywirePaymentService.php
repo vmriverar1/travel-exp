@@ -53,12 +53,18 @@ class FlywirePaymentService
      */
     public function create_booking(string $uuid, array $data): array
     {
+        // Log booking attempt
+        $this->log_info('Creating booking with UUID: ' . $uuid);
+        $this->log_debug('Booking data: ' . json_encode($data, JSON_PRETTY_PRINT));
+
         // Validate required fields
         $validation = $this->validate_booking_data($data);
         if (!$validation['valid']) {
+            $this->log_error('Validation failed: ' . $validation['error']);
             return [
                 'success' => false,
                 'error' => $validation['error'],
+                'details' => 'Validation error',
             ];
         }
 
@@ -67,6 +73,7 @@ class FlywirePaymentService
             $fee_data = $this->calculate_fee($data['total'] ?? 0);
             $data['fee_rate'] = $fee_data['fee_rate'];
             $data['fee_amount'] = $fee_data['fee_amount'];
+            $this->log_debug('Fee calculated: ' . $fee_data['fee_amount']);
         }
 
         // Set payment method
@@ -74,17 +81,31 @@ class FlywirePaymentService
 
         // Build endpoint URL
         $url = $this->build_booking_url($uuid);
+        $this->log_info('Booking API URL: ' . $url);
 
         // Make API request
         $response = $this->make_post_request($url, $data);
 
         if (isset($response['error'])) {
-            $this->log_error('Failed to create booking: ' . $response['error']);
+            $error_msg = $response['error'];
+            $this->log_error('Failed to create booking: ' . $error_msg);
+            $this->log_error('URL: ' . $url);
+            $this->log_error('HTTP Status: ' . ($response['http_status'] ?? 'unknown'));
+            $this->log_error('Response body: ' . ($response['response_body'] ?? 'empty'));
+
             return [
                 'success' => false,
-                'error' => $response['error'],
+                'error' => $error_msg,
+                'details' => [
+                    'url' => $url,
+                    'http_status' => $response['http_status'] ?? null,
+                    'response_body' => $response['response_body'] ?? null,
+                ],
             ];
         }
+
+        $this->log_info('Booking created successfully');
+        $this->log_debug('Response: ' . json_encode($response, JSON_PRETTY_PRINT));
 
         return [
             'success' => true,
@@ -211,6 +232,10 @@ class FlywirePaymentService
      */
     private function make_post_request(string $url, array $data): array
     {
+        $json_body = json_encode($data);
+        $this->log_debug('POST to: ' . $url);
+        $this->log_debug('Request body: ' . $json_body);
+
         $response = wp_remote_post($url, [
             'timeout' => self::DEFAULT_TIMEOUT,
             'headers' => [
@@ -218,15 +243,24 @@ class FlywirePaymentService
                 'Accept' => 'application/json',
                 'User-Agent' => 'WordPress/' . get_bloginfo('version') . '; ' . get_bloginfo('url'),
             ],
-            'body' => json_encode($data),
+            'body' => $json_body,
         ]);
 
         if (is_wp_error($response)) {
-            return ['error' => $response->get_error_message()];
+            $error_msg = $response->get_error_message();
+            $this->log_error('WP_Error: ' . $error_msg);
+            return [
+                'error' => $error_msg,
+                'http_status' => null,
+                'response_body' => null,
+            ];
         }
 
         $status_code = wp_remote_retrieve_response_code($response);
         $body = wp_remote_retrieve_body($response);
+
+        $this->log_debug('Response status: ' . $status_code);
+        $this->log_debug('Response body: ' . substr($body, 0, 500)); // First 500 chars
 
         // Try to decode JSON response
         $decoded = json_decode($body, true);
@@ -242,11 +276,18 @@ class FlywirePaymentService
             $error_message = $decoded['error'];
         } elseif (is_array($decoded) && isset($decoded['message'])) {
             $error_message = $decoded['message'];
+        } elseif (!empty($body)) {
+            // If no structured error, use raw body
+            $error_message = 'API Error (HTTP ' . $status_code . '): ' . substr($body, 0, 200);
         }
 
         $this->log_error("HTTP {$status_code} from {$url}: {$error_message}");
 
-        return ['error' => $error_message];
+        return [
+            'error' => $error_message,
+            'http_status' => $status_code,
+            'response_body' => $body,
+        ];
     }
 
     /**
@@ -294,7 +335,33 @@ class FlywirePaymentService
     private function log_error(string $message): void
     {
         if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log('FlywirePaymentService: ' . $message);
+            error_log('[FlywirePaymentService ERROR] ' . $message);
+        }
+    }
+
+    /**
+     * Log info message if WP_DEBUG is enabled
+     *
+     * @param string $message Info message
+     * @return void
+     */
+    private function log_info(string $message): void
+    {
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('[FlywirePaymentService INFO] ' . $message);
+        }
+    }
+
+    /**
+     * Log debug message if WP_DEBUG is enabled
+     *
+     * @param string $message Debug message
+     * @return void
+     */
+    private function log_debug(string $message): void
+    {
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('[FlywirePaymentService DEBUG] ' . $message);
         }
     }
 

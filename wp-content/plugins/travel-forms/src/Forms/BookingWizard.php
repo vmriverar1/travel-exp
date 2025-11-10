@@ -168,14 +168,37 @@ class BookingWizard
         // Prepare booking data
         $booking_data = $this->prepare_booking_data($wizard_data, $booking_uuid);
 
+        // Log booking data being sent
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('[BookingWizard] Creating booking with UUID: ' . $booking_uuid);
+            error_log('[BookingWizard] Booking data: ' . json_encode($booking_data, JSON_PRETTY_PRINT));
+        }
+
         // Create booking via API
         $result = $this->flywire_service->create_booking($booking_uuid, $booking_data);
 
         if (!$result['success']) {
-            wp_send_json_error([
+            $error_response = [
                 'message' => $result['error'] ?? __('Failed to create booking', 'travel-forms'),
-            ]);
+            ];
+
+            // Add detailed error information if available
+            if (!empty($result['details'])) {
+                $error_response['details'] = $result['details'];
+            }
+
+            // Log the full error
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('[BookingWizard ERROR] ' . json_encode($error_response, JSON_PRETTY_PRINT));
+            }
+
+            wp_send_json_error($error_response);
             return;
+        }
+
+        // Log success
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('[BookingWizard] Booking created successfully: ' . json_encode($result['data'], JSON_PRETTY_PRINT));
         }
 
         // Return success with booking info

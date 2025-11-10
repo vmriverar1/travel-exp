@@ -466,6 +466,11 @@
         submitBooking() {
             const paymentMethod = this.wizardData.step4.paymentMethod;
 
+            // Log wizard data being sent
+            console.log('[Wizard] Submitting booking');
+            console.log('[Wizard] Payment method:', paymentMethod);
+            console.log('[Wizard] Wizard data:', this.wizardData);
+
             // First create the booking
             $.ajax({
                 url: bookingWizardConfig.ajaxUrl,
@@ -498,13 +503,36 @@
                             $('.wizard-payment-btn').prop('disabled', false).text('Pay Now');
                         }
                     } else {
-                        alert('Error creating booking: ' + response.data.message);
+                        // Enhanced error logging
+                        console.error('[Wizard] Booking creation failed');
+                        console.error('[Wizard] Error message:', response.data.message);
+
+                        if (response.data.details) {
+                            console.error('[Wizard] Error details:', response.data.details);
+
+                            // Show detailed error if available
+                            if (response.data.details.http_status) {
+                                console.error('[Wizard] HTTP Status:', response.data.details.http_status);
+                            }
+                            if (response.data.details.url) {
+                                console.error('[Wizard] API URL:', response.data.details.url);
+                            }
+                            if (response.data.details.response_body) {
+                                console.error('[Wizard] API Response:', response.data.details.response_body);
+                            }
+                        }
+
+                        alert('Error creating booking: ' + response.data.message + '\n\nCheck browser console for details.');
                         $('.wizard-payment-btn').prop('disabled', false).text('Pay Now');
                     }
                 },
                 error: (xhr, status, error) => {
-                    console.error('[Wizard] Booking creation failed:', error);
-                    alert('An error occurred. Please try again.');
+                    console.error('[Wizard] AJAX request failed');
+                    console.error('[Wizard] Status:', status);
+                    console.error('[Wizard] Error:', error);
+                    console.error('[Wizard] Response:', xhr.responseText);
+
+                    alert('An error occurred. Please try again.\n\nCheck browser console for details.');
                     $('.wizard-payment-btn').prop('disabled', false).text('Pay Now');
                 }
             });
