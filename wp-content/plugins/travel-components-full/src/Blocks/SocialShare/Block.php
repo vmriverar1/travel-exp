@@ -26,12 +26,12 @@ class Block {
 
         // CSS
         if (file_exists($path . 'style.css')) {
-          wp_enqueue_style($handle, $dir . 'style.css', [], '1.0.0');
+          wp_enqueue_style($handle, $dir . 'style.css', [], '1.0.1');
         }
 
         // JS
         if (file_exists($path . 'script.js')) {
-          wp_enqueue_script($handle, $dir . 'script.js', [], '1.0.0', true);
+          wp_enqueue_script($handle, $dir . 'script.js', [], '1.0.1', true);
           wp_localize_script($handle, 'TC_SocialShare', [
             'restUrl' => esc_url_raw(rest_url('acf-blocks/v1')),
             'nonce'   => wp_create_nonce('wp_rest'),

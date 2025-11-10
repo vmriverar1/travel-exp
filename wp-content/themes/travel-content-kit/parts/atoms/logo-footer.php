@@ -21,13 +21,8 @@ $slogan = 'Fly straight to the heart of the Inca land';
                 'class' => 'logo-footer__image',
                 'alt' => get_bloginfo('name'),
             ]); ?>
-        <?php else: ?>
-            <svg class="logo-footer__icon" width="120" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <!-- Simplified "M" monogram for Machu Picchu -->
-                <path d="M8 32V8L20 20L32 8V32H28V16L20 24L12 16V32H8Z" fill="currentColor"/>
-            </svg>
-            <span class="logo-footer__text"><?php bloginfo('name'); ?></span>
         <?php endif; ?>
+        <img src="https://cliente.sistemaveme.com/wp-content/uploads/2025/11/machu-picchu-peru-logo.png" alt="">
     </a>
     <p class="logo-footer__tagline"><?php echo esc_html($tagline); ?></p>
     <p class="logo-footer__slogan"><?php echo esc_html($slogan); ?></p>

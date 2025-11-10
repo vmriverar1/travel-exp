@@ -19,7 +19,7 @@ if (!defined('TRAVEL_FORMS_URL')) {
     define('TRAVEL_FORMS_URL', plugin_dir_url(__FILE__));
 }
 if (!defined('TRAVEL_FORMS_VERSION')) {
-    define('TRAVEL_FORMS_VERSION', '1.0.4');
+    define('TRAVEL_FORMS_VERSION', '1.0.3');
 }
 
 /**

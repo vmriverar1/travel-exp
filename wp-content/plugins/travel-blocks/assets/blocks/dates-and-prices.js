@@ -335,18 +335,6 @@
      * Initialize booking buttons
      */
     function initBookingButtons(block) {
-        // Get package ID from booking data
-        const dataScript = block.querySelector('.booking-data');
-        let packageId = null;
-        if (dataScript) {
-            try {
-                const bookingData = JSON.parse(dataScript.textContent);
-                packageId = bookingData.package_id || null;
-            } catch (err) {
-                console.warn('Could not parse booking data for package ID');
-            }
-        }
-
         const buttons = block.querySelectorAll('.btn-primary');
 
         buttons.forEach(button => {
@@ -403,7 +391,6 @@
                     // Dispatch event for external purchase handler
                     const purchaseEvent = new CustomEvent('travelBlocksPurchaseRequested', {
                         detail: {
-                            packageId: packageId,
                             departureDate: departureDate,
                             returnDate: returnDate,
                         },
@@ -413,7 +400,6 @@
 
                     // TODO: Integrate with purchase aside/modal
                     console.log('Purchase aside requested for dates:', {
-                        packageId: packageId,
                         departure: departureDate,
                         return: returnDate
                     });

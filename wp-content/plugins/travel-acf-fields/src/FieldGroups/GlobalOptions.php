@@ -549,7 +549,7 @@ class GlobalOptions extends FieldGroup
                         'choices' => [
                             'tripadvisor' => 'TripAdvisor',
                             'google' => 'Google Reviews',
-                            'facebook' => 'Facebook Reviews',
+                            'facebook-review' => 'Facebook Reviews',
                         ],
                         'default_value' => 'tripadvisor',
                     ],
@@ -619,9 +619,11 @@ class GlobalOptions extends FieldGroup
                 'sub_fields' => [
                     [
                         'key' => 'field_gateway_name_footer',
-                        'label' => __('Gateway Name', 'travel'),
-                        'name' => 'name',
-                        'type' => 'text',
+                        'label' =>  __('Gateway Name', 'travel'),
+                        'name' => 'image',
+                        'type' => 'image',
+                        'return_format' => 'url',
+                        'preview_size' => 'thumbnail',
                         'required' => 1,
                     ],
                     [

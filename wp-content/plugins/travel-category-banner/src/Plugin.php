@@ -10,7 +10,7 @@ class Plugin {
 
     public function registerAssets(): void {
         $url = plugin_dir_url(TRAVEL_CATEGORY_BANNER_FILE ?? __FILE__);
-        $ver = '1.0.0';
+        $ver = '1.0.1';
 
         // CSS principal del banner
         wp_register_style('tcb-banner', $url . 'src/Assets/css/banner-swiper.css', [], $ver);

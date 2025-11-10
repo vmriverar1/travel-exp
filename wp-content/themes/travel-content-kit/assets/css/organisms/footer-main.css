@@ -17,6 +17,7 @@
 .footer-main__top {
     display: grid;
     gap: var(--wp--preset--spacing--90);
+    align-items: center;
 }
 
 /* Mobile: apilado verticalmente */
@@ -63,16 +64,11 @@
     .footer-main__top {
         grid-template-columns: 2fr 3fr 2fr;
     }
-
-    .footer-main__column--nav {
-        display: grid;
-        grid-template-columns: repeat(1, 1fr);
-    }
 }
 
 
 @media (min-width: 1280px) {
     .footer-main__top {
-        grid-template-columns: 2fr 5fr 2fr;
+        grid-template-columns: 2.5fr 5fr 2.5fr;
     }
 }

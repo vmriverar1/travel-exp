@@ -45,6 +45,11 @@ $has_video = !empty($video_url);
             grid-template-columns: 1fr 1fr !important;
         }
     }
+    @media (max-width: 768px) {
+        .hero-media-grid .hero-media-grid__sidebar {
+            grid-template-columns: 1fr !important;
+        }
+    }
 </style>
 
 <div class="hero-media-grid">

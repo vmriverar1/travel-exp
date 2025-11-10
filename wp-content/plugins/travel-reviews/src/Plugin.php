@@ -28,8 +28,8 @@ class Plugin {
   );
 
   // 🧩 Tus assets del plugin
-  wp_enqueue_style('travel-reviews', $url . 'reviews.css', ['swiper-css'], '1.0');
-  wp_enqueue_script('travel-reviews', $url . 'reviews.js', ['swiper-js'], '1.0', true);
+  wp_enqueue_style('travel-reviews', $url . 'reviews.css', ['swiper-css'], '1.3');
+  wp_enqueue_script('travel-reviews', $url . 'reviews.js', ['swiper-js'], '1.3', true);
 
   wp_localize_script('travel-reviews', 'TRAVEL_REVIEWS', [
     'api' => '    '

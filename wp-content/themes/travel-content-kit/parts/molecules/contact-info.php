@@ -45,7 +45,7 @@ $office_sunday = get_field('office_sunday', 'option') ?: 'Sunday 8AM – 1:30PM'
             <span class="contact-info__label">24/7 phone:</span>
             <a href="tel:<?php echo esc_attr(str_replace(['-', ' '], '', $phone_24_7_1)); ?>" class="contact-info__link">
                 <?php echo esc_html($phone_24_7_1); ?>
-            </a>
+            </a><br>
             or
             <a href="tel:<?php echo esc_attr(str_replace(['-', ' '], '', $phone_24_7_2)); ?>" class="contact-info__link">
                 <?php echo esc_html($phone_24_7_2); ?>

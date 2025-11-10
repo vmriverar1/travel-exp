@@ -1,54 +1,81 @@
 <?php
 /**
- * Render Template: Travel Category Packages (Dynamic Grid + Slider)
+ * Render Template: Travel Category Packages (Grid + Slider) con botón de favorito
  */
 
 $packages_title = get_field('packages_title') ?: 'Inca Trail Treks to Machu Picchu';
 $seo_text = get_field('seo_text') ?: 'The iconic path to Machu Picchu, with permits managed and expert local guides.';
 $cta_text = get_field('cta_text') ?: 'See Details';
 
-// Query dinámico – últimos 6 paquetes publicados
 $args = [
   'post_type'      => 'package',
   'posts_per_page' => 6,
   'post_status'    => 'publish',
 ];
+
 $query = new WP_Query($args);
 if (!$query->have_posts()) return;
 ?>
 
-<section class="travel-category-packages-block">
-
-  <!-- === TEXTO SUPERIOR (SOLO DESKTOP) === -->
-  <div class="tcp-header desktop-only">
-    <h2 class="tcp-title"><?php echo esc_html($packages_title); ?></h2>
-    <p class="tcp-description"><?php echo esc_html($seo_text); ?></p>
-  </div>
+<section class="travel-packages-section">
 
   <!-- === GRID DESKTOP === -->
-  <div class="tcp-grid desktop-only">
-    <?php while ($query->have_posts()): $query->the_post();
-      $img = get_the_post_thumbnail_url(get_the_ID(), 'large');
-      $price = get_field('precio_desde') ?: 'From $1,145';
-      $duration = get_field('duracion') ?: 'Full Day';
+  <div class="tcp-desktop-grid">
+    <div class="tcp-header">
+      <h2 class="tcp-title"><?php echo esc_html($packages_title); ?></h2>
+      <p class="tcp-description"><?php echo esc_html($seo_text); ?></p>
+    </div>
+
+    <?php
+    $i = 0;
+    while ($query->have_posts()): $query->the_post();
+      $i++;
+
+      $image = get_field('main_image') ?: get_the_post_thumbnail_url(get_the_ID(), 'large');
+      $raw_price = get_field('price_from');
+      $price = $raw_price ? '$' . number_format((float)$raw_price, 0, '.', ',') : null;
+      $day = get_field('days') ?: 'Full Day';
+      $locs  = get_field('locations');
+      $tag   = get_field('tag_label') ?: 'By Train';
+
+      if (is_array($locs)) {
+        $loc_names = [];
+        foreach ($locs as $loc_id) {
+          $post_obj = get_post($loc_id);
+          if ($post_obj) {
+            $loc_names[] = $post_obj->post_title;
+          }
+        }
+        $locs = implode(', ', $loc_names);
+      }
     ?>
-      <a href="<?php the_permalink(); ?>" class="tcp-item">
-        <?php if ($img): ?>
-          <img src="<?php echo esc_url($img); ?>" alt="<?php the_title_attribute(); ?>">
-        <?php endif; ?>
+      <a href="<?php the_permalink(); ?>" class="tcp-card tcp-card-<?php echo $i; ?>">
+        <?php if ($image): ?><img src="<?php echo esc_url($image); ?>" alt="<?php the_title_attribute(); ?>"><?php endif; ?>
 
         <div class="tcp-overlay">
-          <span class="tcp-badge">Inca Trail</span>
+          <span class="tcp-badge"><?php echo esc_html($tag); ?></span>
+
+          <!-- ❤️ Botón de favorito -->
+          <button class="favorite-btn" type="button" aria-label="Add to favorites">
+            <svg width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7.81383 14.7194C7.73973 14.7194 7.66563 14.6911 7.60898 14.6348L1.524 8.59288C1.49335 8.56261 1.47085 8.52692 1.45688 8.48929C-0.503553 6.45203 -0.48687 3.20042 1.51546 1.18412C3.04253 -0.354195 5.53643 -0.362731 7.07436 1.16434L7.78745 1.87239L8.49551 1.15929C10.0222 -0.378638 12.5161 -0.387561 14.054 1.13951C16.0703 3.14184 16.1103 6.39345 14.1642 8.44428C14.1502 8.4823 14.1281 8.518 14.0978 8.54826L8.05554 14.6332C8.00123 14.6879 7.92712 14.719 7.84992 14.7194C7.84332 14.7198 7.83828 14.7194 7.83246 14.719C7.82625 14.7194 7.82004 14.7194 7.81383 14.7194ZM2.0175 8.26271L7.83013 14.0346L13.602 8.22197C13.6164 8.18473 13.6385 8.1502 13.6672 8.1211C15.4717 6.30383 15.4612 3.35716 13.6439 1.5527C12.3337 0.251432 10.2092 0.259192 8.90831 1.56938L7.99541 2.48888C7.88212 2.60294 7.69783 2.60333 7.58377 2.49043L6.66427 1.57753C5.35408 0.276263 3.22953 0.283634 1.92827 1.59382C1.05416 2.47414 0.575015 3.64233 0.57967 4.88268C0.583938 6.12342 1.07123 7.28773 1.95155 8.16184C1.98103 8.19171 2.00315 8.22585 2.0175 8.26271Z" fill="black"/>
+            </svg>
+          </button>
+
           <h3 class="tcp-name"><?php the_title(); ?></h3>
-          <p class="tcp-meta"><?php echo esc_html($duration . ' | ' . $price); ?></p>
+          <p class="tcp-meta">
+            <?php if ($locs): echo esc_html($locs) . ' | '; endif; ?>
+            <?php echo esc_html(is_numeric($day) ? "{$day} Days" : $day); ?>
+            <?php if ($price): ?> | From <?php echo esc_html($price); ?><?php endif; ?>
+          </p>
           <span class="tcp-btn"><?php echo esc_html($cta_text); ?></span>
         </div>
       </a>
-    <?php endwhile; wp_reset_postdata(); ?>
+    <?php endwhile; ?>
   </div>
 
-  <!-- === MOBILE (SLIDER) === -->
-  <div class="tcp-mobile mobile-only">
+  <!-- === SLIDER MOBILE === -->
+  <div class="tcp-mobile-slider">
     <div class="tcp-header">
       <h2 class="tcp-title"><?php echo esc_html($packages_title); ?></h2>
       <p class="tcp-description"><?php echo esc_html($seo_text); ?></p>
@@ -57,33 +84,60 @@ if (!$query->have_posts()) return;
     <div class="swiper tcp-swiper">
       <div class="swiper-wrapper">
         <?php
+        $query->rewind_posts();
         while ($query->have_posts()): $query->the_post();
-          $img = get_the_post_thumbnail_url(get_the_ID(), 'large');
-          $price = get_field('precio_desde') ?: 'From $1,145';
-          $duration = get_field('duracion') ?: 'Full Day';
+
+          $image = get_field('main_image') ?: get_the_post_thumbnail_url(get_the_ID(), 'large');
+          $raw_price = get_field('price_from');
+          $price = $raw_price ? '$' . number_format((float)$raw_price, 0, '.', ',') : null;
+          $day = get_field('days') ?: 'Full Day';
+          $locs  = get_field('locations');
+          $tag   = get_field('tag_label') ?: 'By Train';
+
+          if (is_array($locs)) {
+            $loc_names = [];
+            foreach ($locs as $loc_id) {
+              $post_obj = get_post($loc_id);
+              if ($post_obj) {
+                $loc_names[] = $post_obj->post_title;
+              }
+            }
+            $locs = implode(', ', $loc_names);
+          }
         ?>
           <div class="swiper-slide">
-            <a href="<?php the_permalink(); ?>" class="tcp-item">
-              <?php if ($img): ?>
-                <img src="<?php echo esc_url($img); ?>" alt="<?php the_title_attribute(); ?>">
-              <?php endif; ?>
+            <a href="<?php the_permalink(); ?>" class="tcp-card">
+              <?php if ($image): ?><img src="<?php echo esc_url($image); ?>" alt="<?php the_title_attribute(); ?>"><?php endif; ?>
               <div class="tcp-overlay">
-                <span class="tcp-badge">Inca Trail</span>
+                <span class="tcp-badge"><?php echo esc_html($tag); ?></span>
+
+                <!-- ❤️ Botón de favorito -->
+                <button class="favorite-btn" type="button" aria-label="Add to favorites">
+                  <svg width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7.81383 14.7194C7.73973 14.7194 7.66563 14.6911 7.60898 14.6348L1.524 8.59288C1.49335 8.56261 1.47085 8.52692 1.45688 8.48929C-0.503553 6.45203 -0.48687 3.20042 1.51546 1.18412C3.04253 -0.354195 5.53643 -0.362731 7.07436 1.16434L7.78745 1.87239L8.49551 1.15929C10.0222 -0.378638 12.5161 -0.387561 14.054 1.13951C16.0703 3.14184 16.1103 6.39345 14.1642 8.44428C14.1502 8.4823 14.1281 8.518 14.0978 8.54826L8.05554 14.6332C8.00123 14.6879 7.92712 14.719 7.84992 14.7194C7.84332 14.7198 7.83828 14.7194 7.83246 14.719C7.82625 14.7194 7.82004 14.7194 7.81383 14.7194ZM2.0175 8.26271L7.83013 14.0346L13.602 8.22197C13.6164 8.18473 13.6385 8.1502 13.6672 8.1211C15.4717 6.30383 15.4612 3.35716 13.6439 1.5527C12.3337 0.251432 10.2092 0.259192 8.90831 1.56938L7.99541 2.48888C7.88212 2.60294 7.69783 2.60333 7.58377 2.49043L6.66427 1.57753C5.35408 0.276263 3.22953 0.283634 1.92827 1.59382C1.05416 2.47414 0.575015 3.64233 0.57967 4.88268C0.583938 6.12342 1.07123 7.28773 1.95155 8.16184C1.98103 8.19171 2.00315 8.22585 2.0175 8.26271Z" fill="black"/>
+                  </svg>
+                </button>
+
                 <h3 class="tcp-name"><?php the_title(); ?></h3>
-                <p class="tcp-meta"><?php echo esc_html($duration . ' | ' . $price); ?></p>
+                <p class="tcp-meta">
+                  <?php if ($locs): echo esc_html($locs) . ' | '; endif; ?>
+                  <?php echo esc_html(is_numeric($day) ? "{$day} Days" : $day); ?>
+                  <?php if ($price): ?> | From <?php echo esc_html($price); ?><?php endif; ?>
+                </p>
                 <span class="tcp-btn"><?php echo esc_html($cta_text); ?></span>
               </div>
             </a>
           </div>
-        <?php endwhile; wp_reset_postdata(); ?>
+        <?php endwhile;
+        wp_reset_postdata(); ?>
       </div>
 
-      <!-- Controles -->
-      <div class="tcp-controls">
-        <button class="tcp-nav tcp-prev"></button>
-        <div class="tcp-pagination"></div>
-        <button class="tcp-nav tcp-next"></button>
+      <div class="swiper-controls">
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-pagination__mobile"></div>
+        <div class="swiper-button-next"></div>
       </div>
     </div>
   </div>
+
 </section>

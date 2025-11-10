@@ -11,8 +11,14 @@
      */
     class BookingWizard {
         constructor() {
+            console.log('📦 BookingWizard: Constructor called');
+
             this.overlay = $('#booking-wizard-overlay');
             this.aside = $('#booking-wizard-aside');
+
+            console.log('📦 BookingWizard: Overlay found?', this.overlay.length > 0);
+            console.log('📦 BookingWizard: Aside found?', this.aside.length > 0);
+
             this.currentStep = 1;
             this.totalSteps = 4;
             this.wizardData = {};
@@ -25,16 +31,21 @@
          * Initialize wizard
          */
         init() {
+            console.log('🎬 BookingWizard: Initializing...');
             this.bindEvents();
             this.initCountdown();
+            console.log('✅ BookingWizard: Initialized successfully');
         }
 
         /**
          * Bind all events
          */
         bindEvents() {
+            console.log('🔗 BookingWizard: Binding events...');
+
             // Listen for custom event from dates-and-prices block
             $(document).on('travelBlocksPurchaseRequested', (e) => {
+                console.log('🎯 BookingWizard: travelBlocksPurchaseRequested event received!', e.detail);
                 this.open(e.detail || {});
             });
 
@@ -90,6 +101,8 @@
          * Open wizard
          */
         open(data = {}) {
+            console.log('🚀 BookingWizard: open() called with data:', data);
+
             this.wizardData = {
                 packageId: data.packageId || null,
                 departureDate: data.departureDate || null,
@@ -97,15 +110,54 @@
                 ...data
             };
 
+            console.log('📝 BookingWizard: wizardData set:', this.wizardData);
+
             // Populate package data
             this.populatePackageData();
 
+            console.log('🎨 BookingWizard: About to show wizard...');
+            console.log('   - Overlay element:', this.overlay[0]);
+            console.log('   - Overlay hasClass("is-visible") BEFORE:', this.overlay.hasClass('is-visible'));
+            console.log('   - Overlay classes before:', this.overlay.attr('class'));
+            console.log('   - Overlay style before:', this.overlay.attr('style'));
+
+            // EXPERIMENTO: Agregar clase de prueba
+            this.overlay.addClass('test-class-added');
+            console.log('🧪 TEST: Added test-class-added');
+            console.log('   - Has test-class-added?', this.overlay.hasClass('test-class-added'));
+
+            // EXPERIMENTO: Intentar cambiar el style directamente
+            this.overlay.css('background-color', 'red');
+            console.log('🧪 TEST: Changed background to red');
+            console.log('   - Background color:', this.overlay.css('background-color'));
+
             // Show wizard
             this.overlay.addClass('is-visible');
+
+            console.log('   - Overlay hasClass("is-visible") AFTER:', this.overlay.hasClass('is-visible'));
+            console.log('   - Overlay classes after:', this.overlay.attr('class'));
+            console.log('   - Overlay style after:', this.overlay.attr('style'));
+            console.log('   - Body overflow set to hidden');
+
+            // EXPERIMENTO: Forzar display y opacity directamente
+            this.overlay.css({
+                'display': 'block',
+                'opacity': '1',
+                'visibility': 'visible'
+            });
+            console.log('🧪 TEST: Forced inline styles (display:block, opacity:1, visibility:visible)');
+
             $('body').css('overflow', 'hidden');
 
             // Start countdown
             this.startCountdown();
+
+            console.log('✅ BookingWizard: Wizard should now be visible!');
+            console.log('🔍 FINAL STATE:');
+            console.log('   - overlay[0]:', this.overlay[0]);
+            console.log('   - overlay.length:', this.overlay.length);
+            console.log('   - All classes:', this.overlay.attr('class'));
+            console.log('   - All inline styles:', this.overlay.attr('style'));
         }
 
         /**
@@ -486,67 +538,14 @@
          * Populate package data
          */
         populatePackageData() {
-            // Populate dates
+            // TODO: Fetch package data from backend or use data passed in open()
+            // For now, using placeholder data
+
             if (this.wizardData.departureDate) {
                 $('#wizard-travel-dates').val(
                     `From: ${this.wizardData.departureDate}  >  To: ${this.wizardData.returnDate || ''}`
                 );
             }
-
-            // If no packageId, can't fetch package data
-            if (!this.wizardData.packageId) {
-                console.warn('No packageId provided, using placeholder data');
-                return;
-            }
-
-            // Fetch package data from server
-            $.ajax({
-                url: bookingWizardConfig.ajaxUrl,
-                type: 'POST',
-                data: {
-                    action: 'get_package_data',
-                    packageId: this.wizardData.packageId,
-                    nonce: bookingWizardConfig.nonce,
-                },
-                success: (response) => {
-                    if (response.success && response.data) {
-                        this.updatePackageDisplay(response.data);
-                    } else {
-                        console.error('Failed to fetch package data:', response);
-                    }
-                },
-                error: (xhr, status, error) => {
-                    console.error('AJAX error fetching package data:', error);
-                }
-            });
-        }
-
-        /**
-         * Update package display with real data
-         */
-        updatePackageDisplay(packageData) {
-            // Update package title
-            if (packageData.title) {
-                $('#wizard-package-name').text(packageData.title);
-            }
-
-            // Update package image
-            if (packageData.thumbnail) {
-                $('#wizard-package-image').attr('src', packageData.thumbnail);
-            }
-
-            // Update price
-            if (packageData.price_from) {
-                $('#wizard-package-price').text(`USD $${packageData.price_from.toFixed(2)}`);
-            }
-
-            // Update duration
-            if (packageData.duration) {
-                $('#wizard-package-duration').text(`${packageData.duration} days`);
-            }
-
-            // Store package data for later use
-            this.wizardData.packageData = packageData;
         }
 
         /**
@@ -601,10 +600,16 @@
      * Initialize on document ready
      */
     $(document).ready(function () {
+        console.log('📄 BookingWizard: Document ready, creating BookingWizard instance...');
+
         const wizardInstance = new BookingWizard();
+
+        console.log('✅ BookingWizard: Instance created:', wizardInstance);
 
         // Make it globally accessible for debugging
         window.bookingWizard = wizardInstance;
+
+        console.log('💡 BookingWizard: You can access wizard via window.bookingWizard');
     });
 
 })(jQuery);

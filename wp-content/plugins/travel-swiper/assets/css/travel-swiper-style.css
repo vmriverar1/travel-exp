@@ -4,7 +4,7 @@
 }
 
 /* --- CONTROLES (centrados y alineados) --- */
-.travel-swiper-block .swiper-controls {
+.swiper-controls {
   display: flex;
   align-items: center;        /* centra verticalmente dots + flechas */
   justify-content: center;    /* centra todo el bloque */
@@ -51,6 +51,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
+  width: auto !important;
 }
 
 .swiper-pagination-bullet {

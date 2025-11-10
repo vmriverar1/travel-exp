@@ -236,34 +236,10 @@
     }
 }
 
-/* Mobile: Keep 2 columns for sidebar (map + video side by side) */
 @media (max-width: 768px) {
     .hero-media-grid .hero-media-grid__sidebar {
-        display: grid !important;
-        grid-template-rows: auto !important;
-        grid-template-columns: 1fr 1fr !important;
-        gap: 12px !important;
-    }
-
-    /* Ensure sidebar items have proper height on mobile */
-    .hero-media-grid .hero-media-grid__sidebar .hero-media-grid__map,
-    .hero-media-grid .hero-media-grid__sidebar .hero-media-grid__video {
-        min-height: 200px;
-    }
-}
-
-/* Extra small mobile - still keep 2 columns */
-@media (max-width: 480px) {
-    .hero-media-grid .hero-media-grid__sidebar {
-        display: grid !important;
-        grid-template-rows: auto !important;
-        grid-template-columns: 1fr 1fr !important;
-        gap: 8px !important;
-    }
-
-    .hero-media-grid .hero-media-grid__sidebar .hero-media-grid__map,
-    .hero-media-grid .hero-media-grid__sidebar .hero-media-grid__video {
-        min-height: 150px;
+        grid-template-columns: 1fr !important;
+        gap: 12px;
     }
 }
 
@@ -348,11 +324,6 @@
 /* ==================== RESPONSIVE ==================== */
 
 @media (max-width: 768px) {
-    /* Gallery height on mobile */
-    .hero-gallery__carousel {
-        height: 246px;
-    }
-
     .hero-gallery__view-button {
         padding: 0.625rem 1.25rem;
         font-size: 0.8125rem;

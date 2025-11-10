@@ -6,13 +6,7 @@
 
 // Get ACF data with fallback to hardcoded values
 $payment_methods = function_exists('get_field') ? (get_field('payment_methods', 'option') ?: []) : [];
-$gateways = function_exists('get_field') ? (get_field('payment_gateways', 'option') ?: [
-    ['name' => 'Stripe', 'url' => 'https://stripe.com'],
-    ['name' => 'Flywire', 'url' => 'https://flywire.com'],
-]) : [
-    ['name' => 'Stripe', 'url' => 'https://stripe.com'],
-    ['name' => 'Flywire', 'url' => 'https://flywire.com'],
-];
+$gateways = function_exists('get_field') ? (get_field('payment_gateways', 'option') ?: []) : [];
 ?>
 
 <div class="payment-methods">
@@ -45,15 +39,11 @@ $gateways = function_exists('get_field') ? (get_field('payment_gateways', 'optio
                     target="_blank"
                     rel="noopener noreferrer"
                 >
-                    <?php echo esc_html($gateway['name']); ?>
+                   <img
+                        src="<?php echo esc_url($gateway['image']); ?>"
+                        loading="lazy"
+                    />
                 </a>
-            <?php else: ?>
-                <span class="payment-methods__gateway-name">
-                    <?php echo esc_html($gateway['name']); ?>
-                </span>
-            <?php endif; ?>
-            <?php if ($index < count($gateways) - 1): ?>
-                <span class="payment-methods__separator">|</span>
             <?php endif; ?>
         <?php endforeach; ?>
     </div>

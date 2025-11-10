@@ -38,6 +38,27 @@
     height: 100%;
 }
 
+.social-media-bar__section--reviews {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: var(--wp--preset--spacing--80);
+}
+
+.social-media-bar__section--reviews .social-icon {
+    width: auto;
+    height: auto;
+    padding: 0;
+    min-width: auto;
+    min-height: auto;
+}
+
+.social-media-bar__section--reviews .social-icon svg {
+    height: 20px;
+    width: auto;
+}
+
 /* Platform specific colors on hover */
 .social-icon--facebook:hover { color: #1877f2; }
 .social-icon--instagram:hover { color: #e4405f; }

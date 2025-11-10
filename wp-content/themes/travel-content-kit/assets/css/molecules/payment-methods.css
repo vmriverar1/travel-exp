@@ -38,34 +38,11 @@
 .payment-methods__gateways {
     display: flex;
     align-items: center;
-    gap: var(--spacing-xs);
-    font-size: var(--font-size-xs);
+    gap: var(--wp--preset--spacing--40);
+    font-size: var(--font-size-sm);
     color: var(--color-footer-text-muted);
 }
 
-.payment-methods__label {
-    font-weight: var(--font-weight-medium);
-}
-
-.payment-methods__gateway-link {
-    color: var(--color-footer-accent);
-    text-decoration: none;
-    font-weight: var(--font-weight-medium);
-    transition: color var(--transition-fast);
-}
-
-.payment-methods__gateway-link:hover,
-.payment-methods__gateway-link:focus {
-    color: var(--color-footer-text);
-    text-decoration: underline;
-}
-
-.payment-methods__gateway-name {
-    color: var(--color-footer-accent);
-    font-weight: var(--font-weight-medium);
-}
-
-.payment-methods__separator {
-    color: var(--color-footer-text-muted);
-    margin: 0 var(--spacing-2xs);
+.payment-methods__gateway-link img {
+    display: block;
 }

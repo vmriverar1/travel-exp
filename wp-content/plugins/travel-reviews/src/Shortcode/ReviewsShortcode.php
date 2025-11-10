@@ -11,7 +11,7 @@ class ReviewsShortcode
 
   public function render()
   {
-    $cache_key = 'vtc_reviews_cache_travel';
+    $cache_key = 'vtc_reviews_cache_travel_v2';
     $cached = get_transient($cache_key);
     if ($cached !== false) return $cached;
 
@@ -157,7 +157,7 @@ class ReviewsShortcode
               </div>
 
               <!-- 🔹 Controles -->
-              <div class="swiper-controls">
+              <div class="swiper-controls reviews-controls">
                 <button class="swiper-prev" aria-label="Anterior">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path d="M15 18l-6-6 6-6" />

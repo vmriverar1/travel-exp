@@ -13,17 +13,18 @@ class BookingWizard
      */
     public function register(): void
     {
+        // DEBUG
+        error_log('BookingWizard::register() called');
+
         // Render wizard template in footer
         add_action('wp_footer', [$this, 'render_wizard_template']);
 
         // Enqueue wizard assets
         add_action('wp_enqueue_scripts', [$this, 'enqueue_assets']);
 
-        // AJAX endpoints
+        // AJAX endpoint for wizard submission
         add_action('wp_ajax_submit_booking_wizard', [$this, 'handle_submission']);
         add_action('wp_ajax_nopriv_submit_booking_wizard', [$this, 'handle_submission']);
-        add_action('wp_ajax_get_package_data', [$this, 'get_package_data']);
-        add_action('wp_ajax_nopriv_get_package_data', [$this, 'get_package_data']);
     }
 
     /**
@@ -67,16 +68,26 @@ class BookingWizard
      */
     public function render_wizard_template(): void
     {
+        // DEBUG
+        error_log('BookingWizard::render_wizard_template() called');
+
+        // Only render on single package pages or if explicitly needed
+        // For now, render on all pages (wizard is hidden by default)
+
+        // DEBUG: Verify template is being called
         if (!defined('TRAVEL_FORMS_PATH')) {
+            error_log('BookingWizard: TRAVEL_FORMS_PATH not defined');
             return;
         }
 
         $template_path = TRAVEL_FORMS_PATH . 'templates/booking-wizard.php';
 
         if (!file_exists($template_path)) {
+            error_log('BookingWizard: Template not found at ' . $template_path);
             return;
         }
 
+        error_log('BookingWizard: Including template from ' . $template_path);
         include $template_path;
     }
 
@@ -102,42 +113,5 @@ class BookingWizard
             'message' => __('Booking submitted successfully!', 'travel-forms'),
             'bookingId' => uniqid('BK-'),
         ]);
-    }
-
-    /**
-     * Get package data via AJAX
-     */
-    public function get_package_data(): void
-    {
-        // Verify nonce
-        check_ajax_referer('booking_wizard_nonce', 'nonce');
-
-        $package_id = intval($_POST['packageId'] ?? 0);
-
-        if (!$package_id) {
-            wp_send_json_error(['message' => 'Invalid package ID']);
-            return;
-        }
-
-        // Get package data
-        $package = get_post($package_id);
-
-        if (!$package || $package->post_type !== 'package') {
-            wp_send_json_error(['message' => 'Package not found']);
-            return;
-        }
-
-        // Get ACF fields
-        $data = [
-            'id' => $package_id,
-            'title' => $package->post_title,
-            'thumbnail' => get_the_post_thumbnail_url($package_id, 'medium'),
-            'price_from' => floatval(get_field('price_from', $package_id) ?: 0),
-            'price_normal' => floatval(get_field('price_normal', $package_id) ?: 0),
-            'duration' => intval(get_field('days', $package_id) ?: 1),
-            'max_people' => intval(get_field('max_people', $package_id) ?: 12),
-        ];
-
-        wp_send_json_success($data);
     }
 }

@@ -2,46 +2,38 @@
  * Molecule: Contact Info
  */
 
-.contact-info {
-    margin-bottom: var(--spacing-lg);
+.contact-info__title {
+    margin-bottom: 4px;
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    color: var(--color-footer-text);
 }
 
-.contact-info__title {
-    margin: 0 0 var(--spacing-md);
+.contact-info__subtitle {
+    margin-bottom: 4px;
     font-size: var(--font-size-base);
     font-weight: var(--font-weight-semibold);
     color: var(--color-footer-text);
 }
 
-.contact-info__subtitle {
-    margin: var(--spacing-md) 0 var(--spacing-xs);
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-semibold);
-    color: var(--color-footer-text);
-}
-
 .contact-info__block {
-    margin-bottom: var(--spacing-md);
+    margin-bottom: var(--wp--preset--spacing--40);
 }
 
 .contact-info__item {
-    margin: 0 0 var(--spacing-xs);
+    margin-bottom: 4px;
     font-size: var(--font-size-sm);
-    line-height: 1.6;
     color: var(--color-footer-text-muted);
-}
-
-.contact-info__label {
-    display: block;
-    margin-bottom: var(--spacing-2xs);
-    font-weight: var(--font-weight-medium);
-    color: var(--color-footer-text);
 }
 
 .contact-info__link {
-    color: var(--color-footer-text-muted);
-    text-decoration: none;
+    color: var(--color-footer-text);
+    font-weight: 700;
     transition: color var(--transition-fast);
+}
+
+.contact-info__link--email {
+    text-decoration: underline;
 }
 
 .contact-info__link:hover,
@@ -49,28 +41,12 @@
     color: var(--color-footer-accent);
 }
 
-.contact-info__link--email {
-    color: var(--color-footer-accent);
-    font-weight: var(--font-weight-medium);
-}
-
 .contact-info__schedule {
     margin: 0 0 var(--spacing-sm);
-    font-size: var(--font-size-xs);
-    line-height: 1.8;
+    font-size: var(--font-size-sm);
     color: var(--color-footer-text-muted);
 }
 
 .contact-info__closed {
     font-style: italic;
-}
-
-/* Mobile: Optimizar touch targets (mínimo 40px) */
-@media (max-width: 767px) {
-    .contact-info__link {
-        display: inline-block;
-        padding: var(--spacing-xs) 0; /* 8px arriba/abajo */
-        min-height: 40px;
-        line-height: 24px; /* 24px + 16px padding = 40px */
-    }
 }

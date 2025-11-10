@@ -285,20 +285,9 @@ $day_names = [
                                 </button>
                             </div>
                         <?php else: ?>
-                            <!-- SOLD OUT: Keep same structure as normal rows -->
-                            <div class="trip-price">
-                                <!-- Status in price column position -->
-                                <div class="trip-status">
-                                    <?php echo esc_html($status_text); ?>
-                                </div>
-                            </div>
-
-                            <div class="trip-deal">
-                                <!-- Empty deal column -->
-                            </div>
-
-                            <div class="trip-cta">
-                                <!-- Empty CTA column -->
+                            <!-- SOLD OUT: Centered status across all columns -->
+                            <div class="trip-status">
+                                <?php echo esc_html($status_text); ?>
                             </div>
                         <?php endif; ?>
                     </li>
@@ -321,7 +310,6 @@ $day_names = [
             'month_names' => $month_names,
             'current_year' => $current_year,
             'current_month' => $current_month,
-            'package_id' => $package_id ?? null,
         ]); ?>
     </script>
 </section>

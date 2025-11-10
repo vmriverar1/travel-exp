@@ -10,6 +10,8 @@ if (!defined('ABSPATH')) exit;
 final class Travel_Swiper_Blocks_V2
 {
     private static $instance = null;
+    private $version = '2.0.1'; 
+    
     public static function instance()
     {
         if (self::$instance === null) self::$instance = new self();
@@ -24,8 +26,8 @@ final class Travel_Swiper_Blocks_V2
     {
         wp_register_style('swiper', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css', [], null);
         wp_register_script('swiper', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js', [], null, true);
-        wp_register_style('tsb-style', plugin_dir_url(__FILE__) . 'assets/css/travel-swiper-style.css', [], '2.0.0');
-        wp_register_script('tsb-init', plugin_dir_url(__FILE__) . 'assets/js/travel-swiper-init.js', ['swiper'], '2.0.0', true);
+        wp_register_style('tsb-style', plugin_dir_url(__FILE__) . 'assets/css/travel-swiper-style.css', [], $this->version);
+        wp_register_script('tsb-init', plugin_dir_url(__FILE__) . 'assets/js/travel-swiper-init.js', ['swiper'], $this->version, true);
     }
     public function register_blocks()
     {
@@ -104,7 +106,7 @@ final class Travel_Swiper_Blocks_V2
                 wp_enqueue_style('tsb-style');
                 wp_enqueue_script('tsb-init');
                 // CSS específico del bloque
-                wp_enqueue_style('tsb-icons', plugin_dir_url(__FILE__) . 'assets/css/travel-icons.css', [], '1.0.3');
+                wp_enqueue_style('tsb-icons', plugin_dir_url(__FILE__) . 'assets/css/travel-icons.css', [], $this->version);
             }
         ]);
 
@@ -176,7 +178,7 @@ final class Travel_Swiper_Blocks_V2
                 wp_enqueue_script('swiper');
                 wp_enqueue_style('tsb-style');
                 wp_enqueue_script('tsb-init');
-                wp_enqueue_style('tsb-steps', plugin_dir_url(__FILE__) . 'assets/css/travel-steps.css', [], '1.0.3');
+                wp_enqueue_style('tsb-steps', plugin_dir_url(__FILE__) . 'assets/css/travel-steps.css', [], $this->version);
             },
         ]);
 
@@ -231,7 +233,7 @@ final class Travel_Swiper_Blocks_V2
                 wp_enqueue_script('swiper');
                 wp_enqueue_style('tsb-style');
                 wp_enqueue_script('tsb-init');
-                wp_enqueue_style('tsb-checklist', plugin_dir_url(__FILE__) . 'assets/css/travel-checklist.css', [], '1.0.3');
+                wp_enqueue_style('tsb-checklist', plugin_dir_url(__FILE__) . 'assets/css/travel-checklist.css', [], $this->version);
             },
         ]);
 
@@ -301,7 +303,7 @@ final class Travel_Swiper_Blocks_V2
                 wp_enqueue_script('swiper');
                 wp_enqueue_style('tsb-style');
                 wp_enqueue_script('tsb-init');
-                wp_enqueue_style('tsb-sustain', plugin_dir_url(__FILE__) . 'assets/css/travel-sustain.css', [], '1.0.3');
+                wp_enqueue_style('tsb-sustain', plugin_dir_url(__FILE__) . 'assets/css/travel-sustain.css', [], $this->version);
             },
         ]);
 
@@ -393,7 +395,7 @@ final class Travel_Swiper_Blocks_V2
                 wp_enqueue_script('swiper');
                 wp_enqueue_style('tsb-style');
                 wp_enqueue_script('tsb-init');
-                wp_enqueue_style('tsb-cards', plugin_dir_url(__FILE__) . 'assets/css/travel-cards.css', [], '1.0.0');
+                wp_enqueue_style('tsb-cards', plugin_dir_url(__FILE__) . 'assets/css/travel-cards.css', [], $this->version);
             },
         ]);
 
@@ -454,8 +456,8 @@ final class Travel_Swiper_Blocks_V2
             'enqueue_assets'  => function () {
                 wp_enqueue_style('swiper');
                 wp_enqueue_script('swiper');
-                wp_enqueue_style('vtc-departments', plugin_dir_url(__FILE__) . 'assets/css/travel-departments.css', [], '1.0.1');
-                wp_enqueue_script('vtc-departments', plugin_dir_url(__FILE__) . 'assets/js/travel-swiper-init-desktop.js', ['swiper'], '1.0.1', true);
+                wp_enqueue_style('vtc-departments', plugin_dir_url(__FILE__) . 'assets/css/travel-departments.css', [], $this->version);
+                wp_enqueue_script('vtc-departments', plugin_dir_url(__FILE__) . 'assets/js/travel-swiper-init-desktop.js', ['swiper'], $this->version, true);
             },
         ]);
 
@@ -517,7 +519,7 @@ final class Travel_Swiper_Blocks_V2
                     'tsb-destinations',
                     plugin_dir_url(__FILE__) . 'assets/css/travel-destinations.css',
                     [],
-                    '1.0.0'
+                    $this->version
                 );
             },
         ]);
@@ -584,7 +586,7 @@ final class Travel_Swiper_Blocks_V2
                     'tsb-category-cards',
                     plugin_dir_url(__FILE__) . 'assets/css/travel-category-cards.css',
                     [],
-                    '1.0.0'
+                    $this->version
                 );
             },
         ]);
@@ -638,8 +640,8 @@ final class Travel_Swiper_Blocks_V2
                 wp_enqueue_script('swiper');
                 wp_enqueue_style('tsb-style');
                 wp_enqueue_script('tsb-init');
-                wp_enqueue_style('tsb-packages', plugin_dir_url(__FILE__) . 'assets/css/travel-packages.css', [], '1.0.0');
-                wp_enqueue_script('tsb-packages', plugin_dir_url(__FILE__) . 'assets/js/travel-packages.js', [], '1.0.0', true);
+                wp_enqueue_style('tsb-packages', plugin_dir_url(__FILE__) . 'assets/css/travel-packages.css', [], $this->version);
+                wp_enqueue_script('tsb-packages', plugin_dir_url(__FILE__) . 'assets/js/travel-packages.js', [], $this->version, true);
             },
         ]);
 
@@ -713,8 +715,8 @@ final class Travel_Swiper_Blocks_V2
                 wp_enqueue_script('swiper');
                 wp_enqueue_style('tsb-style');
                 wp_enqueue_script('tsb-init');
-                wp_enqueue_style('tcp-category-packages', plugin_dir_url(__FILE__) . 'assets/css/travel-category-packages.css', [], '1.0.0');
-                wp_enqueue_script('tcp-category-packages', plugin_dir_url(__FILE__) . 'assets/js/travel-category-packages.js', ['swiper'], '1.0.0', true);
+                wp_enqueue_style('tcp-category-packages', plugin_dir_url(__FILE__) . 'assets/css/travel-category-packages.css', [], $this->version);
+                wp_enqueue_script('tcp-category-packages', plugin_dir_url(__FILE__) . 'assets/js/travel-category-packages.js', ['swiper'], $this->version, true);
             },
         ]);
 

@@ -19,7 +19,7 @@ if (!defined('TRAVEL_BLOCKS_URL')) {
     define('TRAVEL_BLOCKS_URL', plugin_dir_url(__FILE__));
 }
 if (!defined('TRAVEL_BLOCKS_VERSION')) {
-    define('TRAVEL_BLOCKS_VERSION', '1.3.0');
+    define('TRAVEL_BLOCKS_VERSION', '1.3.1');
 }
 
 /**

@@ -185,7 +185,7 @@
 }
 
 /* === SWIPER CONTROLS === */
-.swiper-controls {
+.reviews-controls.swiper-controls{
   position: relative;
   width: 100%;
   display: flex;

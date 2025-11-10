@@ -6,14 +6,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--spacing-md);
-    margin: var(--spacing-lg) 0;
-}
-
-.social-media-bar__section {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
+    margin: var(--wp--preset--spacing--80) 0;
 }
 
 .social-media-bar__label {
@@ -29,10 +22,6 @@
     margin: 0;
     padding: 0;
     list-style: none;
-}
-
-.social-media-bar__item {
-    margin: 0;
 }
 
 /* Review Logos */

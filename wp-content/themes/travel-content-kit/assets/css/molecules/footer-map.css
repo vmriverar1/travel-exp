@@ -4,9 +4,7 @@
 
 .footer-map {
     width: 100%;
-    max-width: 600px;
-    margin: var(--spacing-lg) auto;
-    opacity: 0.6;
+    margin: var(--wp--preset--spacing--80) auto;
 }
 
 .footer-map__svg,

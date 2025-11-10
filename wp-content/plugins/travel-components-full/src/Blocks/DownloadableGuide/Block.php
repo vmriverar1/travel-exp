@@ -26,13 +26,13 @@ class Block {
         // Encolar CSS si existe
         $css_file = $path . 'style.css';
         if (file_exists($css_file)) {
-          wp_enqueue_style($handle, $dir . 'style.css', [], '1.0.0');
+          wp_enqueue_style($handle, $dir . 'style.css', [], '1.0.1');
         }
 
         // Encolar JS si existe
         $js_file = $path . 'script.js';
         if (file_exists($js_file)) {
-          wp_enqueue_script($handle, $dir . 'script.js', [], '1.0.0', true);
+          wp_enqueue_script($handle, $dir . 'script.js', [], '1.0.1', true);
 
           // Pasar variables al JS
           wp_localize_script($handle, 'TC_DownloadableGuide', [

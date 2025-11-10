@@ -205,7 +205,7 @@ acf_add_local_field_group([
                     'choices' => [
                         'tripadvisor' => 'TripAdvisor',
                         'google' => 'Google Reviews',
-                        'facebook' => 'Facebook Reviews',
+                        'facebook-review' => 'Facebook Reviews',
                     ],
                     'default_value' => 'tripadvisor',
                 ],
@@ -280,9 +280,11 @@ acf_add_local_field_group([
             'sub_fields' => [
                 [
                     'key' => 'field_gateway_name',
-                    'label' => 'Gateway Name',
-                    'name' => 'name',
-                    'type' => 'text',
+                    'label' =>  __('Gateway Name', 'travel'),
+                    'name' => 'image',
+                    'type' => 'image',
+                    'return_format' => 'url',
+                    'preview_size' => 'thumbnail',
                     'required' => 1,
                 ],
                 [

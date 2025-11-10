@@ -568,35 +568,3 @@
         margin-top: 2rem;
     }
 }
-
-/* ==================== MOBILE RESPONSIVE ==================== */
-
-@media (max-width: 768px) {
-    /* Remove lateral padding from columns in single package on mobile */
-    .single-package .wp-site-blocks > .wp-block-columns {
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-    }
-
-    /* Reverse order of price-block-general children in single-package on mobile */
-    .single-package .price-block-general {
-        display: flex !important;
-        flex-direction: column;
-    }
-    
-    .single-package .price-block-general > div:first-child {
-        max-width: 100vw;
-        padding: 0px clamp(1.5rem, 1.2857rem + 0.9524vw, 2rem) !important;
-        order: 2;
-    }
-
-    .single-package .price-block-general > div:last-child {
-        max-width: 100vw;
-        order: 1;
-    }
-
-    /* Limit itinerary content width to viewport on mobile */
-    .itinerary-day__content {
-        max-width: 100vw;
-    }
-}

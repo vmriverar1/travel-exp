@@ -242,11 +242,20 @@
 }
 
 @media (max-width: 768px) {
+    .pricing-card__price-section {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 1.5rem;
+    }
 
     .pricing-card__best-price-tag,
     .pricing-card__per-person {
         justify-content: center;
         max-width: none;
+    }
+
+    .pricing-card__price-display {
+        order: -1;
     }
 
     .pricing-card__price-value {
@@ -255,20 +264,6 @@
 
     .pricing-card__dollar-sign {
         font-size: 1.25rem;
-    }
-
-    .pricing-card__duration-number {
-        font-size: 4rem;
-    }
-
-    .pricing-card__duration-text {
-        font-size: 1rem;
-        line-height: 1.2;
-        padding-bottom: 5px;
-    }
-
-    .pricing-card__duration-content {
-        align-items: end;
     }
 }
 
@@ -286,49 +281,15 @@
     }
 
     .pricing-card__price-value {
-        font-size: 3rem;
+        font-size: 2rem;
     }
 
     .pricing-card__dollar-sign {
-        font-size: 1.5rem;
+        font-size: 1rem;
     }
 
     .pricing-card__cta-button {
         padding: 0.875rem 1.25rem;
         font-size: 15px;
-    }
-
-    .pricing-card__best-price-tag{
-        gap: 0px;
-    }
-
-    .pricing-card__best-price-tag svg {
-        width: 26px;
-        height: 20px;
-    }
-
-    .pricing-card__from-label{
-        font-size: 12px;
-    }
-
-    .pricing-card__per-person{
-        align-items: end;
-    }
-
-    .pricing-card__per-person-text {
-        font-size: 14px;
-    }
-
-    .pricing-card__info-icon{
-        width: 21px;
-        height: 21px;
-    }
-
-    .pricing-card__private-service p{
-        font-size: 16px;
-    }
-    
-    .pricing-card__white-box{
-        padding: 30px 1px 5px;
     }
 }

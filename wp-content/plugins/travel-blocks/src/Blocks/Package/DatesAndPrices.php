@@ -55,10 +55,13 @@ class DatesAndPrices
                 $post_id = get_the_ID();
             }
 
-            // Determine if we're in preview/editor mode
-            $is_preview = empty($post_id) || EditorHelper::is_editor_mode($post_id);
+            // Last fallback: if still no post_id, return empty
+            if (empty($post_id)) {
+                return '<div style="padding:20px;background:#fff3cd;">Error: No post ID available</div>';
+            }
 
-            // Get dates: use preview data if no post_id or in editor mode
+            $is_preview = EditorHelper::is_editor_mode($post_id);
+
             $dates = $is_preview ? $this->get_preview_data() : $this->get_post_data($post_id);
 
             // If no dates, show empty state instead of nothing
@@ -103,7 +106,6 @@ class DatesAndPrices
                 'alert_message' => __('Secure your spot on the trip now with our real-time availability information.', 'travel-blocks'),
                 'alert_emphasis' => __('Act quickly—these spots sell out fast!', 'travel-blocks'),
                 'is_preview' => $is_preview,
-                'package_id' => $post_id,
             ];
 
             ob_start();
