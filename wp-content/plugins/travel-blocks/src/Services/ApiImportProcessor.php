@@ -86,7 +86,12 @@ class ApiImportProcessor
             $api_data = $this->api_service->fetch_package($tour_id);
 
             if (empty($api_data)) {
-                return $this->error_result($tour_id, 'API returned empty data or tour does not exist');
+                return $this->error_result($tour_id, 'El tour no existe en la API o no se pudo obtener los datos');
+            }
+
+            // Validate essential data exists
+            if (empty($api_data['title'])) {
+                return $this->error_result($tour_id, 'Datos incompletos: El tour no tiene título');
             }
 
             // Step 2: Check if package already exists locally

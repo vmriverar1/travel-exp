@@ -242,13 +242,42 @@ class ApiImportAdmin
         }
 
         // Get parameters
-        $tour_ids = isset($_POST['tour_ids']) ? array_map('intval', (array) $_POST['tour_ids']) : [];
+        $tour_ids_raw = isset($_POST['tour_ids']) ? (array) $_POST['tour_ids'] : [];
         $update_existing = isset($_POST['update_existing']) && $_POST['update_existing'] === 'true';
+
+        // Validate and sanitize tour IDs
+        $tour_ids = [];
+        $seen = [];
+        $invalid_count = 0;
+        $duplicate_count = 0;
+
+        foreach ($tour_ids_raw as $id) {
+            $id_int = intval($id);
+
+            // Must be positive integer
+            if ($id_int <= 0) {
+                $invalid_count++;
+                continue;
+            }
+
+            // Remove duplicates (server-side validation)
+            if (in_array($id_int, $seen, true)) {
+                $duplicate_count++;
+                continue;
+            }
+
+            $tour_ids[] = $id_int;
+            $seen[] = $id_int;
+        }
 
         // Validate
         if (empty($tour_ids)) {
             wp_send_json_error([
-                'message' => __('No se recibieron IDs de tours.', 'travel-blocks'),
+                'message' => sprintf(
+                    __('No hay IDs válidos para procesar. Inválidos: %d, Duplicados: %d', 'travel-blocks'),
+                    $invalid_count,
+                    $duplicate_count
+                ),
             ]);
         }
 

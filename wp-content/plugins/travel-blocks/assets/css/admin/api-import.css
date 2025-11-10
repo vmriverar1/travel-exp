@@ -121,6 +121,29 @@
     margin-right: 4px;
 }
 
+.tour-ids-preview .preview-text {
+    line-height: 1.6;
+}
+
+.tour-ids-preview .preview-valid {
+    color: #007017;
+    font-weight: 600;
+}
+
+.tour-ids-preview .preview-warning {
+    color: #996800;
+    font-weight: 500;
+    display: inline-block;
+    margin-left: 8px;
+}
+
+.tour-ids-preview .preview-error {
+    color: #d63638;
+    font-weight: 500;
+    display: inline-block;
+    margin-left: 8px;
+}
+
 /* ============================================
    FORM ACTIONS
    ============================================ */

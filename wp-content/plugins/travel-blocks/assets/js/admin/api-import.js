@@ -102,20 +102,31 @@
                 return;
             }
 
-            // Parse IDs (comma, space, or newline separated)
-            const ids = this.parseIds(input);
+            // Parse IDs with detailed validation
+            const parseResult = this.parseIds(input);
+            const { validIds, duplicates, invalid } = parseResult;
 
-            if (ids.length > 0) {
-                const validIds = ids.filter(id => id > 0);
-                const invalidCount = ids.length - validIds.length;
+            if (validIds.length > 0 || duplicates.length > 0 || invalid.length > 0) {
+                let previewHtml = '';
 
-                let previewText = `${validIds.length} tour(s) válido(s) para importar`;
-
-                if (invalidCount > 0) {
-                    previewText += ` (${invalidCount} inválido(s) ignorado(s))`;
+                // Valid IDs
+                if (validIds.length > 0) {
+                    previewHtml += `<span class="preview-valid">✓ ${validIds.length} tour(s) válido(s)</span>`;
                 }
 
-                this.$preview.find('.preview-text').text(previewText);
+                // Duplicates removed
+                if (duplicates.length > 0) {
+                    previewHtml += ` <span class="preview-warning">⚠ ${duplicates.length} duplicado(s) removido(s): [${duplicates.join(', ')}]</span>`;
+                }
+
+                // Invalid IDs
+                if (invalid.length > 0) {
+                    const invalidPreview = invalid.slice(0, 5).join(', ');
+                    const moreCount = invalid.length > 5 ? ` (+${invalid.length - 5} más)` : '';
+                    previewHtml += ` <span class="preview-error">✗ ${invalid.length} inválido(s): [${invalidPreview}${moreCount}]</span>`;
+                }
+
+                this.$preview.find('.preview-text').html(previewHtml);
                 this.$preview.show();
             } else {
                 this.$preview.hide();
@@ -123,16 +134,39 @@
         },
 
         /**
-         * Parse tour IDs from input
+         * Parse tour IDs from input with detailed validation
+         * Returns: { validIds: [], duplicates: [], invalid: [] }
          */
         parseIds(input) {
             // Split by comma, space, or newline
-            const parts = input.split(/[\s,\n]+/);
+            const parts = input.split(/[\s,\n]+/).filter(p => p.trim() !== '');
 
-            // Convert to integers and filter out invalid
-            return parts
-                .map(part => parseInt(part.trim(), 10))
-                .filter(id => !isNaN(id) && id > 0);
+            const validIds = [];
+            const duplicates = [];
+            const invalid = [];
+            const seen = new Set();
+
+            parts.forEach(part => {
+                const trimmed = part.trim();
+
+                // Try to parse as integer
+                const parsed = parseInt(trimmed, 10);
+
+                // Check if it's a valid positive integer
+                if (isNaN(parsed) || parsed <= 0 || trimmed !== String(parsed)) {
+                    // Invalid: not a number, negative, or has extra characters
+                    invalid.push(trimmed);
+                } else if (seen.has(parsed)) {
+                    // Duplicate
+                    duplicates.push(parsed);
+                } else {
+                    // Valid and unique
+                    validIds.push(parsed);
+                    seen.add(parsed);
+                }
+            });
+
+            return { validIds, duplicates, invalid };
         },
 
         /**
@@ -147,12 +181,26 @@
                 return;
             }
 
-            this.tourIds = this.parseIds(input);
+            const parseResult = this.parseIds(input);
+            const { validIds, duplicates, invalid } = parseResult;
 
-            if (this.tourIds.length === 0) {
-                alert(window.travelApiImport.i18n.invalidIds || 'No se encontraron IDs válidos');
+            // Log warnings about duplicates and invalid IDs
+            if (duplicates.length > 0) {
+                this.log('warning', `Se removieron ${duplicates.length} ID(s) duplicado(s): [${duplicates.join(', ')}]`);
+            }
+
+            if (invalid.length > 0) {
+                const invalidPreview = invalid.slice(0, 10).join(', ');
+                const moreCount = invalid.length > 10 ? ` (+${invalid.length - 10} más)` : '';
+                this.log('error', `Se ignoraron ${invalid.length} ID(s) inválido(s): [${invalidPreview}${moreCount}]`);
+            }
+
+            if (validIds.length === 0) {
+                alert(window.travelApiImport.i18n.invalidIds || 'No se encontraron IDs válidos para importar');
                 return;
             }
+
+            this.tourIds = validIds;
 
             // Reset state
             this.isProcessing = true;
@@ -172,7 +220,7 @@
             this.updateProgress(0);
 
             // Log start
-            this.log('info', `Iniciando importación de ${this.tourIds.length} tour(s): [${this.tourIds.join(', ')}]`);
+            this.log('info', `Iniciando importación de ${this.tourIds.length} tour(s) válido(s): [${this.tourIds.join(', ')}]`);
             this.log('info', `Actualizar existentes: ${this.$updateExisting.is(':checked') ? 'Sí' : 'No'}`);
 
             // Start AJAX processing in chunks
