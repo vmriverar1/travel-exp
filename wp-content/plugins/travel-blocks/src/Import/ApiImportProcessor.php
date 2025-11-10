@@ -41,6 +41,11 @@ class ApiImportProcessor
     private array $options = [];
 
     /**
+     * Debug info collector
+     */
+    private array $debug_info = [];
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -172,9 +177,17 @@ class ApiImportProcessor
 
         // Process images (after package is saved)
         $images_count = 0;
+        $this->debug_info = []; // Reset debug info
+
+        $this->debug_info[] = "skip_images=" . var_export($this->options['skip_images'], true);
+        $this->debug_info[] = "thumbnail_url=" . ($mapped_data['meta_fields']['thumbnail_url'] ?? 'NULL');
+        $this->debug_info[] = "gallery_count=" . count($mapped_data['repeaters']['gallery'] ?? []);
+
         if (!$this->options['skip_images']) {
             $images_count = $this->process_images($post_id, $mapped_data);
         }
+
+        $this->debug_info[] = "images_processed=" . $images_count;
 
         $this->log_debug("Created package post_id={$post_id} for tour_id={$tour_id}");
 
@@ -185,6 +198,7 @@ class ApiImportProcessor
             'url' => get_permalink($post_id),
             'images_count' => $images_count,
             'images_skipped' => $this->options['skip_images'],
+            'debug' => implode(' | ', $this->debug_info),
         ]);
     }
 
@@ -222,9 +236,17 @@ class ApiImportProcessor
 
         // Process images (after package is saved)
         $images_count = 0;
+        $this->debug_info = []; // Reset debug info
+
+        $this->debug_info[] = "skip_images=" . var_export($this->options['skip_images'], true);
+        $this->debug_info[] = "thumbnail_url=" . ($mapped_data['meta_fields']['thumbnail_url'] ?? 'NULL');
+        $this->debug_info[] = "gallery_count=" . count($mapped_data['repeaters']['gallery'] ?? []);
+
         if (!$this->options['skip_images']) {
             $images_count = $this->process_images($post_id, $mapped_data);
         }
+
+        $this->debug_info[] = "images_processed=" . $images_count;
 
         $this->log_debug("Updated package post_id={$post_id} for tour_id={$tour_id}");
 
@@ -235,6 +257,7 @@ class ApiImportProcessor
             'url' => get_permalink($post_id),
             'images_count' => $images_count,
             'images_skipped' => $this->options['skip_images'],
+            'debug' => implode(' | ', $this->debug_info),
         ]);
     }
 
@@ -430,14 +453,21 @@ class ApiImportProcessor
             $images_processed = 0;
 
             // 1. Process WordPress Featured Image (thumbnail from API)
+            $this->debug_info[] = "featured_check=" . (!empty($mapped_data['meta_fields']['thumbnail_url']) ? 'yes' : 'no');
             if (!empty($mapped_data['meta_fields']['thumbnail_url'])) {
                 $thumbnail_url = $mapped_data['meta_fields']['thumbnail_url'];
+                $this->debug_info[] = "featured_url=" . substr($thumbnail_url, 0, 50);
                 $attachment_id = $this->image_service->import_image($thumbnail_url, $post_id, 'Featured Image');
+                $this->debug_info[] = "featured_attachment_id=" . ($attachment_id ?? 'NULL');
 
                 if ($attachment_id) {
-                    set_post_thumbnail($post_id, $attachment_id);
+                    $result = set_post_thumbnail($post_id, $attachment_id);
+                    $this->debug_info[] = "featured_set_result=" . ($result ? 'true' : 'false');
                     $images_processed++;
                     $this->log_debug("Featured image set (ID: {$attachment_id}) for post_id={$post_id}");
+                } else {
+                    $error = $this->image_service->last_error ?? 'unknown';
+                    $this->debug_info[] = "featured_error=" . $error;
                 }
             }
 

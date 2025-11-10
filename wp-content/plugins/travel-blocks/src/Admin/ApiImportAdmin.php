@@ -324,6 +324,7 @@ class ApiImportAdmin
             'images_count' => $result['data']['images_count'] ?? 0,
             'images_skipped' => $result['data']['images_skipped'] ?? false,
             'execution_time' => $result['execution_time'] ?? 0,
+            'debug' => $result['data']['debug'] ?? '',
         ];
     }
 }

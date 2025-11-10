@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Travel Package Wizard
  * Plugin URI: https://machupicchuperu.com
- * Description: Mock data generator for travel packages and related content
+ * Description: Modern wizard-style interface for creating and editing travel packages
  * Version: 2.0.0
  * Author: Rogger Palomino Gamboa
  * Author URI: https://machupicchuperu.com
@@ -55,14 +55,38 @@ class Travel_Package_Wizard {
      * Load plugin dependencies
      */
     private function load_dependencies() {
-        // TODO: Load mock data generator classes here
+        // Load wizard controller and processor
+        require_once TRAVEL_PACKAGE_WIZARD_PATH . 'includes/class-wizard-controller.php';
+        require_once TRAVEL_PACKAGE_WIZARD_PATH . 'includes/class-wizard-processor.php';
     }
 
     /**
      * Initialize WordPress hooks
      */
     private function init_hooks() {
-        // TODO: Initialize plugin functionality
+        // Initialize wizard controller
+        add_action('plugins_loaded', [$this, 'init_wizard']);
+
+        // Add settings link to plugins page
+        add_filter('plugin_action_links_' . TRAVEL_PACKAGE_WIZARD_BASENAME, [$this, 'add_settings_link']);
+    }
+
+    /**
+     * Initialize wizard controller
+     */
+    public function init_wizard() {
+        if (class_exists('Aurora_Wizard_Controller')) {
+            Aurora_Wizard_Controller::get_instance();
+        }
+    }
+
+    /**
+     * Add settings link to plugins page
+     */
+    public function add_settings_link($links) {
+        $settings_link = '<a href="' . admin_url('edit.php?post_type=package') . '">' . __('Packages', 'travel-package-wizard') . '</a>';
+        array_unshift($links, $settings_link);
+        return $links;
     }
 }
 

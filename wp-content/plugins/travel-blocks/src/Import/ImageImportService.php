@@ -22,6 +22,13 @@ class ImageImportService
     private array $url_cache = [];
 
     /**
+     * Last error message for debugging
+     *
+     * @var string|null
+     */
+    public ?string $last_error = null;
+
+    /**
      * Import image from URL and return attachment ID
      *
      * @param string $image_url External image URL
@@ -31,7 +38,10 @@ class ImageImportService
      */
     public function import_image(string $image_url, int $post_id, string $title = ''): ?int
     {
+        $this->last_error = null; // Reset error
+
         if (empty($image_url)) {
+            $this->last_error = "Empty URL";
             return null;
         }
 
@@ -60,6 +70,8 @@ class ImageImportService
             $this->url_cache[$image_url] = $attachment_id;
 
             $this->log_debug("Image downloaded successfully (ID: {$attachment_id}): {$image_url}");
+        } else if (!$this->last_error) {
+            $this->last_error = "download_and_create_attachment returned null";
         }
 
         return $attachment_id;
@@ -145,6 +157,7 @@ class ImageImportService
     {
         // Validate URL
         if (!filter_var($url, FILTER_VALIDATE_URL)) {
+            $this->last_error = "Invalid URL format";
             $this->log_error("Invalid image URL: {$url}");
             return null;
         }
@@ -152,6 +165,9 @@ class ImageImportService
         // Download image
         $temp_file = $this->download_image($url);
         if (!$temp_file) {
+            if (!$this->last_error) {
+                $this->last_error = "download_image failed";
+            }
             return null;
         }
 
@@ -171,6 +187,7 @@ class ImageImportService
         $uploaded = wp_handle_sideload($file, ['test_form' => false]);
 
         if (isset($uploaded['error'])) {
+            $this->last_error = "wp_handle_sideload: " . $uploaded['error'];
             $this->log_error("Upload error: {$uploaded['error']}");
             @unlink($temp_file);
             return null;
@@ -214,18 +231,21 @@ class ImageImportService
         ]);
 
         if (is_wp_error($response)) {
+            $this->last_error = "wp_remote_get: " . $response->get_error_message();
             $this->log_error("Download failed: " . $response->get_error_message());
             return null;
         }
 
         $status_code = wp_remote_retrieve_response_code($response);
         if ($status_code !== 200) {
+            $this->last_error = "HTTP {$status_code}";
             $this->log_error("HTTP {$status_code} when downloading: {$url}");
             return null;
         }
 
         $body = wp_remote_retrieve_body($response);
         if (empty($body)) {
+            $this->last_error = "Empty response body";
             $this->log_error("Empty response body for: {$url}");
             return null;
         }
@@ -233,6 +253,7 @@ class ImageImportService
         // Save to temporary file
         $temp_file = wp_tempnam();
         if (!file_put_contents($temp_file, $body)) {
+            $this->last_error = "Failed to write temp file";
             $this->log_error("Failed to write temp file");
             return null;
         }

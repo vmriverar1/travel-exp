@@ -11,7 +11,7 @@ class PackageMedia extends FieldGroup
 
         acf_add_local_field_group([
             'key' => 'group_package_media',
-            'title' => '🖼️ Package - Media (Images and Banners)',
+            'title' => '🖼️ Package - Media (Images)',
             'fields' => [
 
                 // ===== MAIN IMAGE (uses WordPress Featured Image) =====
@@ -51,71 +51,6 @@ class PackageMedia extends FieldGroup
                     'return_format' => 'array',
                     'preview_size' => 'medium',
                     'library' => 'all',
-                ],
-
-                // ===== BANNERS/SLIDES =====
-                [
-                    'key' => 'field_package_banners',
-                    'label' => '🎠 Banners / Slides',
-                    'name' => 'banners',
-                    'type' => 'repeater',
-                    'instructions' => 'Banners or slides for main package carousel.',
-                    'required' => 0,
-                    'min' => 0,
-                    'max' => 10,
-                    'layout' => 'block',
-                    'button_label' => 'Add Banner',
-                    'collapsed' => 'field_banner_title',
-                    'sub_fields' => [
-                        [
-                            'key' => 'field_banner_order',
-                            'label' => 'Order',
-                            'name' => 'order',
-                            'type' => 'number',
-                            'required' => 0, // Changed to optional
-                            'default_value' => 1,
-                            'min' => 1,
-                            'wrapper' => ['width' => 20],
-                        ],
-                        [
-                            'key' => 'field_banner_image',
-                            'label' => 'Image',
-                            'name' => 'image',
-                            'type' => 'image',
-                            'required' => 0, // Changed to optional - if you add a banner row, just fill it when ready
-                            'return_format' => 'array',
-                            'preview_size' => 'medium',
-                            'library' => 'all',
-                            'min_width' => 1920,
-                            'min_height' => 800,
-                            'wrapper' => ['width' => 80],
-                        ],
-                        [
-                            'key' => 'field_banner_orientation',
-                            'label' => 'Orientation',
-                            'name' => 'orientation',
-                            'type' => 'select',
-                            'required' => 0,
-                            'choices' => [
-                                'horizontal' => 'Horizontal (16:9)',
-                                'vertical' => 'Vertical (9:16)',
-                                'square' => 'Square (1:1)',
-                            ],
-                            'default_value' => 'horizontal',
-                            'ui' => 1,
-                            'wrapper' => ['width' => 50],
-                        ],
-                        [
-                            'key' => 'field_banner_title',
-                            'label' => 'Slide Title',
-                            'name' => 'title',
-                            'type' => 'text',
-                            'required' => 0,
-                            'maxlength' => 100,
-                            'placeholder' => 'Descriptive banner title',
-                            'wrapper' => ['width' => 50],
-                        ],
-                    ],
                 ],
 
             ],

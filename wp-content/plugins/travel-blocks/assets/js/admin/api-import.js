@@ -426,6 +426,11 @@
                         logMessage += ` - Sin imágenes`;
                     }
 
+                    // Add debug info if available
+                    if (result.debug) {
+                        logMessage += ` [DEBUG: ${result.debug}]`;
+                    }
+
                     this.log('success', logMessage);
                 } else if (status === 'error') {
                     this.stats.errors++;

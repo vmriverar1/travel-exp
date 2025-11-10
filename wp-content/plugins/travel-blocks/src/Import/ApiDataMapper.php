@@ -110,7 +110,7 @@ class ApiDataMapper
             'not_included' => $this->sanitize_html($api_data['whatsNotIncluded'] ?? ''),
 
             // Media
-            'thumbnail_url' => $this->map_thumbnail($api_data['thumbnail'] ?? null),
+            'thumbnail_url' => $this->map_thumbnail_from_images($api_data['images'] ?? []),
             'map_image' => $this->map_image($api_data['mapImage'] ?? ''),
             'video_url' => $this->sanitize_url($api_data['video_URL'] ?? ''),
 
@@ -606,8 +606,34 @@ class ApiDataMapper
     }
 
     /**
-     * Map thumbnail (featured image)
-     * Returns URL of original image from thumbnail object or string
+     * Map thumbnail from images array (featured image)
+     * Uses the first image from the gallery as featured image
+     * The API's thumbnail field returns relative paths that aren't accessible
+     *
+     * @param array $images Images array from API
+     * @return string|null
+     */
+    private function map_thumbnail_from_images(array $images): ?string
+    {
+        if (empty($images) || !isset($images[0])) {
+            return null;
+        }
+
+        $first_image = $images[0];
+        $url = $first_image['originalImage'] ?? $first_image['image'] ?? '';
+
+        if (empty($url)) {
+            return null;
+        }
+
+        // URLs from S3 are already absolute
+        return $this->sanitize_url($url);
+    }
+
+    /**
+     * Map thumbnail (featured image) - DEPRECATED
+     * This method is kept for reference but no longer used
+     * The API's thumbnail field returns relative paths that aren't accessible
      *
      * @param array|string|null $thumbnail Thumbnail data (can be array or string URL)
      * @return string|null
