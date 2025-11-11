@@ -13,7 +13,7 @@ define( 'REDIS_AUTH', null );
 define( 'REDIS_DATABASE', 0 );
 
 define( 'WP_DEBUG', true );
-define( 'WP_DEBUG_DISPLAY', true );
+define( 'WP_DEBUG_DISPLAY', false );
 define( 'WP_DEBUG_LOG', '/home/web/sites/travel/logs/debug.log' );
 
 define( 'AUTH_KEY', 'vw3tn96l4koqj3n9z3ayswa86m2gkmcofwzn3rgokdgyxwkg0cvxxkg9ix6ybhj2' );
