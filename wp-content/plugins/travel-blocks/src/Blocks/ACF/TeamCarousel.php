@@ -140,8 +140,8 @@ class TeamCarousel extends BlockBase
         // Get team members (repeater)
         $team_members = get_field('team_members');
 
-        // Si no hay team members, usar datos demo
-        if (empty($team_members)) {
+        // Si no hay team members o no es un array válido, usar datos demo
+        if (empty($team_members) || !is_array($team_members)) {
             $team_members = $this->get_demo_team_members($layout_style);
         } else {
             // Rellenar imágenes vacías con demo images
