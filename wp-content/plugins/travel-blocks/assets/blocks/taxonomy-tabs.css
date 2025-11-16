@@ -233,7 +233,7 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     flex-direction: column;
-    min-height: 450px;
+    min-height: var(--card-height-desktop, 450px);
 }
 
 .tt-card:hover {
@@ -578,7 +578,7 @@
 
 /* Hero overlap: Tabs float over the hero section */
 .taxonomy-tabs--hero-overlap .tt-nav-wrapper {
-    margin-top: -60px; /* Negative margin to overlap hero */
+    margin-top: -55px; /* Negative margin to overlap hero */
     margin-bottom: 3rem;
     padding: 0 1rem;
 }

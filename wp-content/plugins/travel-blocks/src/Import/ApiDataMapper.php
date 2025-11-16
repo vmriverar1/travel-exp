@@ -95,7 +95,7 @@ class ApiDataMapper
             // Basic info
             'summary' => $this->sanitize_textarea($api_data['summary'] ?? ''),
             'description' => $this->sanitize_html($api_data['description'] ?? ''),
-            'duration' => $this->sanitize_text($api_data['duration'] ?? ''),
+            'days' => intval($api_data['days'] ?? 0),
 
             // Pricing
             'price_from' => $this->parse_price($api_data['price'] ?? 0),
@@ -161,7 +161,6 @@ class ApiDataMapper
             'interest' => $this->map_interests($api_data['interests'] ?? []),
             'included_services' => $this->map_included_services($api_data['includedServices'] ?? []),
             'package_type' => $this->map_package_type($api_data['packageTypes'] ?? []),
-            'days' => $this->map_days($api_data['days'] ?? 0),
             'optional_renting' => $this->map_optional_renting_taxonomy($api_data['optionalRenting'] ?? []),
         ];
     }
@@ -266,6 +265,31 @@ class ApiDataMapper
         ];
 
         return $map[$rating] ?? 'moderate';
+    }
+
+    /**
+     * Map duration from days count to readable text
+     *
+     * @param int $days Number of days from API
+     * @return string Formatted duration text (e.g., "4 days / 3 nights")
+     */
+    private function map_duration(int $days): string
+    {
+        if ($days <= 0) {
+            return '';
+        }
+
+        $nights = $days - 1;
+
+        if ($days === 1) {
+            return '1 day';
+        }
+
+        if ($nights > 0) {
+            return sprintf('%d days / %d nights', $days, $nights);
+        }
+
+        return sprintf('%d days', $days);
     }
 
     /**

@@ -36,17 +36,7 @@ class PackageBaseInfo extends FieldGroup
                     'wrapper' => ['width' => 50],
                 ],
 
-                // ===== DURATION & CAPACITY =====
-                [
-                    'key' => 'field_package_duration',
-                    'label' => '⏱️ Duration (text)',
-                    'name' => 'duration',
-                    'type' => 'text',
-                    'instructions' => 'Package duration in readable format. Example: "5 days / 4 nights"',
-                    'required' => 0,
-                    'placeholder' => '5 days / 4 nights',
-                    'wrapper' => ['width' => 50],
-                ],
+                // ===== CAPACITY =====
                 [
                     'key' => 'field_package_group_size',
                     'label' => '👥 Group Size',

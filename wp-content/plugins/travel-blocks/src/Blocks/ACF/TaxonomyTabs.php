@@ -528,6 +528,18 @@ class TaxonomyTabs extends BlockBase
                 'append' => 'px',
             ],
             [
+                'key' => 'field_tt_card_height_desktop',
+                'label' => 'Altura de Cards (Desktop)',
+                'name' => 'tt_card_height_desktop',
+                'type' => 'range',
+                'instructions' => 'Altura de las cards en vista desktop/grid',
+                'default_value' => 450,
+                'min' => 300,
+                'max' => 700,
+                'step' => 10,
+                'append' => 'px',
+            ],
+            [
                 'key' => 'field_tt_button_color_variant',
                 'label' => 'Color de Botones',
                 'name' => 'tt_button_color_variant',
@@ -1150,6 +1162,7 @@ class TaxonomyTabs extends BlockBase
             'tabs_alignment' => $block_data['tt_tabs_alignment'] ?? get_field('tt_tabs_alignment') ?: 'center',
             'cards_per_row' => $block_data['tt_cards_per_row'] ?? get_field('tt_cards_per_row') ?: 3,
             'card_gap' => $block_data['tt_card_gap'] ?? get_field('tt_card_gap') ?: 24,
+            'card_height_desktop' => $block_data['tt_card_height_desktop'] ?? get_field('tt_card_height_desktop') ?: 450,
             'button_color_variant' => $block_data['tt_button_color_variant'] ?? get_field('tt_button_color_variant') ?: 'primary',
             'badge_color_variant' => $block_data['tt_badge_color_variant'] ?? get_field('tt_badge_color_variant') ?: 'secondary',
         ];

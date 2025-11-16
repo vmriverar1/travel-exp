@@ -31,6 +31,7 @@ $tabs_style = $appearance['tabs_style'] ?? 'pills';
 $tabs_alignment = $appearance['tabs_alignment'] ?? 'center';
 $cards_per_row = $appearance['cards_per_row'] ?? 3;
 $card_gap = $appearance['card_gap'] ?? 24;
+$card_height_desktop = $appearance['card_height_desktop'] ?? 450;
 $button_color_variant = $appearance['button_color_variant'] ?? 'primary';
 $badge_color_variant = $appearance['badge_color_variant'] ?? 'secondary';
 
@@ -77,7 +78,7 @@ $classes = [
 <section
     id="<?php echo esc_attr($block_id); ?>"
     class="<?php echo esc_attr(implode(' ', $classes)); ?>"
-    style="--cards-per-row: <?php echo esc_attr($cards_per_row); ?>; --card-gap: <?php echo esc_attr($card_gap); ?>px; --card-height: <?php echo esc_attr($card_height); ?>px;"
+    style="--cards-per-row: <?php echo esc_attr($cards_per_row); ?>; --card-gap: <?php echo esc_attr($card_gap); ?>px; --card-height: <?php echo esc_attr($card_height); ?>px; --card-height-desktop: <?php echo esc_attr($card_height_desktop); ?>px;"
     data-tabs-count="<?php echo count($tabs); ?>"
     data-slider-autoplay="<?php echo $autoplay ? '1' : '0'; ?>"
     data-slider-delay="<?php echo esc_attr($autoplay_delay); ?>"

@@ -348,16 +348,17 @@ class PackageGeneral extends FieldGroup
                     'key' => 'field_package_days',
                     'label' => 'Days',
                     'name' => 'days',
-                    'type' => 'taxonomy',
-                    'taxonomy' => 'day', // tu taxonomía registrada en Days.php
-                    'field_type' => 'select', // muestra tipo “select”
-                    'allow_null' => 0,
-                    'add_term' => 0, // no permitir crear nuevos términos desde el campo
-                    'load_save_terms' => 1, // sincroniza con WP
-                    'return_format' => 'id', // puede ser 'object' o 'id'
-                    'multiple' => 0, // solo un valor permitido
+                    'type' => 'select',
+                    'instructions' => 'Select the number of days (1-38).',
                     'required' => 1,
-                    'instructions' => 'Select duration or number of days (2h, 4h, Half Day, Full Day, 1–38).',
+                    'choices' => array_combine(
+                        range(1, 38),
+                        array_map(function($n) { return $n . ($n === 1 ? ' Day' : ' Days'); }, range(1, 38))
+                    ),
+                    'default_value' => 1,
+                    'ui' => 1,
+                    'ajax' => 1,
+                    'allow_null' => 0,
                     'wrapper' => ['width' => 25],
                 ],
 
