@@ -2,6 +2,7 @@
 namespace Travel\Blocks\Blocks\Package;
 
 use Travel\Blocks\Helpers\EditorHelper;
+use Travel\Blocks\Helpers\ContentQueryHelper;
 
 class RelatedPackages
 {
@@ -220,171 +221,9 @@ class RelatedPackages
                 // ========================================
                 // TAB 3: 🔍 Contenido Dinámico
                 // ========================================
-                [
-                    'key' => 'field_rp_tab_content',
-                    'label' => '🔍 Contenido Dinámico',
-                    'type' => 'tab',
-                ],
-                [
-                    'key' => 'field_rp_post_type',
-                    'label' => 'Post Type',
-                    'name' => 'post_type',
-                    'type' => 'select',
-                    'instructions' => 'Select which post type to display',
-                    'choices' => [
-                        'package' => 'Packages',
-                        'post' => 'Blog Posts',
-                    ],
-                    'default_value' => 'package',
-                    'ui' => 1,
-                ],
-                [
-                    'key' => 'field_rp_posts_per_page',
-                    'label' => 'Number of Items',
-                    'name' => 'posts_per_page',
-                    'type' => 'number',
-                    'instructions' => 'How many items to display',
-                    'default_value' => 3,
-                    'min' => 1,
-                    'max' => 12,
-                ],
-                [
-                    'key' => 'field_rp_order_by',
-                    'label' => 'Order By',
-                    'name' => 'order_by',
-                    'type' => 'select',
-                    'instructions' => 'How to order the items',
-                    'choices' => [
-                        'date' => 'Date Published',
-                        'modified' => 'Date Modified',
-                        'title' => 'Title',
-                        'rand' => 'Random',
-                        'featured' => '⭐ Most Popular',
-                        'menu_order' => 'Menu Order',
-                    ],
-                    'default_value' => 'date',
-                    'ui' => 1,
-                ],
-                [
-                    'key' => 'field_rp_order',
-                    'label' => 'Order',
-                    'name' => 'order',
-                    'type' => 'select',
-                    'instructions' => 'Ascending or descending order',
-                    'choices' => [
-                        'DESC' => 'Descending',
-                        'ASC' => 'Ascending',
-                    ],
-                    'default_value' => 'DESC',
-                    'ui' => 1,
-                ],
-                [
-                    'key' => 'field_rp_filter_by_taxonomy',
-                    'label' => 'Filter by Related Taxonomy',
-                    'name' => 'filter_by_taxonomy',
-                    'type' => 'true_false',
-                    'instructions' => 'Show posts with similar categories/taxonomies to the current post',
-                    'default_value' => 1,
-                    'ui' => 1,
-                ],
-                [
-                    'key' => 'field_rp_specific_taxonomy',
-                    'label' => 'Specific Taxonomy',
-                    'name' => 'specific_taxonomy',
-                    'type' => 'select',
-                    'instructions' => 'Filter by a specific taxonomy (leave empty for automatic detection)',
-                    'choices' => [
-                        '' => 'Auto-detect from current post',
-                        'destinations' => 'Destinations',
-                        'package_category' => 'Package Category',
-                        'category' => 'Blog Category',
-                        'post_tag' => 'Blog Tags',
-                    ],
-                    'allow_null' => 1,
-                    'ui' => 1,
-                    'conditional_logic' => [
-                        [
-                            [
-                                'field' => 'field_rp_filter_by_taxonomy',
-                                'operator' => '==',
-                                'value' => '1',
-                            ],
-                        ],
-                    ],
-                ],
-                [
-                    'key' => 'field_rp_specific_terms',
-                    'label' => 'Specific Terms',
-                    'name' => 'specific_terms',
-                    'type' => 'text',
-                    'instructions' => 'Comma-separated term IDs to filter by (leave empty to use current post terms)',
-                    'placeholder' => 'e.g., 12,34,56',
-                    'conditional_logic' => [
-                        [
-                            [
-                                'field' => 'field_rp_filter_by_taxonomy',
-                                'operator' => '==',
-                                'value' => '1',
-                            ],
-                        ],
-                    ],
-                ],
-                [
-                    'key' => 'field_rp_display_fields_package',
-                    'label' => '👁️ Display Fields (Packages)',
-                    'name' => 'display_fields',
-                    'type' => 'checkbox',
-                    'instructions' => 'Select which fields to display on package cards',
-                    'conditional_logic' => [
-                        [
-                            [
-                                'field' => 'field_rp_post_type',
-                                'operator' => '==',
-                                'value' => 'package',
-                            ],
-                        ],
-                    ],
-                    'choices' => [
-                        'featured_image' => '🖼️ Featured Image',
-                        'destination' => '🏷️ Destination Badge',
-                        'title' => '📝 Title',
-                        'excerpt' => '📄 Description/Excerpt',
-                        'location' => '📍 Location',
-                        'duration' => '⏱️ Duration (e.g., "7 Days")',
-                        'price' => '💰 Price (e.g., "From $1,145")',
-                        'button' => '🔘 View Details Button',
-                    ],
-                    'default_value' => ['featured_image', 'destination', 'title', 'excerpt', 'location', 'duration', 'price', 'button'],
-                    'layout' => 'vertical',
-                    'toggle' => 1,
-                ],
-                [
-                    'key' => 'field_rp_display_fields_post',
-                    'label' => '👁️ Display Fields (Blog Posts)',
-                    'name' => 'display_fields',
-                    'type' => 'checkbox',
-                    'instructions' => 'Select which fields to display on blog post cards',
-                    'conditional_logic' => [
-                        [
-                            [
-                                'field' => 'field_rp_post_type',
-                                'operator' => '==',
-                                'value' => 'post',
-                            ],
-                        ],
-                    ],
-                    'choices' => [
-                        'featured_image' => '🖼️ Featured Image',
-                        'destination' => '🏷️ Category Badge',
-                        'title' => '📝 Title',
-                        'excerpt' => '📄 Excerpt/Description',
-                        'duration' => '📅 Publication Date',
-                        'button' => '🔘 View Details Button',
-                    ],
-                    'default_value' => ['featured_image', 'destination', 'title', 'excerpt', 'duration', 'button'],
-                    'layout' => 'vertical',
-                    'toggle' => 1,
-                ],
+                // Use ContentQueryHelper standard fields
+                ...ContentQueryHelper::get_dynamic_content_fields('rp'),
+                ...ContentQueryHelper::get_filter_fields('rp'),
 
                 // ========================================
                 // TAB 4: ⚙️ Slider (Mobile)
@@ -548,66 +387,42 @@ class RelatedPackages
                 $acf_slider_show_dots = true;
             }
 
-            // Get display fields selection
-            $display_fields = get_field('display_fields');
-            if (empty($display_fields) || !is_array($display_fields)) {
-                $display_fields = ['featured_image', 'destination', 'title', 'excerpt', 'location', 'duration', 'price', 'button'];
+            // Get content using ContentQueryHelper
+            $dynamic_source = get_field('rp_dynamic_source') ?: 'package';
+
+            if ($is_preview) {
+                $packages = $this->get_preview_data($dynamic_source);
+            } elseif ($dynamic_source === 'package') {
+                $packages = ContentQueryHelper::get_content('rp', 'package');
+            } elseif ($dynamic_source === 'post') {
+                $packages = ContentQueryHelper::get_content('rp', 'post');
+            } elseif ($dynamic_source === 'deal') {
+                $deal_id = get_field('rp_deal_selector');
+                $packages = $deal_id ? ContentQueryHelper::get_deal_packages($deal_id, 'rp') : [];
+            } else {
+                $packages = [];
             }
 
-            // Convert to boolean flags
-            $acf_show_image = in_array('featured_image', $display_fields);
-            $acf_show_destination = in_array('destination', $display_fields);
+            // Get display fields from ContentQueryHelper standard field
+            $display_fields = get_field('rp_dynamic_visible_fields') ?: [];
+
+            // Convert ContentQueryHelper field names to boolean flags for template compatibility
+            $acf_show_image = in_array('image', $display_fields);
+            $acf_show_destination = in_array('category', $display_fields);
             $acf_show_title = in_array('title', $display_fields);
-            $acf_show_excerpt = in_array('excerpt', $display_fields);
+            $acf_show_excerpt = in_array('description', $display_fields);
             $acf_show_location = in_array('location', $display_fields);
             $acf_show_duration = in_array('duration', $display_fields);
             $acf_show_price = in_array('price', $display_fields);
-            $acf_show_button = in_array('button', $display_fields);
+            $acf_show_button = true; // Always show button (controlled by template)
 
-            $acf_post_type = get_field('post_type') ?: 'package';
-            $acf_posts_per_page = get_field('posts_per_page') ?: 3;
-            $acf_order_by = get_field('order_by') ?: 'date';
-            $acf_order = get_field('order') ?: 'DESC';
-            $acf_filter_by_taxonomy = get_field('filter_by_taxonomy');
-            if ($acf_filter_by_taxonomy === null) {
-                $acf_filter_by_taxonomy = true;
-            }
-            $acf_specific_taxonomy = get_field('specific_taxonomy') ?: '';
-            $acf_specific_terms = get_field('specific_terms') ?: '';
-
-            // Parse specific terms if provided
-            $specific_terms_array = [];
-            if (!empty($acf_specific_terms)) {
-                $specific_terms_array = array_map('intval', array_map('trim', explode(',', $acf_specific_terms)));
-            }
-
-            $config = [
-                'post_type' => $acf_post_type,
-                'posts_per_page' => intval($acf_posts_per_page),
-                'order_by' => $acf_order_by,
-                'order' => $acf_order,
-                'filter_by_taxonomy' => (bool)$acf_filter_by_taxonomy,
-                'specific_taxonomy' => $acf_specific_taxonomy,
-                'specific_terms' => $specific_terms_array,
-            ];
-
-            $packages = $is_preview ? $this->get_preview_data($acf_post_type) : $this->get_post_data($post_id, $config);
+            $acf_post_type = $dynamic_source;
 
             if (empty($packages)) {
                 // Show helpful message in editor when no results found
                 if ($is_preview) {
-                    $post_type_label = $acf_post_type === 'post' ? __('blog posts', 'travel-blocks') : __('packages', 'travel-blocks');
-                    $filter_info = '';
-
-                    if ($acf_order_by === 'featured') {
-                        $filter_info = sprintf(
-                            __('No featured %s found. Mark some %s as featured to display them here.', 'travel-blocks'),
-                            $post_type_label,
-                            $post_type_label
-                        );
-                    } else {
-                        $filter_info = sprintf(__('No %s found matching the current filters.', 'travel-blocks'), $post_type_label);
-                    }
+                    $post_type_label = $dynamic_source === 'post' ? __('blog posts', 'travel-blocks') : __('packages', 'travel-blocks');
+                    $filter_info = sprintf(__('No %s found matching the current filters.', 'travel-blocks'), $post_type_label);
 
                     echo '<div style="padding: 20px; background: #f0f0f0; border-left: 4px solid #ff9800; margin: 20px 0;">';
                     echo '<p style="margin: 0; color: #333;"><strong>⚠️ ' . __('No results', 'travel-blocks') . ':</strong> ' . esc_html($filter_info) . '</p>';
@@ -736,160 +551,6 @@ class RelatedPackages
         ];
     }
 
-    private function get_post_data(int $post_id, array $config): array
-    {
-        $post_type = $config['post_type'] ?? 'package';
-        $posts_per_page = $config['posts_per_page'] ?? 3;
-        $order_by = $config['order_by'] ?? 'date';
-        $order = $config['order'] ?? 'DESC';
-        $filter_by_taxonomy = $config['filter_by_taxonomy'] ?? true;
-        $specific_taxonomy = $config['specific_taxonomy'] ?? '';
-        $specific_terms = $config['specific_terms'] ?? [];
-
-        // Build query args
-        $args = [
-            'post_type' => $post_type,
-            'posts_per_page' => $posts_per_page,
-            'post_status' => 'publish',
-            'orderby' => $order_by === 'featured' ? 'date' : $order_by,
-            'order' => $order,
-        ];
-
-        // Exclude current post only if we have a valid post ID
-        if ($post_id > 0) {
-            $args['post__not_in'] = [$post_id];
-        }
-
-        // Filter by featured posts if selected
-        if ($order_by === 'featured') {
-            $args['meta_query'] = [
-                [
-                    'key' => 'is_featured',
-                    'value' => '1',
-                    'compare' => '='
-                ]
-            ];
-        }
-
-        // Handle taxonomy filtering
-        if ($filter_by_taxonomy && $post_id > 0) {
-            $tax_query = ['relation' => 'OR'];
-            $has_tax_filters = false;
-
-            // If specific terms are provided, use them
-            if (!empty($specific_terms) && !empty($specific_taxonomy)) {
-                $tax_query[] = [
-                    'taxonomy' => $specific_taxonomy,
-                    'field' => 'term_id',
-                    'terms' => $specific_terms,
-                ];
-                $has_tax_filters = true;
-            } else {
-                // Auto-detect taxonomies based on post type and current post
-                $taxonomies_to_check = [];
-
-                if ($post_type === 'package') {
-                    $taxonomies_to_check = ['destinations', 'package_category'];
-                } elseif ($post_type === 'post') {
-                    $taxonomies_to_check = ['category', 'post_tag'];
-                }
-
-                // If specific taxonomy is set, only use that one
-                if (!empty($specific_taxonomy)) {
-                    $taxonomies_to_check = [$specific_taxonomy];
-                }
-
-                // Get terms from current post for each taxonomy
-                foreach ($taxonomies_to_check as $taxonomy) {
-                    $terms = wp_get_post_terms($post_id, $taxonomy, ['fields' => 'ids']);
-                    if (!is_wp_error($terms) && !empty($terms)) {
-                        $tax_query[] = [
-                            'taxonomy' => $taxonomy,
-                            'field' => 'term_id',
-                            'terms' => $terms,
-                        ];
-                        $has_tax_filters = true;
-                    }
-                }
-            }
-
-            if ($has_tax_filters) {
-                $args['tax_query'] = $tax_query;
-            }
-        }
-
-        // Execute query
-        $query = new \WP_Query($args);
-        $items = [];
-
-        if ($query->have_posts()) {
-            while ($query->have_posts()) {
-                $query->the_post();
-                $item_id = get_the_ID();
-
-                // Build item data based on post type
-                if ($post_type === 'package') {
-                    $items[] = $this->build_package_item($item_id);
-                } else {
-                    $items[] = $this->build_post_item($item_id);
-                }
-            }
-            wp_reset_postdata();
-        }
-
-        return $items;
-    }
-
-    private function build_package_item(int $package_id): array
-    {
-        // Get price with fallbacks
-        $price = get_field('price_offer', $package_id);
-        if (empty($price)) $price = get_field('price_from', $package_id);
-        if (empty($price)) $price = get_field('price_normal', $package_id);
-
-        // Get destination
-        $destination_name = '';
-        $destinations = wp_get_post_terms($package_id, 'destinations', ['fields' => 'all']);
-        if (!is_wp_error($destinations) && !empty($destinations)) {
-            $destination_name = $destinations[0]->name;
-        }
-
-        // Get location/starting point
-        $location = get_field('starting_point', $package_id) ?: '';
-
-        return [
-            'id' => $package_id,
-            'title' => get_the_title(),
-            'permalink' => get_permalink(),
-            'featured_image' => get_the_post_thumbnail_url($package_id, 'large'),
-            'price' => floatval($price),
-            'duration' => get_field('duration', $package_id),
-            'destination' => $destination_name,
-            'location' => $location,
-            'excerpt' => get_the_excerpt(),
-        ];
-    }
-
-    private function build_post_item(int $post_id): array
-    {
-        // Get category
-        $category_name = '';
-        $categories = get_the_category($post_id);
-        if (!empty($categories)) {
-            $category_name = $categories[0]->name;
-        }
-
-        return [
-            'id' => $post_id,
-            'title' => get_the_title(),
-            'permalink' => get_permalink(),
-            'featured_image' => get_the_post_thumbnail_url($post_id, 'large'),
-            'price' => 0, // Blog posts don't have prices
-            'duration' => get_the_date('', $post_id), // Use publish date instead
-            'destination' => $category_name, // Use category as "destination"
-            'excerpt' => get_the_excerpt(),
-        ];
-    }
 
     protected function load_template(string $template_name, array $data = []): void
     {
