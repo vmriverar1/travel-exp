@@ -727,7 +727,7 @@ class TaxonomyTabs extends BlockBase
         $slider = $this->get_slider_settings($block_data);
 
         // 6. Prepare template data
-        $data = $this->prepare_template_data($block, $tabs, $appearance, $slider, $is_preview, $block_data);
+        $data = $this->prepare_template_data($block, $tabs, $appearance, $slider, $is_preview, $block_data, $content);
 
         // 7. Load template
         $template = TRAVEL_BLOCKS_PATH . 'templates/taxonomy-tabs.php';
@@ -1146,17 +1146,19 @@ class TaxonomyTabs extends BlockBase
      * - Slider settings (mobile)
      * - Display fields configuration
      * - Preview mode status
+     * - InnerBlocks content
      *
-     * @param array $block      Block settings from Gutenberg
-     * @param array $tabs       Tabs array with cards data
-     * @param array $appearance Appearance settings
-     * @param array $slider     Slider settings
-     * @param bool  $is_preview Whether in editor preview mode
-     * @param array $block_data Block data for additional fields
+     * @param array  $block      Block settings from Gutenberg
+     * @param array  $tabs       Tabs array with cards data
+     * @param array  $appearance Appearance settings
+     * @param array  $slider     Slider settings
+     * @param bool   $is_preview Whether in editor preview mode
+     * @param array  $block_data Block data for additional fields
+     * @param string $content    InnerBlocks content
      *
      * @return array Complete template data
      */
-    private function prepare_template_data(array $block, array $tabs, array $appearance, array $slider, bool $is_preview, array $block_data): array
+    private function prepare_template_data(array $block, array $tabs, array $appearance, array $slider, bool $is_preview, array $block_data, string $content = ''): array
     {
         // Get tabs style for wrapper class
         $tabs_style = $appearance['tabs_style'];
@@ -1189,6 +1191,7 @@ class TaxonomyTabs extends BlockBase
                 'display_fields_packages' => $display_fields_packages,
                 'display_fields_posts' => $display_fields_posts,
                 'is_preview' => $is_preview || $preview_mode,
+                'content' => $content,
             ],
             $appearance,
             $slider

@@ -17,6 +17,7 @@ $button_color_variant = $data['button_color_variant'] ?? 'primary';
 $badge_color_variant = $data['badge_color_variant'] ?? 'secondary';
 $block_id = $data['block_id'] ?? 'tt-' . uniqid();
 $is_preview = $data['is_preview'] ?? false;
+$content = $data['content'] ?? '';
 
 // Slider settings (mobile)
 $card_height = $data['card_height'] ?? 450;
@@ -111,6 +112,13 @@ $classes = [
                 aria-labelledby="tt-tab-<?php echo esc_attr($block_id); ?>-<?php echo esc_attr($tab['slug']); ?>"
                 id="tt-panel-<?php echo esc_attr($block_id); ?>-<?php echo esc_attr($tab['slug']); ?>"
                 data-panel-index="<?php echo $index; ?>">
+
+                <!-- InnerBlocks Content -->
+                <?php if (!empty($content)): ?>
+                    <div class="tt-innerblocks-content">
+                        <?php echo $content; ?>
+                    </div>
+                <?php endif; ?>
 
                 <!-- Cards Grid / Slider Container -->
                 <?php if (!empty($tab['cards'])): ?>
