@@ -4,29 +4,54 @@
  *
  * Organiza cards por taxonomías/categorías en tabs navegables
  *
- * @var array $data Block data and settings
+ * @var array $block Block settings from ACF
+ * @var string $content InnerBlocks content
+ * @var bool $is_preview Whether in editor preview
+ * @var int $post_id Current post ID
  */
 
-// Get data
+// Get the TaxonomyTabs instance
+$taxonomy_tabs_instance = $GLOBALS['taxonomy_tabs_instance'] ?? null;
+
+if (!$taxonomy_tabs_instance) {
+    echo '<div style="padding: 20px; background: #f0f0f0; border: 2px dashed #ccc; text-align: center;">';
+    echo '<p>Error: TaxonomyTabs instance not found.</p>';
+    echo '</div>';
+    return;
+}
+
+// Get processed data from the instance
+$data = $taxonomy_tabs_instance->get_template_data($block);
 $tabs = $data['tabs'] ?? [];
-$tabs_style = $data['tabs_style'] ?? 'pills';
-$tabs_alignment = $data['tabs_alignment'] ?? 'center';
-$cards_per_row = $data['cards_per_row'] ?? 3;
-$card_gap = $data['card_gap'] ?? 24;
-$button_color_variant = $data['button_color_variant'] ?? 'primary';
-$badge_color_variant = $data['badge_color_variant'] ?? 'secondary';
-$block_id = $data['block_id'] ?? 'tt-' . uniqid();
-$is_preview = $data['is_preview'] ?? false;
-$content = $data['content'] ?? '';
+$appearance = $data['appearance'] ?? [];
+$slider = $data['slider'] ?? [];
+
+// Appearance settings
+$tabs_style = $appearance['tabs_style'] ?? 'pills';
+$tabs_alignment = $appearance['tabs_alignment'] ?? 'center';
+$cards_per_row = $appearance['cards_per_row'] ?? 3;
+$card_gap = $appearance['card_gap'] ?? 24;
+$button_color_variant = $appearance['button_color_variant'] ?? 'primary';
+$badge_color_variant = $appearance['badge_color_variant'] ?? 'secondary';
 
 // Slider settings (mobile)
-$card_height = $data['card_height'] ?? 450;
-$show_arrows = $data['show_arrows'] ?? true;
-$arrows_position = $data['arrows_position'] ?? 'sides';
-$show_dots = $data['show_dots'] ?? true;
-$autoplay = $data['autoplay'] ?? false;
-$autoplay_delay = $data['autoplay_delay'] ?? 5000;
-$slider_speed = $data['slider_speed'] ?? 0.4;
+$card_height = $slider['card_height'] ?? 450;
+$show_arrows = $slider['show_arrows'] ?? true;
+$arrows_position = $slider['arrows_position'] ?? 'sides';
+$show_dots = $slider['show_dots'] ?? true;
+$autoplay = $slider['autoplay'] ?? false;
+$autoplay_delay = $slider['autoplay_delay'] ?? 5000;
+$slider_speed = $slider['slider_speed'] ?? 0.4;
+
+// Block settings
+$block_id = 'tt-' . ($block['id'] ?? uniqid());
+$align = $block['align'] ?? 'wide';
+
+// Wrapper classes
+$wrapper_classes = ['taxonomy-tabs-wrapper'];
+if ($tabs_style === 'hero-overlap') {
+    $wrapper_classes[] = 'taxonomy-tabs-wrapper--hero-overlap';
+}
 
 // If no tabs, show message
 if (empty($tabs)) {
@@ -44,11 +69,11 @@ $classes = [
     'taxonomy-tabs--' . $tabs_style,
     'taxonomy-tabs--align-' . $tabs_alignment,
     'arrows-' . $arrows_position,
-    'align' . $data['align'],
+    'align' . $align,
 ];
 ?>
 
-<div <?php echo $data['block_wrapper_attributes']; ?>>
+<div class="<?php echo esc_attr(implode(' ', $wrapper_classes)); ?>">
 <section
     id="<?php echo esc_attr($block_id); ?>"
     class="<?php echo esc_attr(implode(' ', $classes)); ?>"
@@ -103,6 +128,11 @@ $classes = [
         </div>
     </div>
 
+    <!-- InnerBlocks Content (antes de los tabs) -->
+    <div class="tt-innerblocks-content">
+        <InnerBlocks />
+    </div>
+
     <!-- Tabs Content -->
     <div class="tt-panels">
         <?php foreach ($tabs as $index => $tab): ?>
@@ -112,13 +142,6 @@ $classes = [
                 aria-labelledby="tt-tab-<?php echo esc_attr($block_id); ?>-<?php echo esc_attr($tab['slug']); ?>"
                 id="tt-panel-<?php echo esc_attr($block_id); ?>-<?php echo esc_attr($tab['slug']); ?>"
                 data-panel-index="<?php echo $index; ?>">
-
-                <!-- InnerBlocks Content -->
-                <?php if (!empty($content)): ?>
-                    <div class="tt-innerblocks-content">
-                        <?php echo $content; ?>
-                    </div>
-                <?php endif; ?>
 
                 <!-- Cards Grid / Slider Container -->
                 <?php if (!empty($tab['cards'])): ?>
@@ -147,7 +170,7 @@ $classes = [
                             ? $card['image']['url']
                             : 'https://picsum.photos/800/600?random=' . ($card_index + 1);
 
-                        $title = $card['title'] ?? __('Sin título', 'travel-blocks');
+                        $title = $card['title'] ?? '';
                         $excerpt = $card['excerpt'] ?? $card['description'] ?? '';
 
                         // Handle link

@@ -88,14 +88,40 @@ class TaxonomyTabs extends BlockBase
     /**
      * Register block and ACF fields.
      *
-     * ✅ REFACTORED: Now uses parent::register() from BlockBase
+     * ✅ REFACTORED: Override parent to use render_template for InnerBlocks support
      * ✅ FIXED: Removed duplicate asset registration
      *
      * @return void
      */
     public function register(): void
     {
-        parent::register();
+        // Store instance globally for template access
+        $GLOBALS['taxonomy_tabs_instance'] = $this;
+
+        // Register ACF block with render_template for InnerBlocks support
+        // Note: We don't use parent::register() because we need render_template instead of render_callback
+        if (function_exists('acf_register_block_type')) {
+            $block_config = [
+                'name' => $this->name,
+                'title' => $this->title,
+                'description' => $this->description,
+                'category' => is_array($this->category) ? $this->category[0] : ($this->category ?? 'common'),
+                'icon' => $this->icon ?? 'tagcloud',
+                'keywords' => $this->keywords ?? ['tabs', 'taxonomy', 'categories'],
+                'supports' => $this->supports,
+                'render_template' => TRAVEL_BLOCKS_PATH . 'templates/taxonomy-tabs.php',
+                'enqueue_assets' => [$this, 'enqueue_assets'],
+                'api_version' => 2,
+            ];
+
+            // Add mode if set
+            if (!empty($this->mode)) {
+                $block_config['mode'] = $this->mode;
+            }
+
+            acf_register_block_type($block_config);
+        }
+
         $this->register_fields();
     }
 
@@ -128,6 +154,7 @@ class TaxonomyTabs extends BlockBase
         $fields = array_merge(
             $this->get_general_tab_fields(),
             $this->get_taxonomies_tab_fields(),
+            $dynamic_fields,
             $filter_fields,
             $this->get_appearance_tab_fields(),
             $this->get_slider_settings_fields()
@@ -646,6 +673,31 @@ class TaxonomyTabs extends BlockBase
                 'step' => 0.1,
                 'append' => 'segundos',
             ],
+        ];
+    }
+
+    /**
+     * Get template data for rendering.
+     *
+     * PUBLIC method that can be called from the template to get all processed data.
+     *
+     * @param array $block Block settings and attributes
+     *
+     * @return array Complete template data
+     */
+    public function get_template_data(array $block): array
+    {
+        // Extract block data and prepare template variables
+        $block_data = $this->extract_block_data($block);
+        $selected_items = $this->collect_selected_items($block_data);
+        $tabs = $this->build_tabs_array($selected_items, $block_data);
+        $appearance = $this->get_appearance_settings($block_data);
+        $slider = $this->get_slider_settings($block_data);
+
+        return [
+            'tabs' => $tabs,
+            'appearance' => $appearance,
+            'slider' => $slider,
         ];
     }
 
