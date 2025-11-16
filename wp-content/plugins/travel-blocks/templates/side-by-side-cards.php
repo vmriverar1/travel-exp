@@ -32,6 +32,7 @@ $text_alignment = $data['text_alignment'] ?? 'left';
 $button_alignment = $data['button_alignment'] ?? 'left';
 $grid_columns = $data['grid_columns'] ?? 3;
 $card_gap = $data['card_gap'] ?? 32;
+$card_min_height = $data['card_min_height'] ?? 450;
 $hover_effect = $data['hover_effect'] ?? 'squeeze';
 
 // Slider settings
@@ -60,7 +61,7 @@ $block_id = $data['block_id'] ?? 'sbs-' . uniqid();
     class="<?php echo esc_attr(implode(' ', $classes)); ?>"
     data-slider-autoplay="<?php echo $autoplay ? '1' : '0'; ?>"
     data-slider-delay="<?php echo esc_attr($autoplay_delay); ?>"
-    style="--image-width: <?php echo esc_attr($image_width); ?>%; --image-border-radius: <?php echo esc_attr($image_border_radius); ?>px; --card-gap: <?php echo esc_attr($card_gap); ?>px; --grid-columns: <?php echo esc_attr($grid_columns); ?>;">
+    style="--image-width: <?php echo esc_attr($image_width); ?>%; --image-border-radius: <?php echo esc_attr($image_border_radius); ?>px; --card-gap: <?php echo esc_attr($card_gap); ?>px; --card-min-height: <?php echo esc_attr($card_min_height); ?>px; --grid-columns: <?php echo esc_attr($grid_columns); ?>;">
 
     <!-- Wrapper -->
     <div class="sbs-wrapper">

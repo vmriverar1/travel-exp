@@ -163,6 +163,18 @@ class PackagesByLocation
                     'layout' => 'vertical',
                     'toggle' => 1,
                 ],
+                [
+                    'key' => 'field_pbl_card_min_height',
+                    'label' => '📏 Altura Mínima de Cards',
+                    'name' => 'card_min_height',
+                    'type' => 'range',
+                    'instructions' => 'Altura mínima de las cards. Las cards crecerán si el contenido es mayor.',
+                    'default_value' => 450,
+                    'min' => 300,
+                    'max' => 800,
+                    'step' => 10,
+                    'append' => 'px',
+                ],
             ],
             'location' => [
                 [
@@ -222,6 +234,7 @@ class PackagesByLocation
         $show_category = in_array('category', $visible_fields);
         $show_location = in_array('location', $visible_fields);
         $excerpt_length = 20; // Default excerpt length
+        $card_min_height = (int)(get_field('card_min_height') ?: 450);
 
         // Get current page for pagination
         $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
@@ -274,7 +287,7 @@ class PackagesByLocation
 
                                 <?php if ($show_image && has_post_thumbnail()): ?>
                                     <a href="<?php the_permalink(); ?>">
-                                        <?php the_post_thumbnail('large', ['style' => 'width:100%;height:250px;object-fit:cover']); ?>
+                                        <?php the_post_thumbnail('large', ['style' => 'width:100%;height:' . esc_attr($card_min_height) . 'px;object-fit:cover']); ?>
                                     </a>
                                 <?php endif; ?>
 

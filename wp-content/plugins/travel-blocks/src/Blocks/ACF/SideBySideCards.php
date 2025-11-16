@@ -381,6 +381,18 @@ class SideBySideCards extends BlockBase
                         'append' => 'px',
                     ],
                     [
+                        'key' => 'field_sbs_card_min_height',
+                        'label' => __('📏 Altura Mínima de Cards', 'travel-blocks'),
+                        'name' => 'card_min_height',
+                        'type' => 'range',
+                        'instructions' => __('Altura mínima de las cards. Las cards crecerán si el contenido es mayor.', 'travel-blocks'),
+                        'default_value' => 450,
+                        'min' => 300,
+                        'max' => 800,
+                        'step' => 10,
+                        'append' => 'px',
+                    ],
+                    [
                         'key' => 'field_sbs_hover_effect',
                         'label' => __('✨ Efecto Hover (Desktop)', 'travel-blocks'),
                         'name' => 'hover_effect',
@@ -597,6 +609,7 @@ class SideBySideCards extends BlockBase
             // Grid settings
             $grid_columns = (int)(get_field('grid_columns') ?: 3);
             $card_gap = (int)(get_field('card_gap') ?: 32);
+            $card_min_height = (int)(get_field('card_min_height') ?: 450);
             $hover_effect = get_field('hover_effect') ?: 'squeeze';
 
             // Block attributes
@@ -622,6 +635,7 @@ class SideBySideCards extends BlockBase
                 'show_favorite' => $show_favorite,
                 'grid_columns' => $grid_columns,
                 'card_gap' => $card_gap,
+                'card_min_height' => $card_min_height,
                 'hover_effect' => $hover_effect,
                 'is_preview' => $is_preview,
                 'block' => $block,
