@@ -83,6 +83,9 @@ class TaxonomyTabs extends BlockBase
         add_filter('acf/load_field/name=tt_selected_terms_category', [$this, 'load_category_choices']);
         add_filter('acf/load_field/name=tt_selected_terms_post_tag', [$this, 'load_post_tag_choices']);
         add_filter('acf/load_field/key=field_tt_override_term_id', [$this, 'load_selected_terms_for_override']);
+
+        // ✅ Ensure assets are loaded in block editor
+        add_action('enqueue_block_editor_assets', [$this, 'enqueue_assets']);
     }
 
     /**
@@ -111,6 +114,7 @@ class TaxonomyTabs extends BlockBase
                 'supports' => $this->supports,
                 'render_template' => TRAVEL_BLOCKS_PATH . 'templates/taxonomy-tabs.php',
                 'enqueue_assets' => [$this, 'enqueue_assets'],
+                'enqueue_style' => TRAVEL_BLOCKS_URL . 'assets/blocks/taxonomy-tabs.css',
                 'api_version' => 2,
             ];
 
@@ -538,6 +542,16 @@ class TaxonomyTabs extends BlockBase
                 'max' => 700,
                 'step' => 10,
                 'append' => 'px',
+            ],
+            [
+                'key' => 'field_tt_show_favorite',
+                'label' => __('❤️ Mostrar Botón Favoritos', 'travel-blocks'),
+                'name' => 'show_favorite',
+                'type' => 'true_false',
+                'required' => 0,
+                'default_value' => 1,
+                'ui' => 1,
+                'instructions' => __('Mostrar botón de corazón en la esquina superior derecha', 'travel-blocks'),
             ],
             [
                 'key' => 'field_tt_button_color_variant',
@@ -1257,6 +1271,7 @@ class TaxonomyTabs extends BlockBase
                 'display_fields_posts' => $display_fields_posts,
                 'is_preview' => $is_preview || $preview_mode,
                 'content' => $content,
+                'show_favorite' => get_field('show_favorite') ?? true,
             ],
             $appearance,
             $slider

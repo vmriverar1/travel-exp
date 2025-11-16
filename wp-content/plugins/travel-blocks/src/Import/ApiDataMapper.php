@@ -203,27 +203,49 @@ class ApiDataMapper
     // ============================================
 
     /**
-     * Sanitize plain text
+     * Sanitize plain text without wptexturize
      */
     private function sanitize_text(string $text): string
     {
-        return sanitize_text_field($text);
+        // Temporarily disable wptexturize to prevent -- becoming –
+        remove_filter('sanitize_text_field', 'wptexturize');
+        $sanitized = sanitize_text_field($text);
+        add_filter('sanitize_text_field', 'wptexturize');
+
+        return $sanitized;
     }
 
     /**
-     * Sanitize textarea
+     * Sanitize textarea without wptexturize
      */
     private function sanitize_textarea(string $text): string
     {
-        return sanitize_textarea_field($text);
+        // Temporarily disable wptexturize to prevent -- becoming –
+        remove_filter('sanitize_textarea_field', 'wptexturize');
+        $sanitized = sanitize_textarea_field($text);
+        add_filter('sanitize_textarea_field', 'wptexturize');
+
+        return $sanitized;
     }
 
     /**
-     * Sanitize HTML content
+     * Sanitize HTML content without wptexturize
      */
     private function sanitize_html(string $html): string
     {
-        return wp_kses_post($html);
+        // Temporarily disable wptexturize to prevent -- becoming –
+        $priority = has_filter('the_content', 'wptexturize');
+        if ($priority !== false) {
+            remove_filter('the_content', 'wptexturize', $priority);
+        }
+
+        $sanitized = wp_kses_post($html);
+
+        if ($priority !== false) {
+            add_filter('the_content', 'wptexturize', $priority);
+        }
+
+        return $sanitized;
     }
 
     /**
@@ -513,7 +535,14 @@ class ApiDataMapper
         }
 
         // 4. No match found, create new term
+        // Temporarily disable wptexturize to prevent -- becoming –
+        remove_filter('sanitize_text_field', 'wptexturize');
+        remove_filter('sanitize_textarea_field', 'wptexturize');
+
         $result = wp_insert_term($term_name, $taxonomy);
+
+        add_filter('sanitize_text_field', 'wptexturize');
+        add_filter('sanitize_textarea_field', 'wptexturize');
 
         if (is_wp_error($result)) {
             // Check if error is "term already exists"
@@ -643,12 +672,21 @@ class ApiDataMapper
         }
 
         // 5. No match found, create new location
+        // Temporarily disable wptexturize to prevent -- becoming –
+        remove_filter('sanitize_text_field', 'wptexturize');
+        remove_filter('sanitize_textarea_field', 'wptexturize');
+        remove_filter('title_save_pre', 'wptexturize');
+
         $post_id = wp_insert_post([
             'post_title' => $title,
             'post_name' => $slug ?: $auto_slug,
             'post_type' => 'location',
             'post_status' => 'publish',
         ]);
+
+        add_filter('sanitize_text_field', 'wptexturize');
+        add_filter('sanitize_textarea_field', 'wptexturize');
+        add_filter('title_save_pre', 'wptexturize');
 
         if (is_wp_error($post_id)) {
             $this->log_error("Failed to create location '{$title}': " . $post_id->get_error_message());

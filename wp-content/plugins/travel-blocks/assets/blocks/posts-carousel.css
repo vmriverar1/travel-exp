@@ -1,5 +1,5 @@
 /* =========================================================
-   POSTS CAROUSEL - Material Design
+   POSTS CAROUSEL - Material Design - Version 1.3.8
    Desktop: Grid 3 columnas con hover effect
    Mobile: Slider Material Design
 ========================================================= */
@@ -106,7 +106,7 @@
   color: #fff;
   font-size: 13px;
   font-weight: 600;
-  text-transform: uppercase;
+  text-transform: capitalize;
   letter-spacing: 0.5px;
   padding: 8px 16px;
   border-radius: 20px;
@@ -181,18 +181,20 @@
 
 .pc-card__title {
   font-family: 'Satoshi', sans-serif;
-  font-size: 22px;
-  font-weight: 700;
-  line-height: 1.3;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 26px;
+  letter-spacing: 0;
   color: #fff;
   margin: 0;
 }
 
 .pc-card__excerpt {
   font-family: 'Satoshi', sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 1.5;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0;
   color: rgba(255, 255, 255, 0.9);
   margin: 0;
   display: -webkit-box;
@@ -354,6 +356,15 @@
   .pc-arrow--next,
   .pc-arrow--bottom {
     display: none !important;
+  }
+
+  /* Use desktop-specific card height */
+  .pc-card {
+    min-height: var(--card-height-desktop, 450px);
+  }
+
+  .posts-carousel--overlay-split .pc-card {
+    min-height: var(--card-height-desktop, 500px);
   }
 }
 
@@ -631,21 +642,19 @@
     padding: 30px 0;
   }
 
-  .pc-card {
-    min-height: 400px;
-  }
-
   .pc-card__content {
     padding: 20px;
   }
 
   .pc-card__title {
-    font-size: 18px;
+    font-size: 22px !important;
+    line-height: 26px !important;
   }
 
   .pc-card__excerpt {
-    font-size: 13px;
-    -webkit-line-clamp: 2;
+    font-size: 18px;
+    -webkit-line-clamp: 4;
+    line-height: 25px;
   }
 
   .pc-card__badge {
@@ -661,7 +670,8 @@
 
   .pc-card__button {
     padding: 8px 16px;
-    font-size: 13px;
+    font-size: 18px !important;
+    margin-top: 30px;
   }
 
   .pc-card__favorite {
@@ -684,10 +694,6 @@
   .pc-arrow svg {
     width: 20px;
     height: 20px;
-  }
-
-  .pc-card {
-    min-height: 380px;
   }
 
   .pc-card__content {
@@ -762,11 +768,7 @@
 .pc-card__divider {
   width: 50%;
   height: 2px;
-  background: linear-gradient(
-    to right,
-    rgba(255, 255, 255, 0.8) 0%,
-    rgba(255, 255, 255, 0.3) 100%
-  );
+  background: rgba(255, 255, 255, 0.8);
   margin: 4px 0;
 }
 
@@ -775,7 +777,10 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 14px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 100%;
+  letter-spacing: 0;
   color: rgba(255, 255, 255, 0.9);
   margin: 8px 0;
   flex-wrap: wrap;
@@ -789,8 +794,8 @@
 
 .pc-card__meta-item svg {
   flex-shrink: 0;
-  width: 14px;
-  height: 14px;
+  width: 18px;
+  height: 18px;
 }
 
 .pc-card__meta-separator {
@@ -818,6 +823,8 @@
   font-family: 'Satoshi', sans-serif;
   font-size: 20px;
   font-weight: 900;
+  line-height: 100%;
+  letter-spacing: 0;
   color: #fff;
   margin: 4px 0;
 }
@@ -921,7 +928,7 @@
 /* Botón variación Read More (Texto en negrita sin fondo) */
 .pc-card__button--read-more {
   background: transparent;
-  color: var(--wp--preset--color--primary);
+  /* color: var(--wp--preset--color--primary); */
   font-weight: 700;
   padding: 0;
   box-shadow: none;
@@ -1387,15 +1394,16 @@
   color: #fff;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 2px;
 }
 
 /* Title and Excerpt section */
 .posts-carousel--overlay-split .pc-card__title {
   font-family: 'Satoshi', sans-serif;
-  font-size: 24px;
-  font-weight: 700;
-  line-height: 1.3;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0;
   color: #fff;
   margin: 0;
   max-width: 80%;
@@ -1403,9 +1411,10 @@
 
 .posts-carousel--overlay-split .pc-card__excerpt {
   font-family: 'Satoshi', sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 1.6;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0;
   color: rgba(255, 255, 255, 0.95);
   margin: 0;
   max-width: 80%;
@@ -1423,7 +1432,7 @@
 
 /* Left 50% - Meta Info (Location, Price, Duration) */
 .posts-carousel--overlay-split .pc-card__meta-info {
-  flex: 0 1 50%;
+  flex: 0 1 100%;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -1436,21 +1445,42 @@
   align-items: center;
   gap: 8px;
   color: rgba(255, 255, 255, 0.95);
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 100%;
+  letter-spacing: 0;
 }
 
 .posts-carousel--overlay-split .pc-card__meta-item {
   display: flex;
   align-items: center;
   gap: 6px;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 100%;
+  letter-spacing: 0;
+  vertical-align: middle;
   color: rgba(255, 255, 255, 0.95);
 }
 
 .posts-carousel--overlay-split .pc-card__meta-item svg {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   opacity: 0.9;
+}
+
+.posts-carousel--overlay-split .pc-card__meta-item--location {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 100%;
+  letter-spacing: 0;
+}
+
+.posts-carousel--overlay-split .pc-card__meta-item--price {
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 100%;
+  letter-spacing: 0;
 }
 
 .posts-carousel--overlay-split .pc-card__meta-separator {
@@ -1458,20 +1488,37 @@
   font-weight: 400;
 }
 
-.posts-carousel--overlay-split .pc-card__location,
+.posts-carousel--overlay-split .pc-card__location {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 100%;
+  letter-spacing: 0;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.posts-carousel--overlay-split .pc-card__location svg {
+  width: 18px;
+  height: 18px;
+  opacity: 0.9;
+}
+
 .posts-carousel--overlay-split .pc-card__price {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 14px;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 100%;
+  letter-spacing: 0;
   color: rgba(255, 255, 255, 0.95);
-  font-weight: 500;
 }
 
-.posts-carousel--overlay-split .pc-card__location svg,
 .posts-carousel--overlay-split .pc-card__price svg {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   opacity: 0.9;
 }
 
@@ -1549,14 +1596,13 @@
 /* Responsive - Mobile adjustments for overlay-split */
 @media (max-width: 768px) {
   .posts-carousel--overlay-split .pc-card__bottom-split {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: end;
     gap: 16px;
   }
 
   .posts-carousel--overlay-split .pc-card__meta-info,
   .posts-carousel--overlay-split .pc-card__button-wrapper {
-    flex: 1 1 100%;
     width: 100%;
   }
 
@@ -1570,11 +1616,15 @@
   }
 
   .posts-carousel--overlay-split .pc-card__title {
-    font-size: 20px;
+    font-size: 16px;
   }
 
   .posts-carousel--overlay-split .pc-card__excerpt {
-    font-size: 13px;
+    font-size: 12px;
+  }
+
+  .posts-carousel--overlay-split .pc-card__meta-item {
+    font-size: 16px;
   }
 
   .posts-carousel--overlay-split .pc-card__content {

@@ -697,9 +697,9 @@ class ContentQueryHelper {
             $price_from = get_field('price_from', $post_id);
 
             if (!empty($price_offer)) {
-                $price = '$' . number_format($price_offer, 0) . ' USD';
+                $price = '$' . number_format($price_offer, 0);
             } elseif (!empty($price_from)) {
-                $price = 'Desde $' . number_format($price_from, 0) . ' USD';
+                $price = 'From $' . number_format($price_from, 0);
             }
             $card_data['price'] = $price;
         }
