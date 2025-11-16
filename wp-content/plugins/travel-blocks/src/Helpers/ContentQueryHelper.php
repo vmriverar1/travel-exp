@@ -617,7 +617,8 @@ class ContentQueryHelper {
 
             // Priority 1: Active promotion (always overrides badge color to primary)
             if (get_field('promo_enabled', $post_id)) {
-                $category = get_field('promo_tag', $post_id) ?: 'OFERTA';
+                $promo_tag = get_field('promo_tag', $post_id) ?: 'OFERTA';
+                $category = ucwords(strtolower($promo_tag)); // Capitalize properly
                 $badge_color = 'primary'; // Promo always uses primary color
             }
             // Priority 2: Use selected taxonomy if specified
@@ -632,7 +633,7 @@ class ContentQueryHelper {
                     // Get first term from selected taxonomy
                     $terms = get_the_terms($post_id, $badge_taxonomy);
                     if (!empty($terms) && !is_wp_error($terms)) {
-                        $category = $terms[0]->name;
+                        $category = ucwords(strtolower($terms[0]->name)); // Capitalize properly
                     }
                 }
             }
@@ -647,7 +648,7 @@ class ContentQueryHelper {
                 else {
                     $terms = get_the_terms($post_id, 'package_type');
                     if (!empty($terms) && !is_wp_error($terms)) {
-                        $category = $terms[0]->name;
+                        $category = ucwords(strtolower($terms[0]->name)); // Capitalize properly
                     }
                 }
             }
@@ -1471,13 +1472,13 @@ class ContentQueryHelper {
                     // Get first category
                     $categories = get_the_category($post_id);
                     if (!empty($categories)) {
-                        $category = $categories[0]->name;
+                        $category = ucwords(strtolower($categories[0]->name)); // Capitalize properly
                     }
                 } elseif ($badge_taxonomy === 'post_tag') {
                     // Get first tag
                     $tags = get_the_tags($post_id);
                     if (!empty($tags) && !is_wp_error($tags)) {
-                        $category = $tags[0]->name;
+                        $category = ucwords(strtolower($tags[0]->name)); // Capitalize properly
                     }
                 }
             }
@@ -1485,7 +1486,7 @@ class ContentQueryHelper {
             else {
                 $categories = get_the_category($post_id);
                 if (!empty($categories)) {
-                    $category = $categories[0]->name;
+                    $category = ucwords(strtolower($categories[0]->name)); // Capitalize properly
                 }
             }
 
