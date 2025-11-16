@@ -48,7 +48,7 @@ define( 'CONCATENATE_SCRIPTS', false );
 define( 'COMPRESS_SCRIPTS', false );
 define( 'COMPRESS_CSS', false );
 
-$table_prefix = 'wp003_';
+$table_prefix = 'wpw7_';
 
 if ( ! defined( 'ABSPATH' ) ) {
 	define( 'ABSPATH', __DIR__ . '/' );

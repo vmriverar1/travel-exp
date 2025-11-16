@@ -1,0 +1,34 @@
+=== INICIO LIMPIEZA TAXONOMY RELATIONSHIPS ===
+Fecha: 2025-10-23 04:10:49
+Taxonomías a limpiar: tag_locations, countries, destinations, flights, locations
+
+--- Procesando taxonomía: tag_locations ---
+⚠️  Taxonomía 'tag_locations': No se encontraron términos
+
+--- Procesando taxonomía: countries ---
+⚠️  Taxonomía 'countries': No se encontraron términos
+
+--- Procesando taxonomía: destinations ---
+⚠️  Taxonomía 'destinations': No se encontraron términos
+
+--- Procesando taxonomía: flights ---
+⚠️  Taxonomía 'flights': No se encontraron términos
+
+--- Procesando taxonomía: locations ---
+✓ Encontrados 32 términos en taxonomía locations
+→ Relaciones con packages a eliminar: 58
+✓ Eliminadas 58 relaciones de taxonomía locations
+✓ Contadores de términos actualizados
+
+=== RESUMEN ===
+Total relaciones eliminadas: 58
+
+=== VERIFICACIÓN POST-LIMPIEZA ===
+✓ tag_locations: 0 relaciones con packages (OK)
+✓ countries: 0 relaciones con packages (OK)
+✓ destinations: 0 relaciones con packages (OK)
+✓ flights: 0 relaciones con packages (OK)
+✓ locations: 0 relaciones con packages (OK)
+
+=== FIN LIMPIEZA ===
+✓ Caché de WordPress limpiado

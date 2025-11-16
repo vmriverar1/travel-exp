@@ -254,6 +254,7 @@
 /* Gallery Slider - Float right with text wrap */
 .itinerary-day__gallery,
 .editor-styles-wrapper .itinerary-day__gallery {
+    position: relative; /* For absolute positioning of pagination dots */
     float: right;
     width: 45%;
     max-width: 400px;
@@ -264,6 +265,7 @@
 @media (max-width: 768px) {
     .itinerary-day__gallery,
     .editor-styles-wrapper .itinerary-day__gallery {
+        position: relative; /* For absolute positioning of pagination dots */
         float: none;
         width: 100%;
         max-width: 100%;
@@ -312,11 +314,11 @@
     display: none !important;
 }
 
-/* Pagination dots styling - positioned outside image */
-.itinerary-gallery-slider .swiper-pagination,
-.editor-styles-wrapper .itinerary-gallery-slider .swiper-pagination {
+/* Pagination dots styling - positioned below slider, outside overflow:hidden */
+.itinerary-day__gallery .swiper-pagination,
+.editor-styles-wrapper .itinerary-day__gallery .swiper-pagination {
     position: absolute !important;
-    bottom: -28px !important;
+    bottom: 4px !important;
     left: 0 !important;
     width: 100% !important;
     text-align: center !important;

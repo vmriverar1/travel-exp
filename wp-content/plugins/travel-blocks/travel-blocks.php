@@ -3,7 +3,7 @@
  * Plugin Name: Travel Blocks
  * Plugin URI:  https://example.com/
  * Description: Custom Gutenberg blocks powered by Advanced Custom Fields for travel website. Consolidated plugin with 10 blocks.
- * Version:     1.3.0
+ * Version:     1.3.7
  * Author:      Rogger Palomino Gamboa
  * Author URI:  https://example.com/
  * Text Domain: travel-blocks
@@ -19,7 +19,7 @@ if (!defined('TRAVEL_BLOCKS_URL')) {
     define('TRAVEL_BLOCKS_URL', plugin_dir_url(__FILE__));
 }
 if (!defined('TRAVEL_BLOCKS_VERSION')) {
-    define('TRAVEL_BLOCKS_VERSION', '1.3.1');
+    define('TRAVEL_BLOCKS_VERSION', '1.3.7');
 }
 
 /**

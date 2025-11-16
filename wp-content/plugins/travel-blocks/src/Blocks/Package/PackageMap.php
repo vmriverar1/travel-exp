@@ -89,12 +89,14 @@ class PackageMap
         ?>
         <div class="package-map-wrapper">
             <figure class="package-map-figure">
-                <img
-                    src="<?php echo esc_url($image_url); ?>"
-                    alt="<?php echo esc_attr($image_alt); ?>"
-                    class="package-map-image"
-                    loading="lazy"
-                />
+                <a href="<?php echo esc_url($image_url); ?>" class="glightbox package-map-link" data-gallery="package-map">
+                    <img
+                        src="<?php echo esc_url($image_url); ?>"
+                        alt="<?php echo esc_attr($image_alt); ?>"
+                        class="package-map-image"
+                        loading="lazy"
+                    />
+                </a>
             </figure>
         </div>
         <?php

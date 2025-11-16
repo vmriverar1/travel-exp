@@ -47,7 +47,7 @@
                     grabCursor: true,
                     touchEventsTarget: 'container',
                     pagination: {
-                        el: gallery.querySelector('.swiper-pagination'),
+                        el: gallery.parentElement.querySelector('.swiper-pagination'),
                         clickable: true,
                         dynamicBullets: false,
                     },

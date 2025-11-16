@@ -74,7 +74,7 @@ class CalendarApiService
         }
 
         // Try to get from ACF Global Options
-        $api_url = function_exists('get_field') ? get_field('calendar_api_base_url', 'option') : '';
+        $api_url = function_exists('get_field') ? get_field('package_api_base_url', 'option') : '';
 
         // Validate and sanitize URL
         if (!empty($api_url) && filter_var($api_url, FILTER_VALIDATE_URL)) {

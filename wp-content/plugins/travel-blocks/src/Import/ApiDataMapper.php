@@ -127,6 +127,13 @@ class ApiDataMapper
             // Prepayment
             'is_prepayment' => !empty($api_data['isPrepayment']),
 
+            // Rating and Stars
+            'total_reviews' => (int) ($api_data['rating'] ?? 0),
+            'google_rating' => (float) ($api_data['stars'] ?? 0),
+
+            // Activity Level
+            'activity_level' => $this->map_activity_level($api_data['activityName'] ?? ''),
+
             // Custom titles
             'title_overview' => $this->sanitize_text($api_data['titleOverview'] ?? ''),
             'title_itinerary' => $this->sanitize_text($api_data['titleItinerary'] ?? ''),
@@ -153,6 +160,9 @@ class ApiDataMapper
         return [
             'interest' => $this->map_interests($api_data['interests'] ?? []),
             'included_services' => $this->map_included_services($api_data['includedServices'] ?? []),
+            'package_type' => $this->map_package_type($api_data['packageTypes'] ?? []),
+            'days' => $this->map_days($api_data['days'] ?? 0),
+            'optional_renting' => $this->map_optional_renting_taxonomy($api_data['optionalRenting'] ?? []),
         ];
     }
 
@@ -326,6 +336,92 @@ class ApiDataMapper
         }
 
         return $term_ids;
+    }
+
+    /**
+     * Map package type to taxonomy term (only first one, ACF allows single value)
+     */
+    private function map_package_type(array $types): array
+    {
+        if (empty($types)) {
+            return [];
+        }
+
+        $term_id = $this->get_or_create_term($types[0], 'package_type');
+        return $term_id ? [$term_id] : [];
+    }
+
+    /**
+     * Map days to taxonomy term
+     */
+    private function map_days(int $days): array
+    {
+        if ($days <= 0) {
+            return [];
+        }
+
+        // Create term name based on days count
+        $term_name = $days === 1 ? '1 Day' : "{$days} Days";
+
+        // Handle special ranges
+        if ($days >= 11 && $days <= 15) {
+            $term_name = '11-15 Days';
+        } elseif ($days >= 16 && $days <= 20) {
+            $term_name = '16-20 Days';
+        } elseif ($days >= 21 && $days <= 30) {
+            $term_name = '21-30 Days';
+        } elseif ($days > 30) {
+            $term_name = '30+ Days';
+        }
+
+        $term_id = $this->get_or_create_term($term_name, 'day');
+        return $term_id ? [$term_id] : [];
+    }
+
+    /**
+     * Map optional renting items to taxonomy terms
+     */
+    private function map_optional_renting_taxonomy(array $items): array
+    {
+        $term_ids = [];
+
+        foreach ($items as $item) {
+            if (isset($item['title'])) {
+                $term_id = $this->get_or_create_term($item['title'], 'optional_renting');
+                if ($term_id) {
+                    $term_ids[] = $term_id;
+                }
+            }
+        }
+
+        return $term_ids;
+    }
+
+    /**
+     * Map activity level from API format to ACF select values
+     */
+    private function map_activity_level(string $activity_name): string
+    {
+        $activity_lower = strtolower(trim($activity_name));
+
+        // Map API values to ACF select values
+        $mapping = [
+            'easy' => 'low',
+            'light' => 'low',
+            'low' => 'low',
+            'moderate' => 'medium',
+            'medium' => 'medium',
+            'challenging' => 'high',
+            'difficult' => 'high',
+            'hard' => 'high',
+            'high' => 'high',
+            'strenuous' => 'very_high',
+            'very difficult' => 'very_high',
+            'extreme' => 'very_high',
+            'very high' => 'very_high',
+        ];
+
+        return $mapping[$activity_lower] ?? 'medium';
     }
 
     /**
