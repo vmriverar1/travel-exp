@@ -190,7 +190,7 @@
 /* ---- CARD ITEMS (HeroCarousel style) ---- */
 .fgc-item--card {
   position: relative;
-  min-height: 500px;
+  min-height: var(--card-min-height, 450px);
   border-radius: 16px;
   background-size: cover !important;
   background-position: center center !important;
@@ -741,7 +741,7 @@
 /* Tablet */
 @media (max-width: 1024px) {
   .fgc-item--card {
-    min-height: 450px;
+    min-height: max(380px, calc(var(--card-min-height, 450px) * 0.85));
   }
 
   .fgc-card__title {
@@ -772,7 +772,7 @@
     flex: 0 0 100% !important;
     scroll-snap-align: start;
     scroll-snap-stop: always;
-    min-height: 320px;
+    min-height: max(280px, calc(var(--card-min-height, 450px) * 0.65));
   }
 
   .fgc-card__content {

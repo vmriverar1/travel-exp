@@ -31,6 +31,7 @@ if (strpos($wrapper_attrs, 'class="') !== false) {
 <div <?php echo $wrapper_attrs; ?>>
 <div class="fgc-flexible-grid"
      id="<?php echo esc_attr($carousel_id); ?>"
+     style="--card-min-height: <?php echo esc_attr($card_min_height ?? 450); ?>px;"
      <?php foreach ($carousel_attrs as $key => $value): ?>
         <?php echo esc_attr($key); ?>="<?php echo esc_attr($value); ?>"
      <?php endforeach; ?>>

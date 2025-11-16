@@ -146,6 +146,9 @@ class FlexibleGridCarousel extends CarouselBlockBase
         // ✅ REFACTORED: Use shared style settings from CarouselBlockBase
         $style_data = $this->get_style_data(true); // true = include alignments
 
+        // Get card min height
+        $card_min_height = (int)(get_field('card_min_height') ?: 450);
+
         // ✅ REFACTORED: Get dynamic content using shared method from CarouselBlockBase
         $dynamic_source = get_field('fgc_dynamic_source') ?: 'none';
         $items = $this->get_dynamic_content('fgc', $dynamic_source);
@@ -205,6 +208,7 @@ class FlexibleGridCarousel extends CarouselBlockBase
             'text_position_mobile' => $text_position_mobile,
             'display_fields_packages' => $display_fields_packages,
             'display_fields_posts' => $display_fields_posts,
+            'card_min_height' => $card_min_height,
             'is_preview' => $is_preview,
         ], $style_data, $carousel_data); // Merge shared style and carousel data
 
@@ -520,6 +524,18 @@ class FlexibleGridCarousel extends CarouselBlockBase
                     'default_value' => 'left',
                     'ui' => 1,
                     'instructions' => __('Button/CTA alignment', 'travel-blocks'),
+                ],
+                [
+                    'key' => 'field_fgc_card_min_height',
+                    'label' => __('📏 Altura Mínima de Cards', 'travel-blocks'),
+                    'name' => 'card_min_height',
+                    'type' => 'range',
+                    'instructions' => __('Altura mínima de las cards. Las cards crecerán si el contenido es mayor.', 'travel-blocks'),
+                    'default_value' => 450,
+                    'min' => 300,
+                    'max' => 800,
+                    'step' => 10,
+                    'append' => 'px',
                 ],
             ],
             // ===== TAB: CAROUSEL =====
