@@ -284,7 +284,9 @@ class ApiImportProcessor
             // 2. Assign taxonomies (only if terms provided)
             foreach ($mapped_data['taxonomies'] as $taxonomy => $term_ids) {
                 if (!empty($term_ids)) {
-                    wp_set_object_terms($post_id, $term_ids, $taxonomy);
+                    // For ACF taxonomy fields, use update_field() instead of wp_set_object_terms()
+                    // This ensures ACF meta fields are properly synchronized
+                    update_field($taxonomy, $term_ids, $post_id);
                 }
             }
 

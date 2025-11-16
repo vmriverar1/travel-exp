@@ -95,8 +95,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 20px;
-    height: 20px;
+    width: 42px;
+    height: 42px;
     flex-shrink: 0;
 }
 
@@ -578,25 +578,28 @@
 
 /* Hero overlap: Tabs float over the hero section */
 .taxonomy-tabs--hero-overlap .tt-nav-wrapper {
-    margin-top: -55px; /* Negative margin to overlap hero */
-    margin-bottom: 3rem;
+    margin-top: -65px; /* Negative margin to overlap hero */
+    margin-bottom: 0px;
     padding: 0 1rem;
 }
 
 .taxonomy-tabs--hero-overlap .tt-nav {
-    justify-content: center;
+    justify-content: space-between;
     gap: 0; /* No gap between tabs for hero-overlap */
 }
 
 /* Tab base styles for hero-overlap */
 .taxonomy-tabs--hero-overlap .tt-nav__item {
-    padding: 1rem 2rem;
+    padding: 15px 20px;
     background: transparent;
     border: none;
     border-radius: 0;
     color: #ffffff;
-    font-weight: 600;
+    font-family: var(--wp--preset--font-family--inter);
+    font-weight: 700;
     font-size: 24px;
+    line-height: 12px;
+    letter-spacing: 0.0195em; /* 1.95% */
     position: relative;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -619,8 +622,9 @@
 }
 
 .taxonomy-tabs--hero-overlap .tt-nav__item:not(.is-active) .tt-nav__icon-svg * {
-    fill: inherit;
-    stroke: #ffffff;
+    fill: #ffffff !important;
+    stroke: #ffffff !important;
+    stroke-width: .1 !important;
 }
 
 /* Active tab: white background, black text, black icons */
@@ -643,15 +647,22 @@
 }
 
 .taxonomy-tabs--hero-overlap .tt-nav__item.is-active .tt-nav__icon-svg * {
-    fill: inherit;
-    stroke: #000000;
+    fill: #000000 !important;
+    stroke: #000000 !important;
+    stroke-width: .1 !important;
 }
 
 /* SVG icon sizing for hero-overlap */
 .taxonomy-tabs--hero-overlap .tt-nav__icon-svg {
-    width: 24px;
-    height: 24px;
-    display: block;
+    width: 42px !important;
+    height: 42px !important;
+    max-width: 42px;
+    max-height: 42px;
+    min-width: 42px;
+    min-height: 42px;
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
     transition: all 0.3s ease;
 }
 

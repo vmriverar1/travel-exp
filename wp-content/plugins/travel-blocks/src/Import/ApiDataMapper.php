@@ -162,6 +162,7 @@ class ApiDataMapper
             'included_services' => $this->map_included_services($api_data['includedServices'] ?? []),
             'package_type' => $this->map_package_type($api_data['packageTypes'] ?? []),
             'optional_renting' => $this->map_optional_renting_taxonomy($api_data['optionalRenting'] ?? []),
+            'specialist' => $this->map_specialist($api_data['specialist'] ?? []),
         ];
     }
 
@@ -419,6 +420,27 @@ class ApiDataMapper
         }
 
         return $term_ids;
+    }
+
+    /**
+     * Map specialist to taxonomy term
+     *
+     * @param array $specialist Specialist data from API (id, fullname, email, calendly, thumbnail)
+     * @return array Array with single term ID
+     */
+    private function map_specialist(array $specialist): array
+    {
+        if (empty($specialist) || !isset($specialist['fullname'])) {
+            return [];
+        }
+
+        $fullname = trim($specialist['fullname']);
+        if (empty($fullname)) {
+            return [];
+        }
+
+        $term_id = $this->get_or_create_term($fullname, 'specialists');
+        return $term_id ? [$term_id] : [];
     }
 
     /**
