@@ -1,6 +1,8 @@
 <?php
 namespace Travel\Blocks\Blocks\Package;
 
+use Travel\Blocks\Helpers\ContentQueryHelper;
+
 class PackagesByLocation
 {
     private string $name = 'packages-by-location';
@@ -132,7 +134,7 @@ class PackagesByLocation
                     'ui' => 1,
                 ],
 
-                // Card Display Options
+                // Card Display Options - Use ContentQueryHelper standard checkbox
                 [
                     'key' => 'field_pbl_tab_card',
                     'label' => '🎴 Card Options',
@@ -141,67 +143,25 @@ class PackagesByLocation
                 ],
 
                 [
-                    'key' => 'field_pbl_show_image',
-                    'label' => 'Show Featured Image',
-                    'name' => 'show_image',
-                    'type' => 'true_false',
-                    'default_value' => 1,
-                    'ui' => 1,
-                ],
-
-                [
-                    'key' => 'field_pbl_show_price',
-                    'label' => 'Show Price',
-                    'name' => 'show_price',
-                    'type' => 'true_false',
-                    'default_value' => 1,
-                    'ui' => 1,
-                ],
-
-                [
-                    'key' => 'field_pbl_show_duration',
-                    'label' => 'Show Duration',
-                    'name' => 'show_duration',
-                    'type' => 'true_false',
-                    'default_value' => 1,
-                    'ui' => 1,
-                ],
-
-                [
-                    'key' => 'field_pbl_show_rating',
-                    'label' => 'Show Rating',
-                    'name' => 'show_rating',
-                    'type' => 'true_false',
-                    'default_value' => 1,
-                    'ui' => 1,
-                ],
-
-                [
-                    'key' => 'field_pbl_show_excerpt',
-                    'label' => 'Show Excerpt',
-                    'name' => 'show_excerpt',
-                    'type' => 'true_false',
-                    'default_value' => 1,
-                    'ui' => 1,
-                ],
-
-                [
-                    'key' => 'field_pbl_excerpt_length',
-                    'label' => 'Excerpt Length (words)',
-                    'name' => 'excerpt_length',
-                    'type' => 'number',
-                    'default_value' => 20,
-                    'min' => 5,
-                    'max' => 50,
-                    'conditional_logic' => [
-                        [
-                            [
-                                'field' => 'field_pbl_show_excerpt',
-                                'operator' => '==',
-                                'value' => '1',
-                            ],
-                        ],
+                    'key' => 'field_pbl_visible_fields',
+                    'label' => '👁️ Campos Visibles (Package)',
+                    'name' => 'pbl_visible_fields',
+                    'type' => 'checkbox',
+                    'instructions' => 'Selecciona qué campos del package mostrar en cada card. Desmarca los que quieras ocultar.',
+                    'choices' => [
+                        'image' => '🖼️ Imagen',
+                        'category' => '🏷️ Badge/Categoría',
+                        'title' => '📝 Título',
+                        'description' => '📄 Descripción',
+                        'location' => '📍 Ubicación',
+                        'price' => '💰 Precio',
+                        'duration' => '⏱️ Duración (días)',
+                        'rating' => '⭐ Rating',
+                        'group_size' => '👥 Tamaño de Grupo',
                     ],
+                    'default_value' => ['image', 'category', 'title', 'description', 'location', 'price', 'duration', 'rating'],
+                    'layout' => 'vertical',
+                    'toggle' => 1,
                 ],
             ],
             'location' => [
@@ -250,13 +210,18 @@ class PackagesByLocation
         $posts_per_page = get_field('posts_per_page') ?: 12;
         $show_pagination = get_field('show_pagination');
 
-        // Card options
-        $show_image = get_field('show_image');
-        $show_price = get_field('show_price');
-        $show_duration = get_field('show_duration');
-        $show_rating = get_field('show_rating');
-        $show_excerpt = get_field('show_excerpt');
-        $excerpt_length = get_field('excerpt_length') ?: 20;
+        // Card options - Use checkbox field
+        $visible_fields = get_field('pbl_visible_fields') ?: ['image', 'category', 'title', 'description', 'location', 'price', 'duration', 'rating'];
+
+        // Convert to boolean flags for template compatibility
+        $show_image = in_array('image', $visible_fields);
+        $show_price = in_array('price', $visible_fields);
+        $show_duration = in_array('duration', $visible_fields);
+        $show_rating = in_array('rating', $visible_fields);
+        $show_excerpt = in_array('description', $visible_fields);
+        $show_category = in_array('category', $visible_fields);
+        $show_location = in_array('location', $visible_fields);
+        $excerpt_length = 20; // Default excerpt length
 
         // Get current page for pagination
         $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
