@@ -24,7 +24,7 @@ error_log('Cantidad de términos: ' . count($terms));
         $term_link = get_term_link($term1->term_id, $term1->taxonomy);
         if (!is_wp_error($term_link)):
           $taxonomy_prefix = $term1->taxonomy . '_' . $term1->term_id;
-          $image = get_field('image', $taxonomy_prefix);
+          $image = get_field('thumbnail', $taxonomy_prefix);
           $image_url = $image['url'] ?? '';
 
           error_log('Term1: ' . $term1->name . ' | Tax: ' . $term1->taxonomy . ' | Field: image | Result: ' . print_r($image, true));
@@ -43,7 +43,7 @@ error_log('Cantidad de términos: ' . count($terms));
         $term_link = get_term_link($term2->term_id, $term2->taxonomy);
         if (!is_wp_error($term_link)):
           $taxonomy_prefix = $term2->taxonomy . '_' . $term2->term_id;
-          $image = get_field('image', $taxonomy_prefix);
+          $image = get_field('thumbnail', $taxonomy_prefix);
           $image_url = $image['url'] ?? '';
 
           error_log('Term2: ' . $term2->name . ' | Tax: ' . $term2->taxonomy . ' | Result: ' . print_r($image, true));
@@ -68,7 +68,7 @@ error_log('Cantidad de términos: ' . count($terms));
         if (is_wp_error($term_link)) continue;
 
         $taxonomy_prefix = $term->taxonomy . '_' . $term->term_id;
-        $image = get_field('image', $taxonomy_prefix);
+        $image = get_field('thumbnail', $taxonomy_prefix);
         $image_url = $image['url'] ?? '';
 
         error_log('Col2 Term: ' . $term->name . ' | Tax: ' . $term->taxonomy . ' | Field image: ' . print_r($image, true));
@@ -93,7 +93,7 @@ error_log('Cantidad de términos: ' . count($terms));
         if (is_wp_error($term_link)) continue;
 
         $taxonomy_prefix = $term->taxonomy . '_' . $term->term_id;
-        $image = get_field('image', $taxonomy_prefix);
+        $image = get_field('thumbnail', $taxonomy_prefix);
         $image_url = $image['url'] ?? '';
 
         error_log('Col3 Term: ' . $term->name . ' | Tax: ' . $term->taxonomy . ' | Result: ' . print_r($image, true));
@@ -120,7 +120,7 @@ error_log('Cantidad de términos: ' . count($terms));
         $term_link = get_term_link($term->term_id, $term->taxonomy);
         if (!is_wp_error($term_link)):
           $taxonomy_prefix = $term->taxonomy . '_' . $term->term_id;
-          $image = get_field('image', $taxonomy_prefix);
+          $image = get_field('thumbnail', $taxonomy_prefix);
           $image_url = $image['url'] ?? '';
 
           error_log('Col4 Term: ' . $term->name . ' | Tax: ' . $term->taxonomy . ' | Result: ' . print_r($image, true));
@@ -150,7 +150,7 @@ error_log('Cantidad de términos: ' . count($terms));
           if (is_wp_error($term_link)) continue;
 
           $taxonomy_prefix = $term->taxonomy . '_' . $term->term_id;
-          $image = get_field('image', $taxonomy_prefix);
+          $image = get_field('thumbnail', $taxonomy_prefix);
           $image_url = $image['url'] ?? '';
 
           error_log('Swiper Term: ' . $term->name . ' | Tax: ' . $term->taxonomy . ' | Field: ' . print_r($image, true));

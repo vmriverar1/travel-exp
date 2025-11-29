@@ -10,8 +10,8 @@ if (!defined('ABSPATH')) exit;
 final class Travel_Swiper_Blocks_V2
 {
     private static $instance = null;
-    private $version = '2.0.1'; 
-    
+    private $version = '2.0.6';
+
     public static function instance()
     {
         if (self::$instance === null) self::$instance = new self();
@@ -28,6 +28,7 @@ final class Travel_Swiper_Blocks_V2
         wp_register_script('swiper', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js', [], null, true);
         wp_register_style('tsb-style', plugin_dir_url(__FILE__) . 'assets/css/travel-swiper-style.css', [], $this->version);
         wp_register_script('tsb-init', plugin_dir_url(__FILE__) . 'assets/js/travel-swiper-init.js', ['swiper'], $this->version, true);
+        wp_register_script('tsb-init', plugin_dir_url(__FILE__) . 'assets/js/travel-swiper-init-maps.js', ['swiper'], $this->version, true);
     }
     public function register_blocks()
     {
@@ -731,6 +732,125 @@ final class Travel_Swiper_Blocks_V2
             'location' => [
                 [['param' => 'block', 'operator' => '==', 'value' => 'acf/travel-category-packages']],
             ],
+        ]);
+
+        // =====================================
+        // BLOQUE: Travel Weather (Images)
+        // =====================================
+        acf_register_block_type([
+            'name'            => 'travel-weather',
+            'title'           => __('Travel Weather (Images)', 'tsb'),
+            'render_template' => plugin_dir_path(__FILE__) . 'blocks/weather/render.php',
+            'category'        => 'widgets',
+            'icon'            => 'cloud',
+            'mode'            => 'preview',
+            'enqueue_assets'  => function () {
+                wp_enqueue_style('swiper');
+                wp_enqueue_script('swiper');
+                wp_enqueue_style('tsb-style');
+                wp_enqueue_script('tsb-init');
+                wp_enqueue_style('tsb-weather', plugin_dir_url(__FILE__) . 'assets/css/travel-weather.css', [], '1.0.0');
+            },
+        ]);
+
+        acf_add_local_field_group([
+            'key' => 'group_tsb_weather',
+            'title' => 'Travel Weather Settings',
+            'fields' => [
+                [
+                    'key' => 'field_tsb_weather_rows',
+                    'label' => 'Filas en móvil',
+                    'name' => 'layout_rows',
+                    'type' => 'select',
+                    'choices' => [
+                        '1' => '1 fila',
+                        '2' => '2 filas',
+                        '3' => '3 filas',
+                    ],
+                    'default_value' => '1',
+                ],
+                [
+                    'key' => 'field_tsb_weather_bg',
+                    'label' => 'Imagen de fondo',
+                    'name' => 'background_image',
+                    'type' => 'image',
+                    'return_format' => 'id',
+                ],
+                [
+                    'key' => 'field_tsb_weather_months',
+                    'label' => 'Imágenes de los meses',
+                    'name' => 'month_images',
+                    'type' => 'repeater',
+                    'button_label' => 'Agregar imagen',
+                    'sub_fields' => [
+                        [
+                            'key' => 'field_tsb_weather_img',
+                            'label' => 'Imagen',
+                            'name' => 'image',
+                            'type' => 'image',
+                            'return_format' => 'id',
+                        ],
+                    ],
+                ],
+                [
+                    'key' => 'field_tsb_weather_slides_mobile',
+                    'label' => 'Slides visibles en móvil',
+                    'name' => 'slides_per_view_mobile',
+                    'type' => 'number',
+                    'instructions' => 'Define cuántos slides se mostrarán en móvil (ej. 1, 1.5, 2.5). Si se deja vacío, usará 1 por defecto.',
+                    'default_value' => 1,
+                    'min' => 1,
+                    'step' => 0.1,
+                ],
+            ],
+            'location' => [
+                [['param' => 'block', 'operator' => '==', 'value' => 'acf/travel-weather']],
+            ],
+        ]);
+
+        // ============================
+        // BLOQUE: Travel InnerBlocks Slider
+        // ============================
+        acf_register_block_type([
+            'name'            => 'travel-innerblocks',
+            'title'           => __('Travel InnerBlocks Slider', 'tsb'),
+            'render_template' => plugin_dir_path(__FILE__) . 'blocks/InnerBlockSlider/render.php',
+            'category'        => 'widgets',
+            'icon'            => 'screenoptions',
+            'mode'            => 'preview',
+            'enqueue_assets'  => function () {
+                wp_enqueue_style('swiper');
+                wp_enqueue_script('swiper');
+                wp_enqueue_style('tsb-style');
+                wp_enqueue_script('tsb-init'); // tu core swiper init global
+            },
+            'supports' => [
+                'jsx' => true, // ESSENCIAL para InnerBlocks
+            ],
+        ]);
+
+        acf_add_local_field_group([
+            'key' => 'group_tsb_innerblocks',
+            'title' => 'InnerBlocks Slider Settings',
+            'fields' => [
+                [
+                    'key' => 'field_tsb_rows_inner',
+                    'label' => 'Filas en móvil',
+                    'name'  => 'layout_rows',
+                    'type'  => 'select',
+                    'choices' => [
+                        '1' => '1 fila',
+                        '2' => '2 filas',
+                        '3' => '3 filas'
+                    ],
+                    'default_value' => '1'
+                ],
+            ],
+            'location' => [
+                [
+                    ['param' => 'block', 'operator' => '==', 'value' => 'acf/travel-innerblocks']
+                ]
+            ]
         ]);
     }
 }

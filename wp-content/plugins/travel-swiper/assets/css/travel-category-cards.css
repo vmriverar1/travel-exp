@@ -1,7 +1,15 @@
 .travel-swiper--category-cards {
     width: 100%;
-    margin: 40px auto;
+    margin: 40px auto 0px;
     position: relative;
+}
+
+@media(max-width: 768px) {
+    .travel-swiper--category-cards {
+        width: 100%;
+        margin: 15px auto;
+        position: relative;
+    }
 }
 
 /* === DESKTOP (fila de 5) === */
@@ -33,6 +41,29 @@
     .travel-swiper--category-cards .swiper-slide {
         width: 85%;
         /* ancho visible del slide */
+    }
+}
+
+@media(max-width: 768px) {
+    .travel-swiper--category-cards .swiper-slide {
+        padding-left: 70px;
+        padding-right: 70px;
+    }
+
+    .travel-swiper--category-cards .swiper-controls {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .travel-swiper--category-cards .swiper-pagination__mobile {
+        display: none !important;
     }
 }
 
@@ -83,9 +114,14 @@
     background: transparent;
     border: 1px solid #FFFFFF;
     color: #FFFFFF;
-    padding: 4px 12px;
+    width: 120px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 22px;
-    font-family: var(--wp--preset--font-family--satoshi); 
+    font-family: var(--wp--preset--font-family--satoshi);
+    margin: 0;
 }
 
 .travel-card__button {
@@ -98,9 +134,13 @@
     color: #fff;
     border-radius: 22px;
     font-size: 16px;
-    padding: 5px 20px;
+    width: 123px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: background 0.3s ease;
-    font-family: var(--wp--preset--font-family--satoshi); 
+    font-family: var(--wp--preset--font-family--satoshi);
 }
 
 .travel-card__button:hover {

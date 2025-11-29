@@ -1,163 +1,326 @@
 /**
+
  * CTA Banner Block Styles
+
  *
+
  * @package Travel\Blocks
+
  * @since 1.0.0
+
  */
 
+
+
 /* Container */
+
 .cta-banner {
+
     width: 100%;
+
     padding: 5rem 2rem;
+
     position: relative;
+
     overflow: hidden;
+
 }
+
+
 
 .cta-banner--overlay::before {
+
     content: '';
+
     position: absolute;
+
     inset: 0;
+
     background: rgba(0, 0, 0, 0.5);
+
     z-index: 1;
+
 }
+
+
 
 .cta-banner__inner {
+
     position: relative;
+
     z-index: 2;
+
     max-width: 1200px;
+
     margin: 0 auto;
+
 }
+
+
 
 /* Content */
+
 .cta-banner__content {
+
     max-width: 800px;
+
 }
+
+
 
 .cta-banner--align-center .cta-banner__content {
+
     margin: 0 auto;
+
     text-align: center;
+
 }
+
+
 
 .cta-banner--align-right .cta-banner__content {
+
     margin-left: auto;
+
     text-align: right;
+
 }
+
+
 
 .cta-banner__subtitle {
+
     font-size: 1rem;
+
     font-weight: 600;
-    text-transform: uppercase;
+
+    text-transform: capitalize;
+
     letter-spacing: 0.1em;
+
     margin-bottom: 1rem;
+
     opacity: 0.9;
+
 }
+
+
 
 .cta-banner__title {
+
     font-size: 2.5rem;
+
     font-weight: 700;
+
     margin: 0 0 1.5rem 0;
+
     line-height: 1.2;
+
 }
+
+
 
 .cta-banner__description {
+
     font-size: 1.125rem;
+
     line-height: 1.6;
+
     margin: 0 0 2rem 0;
+
     opacity: 0.95;
+
 }
+
+
 
 /* Text Colors */
+
 .cta-banner--light {
+
     color: white;
+
 }
+
+
 
 .cta-banner--dark {
+
     color: var(--color-gray-900, #212121);
+
 }
+
+
 
 /* Buttons */
+
 .cta-banner__buttons {
+
     display: flex;
+
     flex-wrap: wrap;
+
     gap: 1rem;
+
 }
+
+
 
 .cta-banner--align-center .cta-banner__buttons {
+
     justify-content: center;
+
 }
+
+
 
 .cta-banner--align-right .cta-banner__buttons {
+
     justify-content: flex-end;
+
 }
+
+
 
 .cta-banner__button {
+
     display: inline-flex;
+
     align-items: center;
+
     gap: 0.5rem;
+
     padding: 1rem 2rem;
+
     font-size: 1rem;
+
     font-weight: 600;
+
     border-radius: var(--border-radius-md, 6px);
+
     text-decoration: none;
+
     transition: all 0.3s ease;
+
     border: 2px solid transparent;
+
 }
+
+
 
 .cta-banner__button--primary {
+
     background: white;
+
     color: var(--wp--preset--color--contrast-4);
+
 }
+
+
 
 .cta-banner__button--primary:hover {
+
     transform: translateY(-2px);
+
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+
 }
+
+
 
 .cta-banner__button--secondary {
+
     background: transparent;
+
     color: white;
+
     border-color: white;
+
 }
+
+
 
 .cta-banner__button--secondary:hover {
+
     background: white;
+
     color: var(--wp--preset--color--contrast-4);
+
 }
+
+
 
 /* Split Style */
+
 .cta-banner--split .cta-banner__content {
+
     max-width: 50%;
+
 }
+
+
 
 @media (max-width: 1023px) {
+
     .cta-banner {
+
         padding: 4rem 1.5rem;
+
     }
 
+
+
     .cta-banner__title {
+
         font-size: 2rem;
+
     }
+
+
 
     .cta-banner--split .cta-banner__content {
+
         max-width: 100%;
+
     }
+
 }
+
+
 
 @media (max-width: 767px) {
+
     .cta-banner {
+
         padding: 3rem 1rem;
+
     }
+
+
 
     .cta-banner__title {
+
         font-size: 1.75rem;
+
     }
+
+
 
     .cta-banner__buttons {
+
         flex-direction: column;
+
     }
 
+
+
     .cta-banner__button {
+
         width: 100%;
+
         justify-content: center;
+
     }
+
 }
+

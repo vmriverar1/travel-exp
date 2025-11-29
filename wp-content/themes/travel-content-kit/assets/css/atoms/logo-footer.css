@@ -11,15 +11,15 @@
     display: inline-flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--spacing-xs);
+    gap: var(--wp--preset--spacing--30);
     text-decoration: none;
-    color: var(--color-footer-text);
-    transition: color var(--transition-fast);
+    color: var(--wp--preset--color--base);
+    transition: color 0.2s ease;
 }
 
 .logo-footer__link:hover,
 .logo-footer__link:focus {
-    color: var(--color-footer-accent);
+    color: var(--wp--preset--color--secondary);
 }
 
 .logo-footer__icon {
@@ -36,14 +36,14 @@
 }
 
 .logo-footer__text {
-    font-size: var(--font-size-lg);
-    font-weight: var(--font-weight-bold);
+    font-size: 18px;
+    font-weight: 700;
     letter-spacing: 0.5px;
 }
 
 .logo-footer__tagline,
 .logo-footer__slogan {
-    margin: var(--spacing-xs) 0 0;
+    margin: var(--wp--preset--spacing--30) 0 0;
 }
 
 .logo-footer__slogan {

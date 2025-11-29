@@ -1,943 +1,943 @@
-/* =========================================================
-   FLEXIBLE GRID CAROUSEL - Cards + Text Blocks
-   Desktop: Grid with mixed cards and text blocks
-   Mobile: Cards as carousel, text blocks separate
-========================================================= */
-
-/* ---- MAIN CONTAINER ---- */
-.fgc-flexible-grid {
-  position: relative;
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 40px 20px;
-}
-
-.fgc-flexible-grid.is-loaded {
-  opacity: 1;
-}
-
-.fgc-container {
-  position: relative;
-}
-
-/* ---- SKELETON LOADER ---- */
-.fgc-skeleton {
-  display: grid;
-  gap: 2rem;
-  opacity: 1;
-  transition: opacity 0.5s ease-out;
-  pointer-events: none;
-}
-
-.fgc-skeleton.is-hidden {
-  opacity: 0;
-}
-
-.fgc-skeleton-item {
-  background: #fff;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-}
-
-.fgc-skeleton-image {
-  width: 100%;
-  height: 200px;
-  margin-bottom: 1rem;
-  border-radius: 8px;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 37%, #f0f0f0 63%);
-  background-size: 400% 100%;
-  animation: fgc-shimmer 1.6s infinite linear;
-}
-
-.fgc-skeleton-line {
-  height: 16px;
-  margin-bottom: 0.75rem;
-  border-radius: 4px;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 37%, #f0f0f0 63%);
-  background-size: 400% 100%;
-  animation: fgc-shimmer 1.6s infinite linear;
-}
-
-.fgc-skeleton-line--title {
-  height: 24px;
-  width: 70%;
-  margin-bottom: 1rem;
-}
-
-.fgc-skeleton-line--text {
-  width: 90%;
-}
-
-@keyframes fgc-shimmer {
-  0% { background-position: 100% 0; }
-  100% { background-position: -100% 0; }
-}
-
-/* =========================================================
-   DESKTOP GRID LAYOUT
-========================================================= */
-
-@media (min-width: 1024px) {
-  .fgc-items {
-    display: grid;
-    gap: 2rem;
-  }
-
-  .fgc-flexible-grid[data-columns="2"] .fgc-items {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .fgc-flexible-grid[data-columns="3"] .fgc-items {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .fgc-flexible-grid[data-columns="4"] .fgc-items {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  .fgc-flexible-grid[data-columns="2"] .fgc-skeleton {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .fgc-flexible-grid[data-columns="3"] .fgc-skeleton {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .fgc-flexible-grid[data-columns="4"] .fgc-skeleton {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  /* Text blocks visible in grid on desktop */
-  .fgc-item--text {
-    display: block;
-  }
-
-  /* Mobile text blocks hidden on desktop */
-  .fgc-text-blocks--mobile {
-    display: none;
-  }
-
-  /* Hide navigation on desktop */
-  .fgc-nav,
-  .fgc-dots {
-    display: none !important;
-  }
-}
-
-/* =========================================================
-   MOBILE CAROUSEL LAYOUT
-========================================================= */
-
-@media (max-width: 1023px) {
-  .fgc-items {
-    display: flex;
-    gap: 1.5rem;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    padding: 10px 0;
-  }
-
-  .fgc-items::-webkit-scrollbar {
-    display: none;
-  }
-
-  /* Cards visible in carousel */
-  .fgc-item--card {
-    flex: 0 0 85%;
-    max-width: 85%;
-    scroll-snap-align: center;
-    scroll-snap-stop: always;
-  }
-
-  /* Text blocks hidden in carousel (shown separately) */
-  .fgc-item--desktop-only {
-    display: none;
-  }
-
-  /* Mobile text blocks visible */
-  .fgc-text-blocks--mobile {
-    display: block;
-  }
-
-  .fgc-text-blocks--above {
-    margin-bottom: 2rem;
-  }
-
-  .fgc-text-blocks--below {
-    margin-top: 2rem;
-  }
-
-  .fgc-text-blocks--mobile .fgc-text-block {
-    max-width: 100%;
-    box-sizing: border-box;
-  }
-}
-
-/* =========================================================
-   ITEM STYLES (CARDS AND TEXT BLOCKS)
-========================================================= */
-
-.fgc-item {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* ---- CARD ITEMS (HeroCarousel style) ---- */
-.fgc-item--card {
-  position: relative;
-  min-height: var(--card-min-height, 450px);
-  border-radius: 16px;
-  background-size: cover !important;
-  background-position: center center !important;
-  background-repeat: no-repeat !important;
-  background-color: #f0f0f0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .fgc-item--card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
-  }
-}
-
-/* ---- GRADIENT OVERLAY ---- */
-.fgc-card__overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.85) 0%,
-    rgba(0, 0, 0, 0.4) 50%,
-    rgba(0, 0, 0, 0.1) 100%
-  );
-  z-index: 1;
-  transition: background 0.3s ease;
-}
-
-.fgc-item--card:hover .fgc-card__overlay {
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.7) 0%,
-    rgba(0, 0, 0, 0.3) 50%,
-    transparent 100%
-  );
-}
-
-/* ---- CATEGORY BADGE ---- */
-.fgc-card__category {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  background: #FF6B6B;
-  color: #fff;
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  padding: 8px 16px;
-  border-radius: 20px;
-  z-index: 2;
-  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
-}
-
-/* ---- CARD LINK WRAPPER ---- */
-.fgc-card__link {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  flex: 1;
-  text-decoration: none;
-  color: inherit;
-}
-
-/* ---- CONTENT ---- */
-.fgc-card__content {
-  position: relative;
-  z-index: 2;
-  padding: 40px 32px 32px;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.fgc-card__title {
-  font-size: 28px;
-  font-weight: 700;
-  line-height: 1.2;
-  margin: 0;
-  color: #fff;
-}
-
-.fgc-card__excerpt {
-  font-size: 16px;
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.9);
-  margin: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* ---- DIVIDER LINE ---- */
-.fgc-card__divider {
-  width: 50%;
-  height: 2px;
-  background: linear-gradient(
-    to right,
-    rgba(255, 255, 255, 0.8) 0%,
-    rgba(255, 255, 255, 0.3) 100%
-  );
-  margin: 4px 0;
-}
-
-/* ---- LOCATION ---- */
-.fgc-card__location {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.85);
-}
-
-.fgc-card__location svg {
-  flex-shrink: 0;
-  width: 16px;
-  height: 16px;
-}
-
-/* ---- PRICE ---- */
-.fgc-card__price {
-  font-family: 'Satoshi', sans-serif;
-  font-size: 20px;
-  font-weight: 900;
-  color: #fff;
-  margin: 4px 0;
-}
-
-/* ---- CTA BUTTON ---- */
-.fgc-card__button {
-  padding: 10px 20px;
-  background: #E78C85;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 600;
-  border: none;
-  border-radius: 24px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  align-self: flex-start;
-  margin-top: 8px;
-}
-
-.fgc-card__button:hover {
-  background: #dc7b74;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-.fgc-card__button:active {
-  transform: translateY(0);
-}
-
-/* =========================================================
-   BUTTON COLOR VARIANTS
-========================================================= */
-
-/* Button variant Primary (Pink #E78C85) - DEFAULT */
-.fgc-card__button--primary {
-  background: #E78C85 !important;
-  color: #fff !important;
-}
-
-.fgc-card__button--primary:hover {
-  background: #dc7b74 !important;
-}
-
-/* Button variant Secondary (Purple #311A42) */
-.fgc-card__button--secondary {
-  background: #311A42 !important;
-  color: #fff !important;
-}
-
-.fgc-card__button--secondary:hover {
-  background: #402753 !important;
-}
-
-/* Button variant White (White with black text) */
-.fgc-card__button--white {
-  background: #fff !important;
-  color: #000 !important;
-  border: 2px solid #fff !important;
-}
-
-.fgc-card__button--white:hover {
-  background: rgba(255, 255, 255, 0.9) !important;
-  color: #000 !important;
-}
-
-/* Button variant Gold (Gold #CEA02D) */
-.fgc-card__button--gold {
-  background: #CEA02D !important;
-  color: #fff !important;
-}
-
-.fgc-card__button--gold:hover {
-  background: #b88f25 !important;
-}
-
-/* Button variant Dark (Black #1A1A1A) */
-.fgc-card__button--dark {
-  background: #1A1A1A !important;
-  color: #fff !important;
-}
-
-.fgc-card__button--dark:hover {
-  background: #2d2d2d !important;
-}
-
-/* Button variant Transparent (Transparent with white border) */
-.fgc-card__button--transparent {
-  background: transparent !important;
-  color: #fff !important;
-  border: 2px solid #fff !important;
-  backdrop-filter: blur(4px);
-}
-
-.fgc-card__button--transparent:hover {
-  background: rgba(255, 255, 255, 0.1) !important;
-  border-color: #fff !important;
-}
-
-/* Button variant Read More (Text in bold without background) */
-.fgc-card__button--read-more {
-  background: transparent !important;
-  color: #1976d2 !important;
-  font-weight: 700;
-  padding: 0 !important;
-  box-shadow: none !important;
-  border: none !important;
-  font-size: 14px;
-}
-
-.fgc-card__button--read-more:hover {
-  background: transparent !important;
-  color: #1565c0 !important;
-  transform: none !important;
-  box-shadow: none !important;
-}
-
-/* =========================================================
-   BADGE COLOR VARIANTS
-========================================================= */
-
-/* Badge variant Primary (Pink #E78C85) */
-.fgc-card__category--primary {
-  background: #E78C85 !important;
-  color: #fff !important;
-}
-
-.fgc-card__category--primary:hover {
-  background: #dc7b74 !important;
-}
-
-/* Badge variant Secondary (Purple #311A42) - DEFAULT */
-.fgc-card__category--secondary {
-  background: #311A42 !important;
-  color: #fff !important;
-}
-
-.fgc-card__category--secondary:hover {
-  background: #402753 !important;
-}
-
-/* Badge variant White (White with black text) */
-.fgc-card__category--white {
-  background: #fff !important;
-  color: #000 !important;
-}
-
-.fgc-card__category--white:hover {
-  background: rgba(255, 255, 255, 0.9) !important;
-}
-
-/* Badge variant Gold (Gold #CEA02D) */
-.fgc-card__category--gold {
-  background: #CEA02D !important;
-  color: #fff !important;
-}
-
-.fgc-card__category--gold:hover {
-  background: #b88f25 !important;
-}
-
-/* Badge variant Dark (Black #1A1A1A) */
-.fgc-card__category--dark {
-  background: #1A1A1A !important;
-  color: #fff !important;
-}
-
-.fgc-card__category--dark:hover {
-  background: #2d2d2d !important;
-}
-
-/* Badge variant Transparent (Transparent with white border) */
-.fgc-card__category--transparent {
-  background: transparent !important;
-  color: #fff !important;
-  border: 2px solid #fff !important;
-  backdrop-filter: blur(4px);
-}
-
-.fgc-card__category--transparent:hover {
-  background: rgba(255, 255, 255, 0.1) !important;
-}
-
-/* =========================================================
-   CONTENT ALIGNMENT
-========================================================= */
-
-/* Text Alignment - Left (default) */
-.text-align-left .fgc-card__content {
-  text-align: left;
-}
-
-.text-align-left .fgc-card__title,
-.text-align-left .fgc-card__excerpt,
-.text-align-left .fgc-card__location,
-.text-align-left .fgc-card__price {
-  text-align: left;
-}
-
-.text-align-left .fgc-card__divider {
-  align-self: flex-start;
-}
-
-.text-align-left .fgc-card__location {
-  justify-content: flex-start;
-}
-
-/* Text Alignment - Center */
-.text-align-center .fgc-card__content {
-  text-align: center;
-}
-
-.text-align-center .fgc-card__title,
-.text-align-center .fgc-card__excerpt,
-.text-align-center .fgc-card__location,
-.text-align-center .fgc-card__price {
-  text-align: center;
-}
-
-.text-align-center .fgc-card__divider {
-  align-self: center;
-}
-
-.text-align-center .fgc-card__location {
-  justify-content: center;
-}
-
-/* Text Alignment - Right */
-.text-align-right .fgc-card__content {
-  text-align: right;
-}
-
-.text-align-right .fgc-card__title,
-.text-align-right .fgc-card__excerpt,
-.text-align-right .fgc-card__location,
-.text-align-right .fgc-card__price {
-  text-align: right;
-}
-
-.text-align-right .fgc-card__divider {
-  align-self: flex-end;
-}
-
-.text-align-right .fgc-card__location {
-  justify-content: flex-end;
-}
-
-/* Button Alignment - Left (default) */
-.button-align-left .fgc-card__button {
-  align-self: flex-start;
-}
-
-/* Button Alignment - Center */
-.button-align-center .fgc-card__button {
-  align-self: center;
-}
-
-/* Button Alignment - Right */
-.button-align-right .fgc-card__button {
-  align-self: flex-end;
-}
-
-/* ---- TEXT BLOCK ITEMS ---- */
-.fgc-item--text {
-  border-radius: 12px;
-  padding: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.fgc-text-block {
-  width: 100%;
-}
-
-.fgc-text-content {
-  font-size: 1rem;
-  line-height: 1.7;
-  color: #333;
-}
-
-.fgc-text-content h1,
-.fgc-text-content h2,
-.fgc-text-content h3,
-.fgc-text-content h4,
-.fgc-text-content h5,
-.fgc-text-content h6 {
-  margin: 0 0 1rem;
-  color: #2c2c2c;
-}
-
-.fgc-text-content p {
-  margin: 0 0 1rem;
-}
-
-.fgc-text-content p:last-child {
-  margin-bottom: 0;
-}
-
-.fgc-text-content ul,
-.fgc-text-content ol {
-  margin: 0 0 1rem;
-  padding-left: 1.5rem;
-}
-
-.fgc-text-content img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
-}
-
-.fgc-text-content a {
-  color: #d46a3f;
-  text-decoration: underline;
-}
-
-.fgc-text-content a:hover {
-  color: #b8552f;
-}
-
-/* Mobile text blocks styling */
-.fgc-text-blocks--mobile .fgc-text-block {
-  background: #f9f9f9;
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.fgc-text-blocks--mobile .fgc-text-block:last-child {
-  margin-bottom: 0;
-}
-
-/* ---- NAVIGATION ARROWS ---- */
-.fgc-nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 48px;
-  height: 48px;
-  background: rgba(255, 255, 255, 0.95);
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s ease;
-  color: #111;
-}
-
-.fgc-nav:hover {
-  background: #fff;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-  transform: translateY(-50%) scale(1.1);
-}
-
-.fgc-nav:active {
-  transform: translateY(-50%) scale(0.95);
-}
-
-.fgc-nav--prev {
-  left: -24px;
-}
-
-.fgc-nav--next {
-  right: -24px;
-}
-
-.fgc-nav:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
-/* ---- PAGINATION DOTS ---- */
-.fgc-dots {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  margin-top: 2rem;
-}
-
-.fgc-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  border: 2px solid #ccc;
-  background: transparent;
-  cursor: pointer;
-  padding: 0;
-  transition: all 0.3s ease;
-}
-
-.fgc-dot:hover {
-  border-color: #888;
-  transform: scale(1.2);
-}
-
-.fgc-dot.is-active {
-  width: 28px;
-  border-radius: 5px;
-  background: #d46a3f;
-  border-color: #d46a3f;
-}
-
-/* =========================================================
-   RESPONSIVE ADJUSTMENTS
-========================================================= */
-
-/* Tablet */
-@media (max-width: 1024px) {
-  .fgc-item--card {
-    min-height: max(380px, calc(var(--card-min-height, 450px) * 0.85));
-  }
-
-  .fgc-card__title {
-    font-size: 28px;
-  }
-
-  .fgc-nav {
-    width: 48px;
-    height: 48px;
-  }
-
-  .fgc-nav--prev {
-    left: 10px;
-  }
-
-  .fgc-nav--next {
-    right: 10px;
-  }
-}
-
-/* Mobile */
-@media (max-width: 767px) {
-  .fgc-flexible-grid {
-    padding: 20px 10px;
-  }
-
-  .fgc-item--card {
-    flex: 0 0 100% !important;
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
-    min-height: max(280px, calc(var(--card-min-height, 450px) * 0.65));
-  }
-
-  .fgc-card__content {
-    padding: 32px 24px 24px;
-  }
-
-  .fgc-card__title {
-    font-size: 22px;
-  }
-
-  .fgc-card__excerpt {
-    font-size: 14px;
-    -webkit-line-clamp: 2;
-  }
-
-  .fgc-card__location {
-    font-size: 12px;
-  }
-
-  .fgc-card__price {
-    font-size: 18px;
-  }
-
-  .fgc-card__button {
-    padding: 8px 16px;
-    font-size: 13px;
-  }
-
-  .fgc-nav {
-    width: 40px;
-    height: 40px;
-  }
-
-  .fgc-nav--prev {
-    left: 5px;
-  }
-
-  .fgc-nav--next {
-    right: 5px;
-  }
-
-  .fgc-text-blocks--mobile .fgc-text-block {
-    padding: 1.25rem;
-    max-width: 100%;
-    box-sizing: border-box;
-  }
-
-  .fgc-text-content {
-    font-size: 0.9rem;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-  }
-
-  .fgc-text-content * {
-    max-width: 100%;
-    box-sizing: border-box;
-  }
-}
-
-/* =========================================================
-   META INFORMATION (Duration, Rating, Group Size)
-========================================================= */
-
-/* Meta container */
-.fgc-card__meta {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin: 8px 0;
-}
-
-/* Meta items */
-.fgc-card__meta-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.9);
-  font-weight: 500;
-}
-
-.fgc-card__meta-item svg {
-  flex-shrink: 0;
-  width: 16px;
-  height: 16px;
-  opacity: 0.9;
-}
-
-/* Individual meta fields - inherit from .fgc-card__meta-item */
-
-.fgc-card__rating svg {
-  fill: #FFD700; /* Gold color for star */
-  stroke: none;
-}
-
-/* Responsive adjustments for meta */
-@media (max-width: 767px) {
-  .fgc-card__meta {
-    gap: 12px;
-  }
-
-  .fgc-card__meta-item {
-    font-size: 13px;
-  }
-
-  .fgc-card__meta-item svg {
-    width: 14px;
-    height: 14px;
-  }
-}
-
-/* Alignment for meta based on text alignment */
-.text-align-left .fgc-card__meta {
-  justify-content: flex-start;
-}
-
-.text-align-center .fgc-card__meta {
-  justify-content: center;
-}
-
-.text-align-right .fgc-card__meta {
-  justify-content: flex-end;
-}
-
-/* =========================================================
-   PREVIEW PLACEHOLDER (Editor)
-========================================================= */
-.fgc-preview-placeholder {
-  text-align: center;
-  padding: 80px 20px;
-  background: #f9f9f9;
-  border: 2px dashed #ddd;
-  border-radius: 12px;
-  color: #666;
-}
-
-.fgc-preview-placeholder p {
-  margin: 0;
-  font-size: 16px;
-}
-
-/* =========================================================
-   ACCESSIBILITY
-========================================================= */
-@media (prefers-reduced-motion: reduce) {
-  .fgc-items {
-    scroll-behavior: auto;
-  }
-
-  .fgc-item,
-  .fgc-nav,
-  .fgc-dot,
-  .fgc-card-image {
-    transition: none;
-  }
-}
-
-.fgc-nav:focus-visible,
-.fgc-dot:focus-visible {
-  outline: 3px solid #d46a3f;
-  outline-offset: 4px;
-}
-
-.fgc-item:focus {
-  outline: 2px solid #d46a3f;
-  outline-offset: 4px;
-}
+/* =========================================================
+   FLEXIBLE GRID CAROUSEL - Cards + Text Blocks
+   Desktop: Grid with mixed cards and text blocks
+   Mobile: Cards as carousel, text blocks separate
+========================================================= */
+
+/* ---- MAIN CONTAINER ---- */
+.fgc-flexible-grid {
+  position: relative;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.fgc-flexible-grid.is-loaded {
+  opacity: 1;
+}
+
+.fgc-container {
+  position: relative;
+}
+
+/* ---- SKELETON LOADER ---- */
+.fgc-skeleton {
+  display: grid;
+  gap: 2rem;
+  opacity: 1;
+  transition: opacity 0.5s ease-out;
+  pointer-events: none;
+}
+
+.fgc-skeleton.is-hidden {
+  opacity: 0;
+}
+
+.fgc-skeleton-item {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.fgc-skeleton-image {
+  width: 100%;
+  height: 200px;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 37%, #f0f0f0 63%);
+  background-size: 400% 100%;
+  animation: fgc-shimmer 1.6s infinite linear;
+}
+
+.fgc-skeleton-line {
+  height: 16px;
+  margin-bottom: 0.75rem;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 37%, #f0f0f0 63%);
+  background-size: 400% 100%;
+  animation: fgc-shimmer 1.6s infinite linear;
+}
+
+.fgc-skeleton-line--title {
+  height: 24px;
+  width: 70%;
+  margin-bottom: 1rem;
+}
+
+.fgc-skeleton-line--text {
+  width: 90%;
+}
+
+@keyframes fgc-shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+/* =========================================================
+   DESKTOP GRID LAYOUT
+========================================================= */
+
+@media (min-width: 1024px) {
+  .fgc-items {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .fgc-flexible-grid[data-columns="2"] .fgc-items {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .fgc-flexible-grid[data-columns="3"] .fgc-items {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .fgc-flexible-grid[data-columns="4"] .fgc-items {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .fgc-flexible-grid[data-columns="2"] .fgc-skeleton {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .fgc-flexible-grid[data-columns="3"] .fgc-skeleton {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .fgc-flexible-grid[data-columns="4"] .fgc-skeleton {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  /* Text blocks visible in grid on desktop */
+  .fgc-item--text {
+    display: block;
+  }
+
+  /* Mobile text blocks hidden on desktop */
+  .fgc-text-blocks--mobile {
+    display: none;
+  }
+
+  /* Hide navigation on desktop */
+  .fgc-nav,
+  .fgc-dots {
+    display: none !important;
+  }
+}
+
+/* =========================================================
+   MOBILE CAROUSEL LAYOUT
+========================================================= */
+
+@media (max-width: 1023px) {
+  .fgc-items {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 10px 0;
+  }
+
+  .fgc-items::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Cards visible in carousel */
+  .fgc-item--card {
+    flex: 0 0 85%;
+    max-width: 85%;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+
+  /* Text blocks hidden in carousel (shown separately) */
+  .fgc-item--desktop-only {
+    display: none;
+  }
+
+  /* Mobile text blocks visible */
+  .fgc-text-blocks--mobile {
+    display: block;
+  }
+
+  .fgc-text-blocks--above {
+    margin-bottom: 2rem;
+  }
+
+  .fgc-text-blocks--below {
+    margin-top: 2rem;
+  }
+
+  .fgc-text-blocks--mobile .fgc-text-block {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+/* =========================================================
+   ITEM STYLES (CARDS AND TEXT BLOCKS)
+========================================================= */
+
+.fgc-item {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* ---- CARD ITEMS (HeroCarousel style) ---- */
+.fgc-item--card {
+  position: relative;
+  min-height: var(--card-min-height, 450px);
+  border-radius: 16px;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+  background-color: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .fgc-item--card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* ---- GRADIENT OVERLAY ---- */
+.fgc-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.85) 0%,
+    rgba(0, 0, 0, 0.4) 50%,
+    rgba(0, 0, 0, 0.1) 100%
+  );
+  z-index: 1;
+  transition: background 0.3s ease;
+}
+
+.fgc-item--card:hover .fgc-card__overlay {
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0.3) 50%,
+    transparent 100%
+  );
+}
+
+/* ---- CATEGORY BADGE ---- */
+.fgc-card__category {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: #FF6B6B;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: capitalize;
+  letter-spacing: 0.5px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+}
+
+/* ---- CARD LINK WRAPPER ---- */
+.fgc-card__link {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  flex: 1;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ---- CONTENT ---- */
+.fgc-card__content {
+  position: relative;
+  z-index: 2;
+  padding: 40px 32px 32px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fgc-card__title {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0;
+  color: #fff;
+}
+
+.fgc-card__excerpt {
+  font-size: 16px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ---- DIVIDER LINE ---- */
+.fgc-card__divider {
+  width: 50%;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.8) 0%,
+    rgba(255, 255, 255, 0.3) 100%
+  );
+  margin: 4px 0;
+}
+
+/* ---- LOCATION ---- */
+.fgc-card__location {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.fgc-card__location svg {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+}
+
+/* ---- PRICE ---- */
+.fgc-card__price {
+  font-family: 'Satoshi', sans-serif;
+  font-size: 20px;
+  font-weight: 900;
+  color: #fff;
+  margin: 4px 0;
+}
+
+/* ---- CTA BUTTON ---- */
+.fgc-card__button {
+  padding: 10px 20px;
+  background: #E78C85;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  align-self: flex-start;
+  margin-top: 8px;
+}
+
+.fgc-card__button:hover {
+  background: #dc7b74;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.fgc-card__button:active {
+  transform: translateY(0);
+}
+
+/* =========================================================
+   BUTTON COLOR VARIANTS
+========================================================= */
+
+/* Button variant Primary (Pink #E78C85) - DEFAULT */
+.fgc-card__button--primary {
+  background: #E78C85 !important;
+  color: #fff !important;
+}
+
+.fgc-card__button--primary:hover {
+  background: #dc7b74 !important;
+}
+
+/* Button variant Secondary (Purple #311A42) */
+.fgc-card__button--secondary {
+  background: #311A42 !important;
+  color: #fff !important;
+}
+
+.fgc-card__button--secondary:hover {
+  background: #402753 !important;
+}
+
+/* Button variant White (White with black text) */
+.fgc-card__button--white {
+  background: #fff !important;
+  color: #000 !important;
+  border: 2px solid #fff !important;
+}
+
+.fgc-card__button--white:hover {
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: #000 !important;
+}
+
+/* Button variant Gold (Gold #CEA02D) */
+.fgc-card__button--gold {
+  background: #CEA02D !important;
+  color: #fff !important;
+}
+
+.fgc-card__button--gold:hover {
+  background: #b88f25 !important;
+}
+
+/* Button variant Dark (Black #1A1A1A) */
+.fgc-card__button--dark {
+  background: #1A1A1A !important;
+  color: #fff !important;
+}
+
+.fgc-card__button--dark:hover {
+  background: #2d2d2d !important;
+}
+
+/* Button variant Transparent (Transparent with white border) */
+.fgc-card__button--transparent {
+  background: transparent !important;
+  color: #fff !important;
+  border: 2px solid #fff !important;
+  backdrop-filter: blur(4px);
+}
+
+.fgc-card__button--transparent:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: #fff !important;
+}
+
+/* Button variant Read More (Text in bold without background) */
+.fgc-card__button--read-more {
+  background: transparent !important;
+  color: #1976d2 !important;
+  font-weight: 700;
+  padding: 0 !important;
+  box-shadow: none !important;
+  border: none !important;
+  font-size: 14px;
+}
+
+.fgc-card__button--read-more:hover {
+  background: transparent !important;
+  color: #1565c0 !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* =========================================================
+   BADGE COLOR VARIANTS
+========================================================= */
+
+/* Badge variant Primary (Pink #E78C85) */
+.fgc-card__category--primary {
+  background: #E78C85 !important;
+  color: #fff !important;
+}
+
+.fgc-card__category--primary:hover {
+  background: #dc7b74 !important;
+}
+
+/* Badge variant Secondary (Purple #311A42) - DEFAULT */
+.fgc-card__category--secondary {
+  background: #311A42 !important;
+  color: #fff !important;
+}
+
+.fgc-card__category--secondary:hover {
+  background: #402753 !important;
+}
+
+/* Badge variant White (White with black text) */
+.fgc-card__category--white {
+  background: #fff !important;
+  color: #000 !important;
+}
+
+.fgc-card__category--white:hover {
+  background: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Badge variant Gold (Gold #CEA02D) */
+.fgc-card__category--gold {
+  background: #CEA02D !important;
+  color: #fff !important;
+}
+
+.fgc-card__category--gold:hover {
+  background: #b88f25 !important;
+}
+
+/* Badge variant Dark (Black #1A1A1A) */
+.fgc-card__category--dark {
+  background: #1A1A1A !important;
+  color: #fff !important;
+}
+
+.fgc-card__category--dark:hover {
+  background: #2d2d2d !important;
+}
+
+/* Badge variant Transparent (Transparent with white border) */
+.fgc-card__category--transparent {
+  background: transparent !important;
+  color: #fff !important;
+  border: 2px solid #fff !important;
+  backdrop-filter: blur(4px);
+}
+
+.fgc-card__category--transparent:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* =========================================================
+   CONTENT ALIGNMENT
+========================================================= */
+
+/* Text Alignment - Left (default) */
+.text-align-left .fgc-card__content {
+  text-align: left;
+}
+
+.text-align-left .fgc-card__title,
+.text-align-left .fgc-card__excerpt,
+.text-align-left .fgc-card__location,
+.text-align-left .fgc-card__price {
+  text-align: left;
+}
+
+.text-align-left .fgc-card__divider {
+  align-self: flex-start;
+}
+
+.text-align-left .fgc-card__location {
+  justify-content: flex-start;
+}
+
+/* Text Alignment - Center */
+.text-align-center .fgc-card__content {
+  text-align: center;
+}
+
+.text-align-center .fgc-card__title,
+.text-align-center .fgc-card__excerpt,
+.text-align-center .fgc-card__location,
+.text-align-center .fgc-card__price {
+  text-align: center;
+}
+
+.text-align-center .fgc-card__divider {
+  align-self: center;
+}
+
+.text-align-center .fgc-card__location {
+  justify-content: center;
+}
+
+/* Text Alignment - Right */
+.text-align-right .fgc-card__content {
+  text-align: right;
+}
+
+.text-align-right .fgc-card__title,
+.text-align-right .fgc-card__excerpt,
+.text-align-right .fgc-card__location,
+.text-align-right .fgc-card__price {
+  text-align: right;
+}
+
+.text-align-right .fgc-card__divider {
+  align-self: flex-end;
+}
+
+.text-align-right .fgc-card__location {
+  justify-content: flex-end;
+}
+
+/* Button Alignment - Left (default) */
+.button-align-left .fgc-card__button {
+  align-self: flex-start;
+}
+
+/* Button Alignment - Center */
+.button-align-center .fgc-card__button {
+  align-self: center;
+}
+
+/* Button Alignment - Right */
+.button-align-right .fgc-card__button {
+  align-self: flex-end;
+}
+
+/* ---- TEXT BLOCK ITEMS ---- */
+.fgc-item--text {
+  border-radius: 12px;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fgc-text-block {
+  width: 100%;
+}
+
+.fgc-text-content {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #333;
+}
+
+.fgc-text-content h1,
+.fgc-text-content h2,
+.fgc-text-content h3,
+.fgc-text-content h4,
+.fgc-text-content h5,
+.fgc-text-content h6 {
+  margin: 0 0 1rem;
+  color: #2c2c2c;
+}
+
+.fgc-text-content p {
+  margin: 0 0 1rem;
+}
+
+.fgc-text-content p:last-child {
+  margin-bottom: 0;
+}
+
+.fgc-text-content ul,
+.fgc-text-content ol {
+  margin: 0 0 1rem;
+  padding-left: 1.5rem;
+}
+
+.fgc-text-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.fgc-text-content a {
+  color: #d46a3f;
+  text-decoration: underline;
+}
+
+.fgc-text-content a:hover {
+  color: #b8552f;
+}
+
+/* Mobile text blocks styling */
+.fgc-text-blocks--mobile .fgc-text-block {
+  background: #f9f9f9;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.fgc-text-blocks--mobile .fgc-text-block:last-child {
+  margin-bottom: 0;
+}
+
+/* ---- NAVIGATION ARROWS ---- */
+.fgc-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.95);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  color: #111;
+}
+
+.fgc-nav:hover {
+  background: #fff;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.fgc-nav:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.fgc-nav--prev {
+  left: -24px;
+}
+
+.fgc-nav--next {
+  right: -24px;
+}
+
+.fgc-nav:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ---- PAGINATION DOTS ---- */
+.fgc-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 2rem;
+}
+
+.fgc-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+.fgc-dot:hover {
+  border-color: #888;
+  transform: scale(1.2);
+}
+
+.fgc-dot.is-active {
+  width: 28px;
+  border-radius: 5px;
+  background: #d46a3f;
+  border-color: #d46a3f;
+}
+
+/* =========================================================
+   RESPONSIVE ADJUSTMENTS
+========================================================= */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .fgc-item--card {
+    min-height: max(380px, calc(var(--card-min-height, 450px) * 0.85));
+  }
+
+  .fgc-card__title {
+    font-size: 28px;
+  }
+
+  .fgc-nav {
+    width: 48px;
+    height: 48px;
+  }
+
+  .fgc-nav--prev {
+    left: 10px;
+  }
+
+  .fgc-nav--next {
+    right: 10px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .fgc-flexible-grid {
+    padding: 20px 10px;
+  }
+
+  .fgc-item--card {
+    flex: 0 0 100% !important;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    min-height: max(280px, calc(var(--card-min-height, 450px) * 0.65));
+  }
+
+  .fgc-card__content {
+    padding: 32px 24px 24px;
+  }
+
+  .fgc-card__title {
+    font-size: 22px;
+  }
+
+  .fgc-card__excerpt {
+    font-size: 14px;
+    -webkit-line-clamp: 2;
+  }
+
+  .fgc-card__location {
+    font-size: 12px;
+  }
+
+  .fgc-card__price {
+    font-size: 18px;
+  }
+
+  .fgc-card__button {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+
+  .fgc-nav {
+    width: 40px;
+    height: 40px;
+  }
+
+  .fgc-nav--prev {
+    left: 5px;
+  }
+
+  .fgc-nav--next {
+    right: 5px;
+  }
+
+  .fgc-text-blocks--mobile .fgc-text-block {
+    padding: 1.25rem;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .fgc-text-content {
+    font-size: 0.9rem;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  }
+
+  .fgc-text-content * {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+/* =========================================================
+   META INFORMATION (Duration, Rating, Group Size)
+========================================================= */
+
+/* Meta container */
+.fgc-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 8px 0;
+}
+
+/* Meta items */
+.fgc-card__meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+}
+
+.fgc-card__meta-item svg {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  opacity: 0.9;
+}
+
+/* Individual meta fields - inherit from .fgc-card__meta-item */
+
+.fgc-card__rating svg {
+  fill: #FFD700; /* Gold color for star */
+  stroke: none;
+}
+
+/* Responsive adjustments for meta */
+@media (max-width: 767px) {
+  .fgc-card__meta {
+    gap: 12px;
+  }
+
+  .fgc-card__meta-item {
+    font-size: 13px;
+  }
+
+  .fgc-card__meta-item svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+/* Alignment for meta based on text alignment */
+.text-align-left .fgc-card__meta {
+  justify-content: flex-start;
+}
+
+.text-align-center .fgc-card__meta {
+  justify-content: center;
+}
+
+.text-align-right .fgc-card__meta {
+  justify-content: flex-end;
+}
+
+/* =========================================================
+   PREVIEW PLACEHOLDER (Editor)
+========================================================= */
+.fgc-preview-placeholder {
+  text-align: center;
+  padding: 80px 20px;
+  background: #f9f9f9;
+  border: 2px dashed #ddd;
+  border-radius: 12px;
+  color: #666;
+}
+
+.fgc-preview-placeholder p {
+  margin: 0;
+  font-size: 16px;
+}
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  .fgc-items {
+    scroll-behavior: auto;
+  }
+
+  .fgc-item,
+  .fgc-nav,
+  .fgc-dot,
+  .fgc-card-image {
+    transition: none;
+  }
+}
+
+.fgc-nav:focus-visible,
+.fgc-dot:focus-visible {
+  outline: 3px solid #d46a3f;
+  outline-offset: 4px;
+}
+
+.fgc-item:focus {
+  outline: 2px solid #d46a3f;
+  outline-offset: 4px;
+}

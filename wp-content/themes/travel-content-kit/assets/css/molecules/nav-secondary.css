@@ -8,6 +8,8 @@
     list-style: none;
     display: flex;
     gap: 0;
+    padding: 0;
+    margin: 0;
 }
 
 .header__secondary-list > li {
@@ -93,6 +95,8 @@
 .header__secondary-list .mega > .sub-menu > li > .sub-menu {
     list-style: none;
     position: initial;
+    padding-left: 0;
+    margin: 0;
 }
 
 .header__secondary-list .mega > .sub-menu {

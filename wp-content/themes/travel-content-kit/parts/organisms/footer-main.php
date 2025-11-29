@@ -81,3 +81,34 @@
     <?php get_template_part('parts/molecules/footer-legal-bar'); ?>
 
 </footer>
+
+<!-- Modal Buscador -->
+<?php get_template_part('parts/atoms/search'); ?>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const openBtn = document.querySelector(".header__search");
+    const modal = document.getElementById("search-modal");
+    const closeBtn = document.querySelector(".search-modal__close");
+    const overlay = document.querySelector(".search-modal__overlay");
+
+    if (openBtn) {
+        openBtn.addEventListener("click", () => {
+            modal.classList.add("active");
+        });
+    }
+
+    closeBtn.addEventListener("click", () => {
+        modal.classList.remove("active");
+    });
+
+    overlay.addEventListener("click", () => {
+        modal.classList.remove("active");
+    });
+
+    // Cerrar con ESC
+    document.addEventListener("keyup", (e) => {
+        if (e.key === "Escape") modal.classList.remove("active");
+    });
+});
+</script>

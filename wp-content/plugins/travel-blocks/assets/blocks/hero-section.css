@@ -1,138 +1,276 @@
 /**
+
  * Hero Section Block Styles
+
  *
+
  * @package Travel\Blocks
+
  */
 
+
+
 .hero-section {
+
     position: relative;
+
     display: flex;
+
     align-items: center;
+
     justify-content: center;
+
     background-size: cover;
+
     background-position: center;
+
     background-repeat: no-repeat;
+
     overflow: hidden;
+
 }
+
+
 
 /* Height variants */
+
 .hero-section--small {
+
     min-height: 400px;
+
 }
+
+
 
 .hero-section--medium {
+
     min-height: 600px;
+
 }
+
+
 
 .hero-section--large {
+
     min-height: 800px;
+
 }
+
+
 
 .hero-section--full {
+
     min-height: 100vh;
+
 }
+
+
 
 /* Overlay */
+
 .hero-section__overlay {
+
     position: absolute;
+
     top: 0;
+
     left: 0;
+
     right: 0;
+
     bottom: 0;
+
     background-color: #000;
+
     z-index: 1;
+
 }
+
+
 
 /* Content container */
+
 .hero-section__content {
+
     position: relative;
+
     z-index: 2;
+
     width: 100%;
+
     max-width: 1200px;
+
     margin: 0 auto;
+
     padding: 2rem;
+
     text-align: center;
+
 }
+
+
 
 .hero-section__inner {
+
     max-width: 800px;
+
     margin: 0 auto;
+
 }
+
+
 
 /* Typography */
+
 .hero-section__title {
+
     font-size: clamp(2.5rem, 5vw, 4rem);
+
     font-weight: 700;
+
     color: #fff;
+
     margin: 0 0 1rem;
+
     line-height: 1.2;
+
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+
 }
+
+
 
 .hero-section__subtitle {
+
     font-size: clamp(1.125rem, 2vw, 1.5rem);
+
     color: #fff;
+
     margin: 0 0 2rem;
+
     line-height: 1.5;
+
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+
 }
+
+
 
 /* CTA Button */
+
 .hero-section__actions {
+
     display: flex;
+
     gap: 1rem;
+
     justify-content: center;
+
     flex-wrap: wrap;
+
 }
+
+
 
 .hero-section__cta {
+
     display: inline-block;
+
     padding: 1rem 2.5rem;
+
     font-size: 1.125rem;
+
     font-weight: 600;
+
     text-decoration: none;
+
     border-radius: 4px;
+
     transition: all 0.3s ease;
+
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+
 }
+
+
 
 .hero-section__cta.btn-primary {
+
     background-color: var(--wp--preset--color--secondary);
+
     color: #fff;
+
 }
+
+
 
 .hero-section__cta.btn-primary:hover {
+
     --secondary-dark: #c0392b;
+
     background-color: var(--secondary-dark);
+
     transform: translateY(-2px);
+
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+
 }
+
+
 
 /* Responsive adjustments */
+
 @media (max-width: 768px) {
+
     .hero-section--small {
+
         min-height: 300px;
+
     }
+
+
 
     .hero-section--medium {
+
         min-height: 450px;
+
     }
+
+
 
     .hero-section--large {
+
         min-height: 600px;
+
     }
+
+
 
     .hero-section__content {
+
         padding: 1.5rem;
+
     }
+
+
 
     .hero-section__cta {
+
         padding: 0.875rem 2rem;
+
         font-size: 1rem;
+
     }
+
 }
 
+
+
 /* Editor preview adjustments */
+
 .block-editor-block-list__block .hero-section {
+
     margin-bottom: 1rem;
+
 }
+

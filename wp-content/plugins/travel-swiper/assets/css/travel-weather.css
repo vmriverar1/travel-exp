@@ -1,0 +1,146 @@
+.travel-weather-block {
+  position: relative;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.weather-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center center;
+  filter: brightness(0.85);
+  z-index: 0;
+  transition: transform 0.4s ease;
+}
+
+/* === CONTENEDOR PRINCIPAL (DESKTOP Y MOBILE) === */
+.weather-content {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 20px;
+  z-index: 2;
+  padding: 100px 0;
+}
+
+/* === COLUMNA IZQUIERDA (LUGARES) === */
+.weather-locations {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  text-transform: uppercase;
+  margin-left: 3%;
+}
+
+.weather-locations span {
+  margin-bottom: 45px;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+/* === GRID DESKTOP === */
+.weather-desktop-grid {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 12px;
+  padding-right: 20px;
+}
+
+.weather-grid-item img {
+  height: 420px;
+  width: auto;
+  border-radius: 16px;
+}
+
+/* === MOBILE WRAPPER === */
+.weather-mobile-wrapper {
+  display: none;
+  position: relative;
+  z-index: 2;
+  padding: 40px 0 60px;
+  justify-content: center;
+  align-items: flex-end;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* === FILA PRINCIPAL (LUGARES + SLIDER) === */
+.weather-mobile-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end; /* 👈 alinea ambos abajo */
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+}
+
+/* === LUGARES MOBILE === */
+.weather-locations-mobile {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  text-transform: uppercase;
+  margin-left: 3%;
+  margin-right: 10px;
+  height: 420px; /* iguala con slider */
+}
+
+.weather-locations-mobile span {
+  margin-bottom: 35px;
+}
+
+/* === SLIDER MOBILE === */
+.weather-mobile-slider {
+  display: none;
+  position: relative;
+  z-index: 2;
+  flex: 1;
+}
+
+.weather-mobile-slider .swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.weather-month-image {
+  width: auto;
+  max-height: 420px;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 1023px) {
+  .weather-desktop-grid,
+  .weather-locations {
+    display: none;
+  }
+
+  .weather-content {
+    display: none;
+  }
+
+  .weather-mobile-wrapper {
+    display: flex;
+  }
+
+  .weather-mobile-slider {
+    display: block;
+  }
+
+  .weather-month-image {
+    max-width: 90%;
+    height: 370px;
+  }
+}

@@ -128,8 +128,9 @@ class ApiDataMapper
             'is_prepayment' => !empty($api_data['isPrepayment']),
 
             // Rating and Stars
-            'total_reviews' => (int) ($api_data['rating'] ?? 0),
-            'google_rating' => (float) ($api_data['stars'] ?? 0),
+            'rating' => (float) ($api_data['stars'] ?? 0),          // Rating numérico (0-5) para ordenar/filtrar en bloques
+            'total_reviews' => (int) ($api_data['rating'] ?? 0),    // Número total de reviews
+            'google_rating' => (float) ($api_data['stars'] ?? 0),   // Mantener por compatibilidad
 
             // Activity Level
             'activity_level' => $this->map_activity_level($api_data['activityName'] ?? ''),

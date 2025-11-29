@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <style>
+        .pdf-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.75);
+            z-index: 999999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            padding: 20px;
+        }
+
+        /* .pdf-modal-overlay.is-active {
+            opacity: 1;
+            visibility: visible;
+        } */
+
+        .pdf-modal {
+            background: #0A797E;
+            border-radius: 36px 0 0 36px;
+            max-width: 700px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            transform: scale(1);
+            transition: transform 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+            display: flex;
+        }
+
+        /* .pdf-modal-overlay.is-active .pdf-modal {
+            transform: scale(1);
+        } */
+
+        .pdf-modal__image,
+        .pdf-modal__content {
+            width: 50%;
+            height: 100%;
+            box-sizing: border-box;
+        }
+
+        .pdf-modal__image img {
+            width: 100%;
+            height: auto;
+        }
+
+        .pdf-modal__content {
+            position: relative;
+            padding-top: 42px;
+            padding-right: 32px;
+        }
+
+        .pdf-modal__title {
+            font-size: 36px;
+            font-weight: 700;
+            color: #fff;
+            margin: 0 0 25px -16px;
+        }
+
+        .pdf-modal__subtitle {
+            font-size: 16px;
+            color: #fff;
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+
+        .pdf-modal__close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: #fff;
+            font-size: 32px;
+            padding: 0;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+
+        .pdf-modal__form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .pdf-modal__input {
+            padding: 12px 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #898989;
+            width: 100%;
+            box-sizing: border-box;
+            box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+        }
+
+        .pdf-modal__input.is-error {
+            border-color: #E74C3C;
+        }
+
+        .pdf-modal__error {
+            font-size: 13px;
+            color: #E74C3C;
+            margin-top: -12px;
+            display: none;
+        }
+
+        .pdf-modal__error.is-visible {
+            display: block;
+        }
+
+        .pdf-modal__checkbox {
+            cursor: pointer;
+            width: 15px;
+            height: 15px;
+            accent-color: #fff;
+            margin: 0;
+            transform: translateY(3px);
+        }
+
+        .pdf-modal__checkbox-label,
+        .pdf-modal__checkbox-label a {
+            font-size: 13px;
+            color: #fff;
+            line-height: 1.5;
+            cursor: pointer;
+        }
+
+        .pdf-modal_button {
+            background-color: #E78C85;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 700;
+            outline: none;
+            border: none;
+            padding: 1rem 6rem;
+            margin-top: 20px;
+            border-radius: 36px;
+            box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+        }
+    </style>
+    <div class="pdf-modal-overlay" id="pdfModalOverlay">
+        <div class="pdf-modal">
+            <div class="pdf-modal__image">
+                <img src="https://cliente.sistemaveme.com/wp-content/uploads/2025/11/Llama-Over.png" alt="">
+            </div>
+            <div class="pdf-modal__content">
+                <div class="pdf-modal__header">
+                    <button class="pdf-modal__close" id="pdfModalClose" aria-label="Close modal">&times;</button>
+                    <h2 class="pdf-modal__title">Need Help with Your Trip?</h2>
+                    <p class="pdf-modal__subtitle">Fire away with your questions and snag some tailor-made wisdom from our experts to make your adventure epic!</p>
+                </div>
+    
+                <div class="pdf-modal__body">
+                    <form class="pdf-modal__form" id="pdfDownloadForm">
+                        <div class="pdf-modal__field">
+                            <input type="text" id="pdfUserName" name="user_name" class="pdf-modal__input" placeholder="Name" required>
+                            <span class="pdf-modal__error" id="nameError">Please enter your name</span>
+                        </div>
+    
+                        <div class="pdf-modal__field">
+                            <input type="email" id="pdfUserEmail" name="user_email" class="pdf-modal__input" placeholder="E-mail" required>
+                            <span class="pdf-modal__error" id="emailError">Please enter a valid email</span>
+                        </div>
+
+                        <div class="pdf-modal__field">
+                            <textarea name="user_message" id="pdfUserMessage" class="pdf-modal__input" placeholder="Your question" required></textarea>
+                            <span class="pdf-modal__error" id="emailError">Please enter a valid email</span>
+                        </div>
+    
+                        <div class="pdf-modal__checkbox-wrapper">
+                            <input type="checkbox" id="pdfConsent" name="consent" class="pdf-modal__checkbox" required>
+                            <label for="pdfConsent" class="pdf-modal__checkbox-label">
+                                I have read and accept the <a href="#">privacy policy</a>
+                            </label>
+                        </div>
+                        <span class="pdf-modal__error" id="consentError">Please accept the terms to continue</span>
+                        <span class="pdf-modal__error" id="generalError"></span>
+                    </form>
+                </div>
+    
+                <div class="pdf-modal__footer">
+                    <button type="submit" form="pdfDownloadForm" class="pdf-modal_button pdf-modal_button--primary"
+                        id="pdfDownloadButton">
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

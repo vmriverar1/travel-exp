@@ -5,18 +5,11 @@
 .logo {
     display: flex;
     align-items: center;
-    gap: var(--spacing-xs);
+    gap: var(--wp--preset--spacing--30);
     color: #ffffff;
-    font-weight: var(--font-weight-bold);
-    font-size: var(--font-size-base);
+    font-weight: 700;
+    font-size: var(--wp--preset--font-size--regular);
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    transition: all var(--transition-fast);
-}
-
-.logo:hover {
-    opacity: 0.9;
-    color: #ffffff;
-    transform: scale(1.05);
 }
 
 .logo__icon {
@@ -31,8 +24,10 @@
     height: 24px;
     width: auto;
     max-width: 250px;
-    flex-shrink: 0;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.logo__image.color {
+    display: none;
 }
 
 /* Logo variant for aside menu - uses color version, no filters */
@@ -42,7 +37,7 @@
 }
 
 .logo--aside .logo__icon {
-    color: var(--color-primary, #d46a3f);
+    color: var(--wp--preset--color--secondary);
     filter: none;
 }
 
@@ -59,7 +54,7 @@
 
 @media (min-width: 1024px) {
     .logo {
-        font-size: var(--font-size-lg);
+        font-size: 18px;
     }
 
     .logo__image {

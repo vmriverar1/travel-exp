@@ -1,1153 +1,2306 @@
 /* =========================================================
+
    RELATED PACKAGES - Material Design
+
    Basado en PostsCarousel con cards verticales
+
    Grid de 3 columnas en desktop
+
 ========================================================= */
+
+
 
 /* ---- VARIABLES CSS ---- */
+
 .related-packages {
+
   --transition-speed: 0.3s;
+
   --elevation-1: 0 2px 4px rgba(0, 0, 0, 0.1);
+
   --elevation-2: 0 4px 8px rgba(0, 0, 0, 0.12);
+
   --elevation-3: 0 8px 16px rgba(0, 0, 0, 0.15);
+
   --elevation-4: 0 12px 24px rgba(0, 0, 0, 0.18);
+
   --card-gap: 24px;
 
+
+
   /* Color Palette */
+
   --color-primary: var(--wp--preset--color--secondary);
+
   --color-secondary: var(--wp--preset--color--contrast-4);
+
   --color-gold: var(--wp--preset--color--contrast-1);
+
   --color-dark: #212121;
+
   --color-white: #ffffff;
+
 }
+
+
 
 /* ---- CONTENEDOR PRINCIPAL ---- */
+
 .related-packages {
+
   position: relative;
+
   width: 100%;
+
   max-width: 1400px;
+
   margin: 0 auto;
+
   /* padding: 60px 20px; */
+
 }
+
+
 
 /* ---- TÍTULO DE SECCIÓN ---- */
+
 .related-packages__title {
+
   font-family: 'Satoshi', sans-serif;
+
   font-size: 2rem;
+
   font-weight: 700;
+
   color: #212121;
+
   margin: 0 0 3rem 0;
+
   text-align: center;
+
   line-height: 1.2;
+
 }
+
+
 
 /* ---- GRID (Flex layout con wrapping automático) ---- */
+
 .related-packages__grid {
+
   display: flex;
+
   flex-wrap: wrap;
+
   gap: var(--card-gap);
+
   width: 100%; /* Container always full width */
+
 }
+
+
 
 /* Cards width is controlled by grid_width variable */
+
 /* grid_width controls how much % each card takes */
+
 /* Example: 100% = 1 column, 50% = 2 columns, 33% = 3 columns, 25% = 4 columns */
 
+
+
 /* ---- CARD MATERIAL DESIGN (idéntico a PostsCarousel) ---- */
+
 .rp-card {
+
   position: relative;
+
   background: #fff;
+
   border-radius: 12px;
+
   overflow: hidden;
+
   box-shadow: var(--elevation-1);
+
   transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+
   display: flex;
+
   flex-direction: column;
+
   /* min-height is controlled via inline style from ACF field (default: 350px) */
+
   height: auto; /* Allow card to grow with content */
+
 }
+
+
 
 /* ---- CARD IMAGE BACKGROUND (full) ---- */
+
 .rp-card__image-bg {
+
   position: absolute;
+
   top: 0;
+
   left: 0;
+
   right: 0;
+
   min-height: 350px; /* Increased minimum image height */
+
   height: 100%; /* Fill card height */
+
   background-size: cover;
+
   background-position: center;
+
   background-repeat: no-repeat;
+
   z-index: 0;
+
   transition: transform var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+
 }
+
+
 
 /* Overlay gradient (idéntico a PostsCarousel) */
+
 .rp-card__image-bg::after {
+
   content: '';
+
   position: absolute;
+
   inset: 0;
+
   background: linear-gradient(
+
     to top,
+
     rgba(0, 0, 0, 0.9) 0%,
+
     rgba(0, 0, 0, 0.5) 40%,
+
     rgba(0, 0, 0, 0.2) 70%,
+
     transparent 100%
+
   );
+
   z-index: 1;
+
 }
+
+
 
 /* ---- DESTINATION BADGE (esquina superior izquierda) ---- */
+
 .rp-card__badge {
+
   display: inline-block;
+
   background: var(--wp--preset--color--contrast-4);
+
   color: #fff;
+
   font-size: 12px;
+
   font-weight: 600;
-  text-transform: uppercase;
+
+  text-transform: capitalize;
+
   letter-spacing: 0.5px;
+
   padding: 6px 14px;
+
   border-radius: 10px;
+
   transition: all 0.2s ease;
+
   margin-bottom: 8px;
+
 }
+
+
 
 .rp-card__badge:hover {
+
   background: #402753;
+
 }
+
+
 
 /* ---- CARD LINK ---- */
+
 .rp-card__link {
+
   position: relative;
+
   z-index: 2;
+
   display: flex;
+
   flex-direction: column;
+
   justify-content: flex-end;
+
   flex: 1;
+
   text-decoration: none;
+
   color: inherit;
+
   min-height: 100%; /* Ensure link fills the card */
+
 }
+
+
 
 /* ---- CARD CONTENT (bottom) ---- */
+
 .rp-card__content {
+
   padding: 24px;
+
   padding-top: 32px; /* Extra top padding to prevent title cutoff */
+
   color: #fff;
+
   display: flex;
+
   flex-direction: column;
+
   gap: 12px;
+
   min-height: fit-content; /* Content determines minimum height */
+
 }
+
+
 
 .rp-card__title {
+
   font-family: 'Satoshi', sans-serif;
+
   font-size: 22px;
+
   font-weight: 700;
+
   line-height: 1.3;
+
   color: #fff;
+
   margin: 0;
+
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+
   overflow-wrap: break-word;
+
   word-wrap: break-word;
+
   hyphens: auto;
+
 }
+
+
 
 /* Excerpt (for blog posts) */
+
 .rp-card__excerpt {
+
   font-family: 'Satoshi', sans-serif;
+
   font-size: 14px;
+
   line-height: 1.6;
+
   color: rgba(255, 255, 255, 0.9);
+
   margin: 12px 0 16px 0;
+
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+
   overflow-wrap: break-word; /* Prevent text overflow */
+
   word-wrap: break-word;
+
   display: block; /* Ensure it's displayed */
+
 }
+
+
 
 /* Location */
+
 .rp-card__location {
+
   display: flex;
+
   align-items: center;
+
   gap: 6px;
+
   font-family: 'Satoshi', sans-serif;
+
   font-size: 13px;
+
   line-height: 1.4;
+
   color: rgba(255, 255, 255, 0.85);
+
   margin: 8px 0 12px 0;
+
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+
 }
+
+
 
 .rp-card__location svg {
+
   flex-shrink: 0;
+
   width: 14px;
+
   height: 14px;
+
   opacity: 0.9;
+
 }
+
+
 
 /* Divider line */
+
 .rp-card__divider {
+
   width: 50%;
+
   height: 2px;
+
   background: linear-gradient(
+
     to right,
+
     rgba(255, 255, 255, 0.8) 0%,
+
     rgba(255, 255, 255, 0.3) 100%
+
   );
+
   margin: 4px 0;
+
 }
+
+
 
 /* Meta Line Combined (Duration | Price) */
+
 .rp-card__meta-line {
+
   display: flex;
+
   align-items: center;
+
   gap: 8px;
+
   font-family: 'Satoshi', sans-serif;
+
   font-size: 14px;
+
   color: rgba(255, 255, 255, 0.9);
+
   flex-wrap: wrap;
+
 }
+
+
 
 .rp-card__meta-item {
+
   display: inline-flex;
+
   align-items: center;
+
   gap: 4px;
+
 }
+
+
 
 .rp-card__meta-item svg {
+
   flex-shrink: 0;
+
   width: 14px;
+
   height: 14px;
+
   opacity: 0.8;
+
 }
+
+
 
 .rp-card__meta-item strong {
+
   font-size: 18px;
+
   font-weight: 700;
+
   color: #fff;
+
 }
+
+
 
 .rp-card__meta-separator {
+
   color: rgba(255, 255, 255, 0.5);
+
   font-weight: 300;
+
 }
+
+
 
 /* Duration (when separate) */
+
 .rp-card__duration {
+
   display: flex;
+
   align-items: center;
+
   gap: 6px;
+
   font-family: 'Satoshi', sans-serif;
+
   font-size: 14px;
+
   color: rgba(255, 255, 255, 0.9);
+
 }
+
+
 
 .rp-card__duration svg {
+
   flex-shrink: 0;
+
   width: 16px;
+
   height: 16px;
+
 }
+
+
 
 /* Price */
+
 .rp-card__price {
+
   font-family: 'Satoshi', sans-serif;
+
   font-size: 14px;
+
   font-weight: 400;
+
   color: rgba(255, 255, 255, 0.9);
+
   margin: 4px 0;
+
 }
+
+
 
 .rp-card__price strong {
+
   font-size: 24px;
+
   font-weight: 900;
+
   color: #fff;
+
   display: inline-block;
+
   margin-left: 4px;
+
 }
+
+
 
 /* Button */
+
 .rp-card__button {
+
   display: inline-flex;
+
   align-items: center;
+
   gap: 8px;
+
   padding: 10px 20px;
+
   background: var(--wp--preset--color--secondary);
+
   color: #fff;
+
   font-size: 14px;
+
   font-weight: 600;
+
   border: none;
+
   border-radius: 24px;
+
   cursor: pointer;
+
   white-space: nowrap;
+
   transition: all 0.2s ease;
+
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+
   align-self: flex-start;
+
   margin-top: 8px;
+
   margin-bottom: 4px; /* Ensure button has space at bottom */
+
   flex-shrink: 0; /* Prevent button from shrinking */
+
 }
+
+
 
 .rp-card__button svg {
+
   width: 16px;
+
   height: 16px;
+
   transition: transform 0.2s ease;
+
 }
+
+
 
 .rp-card__button:hover {
+
   background: #dc7b74;
+
   transform: translateY(-2px);
+
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+
 }
+
+
 
 .rp-card__button:hover svg {
+
   transform: translateX(4px);
+
 }
+
+
 
 .rp-card__button:active {
+
   transform: translateY(0);
+
 }
 
+
+
 /* =========================================================
+
    HOVER EFFECT - LIFT (Desktop Only)
+
 ========================================================= */
+
 @media (hover: hover) and (pointer: fine) {
+
   .rp-card:hover {
+
     transform: translateY(-8px);
+
     box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
+
     z-index: 10;
+
   }
+
+
 
   .rp-card:hover .rp-card__image-bg {
+
     transform: scale(1.08);
+
   }
+
+
 
   /* No hover effect for horizontal cards */
+
   .related-packages--horizontal .rp-card:hover {
+
     transform: none;
+
     box-shadow: none;
+
   }
+
+
 
   .related-packages--horizontal .rp-card:hover .rp-card__image-bg {
+
     transform: none;
+
   }
+
 }
 
+
+
 /* =========================================================
+
    RESPONSIVE - TABLET
+
 ========================================================= */
+
 @media (min-width: 769px) and (max-width: 1024px) {
+
   .related-packages {
+
     padding: 40px 20px;
+
   }
+
+
 
   .related-packages__title {
+
     font-size: 1.75rem;
+
     margin-bottom: 2rem;
+
   }
+
+
 
   .rp-card {
+
     min-height: 480px;
+
   }
+
 }
 
+
+
 /* =========================================================
+
    MOBILE SLIDER
+
 ========================================================= */
+
 @media (max-width: 768px) {
+
   /* Activate slider layout */
+
   .related-packages.slider-enabled .related-packages__grid {
+
     display: flex;
+
     flex-wrap: nowrap;
+
     overflow: hidden;
+
     gap: 24px;
+
     scroll-snap-type: x mandatory;
+
     -webkit-overflow-scrolling: touch;
+
   }
+
+
 
   .related-packages.slider-enabled .rp-card {
+
     flex: 0 0 calc(100% - 40px);
+
     max-width: calc(100% - 40px);
+
     scroll-snap-align: center;
+
     margin: 0 20px;
+
   }
+
 }
 
+
+
 /* =========================================================
+
    RESPONSIVE - MOBILE
+
 ========================================================= */
+
 @media (max-width: 768px) {
+
   .related-packages {
+
     padding: 30px 20px;
+
   }
+
+
 
   .related-packages__title {
+
     font-size: 1.5rem;
+
     margin-bottom: 1.5rem;
+
   }
 
+
+
   .rp-card {
+
     min-height: 460px;
+
   }
 
+
+
   .rp-card__content {
+
     padding: 20px;
+
   }
+
+
 
   .rp-card__title {
+
     font-size: 20px;
+
   }
+
+
 
   .rp-card__badge {
+
     top: 16px;
+
     left: 16px;
+
     font-size: 12px;
+
     padding: 6px 12px;
+
   }
+
+
 
   .rp-card__price strong {
+
     font-size: 20px;
+
   }
+
+
 
   .rp-card__button {
+
     padding: 8px 16px;
+
     font-size: 13px;
+
   }
+
 }
 
+
+
 /* =========================================================
+
    RESPONSIVE - MOBILE SMALL
+
 ========================================================= */
+
 @media (max-width: 480px) {
+
   .rp-card {
+
     min-height: 440px;
+
   }
+
+
 
   .rp-card__content {
+
     padding: 16px;
+
   }
+
+
 
   .rp-card__title {
+
     font-size: 18px;
+
   }
+
+
 
   .rp-card__badge {
+
     top: 12px;
+
     left: 12px;
+
     font-size: 11px;
+
     padding: 6px 12px;
+
   }
+
+
 
   .rp-card__price strong {
+
     font-size: 18px;
+
   }
+
 }
 
+
+
 /* =========================================================
+
    ACCESSIBILITY
+
 ========================================================= */
+
 @media (prefers-reduced-motion: reduce) {
+
   .rp-card,
+
   .rp-card__image-bg,
+
   .rp-card__button {
+
     transition: none;
+
   }
+
 }
+
+
 
 /* Focus visible para navegación con teclado */
+
 .rp-card:focus-visible,
+
 .rp-card__link:focus-visible {
+
   outline: 3px solid #1976d2;
+
   outline-offset: 4px;
+
 }
 
+
+
 /* =========================================================
+
    LOADING STATE
+
 ========================================================= */
+
 .rp-card.is-loading .rp-card__image-bg {
+
   background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 37%, #f0f0f0 63%);
+
   background-size: 400% 100%;
+
   animation: shimmer 1.6s infinite linear;
+
 }
+
+
 
 @keyframes shimmer {
+
   0% { background-position: 100% 0; }
+
   100% { background-position: -100% 0; }
+
 }
 
+
+
 /* =========================================================
+
    HORIZONTAL LAYOUT - Image Left (60%), Content Right (40%)
+
 ========================================================= */
+
 .related-packages--horizontal .rp-card {
+
   flex-direction: row;
+
   min-height: 180px;
+
   max-height: 180px;
+
   gap: 0px; /* Space between image and content */
+
   padding: 12px; /* Padding inside card */
+
   box-shadow: none; /* Remove shadow */
+
 }
+
+
 
 .related-packages--horizontal .rp-card__image-bg {
+
   position: relative;
+
   width: 60%; /* Rectangular image on left */
+
   height: 100%; /* Adapt to card height */
+
   flex-shrink: 0;
+
   inset: unset;
+
   order: 1; /* Image on the left */
+
   border-radius: 12px; /* Rounded corners on all 4 sides */
+
   overflow: hidden; /* Ensure image respects border-radius */
+
   min-height: auto; /* Remove fixed min-height */
+
 }
+
+
 
 .related-packages--horizontal .rp-card__link {
+
   flex-direction: row;
+
   justify-content: flex-start;
+
   width: 40%; /* Content on the right */
+
   order: 2; /* Content on the right */
+
 }
+
+
 
 .related-packages--horizontal .rp-card__content {
+
   justify-content: center;
+
   padding: 8px 12px; /* Reduced padding since card has padding */
+
   color: #212121;
+
   gap: 8px;
+
 }
+
+
 
 .related-packages--horizontal .rp-card__title {
+
   color: #212121;
+
   text-shadow: none;
+
   font-size: 15px; /* Specific for horizontal variant */
+
   line-height: 1.3;
+
   margin: 0;
+
 }
+
+
 
 .related-packages--horizontal .rp-card__excerpt {
+
   color: #616161;
+
   text-shadow: none;
+
   font-size: 13px;
+
   line-height: 1.4;
+
 }
+
+
 
 .related-packages--horizontal .rp-card__location {
+
   color: #757575;
+
   text-shadow: none;
+
   font-size: 12px;
+
   margin: 6px 0 10px 0;
+
 }
+
+
 
 .related-packages--horizontal .rp-card__location svg {
+
   opacity: 0.7;
+
 }
 
+
+
 .related-packages--horizontal .rp-card__divider {
+
   background: linear-gradient(
+
     to right,
+
     rgba(33, 33, 33, 0.3) 0%,
+
     rgba(33, 33, 33, 0.1) 100%
+
   );
+
 }
+
+
 
 .related-packages--horizontal .rp-card__duration {
+
   color: #616161;
+
 }
+
+
 
 .related-packages--horizontal .rp-card__price {
+
   color: #424242;
+
 }
+
+
 
 .related-packages--horizontal .rp-card__price strong {
+
   color: #212121;
+
 }
+
+
 
 .related-packages--horizontal .rp-card__badge {
+
   font-size: 11px;
+
   padding: 6px 12px;
+
   margin-bottom: 6px;
+
   background: #F3CE72; /* Golden background */
+
   color: #000000; /* Black text */
+
   text-transform: capitalize; /* Primera letra mayúscula, resto minúsculas */
+
 }
+
+
 
 /* Override badge color variants for horizontal layout */
+
 .related-packages--horizontal .rp-card__badge--primary,
+
 .related-packages--horizontal .rp-card__badge--secondary,
+
 .related-packages--horizontal .rp-card__badge--gold,
+
 .related-packages--horizontal .rp-card__badge--dark,
+
 .related-packages--horizontal .rp-card__badge--white,
+
 .related-packages--horizontal .rp-card__badge--transparent {
+
   background: #F3CE72; /* Always golden in horizontal */
+
   color: #000000; /* Always black text in horizontal */
+
 }
+
+
 
 /* Horizontal: No gradient overlay on image */
+
 .related-packages--horizontal .rp-card__image-bg::after {
+
   display: none;
+
 }
+
+
 
 /* Horizontal: Meta line colors */
+
 .related-packages--horizontal .rp-card__meta-line {
+
   color: #616161;
+
   font-size: 13px;
+
 }
+
+
 
 .related-packages--horizontal .rp-card__meta-item svg {
+
   opacity: 0.6;
+
 }
+
+
 
 .related-packages--horizontal .rp-card__meta-item strong {
+
   color: #212121;
+
   font-size: 16px;
+
 }
+
+
 
 .related-packages--horizontal .rp-card__meta-separator {
+
   color: rgba(33, 33, 33, 0.3);
+
 }
+
+
 
 .related-packages--horizontal .rp-card__divider {
+
   margin: 0;
+
   width: 40%;
+
 }
+
+
 
 .related-packages--horizontal .rp-card__button {
+
   padding: 8px 16px;
+
   font-size: 13px;
+
   margin-top: 4px;
+
 }
+
+
 
 .related-packages--horizontal .rp-card__button--text-black {
+
   padding: 0;
+
   font-size: 12px;
+
   margin-top: 6px;
+
   width: fit-content;
+
   margin-left: auto;
+
   display: block;
+
 }
+
+
 
 /* No hover effect for text-black button in horizontal variant */
+
 .related-packages--horizontal .rp-card__button--text-black:hover {
+
   background: transparent;
+
   color: #212121; /* Keep same color */
+
   text-decoration: none; /* No underline */
+
   transform: none; /* No movement */
+
   box-shadow: none;
+
   cursor: pointer; /* Only show pointer hand */
+
 }
+
+
 
 /* Hide arrow in horizontal variant too */
+
 .related-packages--horizontal .rp-card__button--text-black svg {
+
   display: none;
+
 }
+
+
 
 /* Responsive - Tablet Horizontal */
+
 @media (min-width: 769px) and (max-width: 1024px) {
+
   .related-packages--horizontal .rp-card {
+
     min-height: 160px;
+
     max-height: 160px;
+
     gap: 16px; /* Smaller gap on tablet */
+
     padding: 10px;
+
     box-shadow: none; /* Remove shadow */
+
   }
+
+
 
   .related-packages--horizontal .rp-card__image-bg {
+
     width: 58%; /* Rectangular image on left */
+
     height: 100%; /* Adapt to card height */
+
     border-radius: 10px; /* Slightly smaller radius on tablet */
+
     min-height: auto; /* Remove fixed min-height */
+
   }
+
+
 
   .related-packages--horizontal .rp-card__link {
+
     width: 42%; /* Content on right */
+
   }
+
+
 
   .related-packages--horizontal .rp-card__content {
+
     padding: 8px 12px;
+
   }
+
+
 
   .related-packages--horizontal .rp-card__title {
+
     font-size: 14px; /* Slightly smaller on tablet */
+
   }
 
+
+
   .related-packages--horizontal .rp-card__badge {
+
     font-size: 9px;
+
     padding: 5px 10px;
+
     background: #F3CE72; /* Golden background */
+
     color: #000000; /* Black text */
+
     text-transform: capitalize; /* Primera letra mayúscula, resto minúsculas */
+
   }
+
+
 
   /* Override badge color variants for horizontal layout on tablet */
+
   .related-packages--horizontal .rp-card__badge--primary,
+
   .related-packages--horizontal .rp-card__badge--secondary,
+
   .related-packages--horizontal .rp-card__badge--gold,
+
   .related-packages--horizontal .rp-card__badge--dark,
+
   .related-packages--horizontal .rp-card__badge--white,
+
   .related-packages--horizontal .rp-card__badge--transparent {
+
     background: #F3CE72; /* Always golden in horizontal */
+
     color: #000000; /* Always black text in horizontal */
+
   }
+
+
 
   /* No hover effect for text-black button in horizontal variant on tablet */
+
   .related-packages--horizontal .rp-card__button--text-black:hover {
+
     background: transparent;
+
     color: #212121;
+
     text-decoration: none;
+
     transform: none;
+
     cursor: pointer;
+
   }
+
 }
+
+
 
 /* Responsive - Mobile: Keep horizontal layout */
+
 @media (max-width: 768px) {
+
   .related-packages--horizontal .rp-card {
+
     flex-direction: row; /* Keep horizontal */
+
     min-height: 140px;
+
     max-height: 140px;
+
     gap: 12px; /* Smaller gap on mobile */
+
     padding: 8px;
+
     box-shadow: none; /* Remove shadow */
+
   }
+
+
 
   .related-packages--horizontal .rp-card__image-bg {
+
     position: relative;
+
     width: 60%; /* Same proportion */
+
     height: 100%; /* Adapt to card height */
+
     border-radius: 8px; /* Smaller radius on mobile */
+
     inset: unset;
+
     order: 1; /* Image on left */
+
     min-height: auto; /* Remove fixed min-height */
+
   }
+
+
 
   .related-packages--horizontal .rp-card__link {
+
     width: 40%; /* Same proportion */
+
     flex-direction: row;
+
     justify-content: flex-start;
+
     order: 2; /* Content on right */
+
   }
+
+
 
   .related-packages--horizontal .rp-card__content {
+
     color: #212121; /* Dark text, not white */
+
     padding: 4px 8px;
+
     gap: 6px;
+
   }
+
+
 
   .related-packages--horizontal .rp-card__title {
+
     color: #212121;
+
     text-shadow: none;
+
     font-size: 13px; /* Smaller on mobile */
+
   }
+
+
 
   .related-packages--horizontal .rp-card__badge {
+
     font-size: 9px;
+
     padding: 4px 10px;
+
     margin-bottom: 4px;
+
     background: #F3CE72; /* Golden background */
+
     color: #000000; /* Black text */
+
     text-transform: capitalize; /* Primera letra mayúscula, resto minúsculas */
+
   }
+
+
 
   /* Override badge color variants for horizontal layout on mobile */
+
   .related-packages--horizontal .rp-card__badge--primary,
+
   .related-packages--horizontal .rp-card__badge--secondary,
+
   .related-packages--horizontal .rp-card__badge--gold,
+
   .related-packages--horizontal .rp-card__badge--dark,
+
   .related-packages--horizontal .rp-card__badge--white,
+
   .related-packages--horizontal .rp-card__badge--transparent {
+
     background: #F3CE72; /* Always golden in horizontal */
+
     color: #000000; /* Always black text in horizontal */
+
   }
+
+
 
   .related-packages--horizontal .rp-card__excerpt {
+
     font-size: 12px;
+
     line-height: 1.4;
+
   }
+
+
 
   .related-packages--horizontal .rp-card__meta-line {
+
     font-size: 11px;
+
   }
+
+
 
   .related-packages--horizontal .rp-card__meta-item strong {
+
     font-size: 14px;
+
   }
+
+
 
   .related-packages--horizontal .rp-card__button {
+
     padding: 6px 12px;
+
     font-size: 12px;
+
     margin-top: 2px;
+
   }
+
+
 
   /* No hover effect for text-black button in horizontal variant on mobile */
+
   .related-packages--horizontal .rp-card__button--text-black:hover {
+
     background: transparent;
+
     color: #212121;
+
     text-decoration: none;
+
     transform: none;
+
     cursor: pointer;
+
   }
+
 }
+
+
 
 /* =========================================================
+
    FASE 2: COLOR VARIANTS & HOVER EFFECTS
+
 ========================================================= */
 
+
+
 /* ---- BUTTON COLOR VARIANTS ---- */
+
 .rp-card__button--primary {
+
   background: var(--color-primary);
+
   color: #fff;
+
 }
+
+
 
 .rp-card__button--primary:hover {
+
   background: #d97670;
+
 }
+
+
 
 .rp-card__button--secondary {
+
   background: var(--color-secondary);
+
   color: #fff;
+
 }
+
+
 
 .rp-card__button--secondary:hover {
+
   background: #451f5c;
+
 }
+
+
 
 .rp-card__button--gold {
+
   background: var(--color-gold);
+
   color: #fff;
+
 }
+
+
 
 .rp-card__button--gold:hover {
+
   background: #b88f28;
+
 }
+
+
 
 .rp-card__button--dark {
+
   background: var(--color-dark);
+
   color: #fff;
+
 }
+
+
 
 .rp-card__button--dark:hover {
+
   background: #424242;
+
 }
+
+
 
 .rp-card__button--white {
+
   background: var(--color-white);
+
   color: var(--color-dark);
+
 }
+
+
 
 .rp-card__button--white:hover {
+
   background: #f5f5f5;
+
 }
+
+
 
 .rp-card__button--transparent {
+
   background: transparent;
+
   color: #fff;
+
   border: 2px solid rgba(255, 255, 255, 0.5);
+
 }
+
+
 
 .rp-card__button--transparent:hover {
+
   background: rgba(255, 255, 255, 0.1);
+
   border-color: rgba(255, 255, 255, 0.8);
+
 }
+
+
 
 .rp-card__button--outline-primary {
+
   background: transparent;
+
   color: var(--color-primary);
+
   border: 2px solid var(--color-primary);
+
 }
+
+
 
 .rp-card__button--outline-primary:hover {
+
   background: var(--color-primary);
+
   color: #fff;
+
 }
+
+
 
 .rp-card__button--outline-white {
+
   background: transparent;
+
   color: #fff;
+
   border: 2px solid #fff;
+
 }
+
+
 
 .rp-card__button--outline-white:hover {
+
   background: #fff;
+
   color: var(--color-dark);
+
 }
+
+
 
 .rp-card__button--text-black {
+
   background: transparent;
+
   color: #212121;
+
   border: none;
+
   padding: 0;
+
   font-weight: 700;
+
   font-size: 15px;
+
   border-radius: 0;
+
   box-shadow: none;
+
   width: fit-content;
+
   margin-left: auto;
+
   display: block;
+
 }
+
+
 
 .rp-card__button--text-black:hover {
+
   background: transparent;
+
   color: #000;
+
   text-decoration: underline;
+
 }
+
+
 
 /* Hide arrow icon for text-black variant */
+
 .rp-card__button--text-black svg {
+
   display: none;
+
 }
+
+
 
 /* ---- BADGE COLOR VARIANTS ---- */
+
 .rp-card__badge--primary {
+
   background: var(--color-primary);
+
   color: #fff;
+
 }
+
+
 
 .rp-card__badge--secondary {
+
   background: var(--color-secondary);
+
   color: #fff;
+
 }
+
+
 
 .rp-card__badge--gold {
+
   background: var(--color-gold);
+
   color: #fff;
+
 }
+
+
 
 .rp-card__badge--dark {
+
   background: var(--color-dark);
+
   color: #fff;
+
 }
+
+
 
 .rp-card__badge--white {
+
   background: var(--color-white);
+
   color: var(--color-dark);
+
 }
+
+
 
 .rp-card__badge--transparent {
+
   background: rgba(255, 255, 255, 0.2);
+
   color: #fff;
+
   backdrop-filter: blur(8px);
+
 }
+
+
 
 /* ---- TEXT ALIGNMENT ---- */
+
 .rp-text-left .rp-card__content {
+
   align-items: flex-start;
+
   text-align: left;
+
 }
+
+
 
 .rp-text-center .rp-card__content {
+
   align-items: center;
+
   text-align: center;
+
 }
+
+
 
 .rp-text-right .rp-card__content {
+
   align-items: flex-end;
+
   text-align: right;
+
 }
+
+
 
 /* ---- BUTTON ALIGNMENT ---- */
+
 .rp-button-left .rp-card__button {
+
   align-self: flex-start;
+
 }
+
+
 
 .rp-button-center .rp-card__button {
+
   align-self: center;
+
 }
 
+
+
 .rp-button-right .rp-card__button {
+
   align-self: flex-end;
+
 }
+
+
 
 /* ---- HOVER EFFECTS ---- */
 
+
+
 /* Lift Effect (Default) */
+
 .rp-hover--lift .rp-card:hover {
+
   transform: translateY(-8px);
+
   box-shadow: var(--elevation-4);
+
 }
+
+
 
 .rp-hover--lift .rp-card:hover .rp-card__image-bg {
+
   transform: scale(1.05);
+
 }
 
+
+
 /* No hover for horizontal layout */
+
 .related-packages--horizontal.rp-hover--lift .rp-card:hover {
+
   transform: none;
+
   box-shadow: none;
+
 }
+
+
 
 .related-packages--horizontal.rp-hover--lift .rp-card:hover .rp-card__image-bg {
+
   transform: none;
+
 }
+
+
 
 /* Scale Effect */
+
 .rp-hover--scale .rp-card {
+
   overflow: hidden;
+
 }
+
+
 
 .rp-hover--scale .rp-card:hover {
+
   box-shadow: var(--elevation-3);
+
 }
+
+
 
 .rp-hover--scale .rp-card:hover .rp-card__image-bg {
+
   transform: scale(1.1);
+
 }
+
+
 
 /* No hover for horizontal layout */
+
 .related-packages--horizontal.rp-hover--scale .rp-card:hover {
+
   box-shadow: none;
+
 }
+
+
 
 .related-packages--horizontal.rp-hover--scale .rp-card:hover .rp-card__image-bg {
+
   transform: none;
+
 }
+
+
 
 /* None Effect */
+
 .rp-hover--none .rp-card:hover {
+
   transform: none;
+
   box-shadow: var(--elevation-1);
+
 }
+
+
 
 .rp-hover--none .rp-card:hover .rp-card__image-bg {
+
   transform: none;
+
 }
+
+
 
 /* No shadow for horizontal layout */
+
 .related-packages--horizontal.rp-hover--none .rp-card:hover {
+
   box-shadow: none;
+
 }
+
+
 
 /* =========================================================
+
    FASE 3: ENHANCED SLIDER CONTROLS
+
 ========================================================= */
 
+
+
 /* ---- SLIDER NAVIGATION ARROWS ---- */
+
 .rp-slider__arrow {
+
   display: none; /* Hidden by default, shown only on mobile when slider is active */
+
   position: absolute;
+
   top: 50%;
+
   transform: translateY(-50%);
+
   z-index: 10;
+
   background: rgba(255, 255, 255, 0.9);
+
   border: none;
+
   border-radius: 50%;
+
   width: 48px;
+
   height: 48px;
+
   align-items: center;
+
   justify-content: center;
+
   cursor: pointer;
+
   transition: all 0.3s ease;
+
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
 }
+
+
 
 .rp-slider__arrow svg {
+
   color: var(--wp--preset--color--contrast-4);
+
   width: 24px;
+
   height: 24px;
+
 }
+
+
 
 .rp-slider__arrow:hover {
+
   background: #fff;
+
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
   transform: translateY(-50%) scale(1.1);
+
 }
+
+
 
 .rp-slider__arrow:active {
+
   transform: translateY(-50%) scale(0.95);
+
 }
+
+
 
 /* Arrow positioning - Sides (default) */
+
 .rp-arrows--sides .rp-slider__arrow--prev {
+
   left: 10px;
+
 }
+
+
 
 .rp-arrows--sides .rp-slider__arrow--next {
+
   right: 10px;
+
 }
+
+
 
 /* Arrow positioning - Bottom */
+
 .rp-arrows--bottom .rp-slider__arrow {
+
   position: static;
+
   transform: none;
+
   margin: 0 8px;
+
 }
+
+
 
 .rp-arrows--bottom .rp-slider__arrow:hover {
+
   transform: scale(1.1);
+
 }
+
+
 
 /* Container for bottom arrows */
+
 .rp-arrows--bottom::after {
+
   content: '';
+
   display: none;
+
 }
 
+
+
 @media (max-width: 768px) {
+
   .related-packages.slider-enabled .rp-arrows--bottom {
+
     display: flex;
+
     justify-content: center;
+
     align-items: center;
+
     padding-top: 20px;
+
     position: relative;
+
   }
+
 }
+
+
 
 /* ---- SLIDER PAGINATION DOTS ---- */
+
 .rp-slider__dots {
+
   display: none; /* Hidden by default, shown only on mobile when slider is active */
+
   justify-content: center;
+
   align-items: center;
+
   gap: 8px;
+
   padding: 20px 0;
+
   margin-top: 10px;
+
 }
+
+
 
 .rp-slider__dot {
+
   width: 10px;
+
   height: 10px;
+
   border-radius: 50%;
+
   border: none;
+
   background: color-mix(in srgb, var(--wp--preset--color--contrast-4) 30%, transparent);
+
   cursor: pointer;
+
   transition: all 0.3s ease;
+
   padding: 0;
+
 }
+
+
 
 .rp-slider__dot:hover {
+
   background: color-mix(in srgb, var(--wp--preset--color--contrast-4) 50%, transparent);
+
   transform: scale(1.2);
+
 }
+
+
 
 .rp-slider__dot--active {
+
   background: var(--wp--preset--color--contrast-4);
+
   width: 12px;
+
   height: 12px;
+
 }
+
+
 
 /* ---- MOBILE SLIDER ACTIVATED ---- */
+
 @media (max-width: 768px) {
+
   .related-packages.slider-enabled .rp-slider__arrow {
+
     display: flex;
+
   }
+
+
 
   .related-packages.slider-enabled .rp-slider__dots {
+
     display: flex;
+
   }
+
+
 
   /* Ensure arrows are on top of cards */
+
   .related-packages.slider-enabled {
+
     position: relative;
+
   }
+
 }
+
+
 
 /* ---- ACCESSIBILITY ---- */
+
 .rp-slider__arrow:focus,
+
 .rp-slider__dot:focus {
+
   outline: 2px solid var(--wp--preset--color--secondary);
+
   outline-offset: 2px;
+
 }
 
+
+
 /* Reduce motion for users who prefer it */
+
 @media (prefers-reduced-motion: reduce) {
+
   .rp-slider__arrow,
+
   .rp-slider__dot,
+
   .related-packages__grid {
+
     transition: none !important;
+
   }
+
 }
+

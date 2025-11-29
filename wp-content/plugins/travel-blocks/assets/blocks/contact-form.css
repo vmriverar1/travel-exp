@@ -1,573 +1,1146 @@
 /**
+
  * Hero Contact Form Styles
+
  *
+
  * Full-bleed hero with background image, translucent overlay,
+
  * and floating form card with glass effect.
+
  *
+
  * @package TravelBlocks
+
  * @since 2.0.0
+
  */
+
+
 
 /* ===== HERO CONTAINER ===== */
 
+
+
 .hero-form {
+
     /* CSS VARIABLES (Block-scoped) */
+
     /* Brand colors */
+
     --rose: var(--wp--preset--color--secondary);
+
     --green-dark: #0A797E;
+
     --green-strong: #A8F04C;
+
     --green-soft: #EBFED3;
 
+
+
     /* Text colors */
+
     --text-dark: #1F2937;
+
     --text-gray: #6B7280;
+
     --placeholder: #94A3B8;
+
     --legal-text: #CBD5E1;
 
+
+
     /* Borders & Backgrounds */
+
     --border-light: #E5E7EB;
+
     --input-bg: #FFFFFF;
+
     --addon-bg: #F1F5F9;
 
+
+
     /* Success/Error */
+
     --success-bg: #ECFDF5;
+
     --success-text: #065F46;
+
     --success-border: #10B981;
+
     --error-bg: #FEF2F2;
+
     --error-text: #991B1B;
+
     --error-border: #EF4444;
 
+
+
     /* Layout styles */
+
     position: relative;
+
     width: 100%;
+
     height: var(--hero-height-desktop, 700px);
+
     min-height: var(--hero-height-desktop, 700px);
+
     display: flex;
+
     align-items: flex-start;
+
     justify-content: flex-end;
+
     padding: 0;
+
     overflow: hidden;
+
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
 }
+
+
 
 /* ===== BACKGROUND IMAGE ===== */
 
+
+
 .hero-form__background {
+
     position: absolute;
+
     top: 0;
+
     left: 0;
+
     width: 100%;
+
     height: 100%;
+
     z-index: 1;
+
 }
+
+
 
 .hero-form__background picture {
+
     width: 100%;
+
     height: 100%;
+
     display: block;
+
 }
 
+
+
 .hero-form__background img {
+
     width: 100%;
+
     height: 100%;
+
     object-fit: cover;
+
     display: block;
+
 }
+
+
 
 /* ===== TRANSLUCENT OVERLAY ===== */
 
+
+
 .hero-form__overlay {
+
     position: absolute;
+
     top: 0;
+
     left: 0;
+
     width: 100%;
+
     height: 100%;
+
     opacity: var(--overlay-opacity, 0.28);
+
     z-index: 2;
+
 }
 
+
+
 /* Glass effect (backdrop blur) - optional, browser support required */
+
 @supports (backdrop-filter: blur(8px)) {
+
     .hero-form__overlay {
+
         backdrop-filter: blur(var(--overlay-blur, 8px));
+
         -webkit-backdrop-filter: blur(var(--overlay-blur, 8px));
+
     }
+
 }
+
+
 
 /* ===== FORM CARD (Floating) ===== */
 
+
+
 .hero-form__card {
+
     position: relative;
+
     z-index: 3;
+
     width: 70%;
+
     background: rgba(206, 212, 218, 0.85);
+
     border-radius: var(--card-radius, 26px);
+
     padding: 30px 40px;
+
     margin: 60px 60px 60px 0;
+
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15),
+
                 0 8px 24px rgba(0, 0, 0, 0.1);
+
     max-width: 800px;
+
 }
+
+
 
 /* ===== TITLE ===== */
 
+
+
 .hero-form__title {
+
     font-size: 22px;
+
     font-weight: 600;
+
     line-height: 1.25;
+
     color: var(--text-dark);
+
     text-align: center;
+
     margin: 0 0 20px 0;
+
 }
 
+
+
 .hero-form__title span {
+
     font-weight: 700;
+
 }
+
+
 
 /* ===== FORM ===== */
 
+
+
 .hero-form__form {
+
     width: 100%;
+
 }
+
+
 
 /* ===== FORM GRID (2 columns) ===== */
 
+
+
 .form-grid {
+
     display: grid;
+
     grid-template-columns: repeat(2, 1fr);
+
     gap: 12px;
+
     margin-bottom: 16px;
+
 }
+
+
 
 /* ===== FORM FIELDS ===== */
 
+
+
 .form-field {
+
     display: flex;
+
     flex-direction: column;
+
 }
+
+
 
 .form-field--full {
+
     grid-column: 1 / -1;
+
 }
 
+
+
 /* Screen reader only labels */
+
 .sr-only {
+
     position: absolute;
+
     width: 1px;
+
     height: 1px;
+
     padding: 0;
+
     margin: -1px;
+
     overflow: hidden;
+
     clip: rect(0, 0, 0, 0);
+
     white-space: nowrap;
+
     border-width: 0;
+
 }
+
+
 
 /* ===== INPUTS & TEXTAREA ===== */
 
+
+
 .form-field input[type="text"],
+
 .form-field input[type="email"],
+
 .form-field input[type="tel"],
-.form-field textarea {
-    width: 100%;
-    height: 40px;
-    padding: 10px 14px;
-    font-size: 14px;
-    line-height: 1.5;
-    color: var(--text-dark);
-    background: var(--input-bg);
-    border: 1px solid var(--border-light);
-    border-radius: 10px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
 
 .form-field textarea {
-    height: auto;
-    min-height: 60px;
-    resize: vertical;
-    font-family: inherit;
+
+    width: 100%;
+
+    height: 40px;
+
+    padding: 10px 14px;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+    color: var(--text-dark);
+
+    background: var(--input-bg);
+
+    border: 1px solid var(--border-light);
+
+    border-radius: 10px;
+
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
 }
+
+
+
+.form-field textarea {
+
+    height: auto;
+
+    min-height: 60px;
+
+    resize: vertical;
+
+    font-family: inherit;
+
+}
+
+
 
 /* Placeholder styles */
+
 .form-field input::placeholder,
+
 .form-field textarea::placeholder {
+
     color: var(--placeholder);
+
 }
+
+
 
 /* Focus states */
+
 .form-field input:focus,
+
 .form-field textarea:focus {
+
     outline: none;
+
     border-color: var(--green-dark);
+
     box-shadow: 0 0 0 3px rgba(10, 121, 126, 0.1),
+
                 0 1px 2px rgba(0, 0, 0, 0.05);
+
 }
+
+
 
 /* Error states */
+
 .form-field input.error,
+
 .form-field textarea.error {
+
     border-color: var(--error-border);
+
 }
 
+
+
 .form-field input.error:focus,
+
 .form-field textarea.error:focus {
+
     box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1),
+
                 0 1px 2px rgba(0, 0, 0, 0.05);
+
 }
+
+
 
 /* ===== SELECT WITH ADDON ===== */
 
+
+
 .select-wrapper {
+
     position: relative;
+
     display: flex;
+
     align-items: stretch;
+
     width: 100%;
+
 }
+
+
 
 .select-wrapper select {
+
     flex: 1;
+
     height: 40px;
+
     padding: 10px 14px;
+
     padding-right: 8px; /* Less padding right because of addon */
+
     font-size: 14px;
+
     line-height: 1.5;
+
     color: var(--text-dark);
+
     background: var(--input-bg);
+
     border: 1px solid var(--border-light);
+
     border-right: none; /* Remove right border */
+
     border-radius: 10px 0 0 10px;
+
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+
     appearance: none;
+
     -webkit-appearance: none;
+
     -moz-appearance: none;
+
     cursor: pointer;
+
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
 }
+
+
 
 .select-wrapper select:focus {
+
     outline: none;
+
     border-color: var(--green-dark);
+
     box-shadow: 0 0 0 3px rgba(10, 121, 126, 0.1),
+
                 0 1px 2px rgba(0, 0, 0, 0.05);
+
     z-index: 2;
+
 }
+
+
 
 /* Select addon (caret segment) */
+
 .select-addon {
+
     display: flex;
+
     align-items: center;
+
     justify-content: center;
+
     width: 44px;
+
     background: var(--addon-bg);
+
     border: 1px solid var(--border-light);
+
     border-left: 1px solid var(--border-light);
+
     border-radius: 0 10px 10px 0;
+
     pointer-events: none;
+
     color: var(--text-gray);
+
 }
+
+
 
 .select-addon svg {
+
     display: block;
+
 }
 
+
+
 /* Focus effect on addon when select is focused */
+
 .select-wrapper select:focus + .select-addon {
+
     border-color: var(--green-dark);
+
 }
+
+
 
 /* ===== LEGAL CHIP ===== */
 
+
+
 .legal-chip {
+
     display: flex;
+
     align-items: center;
+
     justify-content: center;
+
     max-width: fit-content;
+
     margin: 0 auto 12px;
+
     padding: 6px 16px;
+
     background: var(--legal-chip-bg, rgba(255, 255, 255, 0.12));
+
     border-radius: 9999px;
+
     font-size: 11px;
+
     line-height: 1.4;
+
     color: var(--text-gray);
+
     text-align: center;
+
 }
+
+
 
 .legal-chip a {
+
     color: var(--green-dark);
+
     text-decoration: underline;
+
     transition: color 0.2s ease;
+
 }
 
+
+
 .legal-chip a:hover {
+
     color: var(--rose);
+
 }
+
+
 
 /* ===== CTA BUTTON ===== */
 
+
+
 .btn-cta {
+
     display: flex;
+
     align-items: center;
+
     justify-content: center;
+
     gap: 8px;
+
     width: 100%;
+
     max-width: 280px;
+
     height: 42px;
+
     margin: 0 auto;
+
     padding: 0 28px;
+
     font-size: 15px;
+
     font-weight: 600;
+
     color: var(--cta-text-color, #ffffff);
+
     background: var(--cta-bg-color, #e78c85);
+
     border: none;
+
     border-radius: 9999px;
+
     box-shadow: 0 4px 12px rgba(231, 140, 133, 0.3);
+
     cursor: pointer;
+
     transition: all 0.3s ease;
+
 }
+
+
 
 .btn-cta:hover {
+
     background: #e07a73;
+
     box-shadow: 0 6px 16px rgba(231, 140, 133, 0.4);
+
     transform: translateY(-2px);
+
 }
+
+
 
 .btn-cta:active {
+
     transform: translateY(0);
+
 }
+
+
 
 .btn-cta:disabled {
+
     opacity: 0.6;
+
     cursor: not-allowed;
+
     transform: none;
+
 }
+
+
 
 .btn-cta__loading {
+
     display: flex;
+
     align-items: center;
+
     gap: 8px;
+
 }
+
+
 
 /* Spinner animation */
+
 .spinner {
+
     animation: spin 1s linear infinite;
+
 }
+
+
 
 .spinner__circle {
+
     stroke-dasharray: 60;
+
     stroke-dashoffset: 0;
+
     animation: dash 1.5s ease-in-out infinite;
+
 }
+
+
 
 @keyframes spin {
+
     0% { transform: rotate(0deg); }
+
     100% { transform: rotate(360deg); }
+
 }
 
+
+
 @keyframes dash {
+
     0% { stroke-dashoffset: 60; }
+
     50% { stroke-dashoffset: 15; }
+
     100% { stroke-dashoffset: 60; }
+
 }
+
+
 
 /* ===== MESSAGES (Success/Error) ===== */
 
+
+
 .hero-form__messages {
+
     margin-top: 20px;
+
 }
+
+
 
 .hero-form__success,
+
 .hero-form__error {
+
     display: flex;
+
     align-items: center;
+
     gap: 12px;
+
     padding: 14px 18px;
+
     border-radius: 10px;
+
     font-size: 15px;
+
     line-height: 1.5;
+
 }
+
+
 
 .hero-form__success {
+
     background: var(--success-bg);
+
     color: var(--success-text);
+
     border: 1px solid var(--success-border);
+
 }
+
+
 
 .hero-form__success svg {
+
     flex-shrink: 0;
+
     color: var(--success-border);
+
 }
+
+
 
 .hero-form__error {
+
     background: var(--error-bg);
+
     color: var(--error-text);
+
     border: 1px solid var(--error-border);
+
 }
 
+
+
 .hero-form__error svg {
+
     flex-shrink: 0;
+
     color: var(--error-border);
+
 }
+
+
 
 /* ===== RESPONSIVE: TABLET (768px - 1199px) ===== */
 
+
+
 @media (min-width: 768px) and (max-width: 1199px) {
+
     .hero-form {
+
         height: var(--hero-height-tablet, 600px);
+
         min-height: var(--hero-height-tablet, 600px);
+
         justify-content: center;
+
         padding: 48px 20px;
+
     }
+
+
 
     .hero-form__card {
+
         width: 90%;
+
         max-width: 90%;
+
         height: auto;
+
         padding: 50px 40px;
+
         margin: 0;
+
     }
+
+
 
     .hero-form__title {
+
         font-size: 22px;
+
     }
 
+
+
     .form-grid {
+
         gap: 14px;
+
     }
+
 }
+
+
 
 /* ===== RESPONSIVE: MOBILE (≤767px) ===== */
 
+
+
 @media (max-width: 767px) {
+
     .hero-form {
+
         height: var(--hero-height-mobile, 500px);
+
         min-height: var(--hero-height-mobile, 500px);
+
         justify-content: center;
+
         padding: 32px 16px;
+
     }
+
+
 
     .hero-form__card {
+
         width: 96%;
+
         max-width: 96%;
+
         height: auto;
+
         padding: var(--card-padding-mobile, 32px) 24px;
+
         border-radius: 20px;
+
         margin: 0;
+
     }
+
+
 
     .hero-form__title {
+
         font-size: 19px;
+
         margin-bottom: 24px;
+
     }
+
+
 
     /* Grid to 1 column */
+
     .form-grid {
+
         grid-template-columns: 1fr;
+
         gap: 12px;
+
         margin-bottom: 16px;
+
     }
+
+
 
     .form-field input,
+
     .form-field textarea,
+
     .select-wrapper select {
+
         font-size: 16px; /* Prevent zoom on iOS */
+
     }
+
+
 
     .legal-chip {
+
         font-size: 11px;
+
         padding: 6px 16px;
+
         margin-bottom: 14px;
+
     }
 
+
+
     .btn-cta {
+
         max-width: 100%;
+
         height: 50px;
+
         font-size: 15px;
+
     }
+
 }
+
+
 
 /* ===== RESPONSIVE: LARGE DESKTOP (≥1200px) ===== */
 
+
+
 @media (min-width: 1200px) {
+
     .hero-form__title {
+
         font-size: 26px;
+
         margin-bottom: 40px;
+
     }
 
+
+
     .form-grid {
+
         gap: 18px;
+
         margin-bottom: 24px;
+
     }
+
 }
+
+
 
 /* ===== FOCUS VISIBLE (Keyboard navigation) ===== */
 
+
+
 .btn-cta:focus-visible,
+
 .form-field input:focus-visible,
+
 .form-field textarea:focus-visible,
+
 .select-wrapper select:focus-visible {
+
     outline: 2px solid var(--green-dark);
+
     outline-offset: 2px;
+
 }
+
+
 
 /* ===== PRINT STYLES ===== */
 
+
+
 @media print {
+
     .hero-form {
+
         min-height: auto;
+
         page-break-inside: avoid;
+
     }
+
+
 
     .hero-form__background,
+
     .hero-form__overlay {
+
         display: none;
+
     }
+
+
 
     .hero-form__card {
+
         box-shadow: none;
+
         border: 1px solid var(--border-light);
+
     }
 
+
+
     .btn-cta {
+
         display: none;
+
     }
+
 }
+
+
 
 /* ===== DARK MODE (Optional) ===== */
 
+
+
 @media (prefers-color-scheme: dark) {
+
     /* Can be implemented if needed in future */
+
 }
+
+
 
 /* ===== UTILITY: Hidden ===== */
 
+
+
 [hidden] {
+
     display: none !important;
+
 }
+
+
 
 /* ===== EDITOR STYLES ===== */
 
+
+
 /* Gutenberg editor specific styles */
+
 .editor-styles-wrapper .hero-form {
+
     height: auto;
+
     min-height: 700px;
+
 }
+
+
 
 .editor-styles-wrapper .hero-form__card {
+
     width: 100%;
+
     max-width: 100%;
+
     height: auto;
+
     margin: 20px;
+
 }
+
+
 
 /* Block preview in editor */
+
 .acf-block-preview .hero-form {
+
     height: auto;
+
     min-height: 500px;
+
 }
 
+
+
 .acf-block-preview .hero-form__card {
+
     width: 100%;
+
     max-width: 100%;
+
     height: auto;
+
 }
+

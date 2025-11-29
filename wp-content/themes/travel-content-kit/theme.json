@@ -40,7 +40,7 @@
 					"color": "#FF0090"
 				},
 				{
-					"color": "#C66E65",
+					"color": "#E78C85",
 					"name": "Secondary",
 					"slug": "secondary"
 				},
@@ -100,6 +100,16 @@
 					"color": "#FF0090"
 				},
 				{
+					"color": "#C66E65",
+					"name": "Alternative 1",
+					"slug": "alternative-1"
+				},
+				{
+					"color": "#0a797e",
+					"name": "Alternative 2",
+					"slug": "alternative-2"
+				},
+				{
 					"color": "#F3CE72",
 					"name": "Complementary 1",
 					"slug": "complementary-1"
@@ -115,14 +125,14 @@
 					"slug": "complementary-2"
 				},
 				{
-					"color": "#567943",
-					"name": "Contrast 2",
-					"slug": "contrast-2"
-				},
-				{
 					"name": "Divider",
 					"slug": "divider",
 					"color": "#FF0090"
+				},
+				{
+					"color": "#567943",
+					"name": "Contrast 2",
+					"slug": "contrast-2"
 				},
 				{
 					"color": "#7BC5CC",
@@ -251,14 +261,15 @@
 					]
 				},
 				{
-					"fontFamily": "Inter, sans-serif",
+					"fontFamily": "\"Inter\", sans-serif",
 					"name": "Inter",
 					"slug": "inter",
 					"fontFace": [
 						{
 							"fontFamily": "Inter",
-							"fontWeight": "100 900",
+							"fontStretch": "normal",
 							"fontStyle": "normal",
+							"fontWeight": "300 900",
 							"src": [
 								"file:./assets/fonts/inter/Inter-VariableFont_slnt,wght.woff2"
 							]

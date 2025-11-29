@@ -26,3 +26,7 @@ Tags: travel, tourism, custom-header, custom-footer, atomic-design, acf, navigat
  *
  * All styles are loaded via functions.php for better organization
  */
+
+ .wp-block-template-part {
+    margin: 0px !important;
+ }

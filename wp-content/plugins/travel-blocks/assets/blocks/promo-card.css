@@ -1,203 +1,406 @@
 /**
+
  * Promo Card Block Styles
+
  */
 
+
+
 .promo-card {
+
     width: 100%;
+
 }
+
+
 
 .promo-card__inner {
+
     max-width: 500px;
+
     margin: 0 auto;
+
     padding: 2.5rem;
+
     border-radius: var(--border-radius-lg, 12px);
+
     transition: all 0.3s ease;
+
 }
+
+
 
 /* Card Styles */
+
 .promo-card--flat .promo-card__inner {
+
     box-shadow: none;
+
 }
+
+
 
 .promo-card--elevated .promo-card__inner {
+
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+
 }
+
+
 
 .promo-card--elevated:hover .promo-card__inner {
+
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+
     transform: translateY(-4px);
+
 }
+
+
 
 .promo-card--bordered .promo-card__inner {
+
     border: 2px solid var(--color-gray-200, #E0E0E0);
+
 }
+
+
 
 .promo-card--bordered:hover .promo-card__inner {
+
     border-color: var(--color-teal, #4A90A4);
+
 }
+
+
 
 /* Image */
+
 .promo-card__image-wrapper {
+
     margin-bottom: 1.5rem;
+
     display: flex;
+
     justify-content: center;
+
 }
+
+
 
 .promo-card__image {
+
     width: 150px;
+
     height: 150px;
+
     object-fit: cover;
+
     border: 4px solid rgba(0, 0, 0, 0.05);
+
 }
+
+
 
 .promo-card--image-small .promo-card__image {
+
     width: 100px;
+
     height: 100px;
+
 }
+
+
 
 .promo-card--image-medium .promo-card__image {
+
     width: 150px;
+
     height: 150px;
+
 }
+
+
 
 .promo-card--image-large .promo-card__image {
+
     width: 200px;
+
     height: 200px;
+
 }
+
+
 
 /* Content */
+
 .promo-card__content {
+
     display: flex;
+
     flex-direction: column;
+
     gap: 1rem;
+
 }
+
+
 
 .promo-card__title {
+
     font-size: 1.5rem;
+
     font-weight: 700;
+
     line-height: 1.3;
+
     margin: 0;
+
 }
+
+
 
 .promo-card__description {
+
     font-size: 1rem;
+
     line-height: 1.6;
+
     margin: 0;
+
     opacity: 0.9;
+
 }
+
+
 
 /* Text Alignment */
+
 .promo-card--align-left .promo-card__inner {
+
     text-align: left;
+
 }
+
+
 
 .promo-card--align-left .promo-card__image-wrapper {
+
     justify-content: flex-start;
+
 }
+
+
 
 .promo-card--align-center .promo-card__inner {
+
     text-align: center;
+
 }
+
+
 
 .promo-card--align-center .promo-card__image-wrapper {
+
     justify-content: center;
+
 }
+
+
 
 .promo-card--align-right .promo-card__inner {
+
     text-align: right;
+
 }
+
+
 
 .promo-card--align-right .promo-card__image-wrapper {
+
     justify-content: flex-end;
+
 }
+
+
 
 /* Button */
+
 .promo-card__button {
+
     display: inline-block;
+
     padding: 0.75rem 2rem;
+
     font-size: 1rem;
+
     font-weight: 600;
+
     text-decoration: none;
+
     border-radius: var(--border-radius-sm, 4px);
+
     transition: all 0.3s ease;
+
     border: 2px solid transparent;
+
     cursor: pointer;
+
     margin-top: 0.5rem;
+
 }
+
+
 
 .promo-card__button--primary {
+
     background: var(--wp--preset--color--secondary);
+
     color: white;
+
 }
+
+
 
 .promo-card__button--primary:hover {
+
     background: #d97a74;
+
     transform: translateY(-2px);
+
     box-shadow: 0 4px 8px rgba(231, 140, 133, 0.3);
+
 }
+
+
 
 .promo-card__button--secondary {
+
     background: var(--color-teal, #4A90A4);
+
     color: white;
+
 }
+
+
 
 .promo-card__button--secondary:hover {
+
     background: #3d7a8a;
+
     transform: translateY(-2px);
+
     box-shadow: 0 4px 8px rgba(74, 144, 164, 0.3);
+
 }
+
+
 
 .promo-card__button--outline {
+
     background: transparent;
+
     border: 2px solid currentColor;
+
     color: inherit;
+
 }
+
+
 
 .promo-card__button--outline:hover {
+
     background: currentColor;
+
     color: white;
+
 }
+
+
 
 /* Placeholder */
+
 .promo-card-placeholder {
+
     padding: 2rem;
+
     text-align: center;
+
     background: var(--color-gray-100, #F5F5F5);
+
     border-radius: var(--border-radius-md, 6px);
+
     color: var(--color-gray-600, #757575);
+
 }
+
+
 
 /* Responsive */
+
 @media (max-width: 767px) {
+
     .promo-card__inner {
+
         padding: 1.5rem;
+
     }
+
+
 
     .promo-card__title {
+
         font-size: 1.25rem;
+
     }
+
+
 
     .promo-card__description {
+
         font-size: 0.9375rem;
+
     }
+
+
 
     .promo-card__button {
+
         padding: 0.625rem 1.5rem;
+
         font-size: 0.9375rem;
+
     }
+
+
 
     .promo-card__image {
+
         width: 120px;
+
         height: 120px;
+
     }
+
+
 
     .promo-card--image-small .promo-card__image {
+
         width: 80px;
+
         height: 80px;
+
     }
 
+
+
     .promo-card--image-large .promo-card__image {
+
         width: 150px;
+
         height: 150px;
+
     }
+
 }
+

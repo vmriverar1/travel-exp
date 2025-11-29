@@ -106,6 +106,7 @@
   align-items: flex-start;
   justify-content: flex-end;
   z-index: 2;
+  box-sizing: border-box;
 }
 
 /* === CONTENEDOR IZQUIERDO === */
@@ -125,6 +126,12 @@
   display: block;
 }
 
+@media(max-width: 768px) {
+  .travel-package-card .card-title { 
+  text-align: left;
+  }
+}
+
 .travel-package-card .card-title::after {
   content: '';
   position: absolute;
@@ -142,8 +149,17 @@
   opacity: 0.95;
 }
 
+@media(max-width: 768px) {
+  .travel-package-card .card-info {
+    text-align: left;
+  }
+}
+
 .travel-package-card .card-info p {
   margin-bottom: 15px;
+  gap: 6px;
+  display: flex;
+  align-items: center;
 }
 
 .travel-package-card .card-info span {

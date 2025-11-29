@@ -1,0 +1,41 @@
+/**
+ * Admin styles for Taxonomy Tabs block
+ * Only loaded in WordPress admin
+ */
+
+/* Limit icon/image size in repeater */
+.acf-field[data-name="tt_tab_overrides"] .acf-repeater .acf-field[data-name="icon"] img {
+    max-width: 60px !important;
+    max-height: 60px !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain;
+}
+
+/* Icon preview in repeater row */
+.acf-field[data-name="tt_tab_overrides"] .acf-repeater .acf-image-uploader img {
+    max-width: 60px !important;
+    max-height: 60px !important;
+}
+
+/* Override ACF's inline styles on image-wrap container */
+.acf-field[data-name="tt_tab_overrides"] .image-wrap {
+    max-width: 60px !important;
+}
+
+/* Override ACF's inline styles on images inside image-wrap */
+.acf-field[data-name="tt_tab_overrides"] .image-wrap img {
+    max-width: 60px !important;
+    max-height: 60px !important;
+}
+
+/* Make repeater table more compact */
+.acf-field[data-name="tt_tab_overrides"] .acf-table {
+    table-layout: auto;
+}
+
+/* Icon column sizing */
+.acf-field[data-name="tt_tab_overrides"] td.acf-field[data-name="icon"] {
+    max-width: 80px;
+    vertical-align: middle;
+}

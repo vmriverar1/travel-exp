@@ -8,9 +8,9 @@
 
 .nav-footer-column__title {
     margin-bottom: 4px;
-    font-size: var(--font-size-base);
+    font-size: var(--wp--preset--font-size--regular);
     font-weight: 700;
-    color: var(--color-footer-text);
+    color: var(--wp--preset--color--base);
     cursor: default;
 }
 
@@ -23,16 +23,16 @@
 
 .nav-footer-column__list a {
     display: block;
-    font-size: var(--font-size-sm);
-    color: var(--color-footer-text-muted);
+    font-size: var(--wp--preset--font-size--small);
+    color: #bfcfd3;
     text-decoration: none;
 }
 
 .nav-footer-column__list a:hover,
 .nav-footer-column__list a:focus {
-    color: var(--color-footer-accent);
+    color: var(--wp--preset--color--secondary);
 }
 
 .nav-footer-column__list .current-menu-item > a {
-    color: var(--color-footer-accent);
+    color: var(--wp--preset--color--secondary);
 }

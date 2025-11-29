@@ -1,127 +1,127 @@
-/**
- * Common Styles for All ACF Blocks
- *
- * @package Travel\Blocks
- */
-
-:root {
-    /* Brand Colors */
-    --color-coral: #E78C85;
-    --color-coral-dark: #d97a74;
-    --color-teal: #4A90A4;
-    --color-teal-dark: #3d7a8a;
-    --color-purple: #311A42;
-
-    /* Grayscale */
-    --color-gray-100: #F5F5F5;
-    --color-gray-200: #E0E0E0;
-    --color-gray-500: #9E9E9E;
-    --color-gray-600: #757575;
-    --color-gray-700: #424242;
-    --color-gray-900: #212121;
-
-    /* Shadows */
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
-    --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.1);
-    --shadow-xl: 0 8px 24px rgba(0, 0, 0, 0.12);
-
-    /* Border Radius */
-    --border-radius-sm: 4px;
-    --border-radius-md: 6px;
-    --border-radius-lg: 12px;
-    --border-radius-full: 9999px;
-
-    /* Transitions */
-    --transition-fast: 150ms ease-in-out;
-    --transition-base: 300ms ease-in-out;
-    --transition-slow: 500ms ease-in-out;
-}
-
-/* Base block styles */
-.acf-block {
-    margin-bottom: 2rem;
-}
-
-/* Alignment utilities */
-.acf-block.alignfull {
-    width: 100vw;
-    max-width: 100vw;
-    margin-left: calc(50% - 50vw);
-    margin-right: calc(50% - 50vw);
-}
-
-.acf-block.alignwide {
-    max-width: 1400px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-/* Block error messages (for missing templates) */
-.acf-block-error {
-    background-color: #f8d7da;
-    color: #721c24;
-    padding: 1rem;
-    border: 1px solid #f5c6cb;
-    border-radius: 4px;
-    margin: 1rem 0;
-}
-
-/* Button utilities */
-.btn {
-    display: inline-block;
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-    font-weight: 500;
-    text-align: center;
-    text-decoration: none;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.btn-primary {
-    background-color: #e74c3c;
-    color: #fff;
-}
-
-.btn-primary:hover {
-    background-color: #c0392b;
-    color: #fff;
-}
-
-.btn-secondary {
-    background-color: #3498db;
-    color: #fff;
-}
-
-.btn-secondary:hover {
-    background-color: #2980b9;
-    color: #fff;
-}
-
-.btn-outline {
-    background-color: transparent;
-    border: 2px solid currentColor;
-}
-
-/* Container utilities */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
-}
-
-.container-wide {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 1rem;
-}
-
-/* Responsive utilities */
-@media (max-width: 768px) {
-    .acf-block {
-        margin-bottom: 1.5rem;
-    }
-}
+/**
+ * Common Styles for All ACF Blocks
+ *
+ * @package Travel\Blocks
+ */
+
+:root {
+    /* Brand Colors */
+    --color-coral: #E78C85;
+    --color-coral-dark: #d97a74;
+    --color-teal: #4A90A4;
+    --color-teal-dark: #3d7a8a;
+    --color-purple: #311A42;
+
+    /* Grayscale */
+    --color-gray-100: #F5F5F5;
+    --color-gray-200: #E0E0E0;
+    --color-gray-500: #9E9E9E;
+    --color-gray-600: #757575;
+    --color-gray-700: #424242;
+    --color-gray-900: #212121;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+    /* Border Radius */
+    --border-radius-sm: 4px;
+    --border-radius-md: 6px;
+    --border-radius-lg: 12px;
+    --border-radius-full: 9999px;
+
+    /* Transitions */
+    --transition-fast: 150ms ease-in-out;
+    --transition-base: 300ms ease-in-out;
+    --transition-slow: 500ms ease-in-out;
+}
+
+/* Base block styles */
+.acf-block {
+    margin-bottom: 2rem;
+}
+
+/* Alignment utilities */
+.acf-block.alignfull {
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+}
+
+.acf-block.alignwide {
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Block error messages (for missing templates) */
+.acf-block-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 1rem;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    margin: 1rem 0;
+}
+
+/* Button utilities */
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #e74c3c;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #c0392b;
+    color: #fff;
+}
+
+.btn-secondary {
+    background-color: #3498db;
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    background-color: #2980b9;
+    color: #fff;
+}
+
+.btn-outline {
+    background-color: transparent;
+    border: 2px solid currentColor;
+}
+
+/* Container utilities */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.container-wide {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Responsive utilities */
+@media (max-width: 768px) {
+    .acf-block {
+        margin-bottom: 1.5rem;
+    }
+}

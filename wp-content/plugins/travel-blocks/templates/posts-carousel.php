@@ -33,6 +33,7 @@ $badge_color_variant = $data['badge_color_variant'] ?? 'secondary';
 $text_alignment = $data['text_alignment'] ?? 'left';
 $button_alignment = $data['button_alignment'] ?? 'left';
 $show_favorite = $data['show_favorite'] ?? true;
+$description_lines = $data['description_lines'] ?? ''; // Number of lines for description (empty = no limit)
 
 // Get Display Fields
 $display_fields_packages = $data['display_fields_packages'] ?? [];
@@ -78,7 +79,7 @@ $slider_settings = [
     data-slider-autoplay="<?php echo esc_attr($slider_settings['autoplay']); ?>"
     data-slider-delay="<?php echo esc_attr($slider_settings['delay']); ?>"
     data-slider-speed="<?php echo esc_attr($slider_settings['speed']); ?>"
-    style="--card-gap: <?php echo esc_attr($data['card_gap']); ?>px; --desktop-columns: <?php echo esc_attr($data['desktop_columns']); ?>; --tablet-columns: <?php echo esc_attr($data['tablet_columns']); ?>; --card-height: <?php echo esc_attr($data['card_height']); ?>px; --card-height-desktop: <?php echo esc_attr($data['card_height_desktop'] ?? 450); ?>px;">
+    style="--card-gap: <?php echo esc_attr($data['card_gap']); ?>px; --desktop-columns: <?php echo esc_attr($data['desktop_columns']); ?>; --tablet-columns: <?php echo esc_attr($data['tablet_columns']); ?>; --card-height: <?php echo esc_attr($data['card_height']); ?>px; --card-height-desktop: <?php echo esc_attr($data['card_height_desktop'] ?? 450); ?>px;<?php echo !empty($description_lines) ? ' --description-lines: ' . esc_attr($description_lines) . ';' : ''; ?>">
 
     <!-- Wrapper para slider + dots -->
     <div class="pc-wrapper">
@@ -279,36 +280,39 @@ $slider_settings = [
                         <?php else: ?>
                             <!-- OVERLAY / VERTICAL: Default Layout -->
 
-                            <?php if ($is_package && !empty($duration_price)): ?>
-                                <!-- Package: Combined Duration + Price (inline format like "7 Days | From $1,145") -->
-                                <div class="pc-card__meta-line">
-                                    <span class="pc-card__meta-item"><?php echo $has_deal_discount ? wp_kses_post($duration_price) : esc_html($duration_price); ?></span>
-                                </div>
-                            <?php else: ?>
-                                <!-- Regular: Location and/or Price (controlled by Display Fields) -->
-                                <?php if (($show_location && !empty($location)) || ($show_price && !empty($price))): ?>
+                            <!-- Centered text wrapper -->
+                            <div class="pc-card__text-wrapper">
+                                <?php if ($is_package && !empty($duration_price)): ?>
+                                    <!-- Package: Combined Duration + Price (inline format like "7 Days | From $1,145") -->
                                     <div class="pc-card__meta-line">
-                                        <?php if ($show_location && !empty($location)): ?>
-                                            <span class="pc-card__meta-item pc-card__meta-item--location">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="18" viewBox="0 0 13 18" fill="none">
-                                                    <path d="M6.44287 0C6.01995 0.000442936 5.60112 0.0436682 5.18638 0.129676C4.77164 0.215684 4.36895 0.342826 3.9783 0.511101C3.58765 0.679377 3.21653 0.885562 2.86494 1.12966C2.51335 1.37375 2.18803 1.65107 1.88898 1.96163C1.58992 2.27218 1.32287 2.61002 1.08782 2.97513C0.852763 3.34024 0.654215 3.72564 0.492172 4.13131C0.330128 4.53699 0.207695 4.95517 0.124873 5.38586C0.0420507 5.81654 0.000426401 6.25148 0 6.69067C0 11.7256 5.75954 17.2065 6.00684 17.4363L6.43636 17.8418C6.98303 17.3011 12.7491 12.2324 12.8857 6.69067C12.8853 6.25148 12.8437 5.81654 12.7609 5.38586C12.678 4.95517 12.5556 4.53699 12.3936 4.13131C12.2315 3.72564 12.033 3.34024 11.7979 2.97513C11.5629 2.61002 11.2958 2.27218 10.9968 1.96163C10.6977 1.65107 10.3724 1.37375 10.0208 1.12966C9.66921 0.885562 9.29809 0.679377 8.90744 0.511101C8.51679 0.342826 8.1141 0.215684 7.69936 0.129676C7.28463 0.0436683 6.8658 0.000442936 6.44287 0ZM6.44287 16.0036C5.14128 14.6519 1.30159 10.3874 1.30159 6.69067C1.30159 5.98268 1.43204 5.30162 1.69295 4.64752C1.95385 3.99341 2.32535 3.41604 2.80744 2.91541C3.28953 2.41478 3.84551 2.029 4.47539 1.75806C5.10527 1.48712 5.7611 1.35165 6.44287 1.35165C7.12465 1.35165 7.78048 1.48712 8.41035 1.75806C9.04023 2.029 9.59622 2.41478 10.0783 2.91541C10.5604 3.41605 10.9319 3.99341 11.1928 4.64752C11.4537 5.30162 11.5842 5.98268 11.5842 6.69067C11.5842 10.455 7.74446 14.6654 6.44287 16.0036ZM6.44287 3.62243C2.42096 3.75759 2.42096 9.81299 6.44287 9.94815C10.4648 9.81299 10.4648 3.75759 6.44287 3.62243ZM6.44287 8.5965C6.21158 8.5965 5.9891 8.55054 5.77542 8.45863C5.56174 8.36672 5.37313 8.23584 5.20958 8.06601C5.04604 7.89618 4.92001 7.70031 4.8315 7.47841C4.74299 7.25651 4.69874 7.02547 4.69874 6.78529C4.69874 6.54511 4.74299 6.31407 4.8315 6.09217C4.92001 5.87027 5.04604 5.6744 5.20958 5.50457C5.37313 5.33473 5.56174 5.20386 5.77542 5.11195C5.9891 5.02003 6.21158 4.97408 6.44287 4.97408C6.67416 4.97408 6.89664 5.02003 7.11032 5.11195C7.324 5.20386 7.51261 5.33473 7.67616 5.50457C7.8397 5.6744 7.96573 5.87027 8.05424 6.09217C8.14275 6.31407 8.187 6.54511 8.187 6.78529C8.187 7.02547 8.14275 7.25651 8.05424 7.47841C7.96573 7.70031 7.8397 7.89618 7.67616 8.06601C7.51261 8.23584 7.324 8.36672 7.11032 8.45863C6.89664 8.55054 6.67416 8.5965 6.44287 8.5965Z" fill="white"/>
-                                                </svg>
-                                                <?php echo esc_html($location); ?>
-                                            </span>
-                                        <?php endif; ?>
-
-                                        <?php if ($show_location && !empty($location) && $show_price && !empty($price)): ?>
-                                            <span class="pc-card__meta-separator">|</span>
-                                        <?php endif; ?>
-
-                                        <?php if ($show_price && !empty($price)): ?>
-                                            <span class="pc-card__meta-item pc-card__meta-item--price"><?php echo $has_deal_discount ? wp_kses_post($price) : esc_html($price); ?></span>
-                                        <?php endif; ?>
+                                        <span class="pc-card__meta-item"><?php echo $has_deal_discount ? wp_kses_post($duration_price) : esc_html($duration_price); ?></span>
                                     </div>
-                                <?php endif; ?>
-                            <?php endif; ?>
+                                <?php else: ?>
+                                    <!-- Regular: Location and/or Price (controlled by Display Fields) -->
+                                    <?php if (($show_location && !empty($location)) || ($show_price && !empty($price))): ?>
+                                        <div class="pc-card__meta-line">
+                                            <?php if ($show_location && !empty($location)): ?>
+                                                <span class="pc-card__meta-item pc-card__meta-item--location">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="18" viewBox="0 0 13 18" fill="none">
+                                                        <path d="M6.44287 0C6.01995 0.000442936 5.60112 0.0436682 5.18638 0.129676C4.77164 0.215684 4.36895 0.342826 3.9783 0.511101C3.58765 0.679377 3.21653 0.885562 2.86494 1.12966C2.51335 1.37375 2.18803 1.65107 1.88898 1.96163C1.58992 2.27218 1.32287 2.61002 1.08782 2.97513C0.852763 3.34024 0.654215 3.72564 0.492172 4.13131C0.330128 4.53699 0.207695 4.95517 0.124873 5.38586C0.0420507 5.81654 0.000426401 6.25148 0 6.69067C0 11.7256 5.75954 17.2065 6.00684 17.4363L6.43636 17.8418C6.98303 17.3011 12.7491 12.2324 12.8857 6.69067C12.8853 6.25148 12.8437 5.81654 12.7609 5.38586C12.678 4.95517 12.5556 4.53699 12.3936 4.13131C12.2315 3.72564 12.033 3.34024 11.7979 2.97513C11.5629 2.61002 11.2958 2.27218 10.9968 1.96163C10.6977 1.65107 10.3724 1.37375 10.0208 1.12966C9.66921 0.885562 9.29809 0.679377 8.90744 0.511101C8.51679 0.342826 8.1141 0.215684 7.69936 0.129676C7.28463 0.0436683 6.8658 0.000442936 6.44287 0ZM6.44287 16.0036C5.14128 14.6519 1.30159 10.3874 1.30159 6.69067C1.30159 5.98268 1.43204 5.30162 1.69295 4.64752C1.95385 3.99341 2.32535 3.41604 2.80744 2.91541C3.28953 2.41478 3.84551 2.029 4.47539 1.75806C5.10527 1.48712 5.7611 1.35165 6.44287 1.35165C7.12465 1.35165 7.78048 1.48712 8.41035 1.75806C9.04023 2.029 9.59622 2.41478 10.0783 2.91541C10.5604 3.41605 10.9319 3.99341 11.1928 4.64752C11.4537 5.30162 11.5842 5.98268 11.5842 6.69067C11.5842 10.455 7.74446 14.6654 6.44287 16.0036ZM6.44287 3.62243C2.42096 3.75759 2.42096 9.81299 6.44287 9.94815C10.4648 9.81299 10.4648 3.75759 6.44287 3.62243ZM6.44287 8.5965C6.21158 8.5965 5.9891 8.55054 5.77542 8.45863C5.56174 8.36672 5.37313 8.23584 5.20958 8.06601C5.04604 7.89618 4.92001 7.70031 4.8315 7.47841C4.74299 7.25651 4.69874 7.02547 4.69874 6.78529C4.69874 6.54511 4.74299 6.31407 4.8315 6.09217C4.92001 5.87027 5.04604 5.6744 5.20958 5.50457C5.37313 5.33473 5.56174 5.20386 5.77542 5.11195C5.9891 5.02003 6.21158 4.97408 6.44287 4.97408C6.67416 4.97408 6.89664 5.02003 7.11032 5.11195C7.324 5.20386 7.51261 5.33473 7.67616 5.50457C7.8397 5.6744 7.96573 5.87027 8.05424 6.09217C8.14275 6.31407 8.187 6.54511 8.187 6.78529C8.187 7.02547 8.14275 7.25651 8.05424 7.47841C7.96573 7.70031 7.8397 7.89618 7.67616 8.06601C7.51261 8.23584 7.324 8.36672 7.11032 8.45863C6.89664 8.55054 6.67416 8.5965 6.44287 8.5965Z" fill="white"/>
+                                                    </svg>
+                                                    <?php echo esc_html($location); ?>
+                                                </span>
+                                            <?php endif; ?>
 
-                            <!-- CTA Button -->
+                                            <?php if ($show_location && !empty($location) && $show_price && !empty($price)): ?>
+                                                <span class="pc-card__meta-separator">|</span>
+                                            <?php endif; ?>
+
+                                            <?php if ($show_price && !empty($price)): ?>
+                                                <span class="pc-card__meta-item pc-card__meta-item--price"><?php echo $has_deal_discount ? wp_kses_post($price) : esc_html($price); ?></span>
+                                            <?php endif; ?>
+                                        </div>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                            </div>
+
+                            <!-- CTA Button (position absolute) -->
                             <?php if ($cta_text): ?>
                                 <button class="pc-card__button pc-card__button--<?php echo esc_attr($button_color_variant); ?>">
                                     <?php echo esc_html($cta_text); ?>

@@ -5,6 +5,8 @@
 
 /* === GRID DESKTOP === */
 .tcp-desktop-grid {
+  z-index: 10;
+  position: relative;
   display: grid;
   grid-template-columns: repeat(11, 1fr);
   grid-auto-rows: 425px;
@@ -12,12 +14,12 @@
   align-items: stretch;
 }
 
-/* === HEADER DENTRO DEL GRID === */
+/* === HEADER === */
 .tcp-header {
-  grid-column: span 4; /* igual que los grandes */
+  grid-column: span 4;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   height: 100%;
   padding-right: 30px;
 }
@@ -25,7 +27,7 @@
 .tcp-title {
   font-size: 2rem;
   font-weight: 700;
-  color: #111;
+  color: #202C2E;
   margin-bottom: 12px;
 }
 
@@ -79,22 +81,6 @@
   object-fit: cover;
 }
 
-/* === OVERLAY === */
-.tcp-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.75) 100%);
-  color: #fff;
-  padding: 28px 18px 32px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-end;
-  z-index: 2;
-}
-
 /* === BADGE === */
 .tcp-badge {
   background: #311A42;
@@ -103,15 +89,17 @@
   border-radius: 8px;
   font-size: 13px;
   font-weight: 600;
-  margin-bottom: 12px;
+  position: absolute;
+  top: 15px;
+  left: 16px;
   z-index: 3;
 }
 
 /* === FAVORITO === */
 .favorite-btn {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 15px;
+  right: 16px;
   background: rgba(255,255,255,0.85);
   border: none;
   border-radius: 50%;
@@ -122,6 +110,7 @@
   justify-content: center;
   cursor: pointer;
   z-index: 3;
+  transition: background 0.2s ease;
 }
 
 .favorite-btn svg {
@@ -138,7 +127,23 @@
   fill: #fff;
 }
 
-/* === TEXTO CARD === */
+/* === OVERLAY === */
+.tcp-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.75) 100%);
+  color: #fff;
+  padding: 28px 18px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  z-index: 2;
+}
+
+/* === TEXTO === */
 .tcp-name {
   font-size: 18px;
   font-weight: 900;
@@ -157,18 +162,26 @@
   background: #fff;
 }
 
-.tcp-meta {
+.tcp-location {
   font-size: 14px;
+  opacity: 0.9;
+  margin: 0;
+}
+
+.tcp-meta {
+  font-size: 16px;
+  font-weight: 700;
   color: #f0f0f0;
   opacity: 0.95;
   margin-top: 12px;
+  margin-bottom: 0;
 }
 
 /* === BOTÓN CTA === */
 .tcp-btn {
   position: absolute;
   bottom: 24px;
-  right: 22px;
+  right: 50px;
   background: #E78C85;
   color: #fff;
   border-radius: 999px;

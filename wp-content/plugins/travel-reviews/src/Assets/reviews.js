@@ -1,122 +1,196 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const tabs = document.querySelectorAll('.vtc-tabs button');
-  const contents = document.querySelectorAll('.vtc-tab-content');
-  const headerTrip = document.querySelector('[data-header-trip]');
-  const reviewLink = document.querySelector('.review-link');
+/**
+ * Travel Reviews - Tabs & Swiper
+ * @version 7.2 (stable)
+ */
+(function () {
+  'use strict';
 
-  const swipers = {};
+  const SELECTORS = {
+    container: '#vtc-reviews',
+    tabs: '.vtc-tabs button[data-tab]',
+    tabContent: '.vtc-tab-content',
+    headerTrip: '[data-header-trip]',
+    swiper: '.vtc-swiper',
+    showMore: '.show-more',
+    reviewText: '.review-text',
+    card: '.vtc-card'
+  };
 
-  const initSwiper = (container) => {
-    if (!container) return;
-    const id = container.dataset.tabContent;
-    const swiperEl = container.querySelector('.vtc-swiper');
+  const swiperInstances = {};
 
-    // Si ya existe, solo refrescamos cuando sea visible
-    if (swipers[id]) {
-      requestAnimationFrame(() => {
-        setTimeout(() => {
-          swipers[id].update();
-          swipers[id].slideTo(0); // 🧠 forzar reacomodo
-        }, 120);
-      });
-      return;
+  /**
+   * Inicializa Swiper
+   */
+  function initSwiper(container) {
+    if (!container) return null;
+
+    const tabId = container.dataset.tabContent;
+    const swiperEl = container.querySelector(SELECTORS.swiper);
+    if (!swiperEl) return null;
+
+    if (swiperInstances[tabId]) {
+      swiperInstances[tabId].update();
+      return swiperInstances[tabId];
     }
 
-    // 🔥 Inicializar nuevo Swiper
-    swipers[id] = new Swiper(swiperEl, {
+    const config = {
       slidesPerView: 4,
-      spaceBetween: 24,
-      grid: {
-        rows: 2,
-        fill: 'row',
-      },
-      loop: true,
-      speed: 700,
+      spaceBetween: 28,
+      grid: { rows: 2, fill: 'row' },
+      loop: false,
+      speed: 600,
       autoplay: {
-        delay: 4500,
+        delay: 5000,
         disableOnInteraction: false,
+        pauseOnMouseEnter: true
       },
       navigation: {
         nextEl: swiperEl.querySelector('.swiper-nex'),
-        prevEl: swiperEl.querySelector('.swiper-prev'),
+        prevEl: swiperEl.querySelector('.swiper-prev')
       },
       pagination: {
-        el: '.swiper-pagination',
+        el: swiperEl.querySelector('.swiper-pagination'),
         clickable: true,
         dynamicBullets: true,
-        dynamicMainBullets: 4,
+        dynamicMainBullets: 4
       },
-
       breakpoints: {
-        0: {
-          slidesPerView: 1,
-          grid: { rows: 1 },
-          dynamicBullets: true,
-        },
-        640: {
-          slidesPerView: 2,
-          grid: { rows: 1 },
-          dynamicBullets: true,
-        },
-        1024: {
-          slidesPerView: 4,
-          grid: { rows: 2 },
-          dynamicBullets: true,
-        },
+        0: { slidesPerView: 1, grid: { rows: 1 }, spaceBetween: 16 },
+        640: { slidesPerView: 2, grid: { rows: 1 }, spaceBetween: 20 },
+        1024: { slidesPerView: 4, grid: { rows: 2 }, spaceBetween: 14 }
       },
       observer: true,
-      observeParents: true,
+      observeParents: true
+    };
+
+    swiperInstances[tabId] = new Swiper(swiperEl, config);
+    return swiperInstances[tabId];
+  }
+
+  /**
+   * Mostrar tab
+   */
+  function showTab(tabId) {
+    const container = document.querySelector(SELECTORS.container);
+    if (!container) return;
+
+    const tabs = container.querySelectorAll(SELECTORS.tabs);
+    const contents = container.querySelectorAll(SELECTORS.tabContent);
+    const headerTrip = container.querySelector(SELECTORS.headerTrip);
+
+    tabs.forEach(tab => {
+      tab.classList.toggle('active', tab.dataset.tab === tabId);
     });
-  };
 
-  // === Inicializa el primero (TripAdvisor) ===
-  const first = document.querySelector('[data-tab-content="trip-advisor"]');
-  if (first) initSwiper(first);
+    contents.forEach(content => {
+      const isTarget = content.dataset.tabContent === tabId;
+      content.style.display = isTarget ? 'block' : 'none';
+      content.classList.toggle('active', isTarget);
 
-  // === Cambio de pestañas ===
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      const target = tab.dataset.tab;
-
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-
-      contents.forEach(c => {
-        const isTarget = c.dataset.tabContent === target;
-        c.style.display = isTarget ? 'block' : 'none';
-
-        if (isTarget) {
-          // Espera a que el DOM del tab se pinte y luego inicializa o actualiza
-          requestAnimationFrame(() => {
-            setTimeout(() => initSwiper(c), 150);
-          });
-        }
-      });
-
-      if (headerTrip) headerTrip.style.display = target === 'trip-advisor' ? 'flex' : 'none';
-      if (reviewLink) reviewLink.style.display = target === 'trip-advisor' ? 'inline-block' : 'none';
-    });
-  });
-
-  // === Show more / less ===
-  // === Show more / less ===
-  document.addEventListener('click', (e) => {
-    if (e.target.classList.contains('show-more')) {
-      const card = e.target.closest('.vtc-card');
-      const text = card.querySelector('.review-text');
-      const isExpanded = card.classList.toggle('expanded');
-      text.classList.toggle('expanded');
-      text.classList.toggle('truncated');
-      e.target.textContent = isExpanded ? 'Show less' : 'Show more';
-
-      // 🔹 Sincroniza alturas en los slides visibles
-      const swiperEl = card.closest('.vtc-swiper');
-      if (swiperEl) {
-        const visibleCards = swiperEl.querySelectorAll('.swiper-slide-active .vtc-card, .swiper-slide-next .vtc-card, .swiper-slide-prev .vtc-card');
-        let maxH = 0;
-        visibleCards.forEach(c => { maxH = Math.max(maxH, c.scrollHeight); });
-        visibleCards.forEach(c => c.style.height = isExpanded ? `${maxH}px` : '340px');
+      if (isTarget) {
+        setTimeout(() => {
+          const swiper = initSwiper(content);
+          if (swiper) swiper.update();
+        }, 100);
       }
+    });
+
+    if (headerTrip) {
+      headerTrip.style.display = tabId === 'trip-advisor' ? 'flex' : 'none';
     }
-  });
-});
+  }
+
+  /**
+   * Show More – versión anti-saltos v7.2
+   */
+  function handleShowMore(e) {
+    const btn = e.target.closest('.show-more');
+    if (!btn) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    let card = btn.closest('.vtc-card');
+
+    // fallback por seguridad (parrafos insertados por WP)
+    if (!card) {
+      let node = btn.parentElement;
+      while (node && !node.classList?.contains('vtc-card')) {
+        node = node.parentElement;
+      }
+      card = node;
+    }
+    if (!card) return;
+
+    const text = card.querySelector('.review-text');
+    if (!text) return;
+
+    const isExpanded = !card.classList.contains('expanded');
+
+    // Toggle
+    card.classList.toggle('expanded', isExpanded);
+    text.classList.toggle('expanded', isExpanded);
+    text.classList.toggle('truncated', !isExpanded);
+    btn.textContent = isExpanded ? 'Show less' : 'Show more';
+
+    // Ajustar card
+    card.style.height = isExpanded ? 'auto' : '';
+    card.style.maxHeight = isExpanded ? 'none' : '';
+
+    // 🔥 FIX DEFINITIVO PARA GRID (NO SALTOS)
+    setTimeout(() => {
+      const swiperEl = card.closest('.vtc-swiper');
+
+      if (swiperEl && swiperEl.swiper) {
+        const sw = swiperEl.swiper;
+
+        // reconstruye TODO el grid
+        sw.updateSlides();
+        sw.updateSize();
+        sw.updateProgress();
+        sw.updateSlidesClasses();
+        sw.update();
+
+        // mobile: ajusta altura dinámica
+        if (sw.params.grid && sw.params.grid.rows === 1) {
+          sw.updateAutoHeight();
+        }
+      }
+    }, 80);
+  }
+
+  /**
+   * INIT
+   */
+  function init() {
+    const container = document.querySelector(SELECTORS.container);
+    if (!container || container.dataset.initialized === 'true') return;
+    container.dataset.initialized = 'true';
+
+    container.addEventListener('click', handleTabClick);
+    container.addEventListener('click', function (e) {
+      if (e.target.closest('.show-more')) handleShowMore(e);
+    });
+
+    const firstContent = container.querySelector('[data-tab-content="trip-advisor"]');
+    if (firstContent) {
+      firstContent.style.display = 'block';
+      firstContent.classList.add('active');
+      setTimeout(() => initSwiper(firstContent), 50);
+    }
+  }
+
+  function handleTabClick(e) {
+    const tab = e.target.closest('[data-tab]');
+    if (!tab) return;
+    e.preventDefault();
+    showTab(tab.dataset.tab);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else init();
+
+  window.addEventListener('load', init);
+
+})();

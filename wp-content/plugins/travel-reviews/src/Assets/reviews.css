@@ -1,348 +1,519 @@
+/**
+ * Travel Reviews Styles
+ * @version 2.5
+ * Alta especificidad para evitar conflictos con themes y taxonomías
+ */
+
+/* === CONTENEDOR PRINCIPAL === */
+#vtc-reviews.vtc-reviews {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Reset para evitar wpautop issues */
+#vtc-reviews p:empty,
+#vtc-reviews .vtc-card p:empty {
+  display: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#vtc-reviews .vtc-card>p {
+  margin: 0;
+  padding: 0;
+}
+
+#vtc-reviews .vtc-card .date {
+  display: block;
+}
+
+#vtc-reviews .vtc-card>p .date {
+  display: block;
+}
+
+#vtc-reviews .vtc-card>p .show-more {
+  display: inline-block;
+}
+
 /* === TABS === */
-.vtc-tabs {
+#vtc-reviews .vtc-tabs {
   display: flex;
   gap: 0.4rem;
   justify-content: center;
   width: 98%;
   margin: auto;
+  padding: 0;
+  list-style: none;
 }
 
-.vtc-tabs button {
+#vtc-reviews .vtc-tabs button {
   background: #E3E3E3;
   display: flex;
   justify-content: center;
+  align-items: center;
   text-align: center;
   border: none;
-  padding: .6rem 1rem;
-  border-radius: 6px;
+  padding: 13px 0.1rem;
+  border-radius: 6px 6px 0px 0px;
   cursor: pointer;
   width: 33.33%;
-  transition: all .3s;
+  transition: all 0.3s ease;
   font-weight: 500;
+  outline: none;
+  box-shadow: none;
 }
 
-.vtc-tabs button.active {
+#vtc-reviews .vtc-tabs button:hover {
+  background: #d9d9d9;
+}
+
+#vtc-reviews .vtc-tabs button.active {
   background: #F3F3F3;
 }
 
+#vtc-reviews .vtc-tabs__image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* === LOGOS EN TABS - Tamaños específicos DESKTOP === */
+#vtc-reviews .vtc-tabs__image img {
+  height: 30px;
+  width: auto;
+  vertical-align: middle;
+}
+
+/* TripAdvisor tab logo: 142px x 30px desktop */
+#vtc-reviews .vtc-tabs button[data-tab="trip-advisor"] .vtc-tabs__image img {
+  width: 142px;
+  height: 30px;
+}
+
+/* Google tab logo: 92px x 30px desktop */
+#vtc-reviews .vtc-tabs button[data-tab="google"] .vtc-tabs__image img {
+  width: 92px;
+  height: 30px;
+}
+
+/* Facebook tab logo: 124px x 30px desktop */
+#vtc-reviews .vtc-tabs button[data-tab="facebook"] .vtc-tabs__image img {
+  width: 124px;
+  height: 30px;
+}
+
 /* === HEADER TRIPADVISOR === */
-.vtc-reviews-header {
+#vtc-reviews .vtc-reviews-header {
   display: flex;
   background-color: #F3F3F3;
-  padding: 30px 15px;
+  padding: 24px 25px;
   justify-content: space-between;
   border-radius: 8px;
   align-items: center;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
+  margin-bottom: 15px;
+  gap: 12px;
 }
 
-.trip-summary {
+#vtc-reviews .trip-summary {
   display: flex;
   align-items: center;
   gap: 0.4rem;
   font-size: 1rem;
 }
 
-.trip-summary .circle {
+#vtc-reviews .trip-summary strong {
+  font-weight: 700;
+  font-size: 14px;
+  margin: 0;
+}
+
+#vtc-reviews .trip-summary .circle {
   width: 10px;
   height: 10px;
   border-radius: 50%;
   display: inline-block;
 }
 
-.trip-summary .circle.filled {
+#vtc-reviews .trip-summary .circle.filled {
   background: #00aa6c;
 }
 
-.trip-summary .circle.empty {
+#vtc-reviews .trip-summary .circle.empty {
   background: #ccc;
 }
 
-.review-link {
+#vtc-reviews .trip-summary .count {
+  color: #808080;
+  font-size: 12px;
+}
+
+#vtc-reviews .review-link {
   display: inline-block;
   background-color: #C66E65;
   color: #FFFFFF;
   border-radius: 5px;
-  padding: 15px 10px;
   text-decoration: none;
   font-size: 14px;
+  box-sizing: border-box;
   font-weight: 700;
+  transition: opacity 0.3s ease;
+  min-height: 35px;
+  min-width: 123px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.review-link:hover {
+#vtc-reviews .review-link:hover {
   opacity: 0.8;
   color: #FFFFFF;
+  text-decoration: none;
+}
+
+/* === TAB CONTENT === */
+#vtc-reviews .vtc-tab-content {
+  display: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#vtc-reviews .vtc-tab-content.active {
+  display: block;
+}
+
+/* === SWIPER CONTAINER === */
+#vtc-reviews .vtc-swiper {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+#vtc-reviews .vtc-swiper .swiper-wrapper {
+  display: flex;
+  align-items: stretch;
+}
+
+#vtc-reviews .vtc-swiper .swiper-slide {
+  height: auto;
+  box-sizing: border-box;
 }
 
 /* === CARDS === */
-.vtc-card {
+#vtc-reviews .vtc-card {
   border-radius: 10px;
   padding: 1rem;
   background: #F3F3F3;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
-  height: 331px;
-  transition: transform .3s ease;
+  min-height: 331px;
+  height: 100%;
+  max-height: auto;
+  transition: transform 0.3s ease, height 0.3s ease;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
-.vtc-card:hover {
+#vtc-reviews .vtc-card:hover {
   transform: translateY(-5px);
 }
 
-.vtc-card .circle {
+#vtc-reviews .vtc-card.expanded {
+  height: auto;
+  max-height: none;
+}
+
+/* Nombre del reviewer */
+#vtc-reviews .vtc-card .reviewer {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #222;
+  margin-bottom: 0.25rem;
+  display: block;
+}
+
+/* Fecha */
+#vtc-reviews .vtc-card .date {
+  font-size: 0.85rem;
+  color: #888;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+/* === RATINGS === */
+#vtc-reviews .vtc-card .rating {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-bottom: 0.5rem;
+}
+
+/* TripAdvisor (puntos verdes) */
+#vtc-reviews .vtc-card .rating.trip-advisor .star {
   width: 12px;
   height: 12px;
   border-radius: 50%;
   display: inline-block;
   margin-right: 3px;
-}
-
-.vtc-card .circle.filled {
-  background: #00aa6c;
-}
-
-.vtc-card .circle.empty {
   background: #ccc;
 }
 
-.vtc-card h4 {
+#vtc-reviews .vtc-card .rating.trip-advisor .star.filled {
+  background: #00aa6c;
+}
+
+#vtc-reviews .vtc-card .rating.trip-advisor .star.empty {
+  background: #ccc;
+}
+
+/* Google y Facebook (estrellas amarillas) */
+#vtc-reviews .vtc-card .rating.google .star,
+#vtc-reviews .vtc-card .rating.facebook .star {
+  font-size: 0;
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  position: relative;
+}
+
+#vtc-reviews .vtc-card .rating.google .star::before,
+#vtc-reviews .vtc-card .rating.facebook .star::before {
+  content: "\2605";
+  font-size: 1.1rem;
+  color: #ccc;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+#vtc-reviews .vtc-card .rating.google .star.filled::before,
+#vtc-reviews .vtc-card .rating.facebook .star.filled::before {
+  color: #ffb400;
+}
+
+/* Titulo (solo TripAdvisor) */
+#vtc-reviews .vtc-card h4 {
   margin: 0.3rem 0;
   font-weight: 600;
   font-size: 14px;
+  color: #222;
+  line-height: 1.3;
 }
 
-/* === TEXTO CON SHOW MORE === */
-.vtc-card p {
+/* === TEXTO DE REVIEW === */
+#vtc-reviews .vtc-card .review-text {
   font-size: 0.9rem;
   color: #444;
-  line-height: 1.4;
+  line-height: 1.5;
   overflow: hidden;
   max-height: 4.5em;
   position: relative;
   transition: max-height 0.3s ease;
+  flex: 1;
+  margin: 0;
+  padding: 0;
 }
 
-.vtc-card p.expanded {
+#vtc-reviews .vtc-card .review-text.truncated {
+  max-height: 4.5em;
+  overflow: hidden;
+}
+
+#vtc-reviews .vtc-card .review-text.expanded {
   max-height: none;
+  overflow: visible;
 }
 
-.vtc-card .show-more {
+/* === SHOW MORE BUTTON === */
+#vtc-reviews .vtc-card .show-more {
   background: none;
   border: none;
-  font-family: 'Satoshi';
+  font-family: inherit;
   color: #7BC5CC;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
-  align-self: flex-start;
-  margin-top: .3rem;
+  padding: 0;
+  margin-top: 0.3rem;
+  text-align: left;
+  display: inline-block;
 }
 
-.vtc-card .show-more:hover {
+#vtc-reviews .vtc-card .show-more:hover {
   text-decoration: underline;
 }
 
-.vtc-card .meta {
-  font-size: 0.85rem;
-  color: #555;
-  margin-top: .6rem;
-}
-
-.vtc-card .meta strong {
-  color: #000;
-}
-
-.vtc-card .meta .date {
-  color: #888;
-  margin-left: .25rem;
-}
-
-.vtc-card .logo-text {
+/* === LOGO EN CARD === */
+#vtc-reviews .vtc-card .logo-text {
   display: block;
-  margin-top: .8rem;
-  color: #777;
-  font-size: .85rem;
-  font-weight: 500;
+  padding-top: 0.8rem;
   text-align: left;
 }
 
-/* === TABS CONTENT === */
-.vtc-tab-content {
-  display: none;
-  width: 100%;
-}
-
-.vtc-tab-content.active {
-  display: block;
-}
-
-.vtc-tab-content .vtc-swiper {
-  width: 100%;
-  padding: 30px 0 80px !important;
-  overflow: hidden;
+#vtc-reviews .vtc-card .logo-text img {
+  height: 20px;
+  width: 95px;
 }
 
 /* === SWIPER CONTROLS === */
-.reviews-controls.swiper-controls{
+#vtc-reviews .swiper-controls.reviews-controls {
   position: relative;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 6.5rem;
-  margin-top: 1.8rem;
+  gap: 4rem;
+  margin-top: 1rem;
+  padding: 0 1rem;
+  box-sizing: border-box;
 }
 
-/* === BULLETS (CENTRADOS Y VISIBLES) === */
-.swiper-pagination-core {
-  display: flex !important;
-  justify-content: center;
-  align-items: center;
-  position: relative !important;
-  gap: 0.5rem;
-  width: auto !important;
-  overflow: visible !important;
-  transform: none !important;
-  left: auto !important;
+#vtc-reviews .swiper-pagination {
+  bottom: 15px !important;
 }
 
-.swiper-pagination-bullet {
-  background: #ccc;
-  opacity: 1;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  transition: all 0.3s ease;
+/* Bullet activo */
+#vtc-reviews .reviews-controls .swiper-pagination .swiper-pagination-bullet-active,
+#vtc-reviews .reviews-controls .swiper-pagination .swiper-pagination-bullet-active-main {
+  background: #E78C85 !important;
 }
 
-.swiper-pagination-bullet-active {
-  background: #E78C85;
-  transform: scale(1.3);
+#vtc-reviews .reviews-controls .swiper-pagination .swiper-pagination-bullet:hover {
+  background: #E78C85 !important;
 }
 
-.swiper-pagination-bullet:hover {
-  background: #E78C85;
-  transform: scale(1.25);
-}
 
-/* === FLECHAS SVG === */
-.swiper-prev,
-.swiper-nex {
+/* === FLECHAS NAVEGACION === */
+#vtc-reviews .swiper-prev,
+#vtc-reviews .swiper-nex {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 40px;
   height: 40px;
+  min-width: 40px;
   border-radius: 50%;
   border: 2px solid #E78C85;
   color: #E78C85;
-  z-index: 90;
   background: #fff;
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  padding: 0;
+  outline: none;
+  z-index: 22;
+  position: relative;
 }
 
-.swiper-prev svg,
-.swiper-nex svg {
+#vtc-reviews .swiper-prev svg,
+#vtc-reviews .swiper-nex svg {
   stroke: currentColor;
   transition: all 0.3s ease;
+  width: 16px;
+  height: 16px;
 }
 
-/* Hover coral */
-.swiper-prev:hover,
-.swiper-nex:hover {
+#vtc-reviews .swiper-prev:hover,
+#vtc-reviews .swiper-nex:hover {
   background: #E78C85;
   color: #fff;
   transform: scale(1.1);
 }
 
-.swiper-prev:hover svg,
-.swiper-nex:hover svg {
+#vtc-reviews .swiper-prev:hover svg,
+#vtc-reviews .swiper-nex:hover svg {
   stroke: #fff;
 }
 
-.swiper-prev:active,
-.swiper-nex:active {
+#vtc-reviews .swiper-prev:active,
+#vtc-reviews .swiper-nex:active {
   transform: scale(0.95);
 }
 
-/* === RESPONSIVE === */
+/* === RESPONSIVE MOBILE === */
 @media (max-width: 768px) {
-  .vtc-tab-content {
-    padding-left: 30px;
-    padding-right: 30px;
+  #vtc-reviews .vtc-tabs {
+    gap: 0.2rem;
   }
 
-  .swiper-prev,
-  .swiper-nex {
+  #vtc-reviews .vtc-tabs button {
+    width: 32%;
+    padding: 0.5rem 0.3rem;
+  }
+
+  /* === LOGOS EN TABS - Tamaños MOBILE === */
+  #vtc-reviews .vtc-tabs__image img {
+    height: 20px;
+  }
+
+  /* TripAdvisor: 95px x 20px mobile */
+  #vtc-reviews .vtc-tabs button[data-tab="trip-advisor"] .vtc-tabs__image img {
+    width: 95px;
+    height: 20px;
+  }
+
+  /* Google: 61px x 20px mobile */
+  #vtc-reviews .vtc-tabs button[data-tab="google"] .vtc-tabs__image img {
+    width: 61px;
+    height: 20px;
+  }
+
+  /* Facebook: 83px x 20px mobile */
+  #vtc-reviews .vtc-tabs button[data-tab="facebook"] .vtc-tabs__image img {
+    width: 83px;
+    height: 20px;
+  }
+
+  #vtc-reviews .vtc-tab-content {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  #vtc-reviews .vtc-swiper {
+    padding: 20px 0 60px;
+  }
+
+  #vtc-reviews .swiper-prev,
+  #vtc-reviews .swiper-nex {
     width: 34px;
     height: 34px;
+    min-width: 34px;
   }
 
-  .swiper-pagination-core .swiper-pagination-bullet {
-    width: 8px;
-    height: 8px;
+  #vtc-reviews .reviews-controls .swiper-pagination .swiper-pagination-bullet {
+    width: 8px !important;
+    height: 8px !important;
+  }
+
+  #vtc-reviews .vtc-reviews-header {
+    padding: 15px;
+    text-align: center;
+  }
+
+  #vtc-reviews .review-link {
+    min-width: 123px;
+    text-align: center;
+    min-height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Logo en cards mobile */
+  #vtc-reviews .vtc-card .logo-text img {
+    height: 20px;
   }
 }
 
-/* === TripAdvisor (puntos verdes) === */
-.rating.trip-advisor .star {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  display: inline-block;
-  margin-right: 3px;
+@media (max-width: 480px) {
+  #vtc-reviews .vtc-tabs button {
+    width: 100%;
+  }
+
+  #vtc-reviews .vtc-card {
+    min-height: 250px;
+    max-height: 320px;
+  }
 }
 
-.rating.trip-advisor .star.filled {
-  background: #00aa6c;
-}
-
-.rating.trip-advisor .star.empty {
-  background: #ccc;
-}
-
-/* === Google y Facebook (estrellas amarillas) === */
-.rating.google .star,
-.rating.facebook .star {
-  font-size: 1rem;
-  display: inline-block;
-  color: #ccc;
-  position: relative;
-}
-
-.rating.google .star::before,
-.rating.facebook .star::before {
-  content: "★";
-  font-size: 1.1rem;
-  color: #ccc;
-}
-
-.rating.google .star.filled::before,
-.rating.facebook .star.filled::before {
-  color: #ffb400;
-}
-
-/* === AJUSTE ALTURAS SIN DESCUADRAR === */
-.vtc-card .review-text.truncated {
-  max-height: 4.5em;
-  overflow: hidden;
-}
-
-.vtc-card.expanded {
-  height: auto !important;
-}
-
-/* === Transición suave de altura === */
-.vtc-card {
-  transition: height 0.3s ease;
-}
-
-/* === Sincroniza las tarjetas dentro de un slide visible === */
-.swiper-wrapper .vtc-card {
-  display: flex;
-  flex-direction: column;
-}

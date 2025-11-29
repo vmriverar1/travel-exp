@@ -81,8 +81,8 @@
 .post-type-archive-package .header svg,
 .post-type-archive-package .header__actions svg,
 .post-type-archive-package .header__icon {
-    color: var(--color-gray-900, #212121) !important;
-    fill: var(--color-gray-900, #212121) !important;
+    fill: transparent !important;
+    stroke: black;
 }
 
 /* Hamburger menu en color oscuro */

@@ -1,198 +1,396 @@
 /**
+
  * Deal Info Card Block Styles
+
  */
 
+
+
 .deal-info-card {
+
     background: #fff;
+
     border: 2px solid var(--wp--preset--color--primary);
+
     border-radius: 12px;
+
     padding: 1.5rem;
+
     position: sticky;
+
     top: 2rem;
+
 }
+
+
 
 /* Expired/Scheduled States */
+
 .deal-info-card--expired,
+
 .deal-info-card--scheduled {
+
     border-color: #94a3b8;
+
     opacity: 0.8;
+
 }
+
+
 
 /* Discount Badge */
+
 .deal-info-card__discount {
+
     text-align: center;
+
     margin-bottom: 0.5rem;
+
 }
+
+
 
 .deal-info-card__discount-value {
+
     display: block;
+
     font-size: 3rem;
+
     font-weight: 800;
+
     line-height: 1;
+
     color: var(--wp--preset--color--primary);
+
     margin-bottom: 0.25rem;
+
 }
+
+
 
 .deal-info-card__discount-label {
+
     display: block;
+
     font-size: 1.25rem;
+
     font-weight: 700;
+
     color: var(--wp--preset--color--primary);
+
     letter-spacing: 0.05em;
+
 }
+
+
 
 /* Divider */
+
 .deal-info-card__divider {
+
     height: 1px;
+
     background: linear-gradient(to right, transparent, #e2e8f0, transparent);
+
     margin: 1rem 0;
+
 }
+
+
 
 /* Validity Section */
+
 .deal-info-card__validity {
+
     margin-bottom: 0.5rem;
+
 }
+
+
 
 .deal-info-card__validity-title {
+
     font-size: 1.125rem;
+
     font-weight: 600;
+
     margin: 0 0 0.75rem 0;
+
     color: #1e293b;
+
 }
+
+
 
 .deal-info-card__date {
+
     display: flex;
+
     align-items: center;
+
     gap: 0.5rem;
+
     font-size: 0.875rem;
+
     margin: 0 0 0.5rem 0;
+
     color: #475569;
+
 }
+
+
 
 .deal-info-card__date:last-child {
+
     margin-bottom: 0;
+
 }
+
+
 
 .deal-info-card__date-icon {
+
     flex-shrink: 0;
+
     color: var(--wp--preset--color--primary);
+
 }
+
+
 
 /* Status Badge */
+
 .deal-info-card__status {
+
     margin-top: 1rem;
+
     padding: 0.5rem 1rem;
+
     border-radius: 6px;
+
     text-align: center;
+
     font-size: 0.875rem;
+
     font-weight: 600;
+
 }
+
+
 
 .deal-info-card__status--scheduled {
+
     background: #fef3c7;
+
     color: #92400e;
+
 }
+
+
 
 .deal-info-card__status--expired {
+
     background: #fee2e2;
+
     color: #991b1b;
+
 }
+
+
 
 /* CTA Button */
+
 .deal-info-card__cta {
+
     margin-top: 0.5rem;
+
 }
+
+
 
 .deal-info-card__button {
+
     display: flex;
+
     align-items: center;
+
     justify-content: center;
+
     gap: 0.5rem;
+
     width: 100%;
+
     padding: 0.875rem 1.5rem;
+
     background: var(--wp--preset--color--primary);
+
     color: #fff;
+
     font-size: 1rem;
+
     font-weight: 600;
+
     text-decoration: none;
+
     border-radius: 8px;
+
     transition: all 0.2s ease;
+
 }
+
+
 
 .deal-info-card__button:hover {
+
     background: #1d4ed8;
+
     transform: translateY(-1px);
+
     box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+
 }
+
+
 
 .deal-info-card__button svg {
+
     flex-shrink: 0;
+
 }
+
+
 
 /* Contact Info */
+
 .deal-info-card__contact {
+
     margin-top: 1rem;
+
 }
+
+
 
 .deal-info-card__contact-text {
+
     font-size: 0.875rem;
+
     text-align: center;
+
     color: #64748b;
+
     margin: 0;
+
     line-height: 1.6;
+
 }
+
+
 
 .deal-info-card__contact-text strong {
+
     color: #1e293b;
+
 }
+
+
 
 /* Benefits List */
+
 .deal-info-card__benefits {
+
     margin-top: 1.5rem;
+
 }
+
+
 
 .deal-info-card__benefits-title {
+
     font-size: 1rem;
+
     font-weight: 600;
+
     margin: 0 0 0.75rem 0;
+
     color: #1e293b;
+
 }
+
+
 
 .deal-info-card__benefits-list {
+
     list-style: none;
+
     padding: 0;
+
     margin: 0;
+
 }
+
+
 
 .deal-info-card__benefits-list li {
+
     font-size: 0.875rem;
+
     color: #475569;
+
     margin-bottom: 0.5rem;
+
     line-height: 1.4;
+
 }
+
+
 
 .deal-info-card__benefits-list li:last-child {
+
     margin-bottom: 0;
+
 }
+
+
 
 /* Responsive */
+
 @media (max-width: 1023px) {
+
     .deal-info-card {
+
         position: static;
+
         margin-bottom: 2rem;
+
     }
+
 }
+
+
 
 @media (max-width: 640px) {
+
     .deal-info-card {
+
         padding: 1.25rem;
+
     }
+
+
 
     .deal-info-card__discount-value {
+
         font-size: 2.5rem;
+
     }
 
+
+
     .deal-info-card__discount-label {
+
         font-size: 1.125rem;
+
     }
+
 }
+

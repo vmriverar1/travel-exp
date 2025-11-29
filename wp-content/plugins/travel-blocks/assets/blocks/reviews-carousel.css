@@ -1,152 +1,152 @@
-/**
- * Mini Reviews List - Sidebar Styles
- *
- * Simple vertical list of customer reviews - NO Swiper
- * Designed for compact sidebar display
- *
- * @package Travel\Blocks
- * @since 1.0.0
- */
-
-/* ===== MINI REVIEWS LIST CONTAINER ===== */
-
-.mini-reviews-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-/* ===== MINI REVIEW CARD ===== */
-
-.mini-review-card {
-    background: var(--color-gray-50, #FAFAFA);
-    border-radius: var(--border-radius-md, 6px);
-    padding: 1rem;
-    transition: all 0.3s ease;
-}
-
-.mini-review-card:hover {
-    background: var(--color-gray-100, #F5F5F5);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-
-/* ===== RATING STARS ===== */
-
-.mini-review-rating {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-    margin-bottom: 0.75rem;
-}
-
-.mini-review-rating svg {
-    flex-shrink: 0;
-}
-
-/* ===== REVIEW TEXT ===== */
-
-.mini-review-text {
-    font-size: 0.875rem;
-    line-height: 1.5;
-    color: var(--color-gray-700, #616161);
-    margin: 0 0 0.75rem 0;
-    font-style: italic;
-}
-
-/* ===== AUTHOR INFO ===== */
-
-.mini-review-author {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.mini-review-avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: var(--color-gray-200, #EEEEEE);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.mini-review-avatar svg {
-    opacity: 0.6;
-}
-
-.mini-review-author-info {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    min-width: 0;
-}
-
-.mini-review-author-name {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--color-gray-900, #212121);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.mini-review-country {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 0.75rem;
-    color: var(--color-gray-600, #757575);
-}
-
-.mini-review-country svg {
-    flex-shrink: 0;
-}
-
-/* ===== PLACEHOLDER STATE ===== */
-
-.mini-reviews-placeholder {
-    padding: 1.5rem;
-    text-align: center;
-    background: var(--color-gray-50, #FAFAFA);
-    border-radius: var(--border-radius-md, 6px);
-    color: var(--color-gray-600, #757575);
-}
-
-.mini-reviews-placeholder p {
-    margin: 0;
-    font-size: 0.875rem;
-}
-
-/* ===== RESPONSIVE ===== */
-
-@media (max-width: 782px) {
-    .mini-reviews-list {
-        gap: 0.75rem;
-    }
-
-    .mini-review-card {
-        padding: 0.875rem;
-    }
-
-    .mini-review-text {
-        font-size: 0.8125rem;
-    }
-
-    .mini-review-author-name {
-        font-size: 0.8125rem;
-    }
-
-    .mini-review-country {
-        font-size: 0.6875rem;
-    }
-}
-
-/* ===== PRINT STYLES ===== */
-
-@media print {
-    .mini-reviews-list {
-        display: none;
-    }
-}
+/**
+ * Mini Reviews List - Sidebar Styles
+ *
+ * Simple vertical list of customer reviews - NO Swiper
+ * Designed for compact sidebar display
+ *
+ * @package Travel\Blocks
+ * @since 1.0.0
+ */
+
+/* ===== MINI REVIEWS LIST CONTAINER ===== */
+
+.mini-reviews-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* ===== MINI REVIEW CARD ===== */
+
+.mini-review-card {
+    background: var(--color-gray-50, #FAFAFA);
+    border-radius: var(--border-radius-md, 6px);
+    padding: 1rem;
+    transition: all 0.3s ease;
+}
+
+.mini-review-card:hover {
+    background: var(--color-gray-100, #F5F5F5);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* ===== RATING STARS ===== */
+
+.mini-review-rating {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin-bottom: 0.75rem;
+}
+
+.mini-review-rating svg {
+    flex-shrink: 0;
+}
+
+/* ===== REVIEW TEXT ===== */
+
+.mini-review-text {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--color-gray-700, #616161);
+    margin: 0 0 0.75rem 0;
+    font-style: italic;
+}
+
+/* ===== AUTHOR INFO ===== */
+
+.mini-review-author {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.mini-review-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--color-gray-200, #EEEEEE);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.mini-review-avatar svg {
+    opacity: 0.6;
+}
+
+.mini-review-author-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.mini-review-author-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-gray-900, #212121);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mini-review-country {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.75rem;
+    color: var(--color-gray-600, #757575);
+}
+
+.mini-review-country svg {
+    flex-shrink: 0;
+}
+
+/* ===== PLACEHOLDER STATE ===== */
+
+.mini-reviews-placeholder {
+    padding: 1.5rem;
+    text-align: center;
+    background: var(--color-gray-50, #FAFAFA);
+    border-radius: var(--border-radius-md, 6px);
+    color: var(--color-gray-600, #757575);
+}
+
+.mini-reviews-placeholder p {
+    margin: 0;
+    font-size: 0.875rem;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 782px) {
+    .mini-reviews-list {
+        gap: 0.75rem;
+    }
+
+    .mini-review-card {
+        padding: 0.875rem;
+    }
+
+    .mini-review-text {
+        font-size: 0.8125rem;
+    }
+
+    .mini-review-author-name {
+        font-size: 0.8125rem;
+    }
+
+    .mini-review-country {
+        font-size: 0.6875rem;
+    }
+}
+
+/* ===== PRINT STYLES ===== */
+
+@media print {
+    .mini-reviews-list {
+        display: none;
+    }
+}

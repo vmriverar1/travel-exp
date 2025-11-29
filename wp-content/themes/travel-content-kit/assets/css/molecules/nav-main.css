@@ -15,7 +15,7 @@
 .nav-main__list {
     display: flex;
     align-items: center;
-    gap: var(--spacing-sm);
+    gap: var(--wp--preset--spacing--50);
     margin: 0;
     padding: 0;
     list-style: none;
@@ -27,12 +27,12 @@
 
 .nav-main__list a {
     display: inline-block;
-    padding: var(--spacing-xs) var(--spacing-sm);
-    font-size: var(--font-size-base);
-    font-weight: var(--font-weight-medium);
+    padding: var(--wp--preset--spacing--30) var(--wp--preset--spacing--50);
+    font-size: var(--wp--preset--font-size--regular);
+    font-weight: 500;
     color: #ffffff;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    transition: all var(--transition-fast);
+    transition: all 0.2s ease;
     position: relative;
 }
 
@@ -53,7 +53,7 @@
     height: 2px;
     background-color: #ffffff;
     transform: translateX(-50%);
-    transition: width var(--transition-fast);
+    transition: width 0.2s ease;
 }
 
 .nav-main__list a:hover::after,
@@ -65,7 +65,7 @@
 .nav-main__list .current-menu-item > a,
 .nav-main__list .current_page_item > a {
     color: #ffffff;
-    font-weight: var(--font-weight-bold);
+    font-weight: 700;
 }
 
 .nav-main__list .current-menu-item > a::after,

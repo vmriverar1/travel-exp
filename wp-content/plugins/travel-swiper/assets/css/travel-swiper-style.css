@@ -11,6 +11,7 @@
   gap: 18px;                  /* espacio uniforme entre elementos */
   margin-top: 25px;
   height: 40px;
+  width: 100%;
 }
 
 /* Flechas */

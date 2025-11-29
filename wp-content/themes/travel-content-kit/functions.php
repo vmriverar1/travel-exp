@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Travel Content Kit Theme functions and definitions
  *
@@ -18,7 +19,7 @@
  * Disable page caching for development
  * Remove this in production if using cache
  */
-add_action('send_headers', function() {
+add_action('send_headers', function () {
     if (!is_user_logged_in()) {
         header('Cache-Control: no-cache, no-store, must-revalidate, max-age=0');
         header('Pragma: no-cache');
@@ -30,7 +31,8 @@ add_action('send_headers', function() {
 /**
  * Register Navigation Menus
  */
-function travel_register_menus() {
+function travel_register_menus()
+{
     register_nav_menus([
         // Header menus
         'primary' => __('Primary Menu (Desktop)', 'travel'),
@@ -53,51 +55,44 @@ add_action('after_setup_theme', 'travel_register_menus');
 /**
  * Enqueue Styles and Scripts
  */
-add_action( 'wp_enqueue_scripts', function() {
+add_action('wp_enqueue_scripts', function () {
     // Force cache bypass with unique version per request
     $version = 'v' . date('YmdHis') . '-' . rand(1000, 9999);
 
     // Parent theme style
-    wp_enqueue_style( 'travel-style', get_stylesheet_uri() );
-
-    // Global CSS Variables
-    wp_enqueue_style(
-        'travel-global',
-        get_template_directory_uri() . '/assets/css/global.css',
-        [],
-        $version
-    );
+    wp_enqueue_style('travel-style', get_stylesheet_uri());
 
     // Atoms - Individual files (bypass @import issue)
-    wp_enqueue_style('travel-atoms-button-close', get_template_directory_uri() . '/assets/css/atoms/button-close.css', ['travel-global'], $version);
-    wp_enqueue_style('travel-atoms-button-hamburger', get_template_directory_uri() . '/assets/css/atoms/button-hamburger.css', ['travel-global'], $version);
-    wp_enqueue_style('travel-atoms-logo', get_template_directory_uri() . '/assets/css/atoms/logo.css', ['travel-global'], $version);
-    wp_enqueue_style('travel-atoms-logo-footer', get_template_directory_uri() . '/assets/css/atoms/logo-footer.css', ['travel-global'], $version);
-    wp_enqueue_style('travel-atoms-nav-link', get_template_directory_uri() . '/assets/css/atoms/nav-link.css', ['travel-global'], $version);
-    wp_enqueue_style('travel-atoms-payment-icon', get_template_directory_uri() . '/assets/css/atoms/payment-icon.css', ['travel-global'], $version);
-    wp_enqueue_style('travel-atoms-social-icon', get_template_directory_uri() . '/assets/css/atoms/social-icon.css', ['travel-global'], $version);
+    wp_enqueue_style('travel-atoms-button-close', get_template_directory_uri() . '/assets/css/atoms/button-close.css', [], $version);
+    wp_enqueue_style('travel-atoms-button-hamburger', get_template_directory_uri() . '/assets/css/atoms/button-hamburger.css', [], $version);
+    wp_enqueue_style('travel-atoms-logo', get_template_directory_uri() . '/assets/css/atoms/logo.css', [], $version);
+    wp_enqueue_style('travel-atoms-logo-footer', get_template_directory_uri() . '/assets/css/atoms/logo-footer.css', [], $version);
+    wp_enqueue_style('travel-atoms-nav-link', get_template_directory_uri() . '/assets/css/atoms/nav-link.css', [], $version);
+    wp_enqueue_style('travel-atoms-payment-icon', get_template_directory_uri() . '/assets/css/atoms/payment-icon.css', [], $version);
+    wp_enqueue_style('travel-atoms-social-icon', get_template_directory_uri() . '/assets/css/atoms/social-icon.css', [], $version);
+    wp_enqueue_style('travel-atoms-search', get_template_directory_uri() . '/assets/css/atoms/search.css', [], $version);
 
     // Molecules - Individual files (bypass @import issue)
-    wp_enqueue_style('travel-molecules-contact-info', get_template_directory_uri() . '/assets/css/molecules/contact-info.css', ['travel-global'], $version);
-    wp_enqueue_style('travel-molecules-footer-company-info', get_template_directory_uri() . '/assets/css/molecules/footer-company-info.css', ['travel-global'], $version);
-    wp_enqueue_style('travel-molecules-footer-legal-bar', get_template_directory_uri() . '/assets/css/molecules/footer-legal-bar.css', ['travel-global'], $version);
-    wp_enqueue_style('travel-molecules-footer-map', get_template_directory_uri() . '/assets/css/molecules/footer-map.css', ['travel-global'], $version);
-    wp_enqueue_style('travel-molecules-nav-aside', get_template_directory_uri() . '/assets/css/molecules/nav-aside.css', ['travel-global'], $version);
-    wp_enqueue_style('travel-molecules-nav-footer-column', get_template_directory_uri() . '/assets/css/molecules/nav-footer-column.css', ['travel-global'], $version);
-    wp_enqueue_style('travel-molecules-nav-main', get_template_directory_uri() . '/assets/css/molecules/nav-main.css', ['travel-global'], $version);
-    wp_enqueue_style('travel-molecules-nav-secondary', get_template_directory_uri() . '/assets/css/molecules/nav-secondary.css', ['travel-global'], $version);
-    wp_enqueue_style('travel-molecules-payment-methods', get_template_directory_uri() . '/assets/css/molecules/payment-methods.css', ['travel-global'], $version);
-    wp_enqueue_style('travel-molecules-social-media-bar', get_template_directory_uri() . '/assets/css/molecules/social-media-bar.css', ['travel-global'], $version);
+    wp_enqueue_style('travel-molecules-contact-info', get_template_directory_uri() . '/assets/css/molecules/contact-info.css', [], $version);
+    wp_enqueue_style('travel-molecules-footer-company-info', get_template_directory_uri() . '/assets/css/molecules/footer-company-info.css', [], $version);
+    wp_enqueue_style('travel-molecules-footer-legal-bar', get_template_directory_uri() . '/assets/css/molecules/footer-legal-bar.css', [], $version);
+    wp_enqueue_style('travel-molecules-footer-map', get_template_directory_uri() . '/assets/css/molecules/footer-map.css', [], $version);
+    wp_enqueue_style('travel-molecules-nav-aside', get_template_directory_uri() . '/assets/css/molecules/nav-aside.css', [], $version);
+    wp_enqueue_style('travel-molecules-nav-footer-column', get_template_directory_uri() . '/assets/css/molecules/nav-footer-column.css', [], $version);
+    wp_enqueue_style('travel-molecules-nav-main', get_template_directory_uri() . '/assets/css/molecules/nav-main.css', [], $version);
+    wp_enqueue_style('travel-molecules-nav-secondary', get_template_directory_uri() . '/assets/css/molecules/nav-secondary.css', [], $version);
+    wp_enqueue_style('travel-molecules-payment-methods', get_template_directory_uri() . '/assets/css/molecules/payment-methods.css', [], $version);
+    wp_enqueue_style('travel-molecules-social-media-bar', get_template_directory_uri() . '/assets/css/molecules/social-media-bar.css', [], $version);
 
     // Organisms - Individual files (bypass @import issue)
-    wp_enqueue_style('travel-organisms-header', get_template_directory_uri() . '/assets/css/organisms/header.css', ['travel-global'], $version);
-    wp_enqueue_style('travel-organisms-footer-main', get_template_directory_uri() . '/assets/css/organisms/footer-main.css', ['travel-global'], $version);
+    wp_enqueue_style('travel-organisms-header', get_template_directory_uri() . '/assets/css/organisms/header.css', [], $version);
+    wp_enqueue_style('travel-organisms-footer-main', get_template_directory_uri() . '/assets/css/organisms/footer-main.css', [], $version);
 
     // Utilities
     wp_enqueue_style(
         'travel-utilities',
         get_template_directory_uri() . '/assets/css/utilities.css',
-        ['travel-global'],
+        [],
         $version
     );
 
@@ -106,7 +101,7 @@ add_action( 'wp_enqueue_scripts', function() {
         wp_enqueue_style(
             'travel-package-layout',
             get_template_directory_uri() . '/assets/css/package-layout.css',
-            ['travel-global'],
+            [],
             $version
         );
     }
@@ -150,7 +145,8 @@ add_filter('script_loader_tag', function ($tag, $handle) {
 /**
  * Convierte una imagen a WebP (si no existe) y devuelve su URL optimizada.
  */
-function convert_to_webp_if_possible($image_url) {
+function convert_to_webp_if_possible($image_url)
+{
     if (!$image_url) return '';
 
     $path = str_replace(home_url('/'), ABSPATH, $image_url);
@@ -209,7 +205,8 @@ function convert_to_webp_if_possible($image_url) {
  * @param string $fallback Fallback value if field is empty
  * @return string Field value or fallback
  */
-function get_header_option($field_name, $fallback = '') {
+function get_header_option($field_name, $fallback = '')
+{
     if (function_exists('get_field')) {
         $value = get_field($field_name, 'option');
         return !empty($value) ? $value : $fallback;
@@ -223,7 +220,8 @@ function get_header_option($field_name, $fallback = '') {
  * @param string $type Icon type (facebook, instagram, etc.)
  * @return string SVG markup
  */
-function get_social_icon_svg($type) {
+function get_social_icon_svg($type)
+{
     $icons = [
         'facebook' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>',
         'instagram' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>',
@@ -243,14 +241,15 @@ function get_social_icon_svg($type) {
 /**
  * Register block styles.
  */
-if ( ! function_exists( 'twentytwentyfour_block_styles' ) ) :
-	function twentytwentyfour_block_styles() {
-		register_block_style(
-			'core/details',
-			array(
-				'name'         => 'arrow-icon-details',
-				'label'        => __( 'Arrow icon', 'twentytwentyfour' ),
-				'inline_style' => '
+if (! function_exists('twentytwentyfour_block_styles')) :
+    function twentytwentyfour_block_styles()
+    {
+        register_block_style(
+            'core/details',
+            array(
+                'name'         => 'arrow-icon-details',
+                'label'        => __('Arrow icon', 'twentytwentyfour'),
+                'inline_style' => '
 				.is-style-arrow-icon-details {
 					padding-top: var(--wp--preset--spacing--10);
 					padding-bottom: var(--wp--preset--spacing--10);
@@ -263,14 +262,14 @@ if ( ! function_exists( 'twentytwentyfour_block_styles' ) ) :
 				.is-style-arrow-icon-details[open]>summary {
 					list-style-type: "\2192\00a0\00a0\00a0";
 				}',
-			)
-		);
-		register_block_style(
-			'core/post-terms',
-			array(
-				'name'         => 'pill',
-				'label'        => __( 'Pill', 'twentytwentyfour' ),
-				'inline_style' => '
+            )
+        );
+        register_block_style(
+            'core/post-terms',
+            array(
+                'name'         => 'pill',
+                'label'        => __('Pill', 'twentytwentyfour'),
+                'inline_style' => '
 				.is-style-pill a,
 				.is-style-pill span:not([class], [data-rich-text-placeholder]) {
 					display: inline-block;
@@ -282,14 +281,14 @@ if ( ! function_exists( 'twentytwentyfour_block_styles' ) ) :
 				.is-style-pill a:hover {
 					background-color: var(--wp--preset--color--contrast-3);
 				}',
-			)
-		);
-		register_block_style(
-			'core/list',
-			array(
-				'name'         => 'checkmark-list',
-				'label'        => __( 'Checkmark', 'twentytwentyfour' ),
-				'inline_style' => '
+            )
+        );
+        register_block_style(
+            'core/list',
+            array(
+                'name'         => 'checkmark-list',
+                'label'        => __('Checkmark', 'twentytwentyfour'),
+                'inline_style' => '
 				ul.is-style-checkmark-list {
 					list-style-type: "\2713";
 				}
@@ -297,14 +296,14 @@ if ( ! function_exists( 'twentytwentyfour_block_styles' ) ) :
 				ul.is-style-checkmark-list li {
 					padding-inline-start: 1ch;
 				}',
-			)
-		);
-		register_block_style(
-			'core/navigation-link',
-			array(
-				'name'         => 'arrow-link',
-				'label'        => __( 'With arrow', 'twentytwentyfour' ),
-				'inline_style' => '
+            )
+        );
+        register_block_style(
+            'core/navigation-link',
+            array(
+                'name'         => 'arrow-link',
+                'label'        => __('With arrow', 'twentytwentyfour'),
+                'inline_style' => '
 				.is-style-arrow-link .wp-block-navigation-item__label:after {
 					content: "\2197";
 					padding-inline-start: 0.25rem;
@@ -312,14 +311,14 @@ if ( ! function_exists( 'twentytwentyfour_block_styles' ) ) :
 					text-decoration: none;
 					display: inline-block;
 				}',
-			)
-		);
-		register_block_style(
-			'core/heading',
-			array(
-				'name'         => 'asterisk',
-				'label'        => __( 'With asterisk', 'twentytwentyfour' ),
-				'inline_style' => "
+            )
+        );
+        register_block_style(
+            'core/heading',
+            array(
+                'name'         => 'asterisk',
+                'label'        => __('With asterisk', 'twentytwentyfour'),
+                'inline_style' => "
 				.is-style-asterisk:before {
 					content: '';
 					width: 1.5rem;
@@ -348,48 +347,50 @@ if ( ! function_exists( 'twentytwentyfour_block_styles' ) ) :
 				.rtl .is-style-asterisk.has-text-align-left:before {
 					margin-right: auto;
 				}",
-			)
-		);
-	}
+            )
+        );
+    }
 endif;
 
-add_action( 'init', 'twentytwentyfour_block_styles' );
+add_action('init', 'twentytwentyfour_block_styles');
 
 /**
  * Enqueue block stylesheets.
  */
-if ( ! function_exists( 'twentytwentyfour_block_stylesheets' ) ) :
-	function twentytwentyfour_block_stylesheets() {
-		wp_enqueue_block_style(
-			'core/button',
-			array(
-				'handle' => 'twentytwentyfour-button-style-outline',
-				'src'    => get_template_directory_uri() . '/assets/css/button-outline.css',
-				'ver'    => wp_get_theme( get_template() )->get( 'Version' ),
-				'path'   => get_template_directory() . '/assets/css/button-outline.css',
-			)
-		);
-	}
+if (! function_exists('twentytwentyfour_block_stylesheets')) :
+    function twentytwentyfour_block_stylesheets()
+    {
+        wp_enqueue_block_style(
+            'core/button',
+            array(
+                'handle' => 'twentytwentyfour-button-style-outline',
+                'src'    => get_template_directory_uri() . '/assets/css/button-outline.css',
+                'ver'    => wp_get_theme(get_template())->get('Version'),
+                'path'   => get_template_directory() . '/assets/css/button-outline.css',
+            )
+        );
+    }
 endif;
 
-add_action( 'init', 'twentytwentyfour_block_stylesheets' );
+add_action('init', 'twentytwentyfour_block_stylesheets');
 
 /**
  * Register pattern categories.
  */
-if ( ! function_exists( 'twentytwentyfour_pattern_categories' ) ) :
-	function twentytwentyfour_pattern_categories() {
-		register_block_pattern_category(
-			'twentytwentyfour_page',
-			array(
-				'label'       => _x( 'Pages', 'Block pattern category', 'twentytwentyfour' ),
-				'description' => __( 'A collection of full page layouts.', 'twentytwentyfour' ),
-			)
-		);
-	}
+if (! function_exists('twentytwentyfour_pattern_categories')) :
+    function twentytwentyfour_pattern_categories()
+    {
+        register_block_pattern_category(
+            'twentytwentyfour_page',
+            array(
+                'label'       => _x('Pages', 'Block pattern category', 'twentytwentyfour'),
+                'description' => __('A collection of full page layouts.', 'twentytwentyfour'),
+            )
+        );
+    }
 endif;
 
-add_action( 'init', 'twentytwentyfour_pattern_categories' );
+add_action('init', 'twentytwentyfour_pattern_categories');
 
 // Load vendor autoload if exists
 if (file_exists(get_template_directory() . '/vendor/autoload.php')) {
@@ -401,7 +402,7 @@ if (file_exists(get_template_directory() . '/vendor/autoload.php')) {
 
 
 // === Shortcode para renderizar el HEADER completo ===
-add_shortcode('mi_header', function() {
+add_shortcode('mi_header', function () {
     ob_start();
 
     // Incluimos el header completo desde archivo o inline (según tu estructura)
@@ -425,11 +426,11 @@ add_shortcode('mi_header', function() {
 
 
 // === Shortcode para renderizar el FOOTER completo ===
-add_shortcode('mi_footer', function() {
+add_shortcode('mi_footer', function () {
     ob_start();
 
     // Cerramos el <main> y cargamos el footer principal
-    ?>
+?>
     </main><!-- #main -->
 
     <?php get_template_part('parts/organisms/footer-main'); ?>
@@ -438,8 +439,9 @@ add_shortcode('mi_footer', function() {
 
     <?php wp_footer(); ?>
     </body>
+
     </html>
-    <?php
+<?php
 
     return ob_get_clean();
 });
@@ -464,60 +466,8 @@ add_shortcode('mi_footer', function() {
 // }, 10, 3);
 
 // Permitir subir SVGs
-function attach_allow_svg_uploads($mimes) {
-    $mimes['svg'] = 'image/svg+xml';
-    return $mimes;
-}
-add_filter('upload_mimes', 'attach_allow_svg_uploads');
 
-// Asegurar previsualización segura en el admin
-function attach_fix_svg_preview() {
-    echo '<style>
-        img[src$=".svg"] {
-            height: auto !important;
-        }
-    </style>';
-}
-add_action('admin_head', 'attach_fix_svg_preview');
-
-
-
-/**
- * Auto background for Cover block from ACF taxonomy image
- */
-add_filter('render_block', function ($block_content, $block) {
-
-    // Solo para el bloque Cover
-    if ($block['blockName'] !== 'core/cover') {
-        return $block_content;
-    }
-
-    // Solo si estamos viendo una taxonomía "destinations"
-    if (!is_tax('destinations')) {
-        return $block_content;
-    }
-
-    $term = get_queried_object();
-    if (!$term) {
-        return $block_content;
-    }
-
-    // Obtener el campo ACF 'image' del término actual
-    $image = get_field('image', $term);
-    if (empty($image) || empty($image['url'])) {
-        return $block_content;
-    }
-
-    // Reemplazar la URL del background del bloque
-    $new_url = esc_url($image['url']);
-
-    // Cambia la URL existente en el HTML del bloque
-    $block_content = preg_replace(
-        '/url\([^\)]+\)/',
-        'url(' . $new_url . ')',
-        $block_content
-    );
-
-    return $block_content;
-
-}, 10, 2);
+ delete_transient('vtc_reviews_cache_v5');
+  delete_transient('vtc_reviews_network_trip-advisor');
+  delete_transient('vtc_reviews_network_google');
+  delete_transient('vtc_reviews_network_facebook');

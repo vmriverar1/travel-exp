@@ -12,8 +12,8 @@
     background: transparent;
     border: none;
     cursor: pointer;
-    color: var(--color-text);
-    transition: opacity var(--transition-fast);
+    color: var(--wp--preset--color--contrast);
+    transition: opacity 0.2s ease;
 }
 
 .btn-close:hover {
@@ -21,7 +21,7 @@
 }
 
 .btn-close:focus {
-    outline: 2px solid var(--color-primary);
+    outline: 2px solid var(--wp--preset--color--secondary);
     outline-offset: 2px;
 }
 

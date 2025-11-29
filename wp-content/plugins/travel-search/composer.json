@@ -1,0 +1,11 @@
+{
+    "name": "travel/search",
+    "description": "Travel search plugin with PSR-4 structure for WordPress.",
+    "type": "wordpress-plugin",
+    "autoload": {
+        "psr-4": {
+            "TravelSearch\\": "src/"
+        }
+    },
+    "require": {}
+}

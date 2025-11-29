@@ -672,17 +672,29 @@ class ContentQueryHelper {
             $card_data['excerpt'] = $description; // Alias for HeroCarousel
         }
 
-        // Location (priority: destination CPT → departure text field → empty)
+        // Location (priority: locations CPT → tag_locations CPT → departure text field → empty)
         if (in_array('location', $visible_fields)) {
             $location = '';
 
-            // Priority 1: Get from 'destination' field (post_object → location CPT)
-            $destination_id = get_field('destination', $post_id);
-            if ($destination_id) {
-                $location = get_the_title($destination_id);
+            // Priority 1: Get from 'locations' field (post_object array → location CPT)
+            $location_ids = get_field('locations', $post_id);
+            if (!empty($location_ids) && is_array($location_ids)) {
+                $location = get_the_title($location_ids[0]); // Tomar el primero
+            } elseif ($location_ids) {
+                $location = get_the_title($location_ids); // Por si es un solo ID
             }
 
-            // Priority 2: Fallback to 'departure' text field
+            // Priority 2: Fallback to 'tag_locations' field
+            if (empty($location)) {
+                $tag_location_ids = get_field('tag_locations', $post_id);
+                if (!empty($tag_location_ids) && is_array($tag_location_ids)) {
+                    $location = get_the_title($tag_location_ids[0]); // Tomar el primero
+                } elseif ($tag_location_ids) {
+                    $location = get_the_title($tag_location_ids);
+                }
+            }
+
+            // Priority 3: Fallback to 'departure' text field
             if (empty($location)) {
                 $location = get_field('departure', $post_id) ?: '';
             }

@@ -23,7 +23,7 @@ error_log('Cantidad de términos (categorías): ' . count($terms));
                 $taxonomy_prefix = $term->taxonomy . '_' . $term->term_id;
 
                 // Obtener imagen desde el campo ACF de la taxonomía
-                $image = get_field('image', $taxonomy_prefix);
+                $image = get_field('thumbnail', $taxonomy_prefix);
                 $image_url = $image['url'] ?? 'https://via.placeholder.com/400x260?text=Destination';
 
                 // Log de depuración

@@ -1745,34 +1745,16 @@ class TaxonomyTabs extends BlockBase
      */
     public function load_selected_terms_for_override($field): array
     {
+        // TEMPORARY FIX: Simplified to prevent 502 errors
+        // Only showing specific terms that are being used
         $choices = [];
+        $choices[''] = '-- Seleccionar término --';
 
-        // Add complete taxonomies as options
-        $choices['package_type'] = '📦 Package Types (taxonomía completa)';
-        $choices['interest'] = '⭐ Interests (taxonomía completa)';
-        $choices['locations_cpt'] = '📍 Locations (taxonomía completa)';
-        $choices['category'] = '📁 Categories (taxonomía completa)';
-        $choices['post_tag'] = '🏷️ Tags (taxonomía completa)';
-
-        // Add individual terms from each taxonomy
-        $choices = array_merge($choices, $this->get_taxonomy_term_choices('package_type', 'Package Type'));
-        $choices = array_merge($choices, $this->get_taxonomy_term_choices('interest', 'Interest'));
-        $choices = array_merge($choices, $this->get_taxonomy_term_choices('category', 'Category'));
-        $choices = array_merge($choices, $this->get_taxonomy_term_choices('post_tag', 'Tag'));
-
-        // Add location posts
-        $locations = get_posts([
-            'post_type' => 'location',
-            'posts_per_page' => -1,
-            'orderby' => 'title',
-            'order' => 'ASC',
-            'post_status' => 'publish',
-        ]);
-        if (!empty($locations)) {
-            foreach ($locations as $location) {
-                $choices[$location->ID] = $location->post_title . ' (Location)';
-            }
-        }
+        // Hard-coded options based on the tabs we saw in the debug
+        $choices['locations_cpt'] = 'Culture (Locations)';
+        $choices['18'] = 'Adventure (Term)';
+        $choices['1130'] = 'Gastronomy/Amazon (Term)';
+        $choices['2808'] = 'Ausangate Trek (Term)';
 
         $field['choices'] = $choices;
         return $field;

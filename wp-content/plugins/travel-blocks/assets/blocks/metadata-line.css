@@ -1,127 +1,254 @@
 /**
+
  * Metadata Line Block Styles
+
  *
+
  * Displays package metadata with icons:
+
  * - Origin (map pin)
+
  * - Difficulty (backpack)
+
  * - Duration (clock) - special large design
+
  * - Type (users)
+
  *
+
  * @package Travel\Blocks
+
  * @since 1.0.0
+
  */
+
+
 
 /* ===== CONTAINER ===== */
 
+
+
 .metadata-line {
+
     padding: 1.5rem 0;
+
 }
+
+
 
 /* ===== METADATA LINE CONTENT ===== */
 
+
+
 .metadata-line__content {
+
     display: grid;
+
     grid-template-columns: repeat(1, 1fr);
+
     gap: 1rem 1.5rem;
+
     font-size: 0.875rem;
+
     line-height: 1.5;
+
 }
+
+
 
 .metadata-line__item {
+
     display: inline-flex;
+
     align-items: center;
+
     gap: 0.5rem;
+
 }
+
+
 
 .metadata-line__item svg {
+
     flex-shrink: 0;
+
 }
+
+
 
 .metadata-line__text {
+
     font-size: 0.9375rem;
+
     font-weight: 500;
+
 }
 
+
+
 .metadata-line__separator {
+
     display: none;
+
 }
+
+
 
 /* ===== COLOR VARIANTS ===== */
 
+
+
 /* Default (Gray) */
+
 .metadata-line__content--default {
+
     color: var(--color-gray-700, #616161);
+
 }
+
+
 
 .metadata-line__content--default .metadata-line__item svg {
+
     color: var(--color-gray-600, #757575);
+
 }
+
+
 
 /* Primary (Coral) */
+
 .metadata-line__content--primary {
+
     color: var(--wp--preset--color--secondary);
+
 }
+
+
 
 .metadata-line__content--primary .metadata-line__item svg {
+
     color: var(--wp--preset--color--secondary);
+
 }
+
+
 
 .metadata-line__content--primary .metadata-line__separator {
+
     color: var(--color-coral-light, #FFF0EF);
+
 }
+
+
 
 /* Secondary (Purple) */
+
 .metadata-line__content--secondary {
+
     color: var(--wp--preset--color--contrast-4);
+
 }
+
+
 
 .metadata-line__content--secondary .metadata-line__item svg {
+
     color: var(--color-purple-light, #4A2B5E);
+
 }
 
+
+
 .metadata-line__content--secondary .metadata-line__separator {
+
     color: var(--color-purple-light, #4A2B5E);
+
 }
+
+
 
 /* ===== RESPONSIVE ===== */
 
+
+
 /* Tablet: 2 columnas */
+
 @media (min-width: 641px) and (max-width: 1023px) {
+
     .metadata-line__content {
+
         grid-template-columns: repeat(2, 1fr);
+
         gap: 0.875rem 1.25rem;
+
     }
+
 }
+
+
 
 /* Mobile: 1 columna */
+
 @media (max-width: 640px) {
+
     .metadata-line__content {
+
         grid-template-columns: 1fr;
+
         gap: 0.75rem;
+
     }
 
+
+
     .metadata-line__text {
+
         font-size: 0.875rem;
+
     }
+
 }
+
+
 
 /* ===== PRINT STYLES ===== */
 
+
+
 @media print {
+
     .metadata-line {
+
         padding: 1rem 0;
+
     }
+
 }
+
+
 
 /* ===== ACCESSIBILITY ===== */
 
+
+
 /* High contrast mode support */
+
 @media (prefers-contrast: high) {
+
     .metadata-line__content {
+
         font-weight: 600;
+
     }
 
+
+
     .metadata-line__text {
+
         font-weight: 700;
+
     }
+
 }
+

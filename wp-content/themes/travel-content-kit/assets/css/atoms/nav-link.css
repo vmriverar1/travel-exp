@@ -4,17 +4,17 @@
 
 .nav-link {
     display: inline-block;
-    padding: var(--spacing-xs) var(--spacing-sm);
-    font-size: var(--font-size-base);
-    font-weight: var(--font-weight-medium);
-    color: var(--color-text);
-    transition: color var(--transition-fast);
+    padding: var(--wp--preset--spacing--30) var(--wp--preset--spacing--50);
+    font-size: var(--wp--preset--font-size--regular);
+    font-weight: 500;
+    color: var(--wp--preset--color--contrast);
+    transition: color 0.2s ease;
     position: relative;
 }
 
 .nav-link:hover,
 .nav-link:focus {
-    color: var(--color-primary);
+    color: var(--wp--preset--color--secondary);
 }
 
 /* Underline effect on hover */
@@ -25,9 +25,9 @@
     left: 50%;
     width: 0;
     height: 2px;
-    background-color: var(--color-primary);
+    background-color: var(--wp--preset--color--secondary);
     transform: translateX(-50%);
-    transition: width var(--transition-fast);
+    transition: width 0.2s ease;
 }
 
 .nav-link:hover::after,
@@ -38,7 +38,7 @@
 /* Current/active page indicator */
 .nav-link.current-menu-item,
 .nav-link.current_page_item {
-    color: var(--color-primary);
+    color: var(--wp--preset--color--secondary);
 }
 
 .nav-link.current-menu-item::after,

@@ -1,436 +1,870 @@
 /**
+
  * Side by Side Cards - Horizontal Layout con Grid Flexible
+
  * Desktop: Grid flexible - imagen + texto lado a lado
+
  * Mobile: Slider nativo
+
  */
 
+
+
 /* ==================== CONTAINER ==================== */
+
 .sbs-cards {
+
   width: 100%;
+
   max-width: 100%;
+
   margin: 0;
+
   padding: 20px 0;
+
 }
+
+
 
 .sbs-wrapper {
+
   position: relative;
+
   width: 100%;
+
 }
+
+
 
 /* ==================== DESKTOP GRID (FLEXIBLE) ==================== */
+
 @media (min-width: 1025px) {
+
   .sbs-container {
+
     display: grid;
+
     /* Grid flexible: define el número de columnas base */
+
     grid-template-columns: repeat(var(--grid-columns, 3), 1fr);
+
     grid-auto-rows: 1fr;
+
     gap: var(--card-gap, 32px);
+
     width: 100%;
+
     align-items: stretch;
+
   }
+
+
 
   /* Cada card puede ocupar 1 o más espacios usando grid-column: span X */
+
   .sbs-card {
+
     height: 100%;
+
     /* El span se define inline en el template */
+
     /* grid-column: span 1; (default) */
+
     /* grid-column: span 2; (doble ancho) */
+
     /* grid-column: span 3; (triple ancho) */
+
   }
+
 }
+
+
 
 /* ==================== CARD HORIZONTAL LAYOUT ==================== */
+
 .sbs-card {
+
   display: flex;
+
   flex-direction: row;
+
   align-items: stretch;
+
   width: 100%;
+
   background: transparent;
+
   border-radius: 0;
+
   overflow: hidden;
+
   transition: all 0.3s ease;
+
   position: relative;
+
 }
+
+
 
 /* Posición de imagen: DERECHA */
+
 .sbs-cards.image-right .sbs-card {
+
   flex-direction: row-reverse;
+
 }
+
+
 
 /* ==================== IMAGE ==================== */
+
 .sbs-card__image-link {
+
   flex: 0 0 var(--image-width, 40%);
+
   display: block;
+
   text-decoration: none;
+
 }
+
+
 
 .sbs-card__image {
+
   width: 100%;
-  height: 100%;
-  min-height: var(--card-min-height, 450px);
+
+  height: var(--card-min-height, 450px);
+
   overflow: hidden;
+
   border-radius: var(--image-border-radius, 12px);
+
   position: relative;
+
 }
+
+
 
 .sbs-card__image img {
+
   width: 100%;
+
   height: 100%;
+
   object-fit: cover;
+
   display: block;
+
   transition: transform 0.4s ease;
+
 }
+
+
 
 /* ==================== CONTENT ==================== */
+
 .sbs-card__content {
+
   flex: 1;
+
   padding: 16px;
+
   display: flex;
+
   flex-direction: column;
+
   justify-content: flex-start;
+
   gap: 8px;
+
 }
+
+
 
 /* Badge */
+
 .sbs-card__badge {
+
   display: inline-block;
+
   padding: 4px 12px;
+
   font-size: 11px;
+
   font-weight: 600;
+
   border-radius: 20px;
+
   margin-bottom: 0;
-  text-transform: uppercase;
+
+  text-transform: capitalize;
+
   letter-spacing: 0.5px;
+
   align-self: flex-start;
+
 }
+
+
 
 /* Badge Colors */
+
 .sbs-card__badge--primary { background: var(--wp--preset--color--secondary); color: white; }
+
 .sbs-card__badge--secondary { background: var(--wp--preset--color--contrast-4); color: white; }
+
 .sbs-card__badge--white { background: white; color: #1A1A1A; border: 1px solid #e0e0e0; }
+
 .sbs-card__badge--gold { background: var(--wp--preset--color--contrast-1); color: white; }
+
 .sbs-card__badge--dark { background: #1A1A1A; color: white; }
+
 .sbs-card__badge--transparent { background: transparent; border: 1px solid currentColor; }
 
+
+
 /* Title */
+
 .sbs-card__title {
+
   font-size: 14px;
+
   font-weight: 700;
+
   margin: 0;
+
   line-height: 1.3;
+
   color: #1A1A1A;
+
 }
+
+
 
 .sbs-card__title a {
+
   color: inherit;
+
   text-decoration: none;
+
   transition: color 0.3s ease;
+
 }
+
+
 
 .sbs-card__title a:hover {
+
   color: var(--wp--preset--color--secondary);
+
 }
+
+
 
 /* Excerpt */
+
 .sbs-card__excerpt {
+
   font-size: 13px;
+
   line-height: 1.3;
+
   color: #666;
+
   margin: 0;
+
 }
+
+
 
 /* Divider */
+
 .sbs-card__divider {
+
   width: 50px;
+
   height: 2px;
+
   background: var(--wp--preset--color--secondary);
+
   margin: 0;
+
 }
+
+
 
 /* Location */
+
 .sbs-card__location {
+
   display: flex;
+
   align-items: center;
+
   gap: 6px;
+
   font-size: 13px;
+
   color: #666;
+
   margin: 0;
+
 }
+
+
 
 .sbs-card__location svg {
+
   flex-shrink: 0;
+
   color: var(--wp--preset--color--secondary);
+
 }
+
+
 
 /* Price */
+
 .sbs-card__price {
+
   font-size: 18px;
+
   font-weight: 700;
+
   color: var(--wp--preset--color--contrast-4);
+
   margin: 0;
+
 }
+
+
 
 /* Button/CTA */
+
 .sbs-card__button {
+
   display: inline-block;
+
   padding: 8px 20px;
+
   font-size: 13px;
+
   font-weight: 600;
+
   border-radius: 6px;
+
   text-decoration: none;
+
   transition: all 0.3s ease;
+
   cursor: pointer;
+
   border: none;
+
   margin-top: auto;
+
   align-self: flex-start;
+
 }
+
+
 
 /* Button Colors */
+
 .sbs-card__button--primary { background: var(--wp--preset--color--secondary); color: white; }
+
 .sbs-card__button--primary:hover { background: #d97a74; }
 
+
+
 .sbs-card__button--secondary { background: var(--wp--preset--color--contrast-4); color: white; }
+
 .sbs-card__button--secondary:hover { background: #1f0f2a; }
 
+
+
 .sbs-card__button--white { background: white; color: #1A1A1A; border: 1px solid #e0e0e0; }
+
 .sbs-card__button--white:hover { background: #f5f5f5; }
 
+
+
 .sbs-card__button--gold { background: var(--wp--preset--color--contrast-1); color: white; }
+
 .sbs-card__button--gold:hover { background: #b58a25; }
 
+
+
 .sbs-card__button--dark { background: #1A1A1A; color: white; }
+
 .sbs-card__button--dark:hover { background: #000; }
 
+
+
 .sbs-card__button--transparent { background: transparent; color: currentColor; border: 2px solid currentColor; }
+
 .sbs-card__button--transparent:hover { background: rgba(0,0,0,0.05); }
 
+
+
 .sbs-card__button--read-more {
+
   background: transparent;
+
   color: #1A1A1A;
+
   padding: 0;
+
   font-weight: 600;
+
   border: none;
+
   border-radius: 0;
+
 }
+
 .sbs-card__button--read-more:hover {
+
   color: #1A1A1A;
+
   opacity: 0.7;
+
 }
+
+
 
 /* ==================== TEXT ALIGNMENT ==================== */
+
 .sbs-cards.text-align-left .sbs-card__content { text-align: left; }
+
 .sbs-cards.text-align-center .sbs-card__content { text-align: center; align-items: center; }
+
 .sbs-cards.text-align-center .sbs-card__badge { align-self: center; }
+
 .sbs-cards.text-align-center .sbs-card__divider { margin-left: auto; margin-right: auto; }
+
 .sbs-cards.text-align-right .sbs-card__content { text-align: right; align-items: flex-end; }
+
 .sbs-cards.text-align-right .sbs-card__badge { align-self: flex-end; }
 
+
+
 /* ==================== BUTTON ALIGNMENT ==================== */
+
 .sbs-cards.button-align-left .sbs-card__button { align-self: flex-start; }
+
 .sbs-cards.button-align-center .sbs-card__button { align-self: center; }
+
 .sbs-cards.button-align-right .sbs-card__button { align-self: flex-end; }
+
+
 
 /* ==================== HOVER EFFECTS (Desktop only) ==================== */
 
+
+
 /* Efecto SQUEEZE - Crece y empuja las demás */
+
 @media (hover: hover) and (pointer: fine) and (min-width: 1025px) {
+
   .sbs-cards.hover-squeeze .sbs-card {
+
     transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+
   }
+
+
 
   .sbs-cards.hover-squeeze .sbs-card:hover {
+
     transform: scale(1.03);
+
     z-index: 10;
+
   }
+
+
 
   .sbs-cards.hover-squeeze .sbs-card:hover .sbs-card__image img {
+
     transform: scale(1.1);
+
   }
+
 }
+
+
 
 /* Efecto LIFT - Elevar card */
+
 @media (hover: hover) and (pointer: fine) and (min-width: 1025px) {
+
   .sbs-cards.hover-lift .sbs-card:hover {
+
     transform: translateY(-12px);
+
     z-index: 10;
+
   }
+
+
 
   .sbs-cards.hover-lift .sbs-card:hover .sbs-card__image img {
+
     transform: scale(1.05);
+
   }
+
 }
+
+
 
 /* Efecto GLOW - Resaltar bordes */
+
 @media (hover: hover) and (pointer: fine) and (min-width: 1025px) {
+
   .sbs-cards.hover-glow .sbs-card {
+
     position: relative;
+
   }
+
+
 
   .sbs-cards.hover-glow .sbs-card::before {
+
     content: '';
+
     position: absolute;
+
     inset: -2px;
+
     border-radius: 8px;
+
     padding: 2px;
+
     background: linear-gradient(45deg, var(--wp--preset--color--secondary), var(--wp--preset--color--contrast-1), var(--wp--preset--color--contrast-4));
+
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+
     -webkit-mask-composite: xor;
+
     mask-composite: exclude;
+
     opacity: 0;
+
     transition: opacity 0.4s ease;
+
   }
+
+
 
   .sbs-cards.hover-glow .sbs-card:hover::before {
+
     opacity: 1;
+
   }
+
 }
+
+
 
 /* Efecto ZOOM - Solo agrandar imagen */
+
 @media (hover: hover) and (pointer: fine) and (min-width: 1025px) {
+
   .sbs-cards.hover-zoom .sbs-card:hover .sbs-card__image img {
+
     transform: scale(1.15);
+
   }
+
 }
+
+
 
 /* ==================== MOBILE SLIDER ==================== */
+
 @media (max-width: 1024px) {
+
   /* Container como slider */
+
   .sbs-container {
+
     display: flex;
+
     overflow-x: auto;
+
     scroll-snap-type: x mandatory;
+
     scroll-behavior: smooth;
+
     gap: 16px;
+
     padding: 0 20px;
+
     -webkit-overflow-scrolling: touch;
+
     scrollbar-width: none;
+
   }
+
+
 
   .sbs-container::-webkit-scrollbar {
+
     display: none;
+
   }
+
+
 
   /* Cards en slider - una card a la vez (ESTÁNDAR) */
+
   .sbs-card {
+
     flex: 0 0 100% !important; /* 1 slide completo */
+
     scroll-snap-align: start;
+
     scroll-snap-stop: always;
+
     grid-column: auto !important; /* Resetear grid-column en mobile */
+
   }
+
+
 
   .sbs-card__image-link {
+
     flex: 0 0 auto;
+
     width: 100%;
+
   }
+
+
 
   .sbs-card__image {
-    min-height: min(250px, calc(var(--card-min-height, 450px) * 0.6));
+
+    height: min(250px, calc(var(--card-min-height, 450px) * 0.6));
+
   }
+
+
 
   .sbs-card__content {
+
     padding: 20px 16px;
+
   }
 
+
+
   .sbs-card__title {
+
     font-size: 20px;
+
   }
+
 }
+
+
 
 /* ==================== NAVIGATION ARROWS (Mobile) ==================== */
+
 .sbs-arrow {
+
   display: none; /* Ocultar en desktop */
+
 }
 
+
+
 @media (max-width: 1024px) {
+
   .sbs-arrow {
+
     display: flex;
+
     position: absolute;
+
     top: 40%;
+
     transform: translateY(-50%);
+
     z-index: 20;
+
     background: white;
+
     border: none;
+
     border-radius: 50%;
+
     width: 40px;
+
     height: 40px;
+
     align-items: center;
+
     justify-content: center;
+
     cursor: pointer;
+
     box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+
     transition: all 0.3s ease;
+
   }
+
+
 
   .sbs-arrow--prev { left: 10px; }
+
   .sbs-arrow--next { right: 10px; }
 
+
+
   .sbs-arrow:hover {
+
     background: var(--wp--preset--color--secondary);
+
     color: white;
+
   }
+
+
 
   .sbs-arrow svg {
+
     width: 20px;
+
     height: 20px;
+
   }
+
 }
+
+
 
 /* ==================== PAGINATION DOTS (Mobile) ==================== */
+
 .sbs-dots {
+
   display: none !important; /* Ocultar en desktop */
+
 }
+
+
 
 /* Asegurar que dots estén ocultos en desktop */
+
 @media (min-width: 1025px) {
+
   .sbs-dots {
+
     display: none !important;
+
   }
+
 }
+
+
 
 @media (max-width: 1024px) {
+
   .sbs-dots {
+
     display: flex;
+
     justify-content: center;
+
     align-items: center;
+
     gap: 8px;
+
     margin-top: 20px;
+
   }
+
+
 
   .sbs-dot {
+
     width: 8px;
+
     height: 8px;
+
     border-radius: 50%;
+
     border: none;
+
     background: #ddd;
+
     cursor: pointer;
+
     padding: 0;
+
     transition: all 0.3s ease;
+
   }
+
+
 
   .sbs-dot.is-active {
+
     background: var(--wp--preset--color--secondary);
+
     width: 24px;
+
     border-radius: 4px;
+
   }
+
 }
+
+
 
 /* ==================== TABLET ==================== */
+
 @media (min-width: 769px) and (max-width: 1024px) {
+
   .sbs-card {
+
     flex: 0 0 100% !important; /* 1 slide en tablet también */
+
   }
+
 }
+
+
 
 /* ==================== RESPONSIVE TEXT ==================== */
+
 @media (max-width: 768px) {
+
   .sbs-card__title {
+
     font-size: 18px;
+
   }
+
+
 
   .sbs-card__excerpt {
+
     font-size: 14px;
+
   }
 
+
+
   .sbs-card__price {
+
     font-size: 18px;
+
   }
+
 }
+

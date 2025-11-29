@@ -1,298 +1,596 @@
 /**
+
  * Contact Planner Form Block Styles
+
  *
+
  * Formulario de contacto con imagen de fondo y panel flotante
+
  *
+
  * @package Travel\Blocks
+
  * @since 1.0.0
+
  */
+
+
 
 /* ===== CONTAINER WITH BACKGROUND ===== */
 
+
+
 .contact-planner-form {
+
     position: relative;
+
     width: 100%;
+
     min-height: 600px;
+
     background-size: cover;
+
     background-position: center;
+
     background-repeat: no-repeat;
+
     display: flex;
+
     align-items: center;
+
     justify-content: center;
+
     padding: 4rem 2rem;
+
 }
+
+
 
 /* ===== OVERLAY ===== */
 
+
+
 .contact-planner-form__overlay {
+
     position: absolute;
+
     top: 0;
+
     left: 0;
+
     right: 0;
+
     bottom: 0;
+
     z-index: 1;
+
 }
+
+
 
 /* ===== FLOATING PANEL ===== */
 
+
+
 .contact-planner-form__panel {
+
     position: relative;
+
     z-index: 2;
+
     background: white;
+
     border-radius: var(--border-radius-lg, 12px);
+
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+
     padding: 3rem;
+
     max-width: 800px;
+
     width: 100%;
+
 }
 
+
+
 @media (max-width: 768px) {
+
     .contact-planner-form__panel {
+
         padding: 2rem 1.5rem;
+
     }
+
 }
+
+
 
 /* ===== HEADER ===== */
 
+
+
 .contact-planner-form__header {
+
     text-align: center;
+
     margin-bottom: 2.5rem;
+
 }
+
+
 
 .contact-planner-form__title {
+
     font-size: 2rem;
+
     font-weight: 700;
+
     color: var(--color-gray-900, #212121);
+
     margin: 0 0 1rem 0;
+
     line-height: 1.2;
+
 }
+
+
 
 .contact-planner-form__title .highlight {
+
     color: var(--wp--preset--color--secondary);
+
 }
+
+
 
 .contact-planner-form__subtitle {
+
     font-size: 1.125rem;
+
     color: var(--color-gray-600, #757575);
+
     margin: 0;
+
     line-height: 1.5;
+
 }
+
+
 
 @media (max-width: 768px) {
+
     .contact-planner-form__title {
+
         font-size: 1.5rem;
+
     }
 
+
+
     .contact-planner-form__subtitle {
+
         font-size: 1rem;
+
     }
+
 }
+
+
 
 /* ===== FORM GRID ===== */
 
+
+
 .contact-planner-form__form {
+
     width: 100%;
+
 }
+
+
 
 .contact-planner-form__grid {
+
     display: grid;
+
     grid-template-columns: repeat(3, 1fr);
+
     gap: 1.5rem;
+
     margin-bottom: 2rem;
+
 }
 
+
+
 @media (max-width: 768px) {
+
     .contact-planner-form__grid {
+
         grid-template-columns: 1fr;
+
         gap: 1rem;
+
     }
+
 }
+
+
 
 /* ===== FORM FIELDS ===== */
 
+
+
 .contact-planner-form__field label {
+
     display: block;
+
     font-size: 0.875rem;
+
     font-weight: 600;
+
     color: var(--color-gray-800, #424242);
+
     margin-bottom: 0.5rem;
+
 }
+
+
 
 .contact-planner-form__field input[type="text"],
+
 .contact-planner-form__field input[type="email"],
+
 .contact-planner-form__field select {
+
     width: 100%;
+
     padding: 0.75rem 1rem;
+
     border: 1px solid var(--color-gray-300, #E0E0E0);
+
     border-radius: var(--border-radius-sm, 4px);
+
     font-size: 1rem;
+
     color: var(--color-gray-900, #212121);
+
     transition: border-color 0.3s;
+
 }
+
+
 
 .contact-planner-form__field input[type="text"]:focus,
+
 .contact-planner-form__field input[type="email"]:focus,
+
 .contact-planner-form__field select:focus {
+
     outline: none;
+
     border-color: var(--wp--preset--color--secondary);
+
     box-shadow: 0 0 0 3px rgba(231, 140, 133, 0.1);
+
 }
 
+
+
 .contact-planner-form__field input::placeholder {
+
     color: var(--color-gray-500, #9E9E9E);
+
 }
+
+
 
 /* ===== CHECKBOX FIELD ===== */
 
+
+
 .contact-planner-form__field--checkbox {
+
     display: flex;
+
     align-items: center;
+
     grid-column: span 3;
+
 }
+
+
 
 @media (max-width: 768px) {
+
     .contact-planner-form__field--checkbox {
+
         grid-column: span 1;
+
     }
+
 }
+
+
 
 .contact-planner-form__field--checkbox label {
+
     display: flex;
+
     align-items: center;
+
     gap: 0.5rem;
+
     margin: 0;
+
     cursor: pointer;
+
 }
+
+
 
 .contact-planner-form__field--checkbox input[type="checkbox"] {
+
     width: auto;
+
     margin: 0;
+
     cursor: pointer;
+
 }
 
+
+
 .contact-planner-form__field--checkbox span {
+
     font-size: 0.875rem;
+
     font-weight: 400;
+
     color: var(--color-gray-700, #616161);
+
 }
+
+
 
 /* ===== SUBMIT BUTTON ===== */
 
+
+
 .contact-planner-form__submit {
+
     text-align: center;
+
     margin-bottom: 1.5rem;
+
 }
+
+
 
 .contact-planner-form__button {
+
     display: inline-block;
+
     padding: 1rem 3rem;
+
     background: var(--wp--preset--color--secondary);
+
     color: white;
+
     border: none;
+
     border-radius: var(--border-radius-md, 6px);
+
     font-size: 1rem;
+
     font-weight: 700;
+
     letter-spacing: 0.05em;
+
     cursor: pointer;
+
     transition: all 0.3s ease;
-    text-transform: uppercase;
+
+    text-transform: capitalize;
+
 }
+
+
 
 .contact-planner-form__button:hover {
+
     background: var(--color-coral-dark, #D97369);
+
     transform: translateY(-2px);
+
     box-shadow: 0 8px 16px rgba(231, 140, 133, 0.3);
+
 }
+
+
 
 .contact-planner-form__button:active {
+
     transform: translateY(0);
+
 }
 
+
+
 .contact-planner-form__button:disabled {
+
     background: var(--color-gray-400, #BDBDBD);
+
     cursor: not-allowed;
+
     transform: none;
+
 }
+
+
 
 /* ===== MESSAGES ===== */
 
+
+
 .contact-planner-form__messages {
+
     text-align: center;
+
 }
+
+
 
 .contact-planner-form__success,
+
 .contact-planner-form__error {
+
     display: flex;
+
     align-items: center;
+
     justify-content: center;
+
     gap: 0.75rem;
+
     padding: 1rem;
+
     border-radius: var(--border-radius-md, 6px);
+
     font-size: 0.9375rem;
+
     font-weight: 500;
+
 }
+
+
 
 .contact-planner-form__success {
+
     background: var(--color-success-light, #E8F5E9);
+
     color: var(--color-success, #4CAF50);
+
     border: 1px solid var(--color-success, #4CAF50);
+
 }
 
+
+
 .contact-planner-form__error {
+
     background: var(--color-error-light, #FFEBEE);
+
     color: var(--color-error, #F44336);
+
     border: 1px solid var(--color-error, #F44336);
+
 }
+
+
 
 /* ===== LOADING STATE ===== */
 
+
+
 .contact-planner-form.is-loading .contact-planner-form__button {
+
     position: relative;
+
     color: transparent;
+
 }
+
+
 
 .contact-planner-form.is-loading .contact-planner-form__button::after {
+
     content: '';
+
     position: absolute;
+
     top: 50%;
+
     left: 50%;
+
     transform: translate(-50%, -50%);
+
     width: 20px;
+
     height: 20px;
+
     border: 3px solid white;
+
     border-top-color: transparent;
+
     border-radius: 50%;
+
     animation: spin 0.8s linear infinite;
+
 }
 
+
+
 @keyframes spin {
+
     to { transform: translate(-50%, -50%) rotate(360deg); }
+
 }
+
+
 
 /* ===== RESPONSIVE ===== */
 
+
+
 @media (max-width: 1024px) {
+
     .contact-planner-form {
+
         min-height: 500px;
+
     }
+
 }
+
+
 
 @media (max-width: 768px) {
+
     .contact-planner-form {
+
         min-height: auto;
+
         padding: 2rem 1rem;
+
     }
 
+
+
     .contact-planner-form__button {
+
         width: 100%;
+
         padding: 1rem 2rem;
+
     }
+
 }
+
+
 
 /* ===== PRINT STYLES ===== */
 
+
+
 @media print {
+
     .contact-planner-form {
+
         display: none;
+
     }
+
 }
+

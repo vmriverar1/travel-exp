@@ -1,3 +1,7 @@
+/* ----------------------------- */
+/* TUS ESTILOS EXISTENTES        */
+/* ----------------------------- */
+
 .wp-block-group__title {
   position: relative;
   padding-bottom: 24px;
@@ -8,13 +12,13 @@
 .wp-block-group__title::before {
   content: "";
   position: absolute;
-  bottom: 0; /* justo debajo del texto */
-  left: 50%; /* centramos desde el medio */
-  transform: translateX(-50%); /* corregimos el centrado */
-  width: 15%; /* ancho de la línea (30 % del texto) */
-  height: 4px; /* grosor */
-  background-color: #E30614; /* color de la línea */
-  border-radius: 2px; /* opcional, esquinas suaves */
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 15%;
+  height: 4px;
+  background-color: #E30614;
+  border-radius: 2px;
 }
 
 .wp-block-group__title__left {
@@ -27,10 +31,91 @@
 .wp-block-group__title__left::before {
   content: "";
   position: absolute;
-  bottom: 0; /* justo debajo del texto */
-  left: 0; /* centramos desde el medio */
-  width: 8%; /* ancho de la línea (30 % del texto) */
-  height: 4px; /* grosor */
-  background-color: #E30614; /* color de la línea */
-  border-radius: 2px; /* opcional, esquinas suaves */
+  bottom: 0;
+  left: 0;
+  width: 8%;
+  height: 4px;
+  background-color: #E30614;
+  border-radius: 2px;
+}
+
+/* ----------------------------- */
+/* NUEVA PARTE: LOS 2 SVG COMO DATA URI */
+/* ----------------------------- */
+
+.title_content_hero {
+  position: relative;
+}
+
+/* SVG 1 – Arriba Izquierda */
+.title_content_hero::before {
+  content: "";
+  position: absolute;
+  top: 0px;
+  left: 5px;
+  width: 26px;
+  height: 19px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='26' height='19' viewBox='0 0 26 19'><path d='M4.608 8.768L3.648 9.088C4.032 8.74667 4.43733 8.49067 4.864 8.32C5.33333 8.14933 5.86667 8.064 6.464 8.064C7.82933 8.064 8.96 8.512 9.856 9.408C10.752 10.304 11.2 11.5413 11.2 13.12C11.2 14.6987 10.7093 16 9.728 17.024C8.74667 18.048 7.44533 18.56 5.824 18.56C4.07467 18.56 2.66667 17.92 1.6 16.64C0.533332 15.3173 0 13.6107 0 11.52C0 8.36267 0.896 5.73867 2.688 3.648C4.52267 1.51466 6.912 0.298665 9.856 0V3.52C8.27733 3.81866 6.99733 4.39466 6.016 5.248C5.07733 6.10133 4.608 7.27467 4.608 8.768Z' fill='%2317565C'/><path d='M18.688 8.768L17.728 9.088C18.112 8.74667 18.5173 8.49067 18.944 8.32C19.4133 8.14933 19.9467 8.064 20.544 8.064C21.9093 8.064 23.04 8.512 23.936 9.408C24.832 10.304 25.28 11.5413 25.28 13.12C25.28 14.6987 24.7893 16 23.808 17.024C22.8267 18.048 21.5253 18.56 19.904 18.56C18.1547 18.56 16.7467 17.92 15.68 16.64C14.6133 15.3173 14.08 13.6107 14.08 11.52C14.08 8.36267 14.976 5.73867 16.768 3.648C18.6027 1.51466 20.992 0.298665 23.936 0V3.52C22.3573 3.81866 21.0773 4.39466 20.096 5.248C19.1573 6.10133 18.688 7.27467 18.688 8.768Z' fill='%2317565C'/></svg>");
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+@media(max-width:768px) {
+  .title_content_hero::before {
+    left: -5px;
+  }
+}
+
+/* SVG 2 – Abajo Derecha */
+.title_content_hero::after {
+  content: "";
+  position: absolute;
+  bottom: 4px;
+  right: 25px;
+  width: 26px;
+  height: 19px;
+  background-image: url("data:image/svg+xml;utf8,<svg width='26' height='19' viewBox='0 0 26 19' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M20.6723 9.79206L21.6323 9.47206C21.2483 9.81339 20.8429 10.0694 20.4163 10.2401C19.9469 10.4107 19.4136 10.4961 18.8163 10.4961C17.4509 10.4961 16.3203 10.0481 15.4243 9.15206C14.5283 8.25606 14.0803 7.01873 14.0803 5.44006C14.0803 3.86139 14.5709 2.56006 15.5523 1.53606C16.5336 0.51206 17.8349 5.72205e-05 19.4563 5.72205e-05C21.2056 5.72205e-05 22.6136 0.640059 23.6803 1.92006C24.7469 3.24273 25.2803 4.94939 25.2803 7.04006C25.2803 10.1974 24.3843 12.8214 22.5923 14.9121C20.7576 17.0454 18.3683 18.2614 15.4243 18.5601V15.0401C17.0029 14.7414 18.2829 14.1654 19.2643 13.3121C20.2029 12.4587 20.6723 11.2854 20.6723 9.79206ZM6.59227 9.79206L7.55227 9.47206C7.16827 9.81339 6.76294 10.0694 6.33627 10.2401C5.86694 10.4107 5.33361 10.4961 4.73627 10.4961C3.37094 10.4961 2.24027 10.0481 1.34427 9.15206C0.448273 8.25606 0.000274658 7.01873 0.000274658 5.44006C0.000274658 3.86139 0.490942 2.56006 1.47227 1.53606C2.45361 0.51206 3.75494 5.72205e-05 5.37627 5.72205e-05C7.12561 5.72205e-05 8.53361 0.640059 9.60027 1.92006C10.6669 3.24273 11.2003 4.94939 11.2003 7.04006C11.2003 10.1974 10.3043 12.8214 8.51228 14.9121C6.67761 17.0454 4.28827 18.2614 1.34427 18.5601V15.0401C2.92294 14.7414 4.20294 14.1654 5.18427 13.3121C6.12294 12.4587 6.59227 11.2854 6.59227 9.79206Z' fill='%2317565C'/></svg>");
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+@media(max-width: 768px) {
+  .title_content_hero::after {
+    right: -15px;
+  }
+}
+
+.button-wp-service a {
+  width: 300px !important;
+  height: 45px !important;
+  padding: 0 !important;
+  margin-top: 45px !important;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media(max-width: 768px) {
+  .button-wp-service a {
+    width: 80%;
+    margin-top: 15px !important;
+  }
+
+  .title-keep-home {
+    text-align: center;
+  }
+}
+
+#vtc-reviews .vtc-tabs button.active {
+  background-color: #FFFFFF !important;
+}
+
+#vtc-reviews .vtc-reviews-header {
+  background-color: #FFFFFF !important;
+}
+
+#vtc-reviews .vtc-card {
+  background-color: #FFFFFF !important;
 }

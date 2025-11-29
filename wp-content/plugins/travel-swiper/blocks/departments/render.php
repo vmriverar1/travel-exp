@@ -10,7 +10,6 @@ if (empty($departments)) return;
         <div class="swiper-slide vtc-department__slide"
              data-department="<?php echo esc_attr(strtolower($department['department_name'])); ?>">
           <?php echo wp_get_attachment_image($department['department_image'], 'large', false, ['loading' => 'lazy']); ?>
-          <h3 class="vtc-department__title"><?php echo esc_html($department['department_name']); ?></h3>
         </div>
       <?php endforeach; ?>
     </div>

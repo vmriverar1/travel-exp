@@ -10,15 +10,15 @@
 }
 
 .social-media-bar__label {
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-medium);
-    color: var(--color-footer-text-muted);
+    font-size: var(--wp--preset--font-size--small);
+    font-weight: 500;
+    color: #bfcfd3;
 }
 
 .social-media-bar__list {
     display: flex;
     align-items: center;
-    gap: var(--spacing-sm);
+    gap: var(--wp--preset--spacing--50);
     margin: 0;
     padding: 0;
     list-style: none;
@@ -28,7 +28,7 @@
 .social-media-bar__logos {
     display: flex;
     align-items: center;
-    gap: var(--spacing-sm);
+    gap: var(--wp--preset--spacing--50);
     margin: 0;
     padding: 0;
     list-style: none;
@@ -60,7 +60,7 @@
 @media (max-width: 767px) {
     .social-media-bar__list,
     .social-media-bar__logos {
-        gap: var(--spacing-xs);
+        gap: var(--wp--preset--spacing--30);
     }
 
     .social-media-bar__logo-image {

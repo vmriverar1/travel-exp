@@ -1,7 +1,6 @@
 /* === BLOQUE PRINCIPAL === */
 .travel-destinations-block {
   width: 100%;
-  padding: 3rem 0;
 }
 
 /* === GRID === */
@@ -82,7 +81,7 @@
 .travel-destinations__heading {
   font-size: 28px;
   font-weight: 700;
-  margin-bottom: 1rem;
+  margin: 0;
   color: #17565C;
   line-height: 36px;
   font-family: var(--wp--preset--font-family--satoshi);
@@ -119,13 +118,8 @@
     width: 85%;
   }
 
-  .travel-destination-item {
-    height: var(--card-h, 240px);
-  }
-
   .mobile-only {
     display: block;
-    margin-bottom: 1.5rem;
     text-align: center;
     padding: 0 1rem;
   }
@@ -133,4 +127,59 @@
   .travel-destinations__heading {
     font-size: 1.4rem;
   }
+}
+
+@media(max-width: 768px) {
+    .travel-packages-block .swiper-slide {
+        padding-left: 50px;
+        padding-right: 50px;
+    }
+
+    .travel-packages-block .swiper-controls {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .travel-packages-block .swiper-pagination__mobile {
+        display: none !important;
+    }
+
+    .travel-destination-item {
+      height: 420px !important;
+    }
+}
+
+/* Destino el de arriba es paquete */
+
+@media(max-width: 768px) {
+    .travel-destinations__content.mobile-only .swiper-slide {
+        padding-left: 50px;
+        padding-right: 50px;
+        border-radius: 16px;
+        height: 420px !important;
+        overflow: hidden;
+    }
+
+    .travel-destinations__content.mobile-only .swiper-controls {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .travel-destinations__content.mobile-only .swiper-pagination__mobile {
+        display: none !important;
+    }
 }

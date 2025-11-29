@@ -1,37 +1,37 @@
-/* --- Placeholder estático (mantiene altura antes del Swiper) --- */
-.acf-gbr-pla .pla-placeholder {
-  position: relative;
-  width: 100%;
-  height: 220px; /* altura estable */
-  background: transparent;
-  overflow: hidden;
-}
-
-.acf-gbr-pla .pla-skeleton {
-  width: 100%;
-  height: 100%;
-  background: #f1f1f1;
-  border-radius: 8px;
-  animation: plaPulse 1.4s ease-in-out infinite;
-}
-
-/* Animación ligera para simular carga */
-@keyframes plaPulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.6; }
-  100% { opacity: 1; }
-}
-
-/* Swiper ocupa el mismo espacio */
-.acf-gbr-pla .swiper {
-  width: 100%;
-  height: 220px;
-  overflow: hidden;
-}
-
-/* Slides ajustados sin cambio de alto */
-.acf-gbr-pla .swiper-slide {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+/* --- Placeholder estático (mantiene altura antes del Swiper) --- */
+.acf-gbr-pla .pla-placeholder {
+  position: relative;
+  width: 100%;
+  height: 220px; /* altura estable */
+  background: transparent;
+  overflow: hidden;
+}
+
+.acf-gbr-pla .pla-skeleton {
+  width: 100%;
+  height: 100%;
+  background: #f1f1f1;
+  border-radius: 8px;
+  animation: plaPulse 1.4s ease-in-out infinite;
+}
+
+/* Animación ligera para simular carga */
+@keyframes plaPulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+/* Swiper ocupa el mismo espacio */
+.acf-gbr-pla .swiper {
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+}
+
+/* Slides ajustados sin cambio de alto */
+.acf-gbr-pla .swiper-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -1,18 +1,19 @@
-<style>
-    /* Adjust for WordPress admin bar when logged in */
-    body.admin-bar .header {
-        top: 32px;
-    }
-    @media screen and (max-width: 782px) {
-        body.admin-bar .header {
-            top: 46px;
-        }
-    }
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const header = document.getElementById('header');
 
-    .nav-main__list a::after {
-        background-color: #ffffff !important;
-    }
-</style>
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+
+            if (scrollY > 0) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    });
+</script>
+
 <header class="header" id="header">
     <div class="header__container">
         <!-- Logo -->
@@ -26,7 +27,7 @@
                 <div class="header__nav">
                     <?php get_template_part('parts/header/navigation'); ?>
                 </div>
-        
+
                 <!-- Right Actions -->
                 <div class="header__actions">
                     <!-- Phone -->
@@ -37,7 +38,7 @@
                     <a href="tel:<?php echo esc_attr($phone_link); ?>" class="header__phone">
                         <span class="header__phone-text"><?php echo esc_html($phone); ?></span>
                     </a>
-        
+
                     <!-- Language Selector -->
                     <?php $language = get_header_option('header_language', 'EN'); ?>
                     <div class="header__lang">
@@ -48,7 +49,7 @@
                             </svg>
                         </button>
                     </div>
-        
+
                     <!-- Favorites -->
                     <?php $favorites_url = get_header_option('header_favorites_url', home_url('/favorites')); ?>
                     <a href="<?php echo esc_url($favorites_url); ?>" class="header__fav" aria-label="View favorites">
@@ -57,18 +58,29 @@
                             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
                         </svg>
                     </a>
-        
+
+                    <!-- ícono Lupa de buscador -->
+                     <?php if ( ! is_front_page() ) : ?>
+                        <a href="#" class="header__search" aria-label="Search">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="23" y1="23" x2="16.65" y2="16.65"></line>
+                            </svg>
+                        </a>
+                    <?php endif; ?>
+
                     <!-- Hamburger Menu -->
                     <div class="header__hamburger">
                         <?php get_template_part('parts/atoms/button-hamburger'); ?>
                     </div>
                 </div>
             </div>
-        
+
             <!-- Secondary Navigation (Main Pages) -->
             <?php if (has_nav_menu('secondary')): ?>
-            <div class="header__secondary-nav">
-                <?php
+                <div class="header__secondary-nav">
+                    <?php
                     wp_nav_menu([
                         'theme_location' => 'secondary',
                         'container'      => false,
@@ -77,8 +89,8 @@
                         'depth'          => 3, // Permite hasta 3 niveles
                         'walker'         => new Walker_Nav_Menu(), // Usa el walker por defecto
                     ]);
-                ?>
-            </div>
+                    ?>
+                </div>
             <?php endif; ?>
         </div>
     </div>

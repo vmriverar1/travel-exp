@@ -6,14 +6,14 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    color: var(--color-footer-text);
-    transition: all var(--transition-fast);
+    color: var(--wp--preset--color--base);
+    transition: all 0.2s ease;
     text-decoration: none;
 }
 
 .social-icon:hover,
 .social-icon:focus {
-    color: var(--color-footer-accent);
+    color: var(--wp--preset--color--secondary);
     transform: translateY(-2px);
 }
 
@@ -71,7 +71,7 @@
 /* Mobile: Optimizar touch targets (mínimo 40px) */
 @media (max-width: 767px) {
     .social-icon {
-        padding: var(--spacing-xs); /* 8px padding = 24px icon + 16px padding = 40px total */
+        padding: var(--wp--preset--spacing--30); /* 8px padding = 24px icon + 16px padding = 40px total */
         min-width: 40px;
         min-height: 40px;
     }

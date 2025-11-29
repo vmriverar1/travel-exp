@@ -294,7 +294,7 @@
     word-break: normal !important;
        } 
       .wp-block-post-author__byline {
-    font-size: var(--font-size-base) !important;
+    font-size: var(--wp--preset--font-size--regular) !important;
       }
     .wp-block-post-author__content {
 gap: 5px;

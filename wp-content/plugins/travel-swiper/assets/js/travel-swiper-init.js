@@ -1,46 +1,59 @@
 (function () {
   function initSwiper(container) {
-    // Evita reinicializar si ya existe
     if (container._tsb && container._tsb.swiper) return;
 
-    // Detectar número de filas desde la clase
+    // número de filas
     let rows = 1;
     if (container.classList.contains('swiper-rows-2')) rows = 2;
     if (container.classList.contains('swiper-rows-3')) rows = 3;
 
+    // slidesPerView dinámico (desde ACF o 1 por defecto)
+    const slidesMobile = parseFloat(container.dataset.slidesMobile || 1);
+
     const el = container.querySelector('.tsb-swiper');
     if (!el) return;
 
+    // Buscar el paginador tanto dentro como fuera del swiper
+    const paginationEl =
+      el.querySelector('.swiper-pagination__mobile') ||
+      container.querySelector('.swiper-pagination__mobile');
+
+    // Buscar flechas dentro o fuera
+    const nextEl =
+      el.querySelector('.swiper-button-next') ||
+      container.querySelector('.swiper-button-next');
+
+    const prevEl =
+      el.querySelector('.swiper-button-prev') ||
+      container.querySelector('.swiper-button-prev');
+
+    // Inicializar Swiper
     container._tsb = {
       swiper: new Swiper(el, {
-        slidesPerView: 1, // 1 columna limpia en móvil
+        slidesPerView: slidesMobile,
         spaceBetween: 16,
-
-        // Claves para que los dots siempre aparezcan
-        loop: false,               // fuerza el bucle, siempre hay “páginas”
-        watchOverflow: false,     // no ocultar paginación aunque haya pocos slides
-        allowTouchMove: true,     // permite deslizar siempre
+        loop: false,
+        watchOverflow: false,
+        allowTouchMove: true,
         speed: 500,
-
-        // activa grid si hay más de una fila
         grid: { rows, fill: 'row' },
 
         pagination: {
-          el: el.querySelector('.swiper-pagination__mobile'), // dentro del mismo swiper
+          el: paginationEl,
           clickable: true,
         },
 
         navigation: {
-          nextEl: container.querySelector('.swiper-button-next'),
-          prevEl: container.querySelector('.swiper-button-prev'),
+          nextEl: nextEl,
+          prevEl: prevEl,
         },
 
         breakpoints: {
           1024: {
             slidesPerView: 'auto',
             allowTouchMove: false,
-            loop: false,       // desactiva bucle en desktop
-            grid: undefined,   // desactiva grid en desktop
+            loop: false,
+            grid: undefined,
           },
         },
       }),

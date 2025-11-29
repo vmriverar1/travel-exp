@@ -1,135 +1,135 @@
-/* --- Layout base --- */
-.acf-gbr-pla {
-  position: relative;
-  overflow: hidden;
-}
-
-/* Mantiene altura predecible mientras Swiper carga */
-.acf-gbr-pla .swiper {
-  position: relative;
-  width: 100%;
-  min-height: 240px;
-  box-sizing: border-box;
-  transition: opacity 0.3s ease;
-}
-
-/* Oculta Swiper hasta que se inicie */
-.acf-gbr-pla.loading .swiper {
-  opacity: 0;
-}
-
-/* --- Slides --- */
-.acf-gbr-pla .swiper-slide {
-  display: flex;
-  justify-content: center;
-  align-items: stretch;
-  transition: transform 0.4s ease;
-}
-
-/* --- Tarjetas --- */
-.acf-gbr-pla .pla-card {
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 1px 3px rgba(0,0,0,.08);
-  padding: 16px;
-  flex: 1;
-}
-
-/* --- Flechas --- */
-.acf-gbr-pla .swiper-button-prev,
-.acf-gbr-pla .swiper-button-next {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10;
-  background-color: #E78C85;
-  border-radius: 50%;
-  width: 26px;
-  height: 26px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid #fff;
-  transition: all .25s ease;
-}
-.acf-gbr-pla .swiper-button-prev:hover,
-.acf-gbr-pla .swiper-button-next:hover {
-  background-color: #d67d77;
-  box-shadow: 0 2px 6px rgba(0,0,0,.2);
-}
-.acf-gbr-pla .swiper-button-prev svg,
-.acf-gbr-pla .swiper-button-next svg {
-  stroke: #fff;
-  width: 10px;
-  height: 10px;
-}
-.acf-gbr-pla .swiper-button-prev { left: 5px; }
-.acf-gbr-pla .swiper-button-next { right: 5px; }
-
-/* --- Dots (paginación) --- */
-.acf-gbr-pla .swiper-pagination {
-  position: absolute;
-  bottom: 10px;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  gap: 6px;
-}
-.acf-gbr-pla .swiper-pagination-bullet {
-  border: 1.5px solid #202C2E;
-  background: transparent;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  opacity: 1;
-  transition: all .25s ease;
-}
-.acf-gbr-pla .swiper-pagination-bullet-active {
-  background: #E78C85;
-  border-color: #E78C85;
-}
-
-/* --- Skeleton shimmer optimizado --- */
-.acf-gbr-pla.loading .pla-grid {
-  display: grid;
-  gap: 16px;
-  justify-content: center;
-}
-
-@media (min-width: 768px) {
-  .acf-gbr-pla.loading .pla-grid {
-    grid-template-columns: repeat(3, 1fr); /* Solo la fila visible */
-  }
-}
-@media (max-width: 767px) {
-  .acf-gbr-pla.loading .pla-grid {
-    grid-template-columns: repeat(1, 1fr);
-  }
-}
-
-.acf-gbr-pla.loading .pla-card {
-  height: 140px;
-  border-radius: 10px;
-  background: linear-gradient(90deg, #eee 25%, #f5f5f5 50%, #eee 75%);
-  background-size: 400% 100%;
-  animation: shimmer 1.3s infinite;
-  color: transparent;
-}
-
-@keyframes shimmer {
-  0% { background-position: 100% 0; }
-  100% { background-position: -100% 0; }
-}
-
-/* --- Ajustes móviles --- */
-@media (max-width: 767px) {
-  .acf-gbr-pla .swiper-button-prev,
-  .acf-gbr-pla .swiper-button-next {
-    width: 22px;
-    height: 22px;
-  }
-  .acf-gbr-pla .swiper-pagination {
-    bottom: 6px;
-  }
-}
+/* --- Layout base --- */
+.acf-gbr-pla {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Mantiene altura predecible mientras Swiper carga */
+.acf-gbr-pla .swiper {
+  position: relative;
+  width: 100%;
+  min-height: 240px;
+  box-sizing: border-box;
+  transition: opacity 0.3s ease;
+}
+
+/* Oculta Swiper hasta que se inicie */
+.acf-gbr-pla.loading .swiper {
+  opacity: 0;
+}
+
+/* --- Slides --- */
+.acf-gbr-pla .swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  transition: transform 0.4s ease;
+}
+
+/* --- Tarjetas --- */
+.acf-gbr-pla .pla-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.08);
+  padding: 16px;
+  flex: 1;
+}
+
+/* --- Flechas --- */
+.acf-gbr-pla .swiper-button-prev,
+.acf-gbr-pla .swiper-button-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background-color: #E78C85;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #fff;
+  transition: all .25s ease;
+}
+.acf-gbr-pla .swiper-button-prev:hover,
+.acf-gbr-pla .swiper-button-next:hover {
+  background-color: #d67d77;
+  box-shadow: 0 2px 6px rgba(0,0,0,.2);
+}
+.acf-gbr-pla .swiper-button-prev svg,
+.acf-gbr-pla .swiper-button-next svg {
+  stroke: #fff;
+  width: 10px;
+  height: 10px;
+}
+.acf-gbr-pla .swiper-button-prev { left: 5px; }
+.acf-gbr-pla .swiper-button-next { right: 5px; }
+
+/* --- Dots (paginación) --- */
+.acf-gbr-pla .swiper-pagination {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+.acf-gbr-pla .swiper-pagination-bullet {
+  border: 1.5px solid #202C2E;
+  background: transparent;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  opacity: 1;
+  transition: all .25s ease;
+}
+.acf-gbr-pla .swiper-pagination-bullet-active {
+  background: #E78C85;
+  border-color: #E78C85;
+}
+
+/* --- Skeleton shimmer optimizado --- */
+.acf-gbr-pla.loading .pla-grid {
+  display: grid;
+  gap: 16px;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .acf-gbr-pla.loading .pla-grid {
+    grid-template-columns: repeat(3, 1fr); /* Solo la fila visible */
+  }
+}
+@media (max-width: 767px) {
+  .acf-gbr-pla.loading .pla-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+.acf-gbr-pla.loading .pla-card {
+  height: 140px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #eee 25%, #f5f5f5 50%, #eee 75%);
+  background-size: 400% 100%;
+  animation: shimmer 1.3s infinite;
+  color: transparent;
+}
+
+@keyframes shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+/* --- Ajustes móviles --- */
+@media (max-width: 767px) {
+  .acf-gbr-pla .swiper-button-prev,
+  .acf-gbr-pla .swiper-button-next {
+    width: 22px;
+    height: 22px;
+  }
+  .acf-gbr-pla .swiper-pagination {
+    bottom: 6px;
+  }
+}

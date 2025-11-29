@@ -4,16 +4,16 @@
 
 .contact-info__title {
     margin-bottom: 4px;
-    font-size: var(--font-size-base);
+    font-size: var(--wp--preset--font-size--regular);
     font-weight: 700;
-    color: var(--color-footer-text);
+    color: var(--wp--preset--color--base);
 }
 
 .contact-info__subtitle {
     margin-bottom: 4px;
-    font-size: var(--font-size-base);
-    font-weight: var(--font-weight-semibold);
-    color: var(--color-footer-text);
+    font-size: var(--wp--preset--font-size--regular);
+    font-weight: 600;
+    color: var(--wp--preset--color--base);
 }
 
 .contact-info__block {
@@ -22,14 +22,14 @@
 
 .contact-info__item {
     margin-bottom: 4px;
-    font-size: var(--font-size-sm);
-    color: var(--color-footer-text-muted);
+    font-size: var(--wp--preset--font-size--small);
+    color: #bfcfd3;
 }
 
 .contact-info__link {
-    color: var(--color-footer-text);
+    color: var(--wp--preset--color--base);
     font-weight: 700;
-    transition: color var(--transition-fast);
+    transition: color 0.2s ease;
 }
 
 .contact-info__link--email {
@@ -38,13 +38,13 @@
 
 .contact-info__link:hover,
 .contact-info__link:focus {
-    color: var(--color-footer-accent);
+    color: var(--wp--preset--color--secondary);
 }
 
 .contact-info__schedule {
-    margin: 0 0 var(--spacing-sm);
-    font-size: var(--font-size-sm);
-    color: var(--color-footer-text-muted);
+    margin: 0 0 var(--wp--preset--spacing--50);
+    font-size: var(--wp--preset--font-size--small);
+    color: #bfcfd3;
 }
 
 .contact-info__closed {

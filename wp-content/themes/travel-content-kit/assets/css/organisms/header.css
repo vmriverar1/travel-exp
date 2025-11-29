@@ -3,17 +3,30 @@
  */
 
 /* Header Container - Unified gradient shadow for both primary and secondary nav */
+
+/* Adjust for WordPress admin bar when logged in */
+body.admin-bar .header {
+    top: 32px;
+}
+
+@media screen and (max-width: 782px) {
+    body.admin-bar .header {
+        top: 46px;
+    }
+}
+
 .header {
     position: absolute;
+    top: 0;
     width: 100%;
     background: linear-gradient(180deg, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0) 100%);
     padding-top: 20px;
     padding-bottom: 20px;
-    z-index: var(--z-header);
+    z-index: 1000;
 }
 
 .header__container {
-    max-width: var(--max-width);
+    max-width: var(--wp--style--global--content-size);
     margin: 0 auto;
     display: flex;
     justify-content: center;
@@ -96,10 +109,13 @@
     outline: none;
 }
 
+.header__search {
+    display: flex;
+}
 
 @media (min-width: 1024px) {
     .header__container {
-        padding: 0 var(--spacing-lg);
+        padding: 0 var(--wp--preset--spacing--80);
     }
 
     .header__hamburger {
@@ -110,7 +126,7 @@
 
 @media (max-width: 1023px) {
     .header__container {
-        padding: 0 var(--spacing-sm);
+        padding: 0 var(--wp--preset--spacing--50);
     }
 
     .header__fav {
@@ -120,6 +136,7 @@
     .header {
         padding-top: 10px;
         padding-bottom: 10px;
+        position: fixed;
     }
 
     .header__phone,
@@ -129,5 +146,23 @@
 
     .header__actions {
         gap: 10px;
+    }
+
+    .header.scrolled {
+        background: var(--wp--preset--color--base);
+    }
+
+    .header.scrolled .header__phone,
+    .header.scrolled .lang-selector,
+    .header.scrolled .btn-hamburger {
+        color: var(--wp--preset--color--contrast);
+    }
+
+    .header.scrolled .logo__image {
+        display: none;
+    }
+
+    .header.scrolled .logo__image.color {
+        display: block;
     }
 }

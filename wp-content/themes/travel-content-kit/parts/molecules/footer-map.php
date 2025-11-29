@@ -58,21 +58,21 @@ $map_image = get_field('footer_map_image', 'option');
         <!-- Marcadores de destinos -->
         <g class="footer-map__markers">
             <!-- Cusco/Machu Picchu (principal) -->
-            <circle cx="220" cy="200" r="4" fill="var(--color-footer-accent)">
+            <circle cx="220" cy="200" r="4" fill="var(--wp--preset--color--secondary)">
                 <animate attributeName="r" values="4;5;4" dur="2s" repeatCount="indefinite"/>
             </circle>
 
             <!-- Nueva York -->
-            <circle cx="145" cy="110" r="3" fill="var(--color-footer-accent)" opacity="0.8"/>
+            <circle cx="145" cy="110" r="3" fill="var(--wp--preset--color--secondary)" opacity="0.8"/>
 
             <!-- Londres -->
-            <circle cx="395" cy="115" r="3" fill="var(--color-footer-accent)" opacity="0.8"/>
+            <circle cx="395" cy="115" r="3" fill="var(--wp--preset--color--secondary)" opacity="0.8"/>
 
             <!-- Tokio -->
-            <circle cx="580" cy="145" r="3" fill="var(--color-footer-accent)" opacity="0.8"/>
+            <circle cx="580" cy="145" r="3" fill="var(--wp--preset--color--secondary)" opacity="0.8"/>
 
             <!-- Sydney -->
-            <circle cx="620" cy="240" r="3" fill="var(--color-footer-accent)" opacity="0.8"/>
+            <circle cx="620" cy="240" r="3" fill="var(--wp--preset--color--secondary)" opacity="0.8"/>
         </g>
     </svg>
 </div>

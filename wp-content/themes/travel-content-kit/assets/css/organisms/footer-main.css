@@ -2,16 +2,20 @@
  * Organism: Footer Main
  */
 
+footer.wp-block-template-part {
+    margin-top: 0;
+}
+
 .footer-main {
     background-color: #154D52;
-    color: var(--color-footer-text);
-    padding: var(--spacing-xl) 0 0;
+    color: var(--wp--preset--color--base);
+    padding: var(--wp--preset--spacing--90) 0 0;
 }
 
 .footer-main__container {
-    max-width: var(--container-max-width);
+    max-width: var(--wp--style--global--content-size);
     margin: 0 auto;
-    padding: 0 var(--spacing-md);
+    padding: 0 var(--wp--preset--spacing--60);
 }
 
 .footer-main__top {

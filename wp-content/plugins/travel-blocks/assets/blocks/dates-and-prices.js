@@ -45,6 +45,8 @@
             initMonthNav(block, bookingData);
             initMonthSelect(block, bookingData);
             initBookingButtons(block);
+            initCalendarDays(block);
+            initTourSelector(block, bookingData);
 
             // Show initial month
             updateVisibleDates(block, bookingData.current_year, bookingData.current_month);
@@ -301,9 +303,45 @@
     }
 
     /**
-     * Update visible dates based on year/month
+     * Update visible dates based on year/month and tour ID
      */
-    function updateVisibleDates(block, year, month) {
+    function updateVisibleDates(block, year, month, tourId = null) {
+        // Get current tour ID from booking data if not provided
+        if (!tourId) {
+            const dataScript = block.querySelector('.booking-data');
+            if (dataScript) {
+                try {
+                    const bookingData = JSON.parse(dataScript.textContent);
+                    tourId = bookingData.package_id;
+                } catch (err) {
+                    console.warn('Could not get tour ID from booking data');
+                }
+            }
+        }
+
+        // Handle calendar view (.calendar-month)
+        const calendars = block.querySelectorAll('.calendar-month');
+
+        calendars.forEach(calendar => {
+            const calendarYear = calendar.dataset.year;
+            const calendarMonth = calendar.dataset.month;
+            const calendarTourId = calendar.dataset.tourId;
+
+            // Show calendar if year, month AND tour ID match
+            const shouldShow = calendarYear === year &&
+                             calendarMonth === month &&
+                             (!tourId || calendarTourId == tourId);
+
+            if (shouldShow) {
+                calendar.classList.add('calendar-month--visible');
+                calendar.style.display = 'block';
+            } else {
+                calendar.classList.remove('calendar-month--visible');
+                calendar.style.display = 'none';
+            }
+        });
+
+        // Handle old trip-card view (deprecated, for backwards compatibility)
         const allCards = block.querySelectorAll('.trip-card');
 
         allCards.forEach(card => {
@@ -329,6 +367,200 @@
             const monthName = monthNames[month] || month;
             monthLabel.textContent = `${monthName} ${year}`;
         }
+    }
+
+    /**
+     * Initialize calendar day buttons
+     */
+    function initCalendarDays(block) {
+        // Get package ID from booking data
+        const dataScript = block.querySelector('.booking-data');
+        let packageId = null;
+        if (dataScript) {
+            try {
+                const bookingData = JSON.parse(dataScript.textContent);
+                packageId = bookingData.package_id || null;
+            } catch (err) {
+                console.warn('Could not parse booking data for package ID');
+            }
+        }
+
+        // Handle calendar day status buttons
+        const statusButtons = block.querySelectorAll('.day .status');
+
+        statusButtons.forEach(button => {
+            // Skip if already has listener
+            if (button.dataset.listenerAdded === 'true') {
+                return;
+            }
+            button.dataset.listenerAdded = 'true';
+
+            button.addEventListener('click', function(e) {
+                const day = this.closest('.day');
+                if (!day) return;
+
+                const departureDate = day.dataset.date;
+                if (!departureDate) return;
+
+                // Determine action based on status class
+                let action = 'default';
+                if (this.classList.contains('status--callus')) {
+                    action = 'scroll_to_anchor';
+                } else if (this.classList.contains('status--closed')) {
+                    // Don't do anything for closed dates
+                    return;
+                }
+
+                // Handle scroll to anchor action
+                if (action === 'scroll_to_anchor') {
+                    e.preventDefault();
+                    // Get anchor from data attribute or use default
+                    const anchor = day.dataset.anchor || '#booking-form';
+                    const targetElement = document.querySelector(anchor);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                    return;
+                }
+
+                // Default booking action
+                // Store selected dates in sessionStorage
+                try {
+                    sessionStorage.setItem('selectedDepartureDate', departureDate);
+                } catch (err) {
+                    console.warn('Could not store date in sessionStorage', err);
+                }
+
+                // Dispatch custom event for external handlers
+                const event = new CustomEvent('travelBlocksDateSelected', {
+                    detail: {
+                        departureDate: departureDate,
+                        packageId: packageId,
+                        formattedDeparture: formatDate(departureDate),
+                    },
+                    bubbles: true,
+                });
+                document.dispatchEvent(event);
+
+                console.log('Calendar date selected:', {
+                    departure: departureDate,
+                    packageId: packageId
+                });
+            });
+        });
+    }
+
+    /**
+     * Initialize tour selector (radio buttons for multiple tours)
+     */
+    function initTourSelector(block, bookingData) {
+        const tours = bookingData.tours || [];
+
+        // If no tours or only one tour, nothing to do
+        if (tours.length <= 1) {
+            return;
+        }
+
+        // Get block ID and search for radio buttons globally (they're outside the block container)
+        const blockId = block.id;
+        const radioButtons = document.querySelectorAll(`input[type="radio"][name="${blockId}-trail"]`);
+
+        radioButtons.forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (!this.checked) return;
+
+                const tourIndex = parseInt(this.dataset.tourIndex);
+                const selectedTour = tours[tourIndex];
+
+                if (!selectedTour) {
+                    console.warn('Tour not found for index:', tourIndex);
+                    return;
+                }
+
+                // Update booking data with selected tour
+                const newBookingData = {
+                    ...bookingData,
+                    grouped_dates: selectedTour.grouped_dates,
+                    package_id: selectedTour.tour_id,
+                };
+
+                // Extract years from new tour data
+                const years = Object.keys(selectedTour.grouped_dates).sort();
+                const firstYear = years[0] || new Date().getFullYear().toString();
+                const months = Object.keys(selectedTour.grouped_dates[firstYear] || {}).sort();
+                const firstMonth = months[0] || '01';
+
+                // Update current year/month
+                block.dataset.currentYear = firstYear;
+                block.dataset.currentMonth = firstMonth;
+                newBookingData.current_year = firstYear;
+                newBookingData.current_month = firstMonth;
+
+                // Update the booking-data script
+                const dataScript = block.querySelector('.booking-data');
+                if (dataScript) {
+                    dataScript.textContent = JSON.stringify(newBookingData);
+                }
+
+                // Re-initialize everything with new data
+                updateYearTabs(block, years, firstYear);
+                updateVisibleDates(block, firstYear, firstMonth, selectedTour.tour_id);
+                updateMonthLabel(block, firstYear, firstMonth, bookingData.month_names);
+                updateMonthNavButtons(block, newBookingData);
+                initCalendarDays(block); // Re-attach event listeners for new days
+            });
+        });
+    }
+
+    /**
+     * Update year tabs with new years
+     */
+    function updateYearTabs(block, years, currentYear) {
+        const yearTabsContainer = block.querySelector('.year-tabs');
+        if (!yearTabsContainer) return;
+
+        // Clear and rebuild year tabs
+        yearTabsContainer.innerHTML = '';
+
+        years.forEach(year => {
+            const button = document.createElement('button');
+            button.className = 'year-tab' + (year === currentYear ? ' is-active' : '');
+            button.dataset.year = year;
+            button.setAttribute('role', 'tab');
+            button.setAttribute('aria-selected', year === currentYear ? 'true' : 'false');
+            button.textContent = year;
+
+            // Add click handler
+            button.addEventListener('click', function() {
+                const yearTabs = yearTabsContainer.querySelectorAll('.year-tab');
+                yearTabs.forEach(t => {
+                    t.classList.remove('is-active');
+                    t.setAttribute('aria-selected', 'false');
+                });
+                this.classList.add('is-active');
+                this.setAttribute('aria-selected', 'true');
+
+                block.dataset.currentYear = year;
+
+                // Get booking data
+                const dataScript = block.querySelector('.booking-data');
+                const bookingData = JSON.parse(dataScript.textContent);
+
+                // Get first month for this year
+                const yearData = bookingData.grouped_dates[year];
+                const firstMonth = yearData ? Object.keys(yearData)[0] : '01';
+                block.dataset.currentMonth = firstMonth;
+
+                updateVisibleDates(block, year, firstMonth);
+                updateMonthLabel(block, year, firstMonth, bookingData.month_names);
+                updateMonthNavButtons(block, bookingData);
+            });
+
+            yearTabsContainer.appendChild(button);
+        });
     }
 
     /**

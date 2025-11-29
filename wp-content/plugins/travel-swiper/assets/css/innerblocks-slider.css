@@ -1,0 +1,17 @@
+/* Desktop: grid normal */
+.tsb-innerblocks-slider {
+    display: grid;
+    gap: 20px;
+}
+
+/* Mobile: Swiper estructura */
+@media (max-width: 768px) {
+    .tsb-innerblocks-slider {
+        display: block !important;
+        overflow: hidden;
+    }
+
+    .tsb-innerblocks-slider .swiper-slide {
+        width: 100%;
+    }
+}
