@@ -105,7 +105,7 @@ class QuickFacts
     private function get_preview_data(): array
     {
         return [
-            ['icon' => 'clock', 'label' => 'Duration', 'value' => '4 days / 3 nights'],
+            ['icon' => 'clock', 'label' => 'Duration', 'value' => '4 Days / 3 Nights'],
             ['icon' => 'users', 'label' => 'Group Size', 'value' => 'Small group (max 12)'],
             ['icon' => 'compass', 'label' => 'Difficulty', 'value' => 'Moderate'],
             ['icon' => 'map-pin', 'label' => 'Starting Point', 'value' => 'Cusco, Peru'],

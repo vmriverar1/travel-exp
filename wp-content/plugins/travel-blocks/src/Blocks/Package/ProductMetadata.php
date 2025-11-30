@@ -136,7 +136,7 @@ class ProductMetadata
             // Metadata line items
             'origin' => 'Cusco',
             'difficulty' => 'Moderate',
-            'duration' => '4 days / 3 nights',
+            'duration' => '4 Days / 3 Nights',
             'type' => 'Small Group',
         ];
     }
@@ -159,7 +159,7 @@ class ProductMetadata
             // Metadata line items
             'origin' => get_post_meta($post_id, 'departure', true) ?: get_post_meta($post_id, 'origin', true) ?: '',
             'difficulty' => get_post_meta($post_id, 'physical_difficulty', true) ?: get_post_meta($post_id, 'difficulty', true) ?: '',
-            'duration' => get_post_meta($post_id, 'duration', true) ?: (get_post_meta($post_id, 'days', true) . ' days'),
+            'duration' => get_post_meta($post_id, 'duration', true) ?: (($days = get_post_meta($post_id, 'days', true)) == 1 ? 'Full Day' : $days . ' Days'),
             'type' => get_post_meta($post_id, 'service_type', true) ?: get_post_meta($post_id, 'type', true) ?: '',
         ];
     }

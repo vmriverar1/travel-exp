@@ -821,6 +821,7 @@
     line-height: 100%;
     letter-spacing: 0;
     margin-top: 8px;
+    margin-bottom: 8px;
 
 }
 
@@ -838,9 +839,9 @@
 
     left: auto !important;
 
-    width: 44px !important;
+    width: 30px !important;
 
-    height: 44px !important;
+    height: 30px !important;
 
     background: rgba(255, 255, 255, 0.9) !important;
 
@@ -896,9 +897,9 @@
 
 .tt-card__favorite svg {
 
-    width: 24px;
+    width: 16px;
 
-    height: 24px;
+    height: auto;
 
     color: #202C2E;
 
@@ -1917,9 +1918,9 @@
 
         z-index: 10;
 
-        width: 44px;
+        width: 45px;
 
-        height: 44px;
+        height: 45px;
 
         border: none;
 
@@ -2213,9 +2214,9 @@
 
         .tt-arrow {
 
-            width: 36px;
+            width: 45px;
 
-            height: 36px;
+            height: 45px;
 
         }
 
@@ -2286,6 +2287,28 @@
         .tt-card__title {
 
             font-size: 16px;
+
+        }
+
+        /* Favorite button smaller on mobile */
+
+        .tt-card__favorite {
+
+            width: 25px !important;
+
+            height: 25px !important;
+
+            top: 10px !important;
+
+            right: 10px !important;
+
+        }
+
+        .tt-card__favorite svg {
+
+            width: 14px;
+
+            height: auto;
 
         }
 

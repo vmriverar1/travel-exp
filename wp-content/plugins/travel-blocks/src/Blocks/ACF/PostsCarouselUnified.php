@@ -615,29 +615,16 @@ abstract class PostsCarouselUnified extends BlockBase
             ],
 
             [
-
                 'key'           => 'field_pc_description_lines',
-
                 'label'         => __('📝 Líneas de Descripción', 'travel-blocks'),
-
                 'name'          => 'description_lines',
-
                 'type'          => 'number',
-
-                'instructions'  => __('Número de líneas a mostrar en la descripción. Dejar vacío para comportamiento normal (sin límite).', 'travel-blocks'),
-
+                'instructions'  => __('Número de líneas a mostrar en la descripción (por defecto 3).', 'travel-blocks'),
                 'required'      => 0,
-
-                'default_value' => '',
-
+                'default_value' => 3,
                 'min'           => 1,
-
                 'max'           => 10,
-
                 'step'          => 1,
-
-                'placeholder'   => 'Sin límite',
-
             ],
 
             [
@@ -1682,7 +1669,7 @@ abstract class PostsCarouselUnified extends BlockBase
 
             'card_style'            => get_field('card_style') ?: 'overlay',
 
-            'description_lines'     => get_field('description_lines') ?: '',
+            'description_lines'     => get_field('description_lines') ?: 3,
 
             'button_color_variant'  => get_field('button_color_variant') ?: 'primary',
 

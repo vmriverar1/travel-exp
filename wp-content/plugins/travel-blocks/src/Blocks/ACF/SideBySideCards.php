@@ -820,228 +820,216 @@ class SideBySideCards extends BlockBase
 
 
 
-                    // ===== TAB: ESTILOS =====
+                    // ===== TAB: DESKTOP =====
 
                     [
-
-                        'key' => 'field_sbs_tab_styles',
-
-                        'label' => __('🎨 Estilos', 'travel-blocks'),
-
+                        'key' => 'field_sbs_tab_desktop',
+                        'label' => __('🖥️ Desktop', 'travel-blocks'),
                         'type' => 'tab',
-
                         'placement' => 'top',
-
                     ],
 
                     [
+                        'key' => 'field_sbs_desktop_message',
+                        'label' => '',
+                        'type' => 'message',
+                        'message' => __('<strong>Configuración para pantallas grandes (≥1025px)</strong><br>Grid de cards lado a lado', 'travel-blocks'),
+                    ],
 
+                    [
                         'key' => 'field_sbs_image_position',
-
                         'label' => __('📐 Posición de la Imagen', 'travel-blocks'),
-
                         'name' => 'image_position',
-
                         'type' => 'select',
-
                         'required' => 0,
-
                         'choices' => [
-
                             'left' => __('Izquierda', 'travel-blocks'),
-
                             'right' => __('Derecha', 'travel-blocks'),
-
                         ],
-
                         'default_value' => 'left',
-
                         'ui' => 1,
-
-                        'instructions' => __('Posición de la imagen en relación al texto', 'travel-blocks'),
-
                     ],
 
                     [
-
                         'key' => 'field_sbs_image_width',
-
-                        'label' => __('📏 Ancho de la Imagen (%)', 'travel-blocks'),
-
+                        'label' => __('📏 Ancho de Imagen (%)', 'travel-blocks'),
                         'name' => 'image_width',
-
                         'type' => 'range',
-
-                        'instructions' => __('Porcentaje del ancho total que ocupa la imagen', 'travel-blocks'),
-
+                        'instructions' => __('Porcentaje del ancho de la card que ocupa la imagen', 'travel-blocks'),
                         'default_value' => 40,
-
                         'min' => 30,
-
                         'max' => 60,
-
                         'step' => 5,
-
                         'append' => '%',
-
                     ],
 
                     [
-
-                        'key' => 'field_sbs_image_border_radius',
-
-                        'label' => __('🔘 Radio de Bordes de Imagen', 'travel-blocks'),
-
-                        'name' => 'image_border_radius',
-
-                        'type' => 'range',
-
-                        'instructions' => __('Redondez de las esquinas de la imagen', 'travel-blocks'),
-
-                        'default_value' => 12,
-
-                        'min' => 0,
-
-                        'max' => 40,
-
-                        'step' => 2,
-
+                        'key' => 'field_sbs_card_min_height',
+                        'label' => __('📐 Altura Mínima de Card (px)', 'travel-blocks'),
+                        'name' => 'card_min_height',
+                        'type' => 'number',
+                        'instructions' => __('Altura mínima de cada card en desktop', 'travel-blocks'),
+                        'default_value' => 200,
+                        'min' => 150,
+                        'max' => 500,
+                        'step' => 10,
                         'append' => 'px',
-
                     ],
 
                     [
+                        'key' => 'field_sbs_image_border_radius',
+                        'label' => __('🔘 Radio de Bordes', 'travel-blocks'),
+                        'name' => 'image_border_radius',
+                        'type' => 'range',
+                        'default_value' => 12,
+                        'min' => 0,
+                        'max' => 40,
+                        'step' => 2,
+                        'append' => 'px',
+                    ],
 
+                    [
+                        'key' => 'field_sbs_image_min_width',
+                        'label' => __('📏 Ancho Mínimo Imagen (px)', 'travel-blocks'),
+                        'name' => 'image_min_width',
+                        'type' => 'number',
+                        'instructions' => __('Ancho mínimo de la imagen en desktop. 0 = sin mínimo', 'travel-blocks'),
+                        'default_value' => 0,
+                        'min' => 0,
+                        'max' => 400,
+                        'step' => 10,
+                        'append' => 'px',
+                    ],
+
+                    // ===== TAB: MOBILE =====
+
+                    [
+                        'key' => 'field_sbs_tab_mobile',
+                        'label' => __('📱 Mobile', 'travel-blocks'),
+                        'type' => 'tab',
+                        'placement' => 'top',
+                    ],
+
+                    [
+                        'key' => 'field_sbs_mobile_message',
+                        'label' => '',
+                        'type' => 'message',
+                        'message' => __('<strong>Configuración para pantallas pequeñas (≤1024px)</strong><br>Slider horizontal con navegación', 'travel-blocks'),
+                    ],
+
+                    [
+                        'key' => 'field_sbs_mobile_image_width',
+                        'label' => __('📏 Ancho de Imagen Mobile (%)', 'travel-blocks'),
+                        'name' => 'mobile_image_width',
+                        'type' => 'range',
+                        'instructions' => __('Porcentaje del ancho de la card que ocupa la imagen en mobile', 'travel-blocks'),
+                        'default_value' => 40,
+                        'min' => 30,
+                        'max' => 50,
+                        'step' => 5,
+                        'append' => '%',
+                    ],
+
+                    [
+                        'key' => 'field_sbs_mobile_card_height',
+                        'label' => __('📐 Altura de Card Mobile (px)', 'travel-blocks'),
+                        'name' => 'mobile_card_height',
+                        'type' => 'number',
+                        'instructions' => __('Altura de cada card en mobile', 'travel-blocks'),
+                        'default_value' => 180,
+                        'min' => 120,
+                        'max' => 350,
+                        'step' => 10,
+                        'append' => 'px',
+                    ],
+
+                    [
+                        'key' => 'field_sbs_mobile_image_min_width',
+                        'label' => __('📏 Ancho Mínimo Imagen (px)', 'travel-blocks'),
+                        'name' => 'mobile_image_min_width',
+                        'type' => 'number',
+                        'instructions' => __('Ancho mínimo de la imagen en mobile. 0 = sin mínimo', 'travel-blocks'),
+                        'default_value' => 0,
+                        'min' => 0,
+                        'max' => 300,
+                        'step' => 10,
+                        'append' => 'px',
+                    ],
+
+                    // ===== TAB: COLORES =====
+
+                    [
+                        'key' => 'field_sbs_tab_colors',
+                        'label' => __('🎨 Colores', 'travel-blocks'),
+                        'type' => 'tab',
+                        'placement' => 'top',
+                    ],
+
+                    [
                         'key' => 'field_sbs_text_alignment',
-
                         'label' => __('📐 Alineación de Texto', 'travel-blocks'),
-
                         'name' => 'text_alignment',
-
                         'type' => 'select',
-
                         'required' => 0,
-
                         'choices' => [
-
                             'left' => __('Izquierda', 'travel-blocks'),
-
                             'center' => __('Centro', 'travel-blocks'),
-
                             'right' => __('Derecha', 'travel-blocks'),
-
                         ],
-
                         'default_value' => 'left',
-
                         'ui' => 1,
-
-                        'instructions' => __('Alineación del texto (título, descripción, ubicación, precio)', 'travel-blocks'),
-
                     ],
 
                     [
-
                         'key' => 'field_sbs_button_alignment',
-
                         'label' => __('📍 Alineación de Botón', 'travel-blocks'),
-
                         'name' => 'button_alignment',
-
                         'type' => 'select',
-
                         'required' => 0,
-
                         'choices' => [
-
                             'left' => __('Izquierda', 'travel-blocks'),
-
                             'center' => __('Centro', 'travel-blocks'),
-
                             'right' => __('Derecha', 'travel-blocks'),
-
                         ],
-
                         'default_value' => 'left',
-
                         'ui' => 1,
-
-                        'instructions' => __('Alineación del botón/CTA', 'travel-blocks'),
-
                     ],
 
                     [
-
                         'key' => 'field_sbs_button_color_variant',
-
                         'label' => __('🎨 Color del Botón', 'travel-blocks'),
-
                         'name' => 'button_color_variant',
-
                         'type' => 'select',
-
                         'required' => 0,
-
                         'choices' => [
-
                             'primary' => __('Primario - Rosa (#E78C85)', 'travel-blocks'),
-
                             'secondary' => __('Secundario - Morado (#311A42)', 'travel-blocks'),
-
                             'white' => __('Blanco con texto negro', 'travel-blocks'),
-
                             'gold' => __('Dorado (#CEA02D)', 'travel-blocks'),
-
                             'dark' => __('Negro (#1A1A1A)', 'travel-blocks'),
-
                             'transparent' => __('Transparente con borde blanco', 'travel-blocks'),
-
                             'read-more' => __('Texto "Read More" (sin fondo)', 'travel-blocks'),
-
                         ],
-
                         'default_value' => 'primary',
-
                         'ui' => 1,
-
-                        'instructions' => __('Color aplicado a todos los botones del bloque', 'travel-blocks'),
-
                     ],
 
                     [
-
                         'key' => 'field_sbs_badge_color_variant',
-
                         'label' => __('🏷️ Color de la Etiqueta', 'travel-blocks'),
-
                         'name' => 'badge_color_variant',
-
                         'type' => 'select',
-
                         'required' => 0,
-
                         'choices' => [
-
                             'primary' => __('Primario - Rosa (#E78C85)', 'travel-blocks'),
-
                             'secondary' => __('Secundario - Morado (#311A42)', 'travel-blocks'),
-
                             'white' => __('Blanco con texto negro', 'travel-blocks'),
-
                             'gold' => __('Dorado (#CEA02D)', 'travel-blocks'),
-
                             'dark' => __('Negro (#1A1A1A)', 'travel-blocks'),
-
                             'transparent' => __('Transparente con borde blanco', 'travel-blocks'),
-
                         ],
-
                         'default_value' => 'secondary',
-
                         'ui' => 1,
-
-                        'instructions' => __('Color aplicado a todas las etiquetas/badges del bloque', 'travel-blocks'),
-
                     ],
 
                 ],
@@ -1172,13 +1160,23 @@ class SideBySideCards extends BlockBase
 
 
 
-            // Get settings
-
+            // Get settings - Desktop
             $image_position = get_field('image_position') ?: 'left';
 
-            $image_width = get_field('image_width') ?: 40;
+            $image_width_raw = get_field('image_width');
+            $image_width = is_numeric($image_width_raw) && $image_width_raw > 0 ? (int)$image_width_raw : 40;
+            $image_width = max(30, min(60, $image_width));
 
             $image_border_radius = get_field('image_border_radius') ?: 12;
+            $image_min_width = (int)(get_field('image_min_width') ?: 0);
+
+            // Get settings - Mobile
+            $mobile_image_width_raw = get_field('mobile_image_width');
+            $mobile_image_width = is_numeric($mobile_image_width_raw) && $mobile_image_width_raw > 0 ? (int)$mobile_image_width_raw : 40;
+            $mobile_image_width = max(30, min(50, $mobile_image_width));
+
+            $mobile_card_height = (int)(get_field('mobile_card_height') ?: 180);
+            $mobile_image_min_width = (int)(get_field('mobile_image_min_width') ?: 0);
 
             $button_color_variant = get_field('button_color_variant') ?: 'primary';
 
@@ -1235,51 +1233,38 @@ class SideBySideCards extends BlockBase
 
 
             // Pass data to template
-
             $data = [
-
                 'block_id' => $block_id,
-
                 'align' => $align,
-
+                // Desktop settings
                 'image_position' => $image_position,
-
                 'image_width' => $image_width,
-
                 'image_border_radius' => $image_border_radius,
-
-                'button_color_variant' => $button_color_variant,
-
-                'badge_color_variant' => $badge_color_variant,
-
-                'text_alignment' => $text_alignment,
-
-                'button_alignment' => $button_alignment,
-
-                'cards' => $cards,
-
-                'show_arrows' => $show_arrows,
-
-                'show_dots' => $show_dots,
-
-                'autoplay' => $autoplay,
-
-                'autoplay_delay' => $autoplay_delay,
-
-                'show_favorite' => $show_favorite,
-
-                'grid_columns' => $grid_columns,
-
-                'card_gap' => $card_gap,
-
+                'image_min_width' => $image_min_width,
                 'card_min_height' => $card_min_height,
-
+                // Mobile settings
+                'mobile_image_width' => $mobile_image_width,
+                'mobile_card_height' => $mobile_card_height,
+                'mobile_image_min_width' => $mobile_image_min_width,
+                // Colors & alignment
+                'button_color_variant' => $button_color_variant,
+                'badge_color_variant' => $badge_color_variant,
+                'text_alignment' => $text_alignment,
+                'button_alignment' => $button_alignment,
+                // Content
+                'cards' => $cards,
+                // Slider settings
+                'show_arrows' => $show_arrows,
+                'show_dots' => $show_dots,
+                'autoplay' => $autoplay,
+                'autoplay_delay' => $autoplay_delay,
+                'show_favorite' => $show_favorite,
+                // Grid settings
+                'grid_columns' => $grid_columns,
+                'card_gap' => $card_gap,
                 'hover_effect' => $hover_effect,
-
                 'is_preview' => $is_preview,
-
                 'block' => $block,
-
             ];
 
 

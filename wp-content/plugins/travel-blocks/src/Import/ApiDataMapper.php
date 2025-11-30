@@ -295,7 +295,7 @@ class ApiDataMapper
      * Map duration from days count to readable text
      *
      * @param int $days Number of days from API
-     * @return string Formatted duration text (e.g., "4 days / 3 nights")
+     * @return string Formatted duration text (e.g., "4 Days / 3 Nights")
      */
     private function map_duration(int $days): string
     {
@@ -306,14 +306,14 @@ class ApiDataMapper
         $nights = $days - 1;
 
         if ($days === 1) {
-            return '1 day';
+            return 'Full Day';
         }
 
         if ($nights > 0) {
-            return sprintf('%d days / %d nights', $days, $nights);
+            return sprintf('%d Days / %d Nights', $days, $nights);
         }
 
-        return sprintf('%d days', $days);
+        return sprintf('%d Days', $days);
     }
 
     /**
@@ -409,7 +409,7 @@ class ApiDataMapper
         }
 
         // Create term name based on days count
-        $term_name = $days === 1 ? '1 Day' : "{$days} Days";
+        $term_name = $days === 1 ? 'Full Day' : "{$days} Days";
 
         // Handle special ranges
         if ($days >= 11 && $days <= 15) {

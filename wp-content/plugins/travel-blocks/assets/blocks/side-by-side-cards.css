@@ -122,6 +122,8 @@
 
   flex: 0 0 var(--image-width, 40%);
 
+  min-width: var(--image-min-width, 0);
+
   display: block;
 
   text-decoration: none;
@@ -262,17 +264,27 @@
 
 
 
-/* Excerpt */
+/* Excerpt - Limited to 3 lines */
 
 .sbs-card__excerpt {
 
   font-size: 13px;
 
-  line-height: 1.3;
+  line-height: 1.4;
 
   color: #666;
 
   margin: 0;
+
+  display: -webkit-box;
+
+  -webkit-line-clamp: 3;
+
+  -webkit-box-orient: vertical;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
 
 }
 
@@ -588,91 +600,98 @@
 
 @media (max-width: 1024px) {
 
-  /* Container como slider */
-
+  /* Container como slider horizontal - SIN gap para que no se vea la siguiente card */
   .sbs-container {
-
     display: flex;
-
     overflow-x: auto;
-
     scroll-snap-type: x mandatory;
-
     scroll-behavior: smooth;
-
-    gap: 16px;
-
-    padding: 0 20px;
-
+    gap: 0; /* Sin gap entre cards */
+    padding: 0; /* Sin padding en container */
     -webkit-overflow-scrolling: touch;
-
     scrollbar-width: none;
-
   }
-
-
 
   .sbs-container::-webkit-scrollbar {
-
     display: none;
-
   }
 
-
-
-  /* Cards en slider - una card a la vez (ESTÁNDAR) */
-
+  /* Cards en slider - UNA card a la vez, ocupa 100% del ancho */
   .sbs-card {
-
-    flex: 0 0 100% !important; /* 1 slide completo */
-
+    flex: 0 0 100% !important; /* Full width - ONE card at a time */
     scroll-snap-align: start;
-
     scroll-snap-stop: always;
-
-    grid-column: auto !important; /* Resetear grid-column en mobile */
-
+    grid-column: auto !important;
+    display: flex !important;
+    flex-direction: row !important; /* Mantener horizontal */
+    min-height: auto !important;
+    height: var(--mobile-card-height, 180px) !important;
+    max-height: var(--mobile-card-height, 180px) !important;
+    padding: 0 16px; /* Padding interno en cada card */
+    box-sizing: border-box;
   }
 
-
-
+  /* Imagen mantiene su proporción side-by-side - usando variables mobile */
   .sbs-card__image-link {
-
-    flex: 0 0 auto;
-
-    width: 100%;
-
+    flex: 0 0 var(--mobile-image-width, 40%) !important;
+    min-width: var(--mobile-image-min-width, 0px) !important;
+    width: auto !important;
+    max-width: var(--mobile-image-width, 40%) !important;
+    height: 100%;
   }
-
-
 
   .sbs-card__image {
-
-    height: min(250px, calc(var(--card-min-height, 450px) * 0.6));
-
+    height: 100%;
+    min-height: auto;
+    max-height: 100%;
   }
 
-
-
+  /* Content ocupa el resto */
   .sbs-card__content {
-
-    padding: 20px 16px;
-
+    flex: 1;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    overflow: hidden;
+    height: 100%;
+    max-height: 100%;
   }
-
-
 
   .sbs-card__title {
+    font-size: 16px;
+    line-height: 1.3;
+  }
 
-    font-size: 20px;
+  .sbs-card__excerpt {
+    font-size: 12px;
+    -webkit-line-clamp: 2;
+  }
 
+  .sbs-card__badge {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
+
+  .sbs-card__location {
+    font-size: 11px;
+  }
+
+  .sbs-card__price {
+    font-size: 14px;
+  }
+
+  .sbs-card__button {
+    font-size: 12px;
+    padding: 6px 12px;
   }
 
 }
 
 
 
-/* ==================== NAVIGATION ARROWS (Mobile) ==================== */
+/* ==================== NAVIGATION ARROWS ==================== */
 
 .sbs-arrow {
 
@@ -684,75 +703,64 @@
 
 @media (max-width: 1024px) {
 
-  .sbs-arrow {
-
+  /* Wrapper para navegación en mobile */
+  .sbs-wrapper {
     display: flex;
+    flex-direction: column;
+  }
 
-    position: absolute;
-
-    top: 40%;
-
-    transform: translateY(-50%);
-
-    z-index: 20;
-
-    background: white;
-
+  .sbs-arrow {
+    display: flex;
+    position: static;
     border: none;
-
     border-radius: 50%;
-
-    width: 40px;
-
-    height: 40px;
-
+    width: 45px;
+    height: 45px;
     align-items: center;
-
     justify-content: center;
-
     cursor: pointer;
-
-    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     transition: all 0.3s ease;
-
+    flex-shrink: 0;
   }
 
-
-
-  .sbs-arrow--prev { left: 10px; }
-
-  .sbs-arrow--next { right: 10px; }
-
-
-
-  .sbs-arrow:hover {
-
-    background: var(--wp--preset--color--secondary);
-
+  /* Flecha izquierda (prev) - color secundario */
+  .sbs-arrow--prev {
+    background: var(--wp--preset--color--secondary, #E78C85);
     color: white;
-
   }
 
+  .sbs-arrow--prev:hover {
+    background: var(--wp--preset--color--primary, #1a1a1a);
+    transform: scale(1.05);
+  }
 
+  /* Flecha derecha (next) - color blanco */
+  .sbs-arrow--next {
+    background: white;
+    color: #1A1A1A;
+    border: 1px solid #e0e0e0;
+  }
+
+  .sbs-arrow--next:hover {
+    background: #f5f5f5;
+    transform: scale(1.05);
+  }
 
   .sbs-arrow svg {
-
     width: 20px;
-
     height: 20px;
-
   }
 
 }
 
 
 
-/* ==================== PAGINATION DOTS (Mobile) ==================== */
+/* ==================== PAGINATION DOTS ==================== */
 
 .sbs-dots {
 
-  display: none !important; /* Ocultar en desktop */
+  display: none; /* Ocultar en desktop */
 
 }
 
@@ -762,7 +770,9 @@
 
 @media (min-width: 1025px) {
 
-  .sbs-dots {
+  .sbs-dots,
+
+  .sbs-arrow {
 
     display: none !important;
 
@@ -774,17 +784,37 @@
 
 @media (max-width: 1024px) {
 
-  .sbs-dots {
+  /* Contenedor de navegación: flechas + dots */
 
-    display: flex;
+  .sbs-navigation {
+
+    display: flex !important;
 
     justify-content: center;
 
     align-items: center;
 
-    gap: 8px;
+    gap: 20px;
 
-    margin-top: 20px;
+    margin-top: 24px;
+
+    padding: 0 20px;
+
+  }
+
+
+
+  .sbs-dots {
+
+    display: flex !important;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 6px;
+
+    flex: 0 1 auto;
 
   }
 
@@ -800,7 +830,7 @@
 
     border: none;
 
-    background: #ddd;
+    background: rgba(0, 0, 0, 0.2);
 
     cursor: pointer;
 
@@ -826,16 +856,37 @@
 
 
 
-/* ==================== TABLET ==================== */
+/* ==================== NAVIGATION DESKTOP HIDE ==================== */
 
-@media (min-width: 769px) and (max-width: 1024px) {
+.sbs-navigation {
 
-  .sbs-card {
+  display: none;
 
-    flex: 0 0 100% !important; /* 1 slide en tablet también */
+}
+
+
+
+@media (min-width: 1025px) {
+
+  .sbs-navigation {
+
+    display: none !important;
 
   }
 
+}
+
+
+
+/* ==================== TABLET ==================== */
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .sbs-card {
+    flex: 0 0 100% !important; /* Full width - ONE card at a time */
+    min-height: auto !important;
+    height: var(--mobile-card-height, 180px) !important;
+    max-height: var(--mobile-card-height, 180px) !important;
+  }
 }
 
 
@@ -846,7 +897,7 @@
 
   .sbs-card__title {
 
-    font-size: 18px;
+    font-size: 16px;
 
   }
 
@@ -854,7 +905,7 @@
 
   .sbs-card__excerpt {
 
-    font-size: 14px;
+    font-size: 12px;
 
   }
 
@@ -862,7 +913,7 @@
 
   .sbs-card__price {
 
-    font-size: 18px;
+    font-size: 16px;
 
   }
 

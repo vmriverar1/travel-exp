@@ -84,7 +84,8 @@ class TaxonomyTabs extends BlockBase
         add_filter('acf/load_field/name=tt_selected_terms_post_tag', [$this, 'load_post_tag_choices']);
         add_filter('acf/load_field/key=field_tt_override_term_id', [$this, 'load_selected_terms_for_override']);
 
-        // ✅ Ensure assets are loaded in block editor
+        // ✅ Ensure assets are loaded in both frontend and editor (like BlockBase does)
+        add_action('enqueue_block_assets', [$this, 'enqueue_assets']);
         add_action('enqueue_block_editor_assets', [$this, 'enqueue_assets']);
     }
 
@@ -724,6 +725,8 @@ class TaxonomyTabs extends BlockBase
             'tabs' => $tabs,
             'appearance' => $appearance,
             'slider' => $slider,
+            'tab_overrides' => $selected_items['tab_overrides'] ?? [],
+            'show_favorite' => $block_data['show_favorite'] ?? get_field('show_favorite') ?? true,
         ];
     }
 
@@ -903,6 +906,7 @@ class TaxonomyTabs extends BlockBase
 
         // Reconstruct repeater data from flattened block data
         $tab_overrides = [];
+
         if (!empty($block_data) && isset($block_data['tt_tab_overrides'])) {
             $tab_overrides = $this->reconstruct_repeater_from_block_data(
                 $block_data,
@@ -1084,7 +1088,9 @@ class TaxonomyTabs extends BlockBase
 
         // Check for custom name and icon override
         foreach ($tab_overrides as $override) {
-            if (isset($override['term_id']) && $override['term_id'] == $term_id) {
+            $override_term_id = $override['term_id'] ?? '';
+            // Use strval for comparison to handle string/int mismatch
+            if (!empty($override_term_id) && strval($override_term_id) === strval($term_id)) {
                 if (!empty($override['custom_name'])) {
                     $tab_name = $override['custom_name'];
                 }
@@ -1584,9 +1590,9 @@ class TaxonomyTabs extends BlockBase
                     'title' => 'Sample Package ' . $i,
                     'description' => 'This is a sample package description for preview.',
                     'location' => 'Cusco, Peru',
-                    'duration' => '5 days',
+                    'duration' => '5 Days',
                     'price' => 'From $' . (299 + ($i * 100)) . ' USD',
-                    'duration_price' => '5 days | From $' . (299 + ($i * 100)) . ' USD',
+                    'duration_price' => '5 Days | From $' . (299 + ($i * 100)) . ' USD',
                     'is_package' => true,
                     'link' => ['url' => '#'],
                     'cta_text' => 'View Package',
@@ -1745,16 +1751,35 @@ class TaxonomyTabs extends BlockBase
      */
     public function load_selected_terms_for_override($field): array
     {
-        // TEMPORARY FIX: Simplified to prevent 502 errors
-        // Only showing specific terms that are being used
         $choices = [];
         $choices[''] = '-- Seleccionar término --';
 
-        // Hard-coded options based on the tabs we saw in the debug
-        $choices['locations_cpt'] = 'Culture (Locations)';
-        $choices['18'] = 'Adventure (Term)';
-        $choices['1130'] = 'Gastronomy/Amazon (Term)';
-        $choices['2808'] = 'Ausangate Trek (Term)';
+        // Get commonly used terms from package_type taxonomy (limited to prevent 502)
+        $package_types = get_terms([
+            'taxonomy' => 'package_type',
+            'hide_empty' => false,
+            'number' => 20,
+        ]);
+        if (!is_wp_error($package_types)) {
+            foreach ($package_types as $term) {
+                $choices[$term->term_id] = $term->name . ' (Package Type)';
+            }
+        }
+
+        // Get commonly used terms from interest taxonomy
+        $interests = get_terms([
+            'taxonomy' => 'interest',
+            'hide_empty' => false,
+            'number' => 20,
+        ]);
+        if (!is_wp_error($interests)) {
+            foreach ($interests as $term) {
+                $choices[$term->term_id] = $term->name . ' (Interest)';
+            }
+        }
+
+        // Add locations option
+        $choices['locations_cpt'] = 'Locations (CPT)';
 
         $field['choices'] = $choices;
         return $field;

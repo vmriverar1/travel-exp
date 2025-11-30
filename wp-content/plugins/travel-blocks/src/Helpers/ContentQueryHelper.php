@@ -654,6 +654,7 @@ class ContentQueryHelper {
             }
 
             $card_data['category'] = $category;
+            $card_data['destination'] = $category; // Alias for related-packages template
             $card_data['badge_color_variant'] = $badge_color;
         }
 
@@ -668,6 +669,12 @@ class ContentQueryHelper {
             if (empty($description)) {
                 $description = get_the_excerpt($post);
             }
+            // Replace [...] with ... for cleaner truncation
+            $description = str_replace(['[...]', '[…]'], '...', $description);
+            // Truncate to ~30 words
+            $description = wp_trim_words($description, 30, '');
+            // Always end with ... (for CSS truncation visual consistency)
+            $description = rtrim($description, '.!?,;:') . '...';
             $card_data['description'] = $description;
             $card_data['excerpt'] = $description; // Alias for HeroCarousel
         }
@@ -720,7 +727,7 @@ class ContentQueryHelper {
         if (in_array('duration', $visible_fields)) {
             $days = get_field('days', $post_id);
             if (!empty($days)) {
-                $card_data['duration'] = $days . ' ' . ($days == 1 ? 'day' : 'days');
+                $card_data['duration'] = $days == 1 ? 'Full Day' : $days . ' Days';
             }
         }
 
@@ -1503,6 +1510,7 @@ class ContentQueryHelper {
             }
 
             $card_data['category'] = $category;
+            $card_data['destination'] = $category; // Alias for related-packages template
             $card_data['badge_color_variant'] = $badge_color;
         }
 
@@ -1514,6 +1522,12 @@ class ContentQueryHelper {
         // Description (excerpt)
         if (in_array('description', $visible_fields)) {
             $description = get_the_excerpt($post);
+            // Replace [...] with ... for cleaner truncation
+            $description = str_replace(['[...]', '[…]'], '...', $description);
+            // Truncate to ~30 words
+            $description = wp_trim_words($description, 30, '');
+            // Always end with ... (for CSS truncation visual consistency)
+            $description = rtrim($description, '.!?,;:') . '...';
             $card_data['description'] = $description;
             $card_data['excerpt'] = $description;
         }

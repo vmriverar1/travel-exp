@@ -40,7 +40,7 @@ if (!defined('TRAVEL_BLOCKS_URL')) {
 
 if (!defined('TRAVEL_BLOCKS_VERSION')) {
 
-    define('TRAVEL_BLOCKS_VERSION', '1.3.8');
+    define('TRAVEL_BLOCKS_VERSION', '1.4.9');
 
 }
 
@@ -78,7 +78,10 @@ spl_autoload_register(function ($class) {
 
 });
 
-
+// Change excerpt_more from [...] to ...
+add_filter('excerpt_more', function($more) {
+    return '...';
+});
 
 // Load text domain for i18n.
 
