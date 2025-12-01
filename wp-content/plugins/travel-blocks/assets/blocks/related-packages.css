@@ -242,7 +242,7 @@
 
   color: inherit;
 
-  min-height: 100%; /* Ensure link fills the card */
+  height: 100%; /* Ensure link fills the card for button positioning */
 
 }
 
@@ -255,6 +255,8 @@
   padding: 24px;
 
   padding-top: 32px; /* Extra top padding to prevent title cutoff */
+
+  padding-bottom: 60px; /* Space for absolute button */
 
   color: #fff;
 
@@ -517,44 +519,27 @@
 
 
 
-/* Button */
+/* Button - Always bottom right corner */
 
 .rp-card__button {
 
+  position: absolute;
+  bottom: 0px;
+  right: 10px;
   display: inline-flex;
-
   align-items: center;
-
   gap: 8px;
-
   padding: 10px 20px;
-
   background: var(--wp--preset--color--secondary);
-
   color: #fff;
-
   font-size: 14px;
-
   font-weight: 600;
-
   border: none;
-
   border-radius: 24px;
-
   cursor: pointer;
-
   white-space: nowrap;
-
   transition: all 0.2s ease;
-
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-
-  align-self: flex-start;
-
-  margin-top: 8px;
-
-  margin-bottom: 4px; /* Ensure button has space at bottom */
-
   flex-shrink: 0; /* Prevent button from shrinking */
 
 }
@@ -804,6 +789,10 @@
 
     font-size: 13px;
 
+    bottom: 20px;
+
+    right: 20px;
+
   }
 
 }
@@ -993,15 +982,10 @@
 
 
 .related-packages--horizontal .rp-card__content {
-
-  justify-content: center;
-
-  padding: 8px 12px; /* Reduced padding since card has padding */
-
+  justify-content: start;
+  padding: 0px 12px; /* Reduced padding since card has padding */
   color: #212121;
-
-  gap: 8px;
-
+  gap: 2px;
 }
 
 
@@ -1014,7 +998,7 @@
 
   font-size: 15px; /* Specific for horizontal variant */
 
-  line-height: 1.3;
+  line-height: 1.2;
 
   margin: 0;
 
@@ -1099,19 +1083,13 @@
 
 
 .related-packages--horizontal .rp-card__badge {
-
   font-size: 11px;
-
   padding: 6px 12px;
-
   margin-bottom: 6px;
-
   background: #F3CE72; /* Golden background */
-
   color: #000000; /* Black text */
-
   text-transform: capitalize; /* Primera letra mayúscula, resto minúsculas */
-
+  line-height: 1.2;
 }
 
 

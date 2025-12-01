@@ -286,11 +286,11 @@ class ContentQueryHelper {
             ];
         }
 
-        // Has Promotion (active_promotion = 1)
+        // Has Promotion (promo_enabled = 1)
         $filter_promo = get_field($field_prefix . 'filter_active_promo');
         if ($filter_promo) {
             $meta_query[] = [
-                'key' => 'active_promotion',
+                'key' => 'promo_enabled',
                 'value' => '1',
                 'compare' => '=',
             ];
@@ -615,14 +615,8 @@ class ContentQueryHelper {
             // Get selected badge taxonomy from ACF field
             $badge_taxonomy = get_field($field_prefix . 'badge_taxonomy');
 
-            // Priority 1: Active promotion (always overrides badge color to primary)
-            if (get_field('promo_enabled', $post_id)) {
-                $promo_tag = get_field('promo_tag', $post_id) ?: 'OFERTA';
-                $category = ucwords(strtolower($promo_tag)); // Capitalize properly
-                $badge_color = 'primary'; // Promo always uses primary color
-            }
-            // Priority 2: Use selected taxonomy if specified
-            elseif (!empty($badge_taxonomy)) {
+            // Priority 1: Use selected taxonomy if specified
+            if (!empty($badge_taxonomy)) {
                 if ($badge_taxonomy === 'service_type') {
                     // Service Type ACF field
                     $service_type = get_field('service_type', $post_id);
@@ -637,7 +631,7 @@ class ContentQueryHelper {
                     }
                 }
             }
-            // Priority 3: Default behavior (Service Type → Package Type)
+            // Priority 2: Default behavior (Service Type → Package Type)
             else {
                 // Service Type
                 if (get_field('service_type', $post_id)) {
@@ -669,14 +663,10 @@ class ContentQueryHelper {
             if (empty($description)) {
                 $description = get_the_excerpt($post);
             }
-            // Replace [...] with ... for cleaner truncation
-            $description = str_replace(['[...]', '[…]'], '...', $description);
-            // Truncate to ~30 words
-            $description = wp_trim_words($description, 30, '');
-            // Always end with ... (for CSS truncation visual consistency)
-            $description = rtrim($description, '.!?,;:') . '...';
-            $card_data['description'] = $description;
-            $card_data['excerpt'] = $description; // Alias for HeroCarousel
+            // Replace [...] with nothing - JS will handle truncation
+            $description = str_replace(['[...]', '[…]'], '', $description);
+            $card_data['description'] = trim($description);
+            $card_data['excerpt'] = trim($description); // Alias for HeroCarousel
         }
 
         // Location (priority: locations CPT → tag_locations CPT → departure text field → empty)
@@ -709,26 +699,29 @@ class ContentQueryHelper {
             $card_data['location'] = $location;
         }
 
-        // Price
+        // Price (always show "From $X" - use price_offer if available, otherwise price_from)
         if (in_array('price', $visible_fields)) {
             $price = '';
             $price_offer = get_field('price_offer', $post_id);
             $price_from = get_field('price_from', $post_id);
 
             if (!empty($price_offer)) {
-                $price = '$' . number_format($price_offer, 0);
+                $price = 'From $' . number_format($price_offer, 0);
             } elseif (!empty($price_from)) {
                 $price = 'From $' . number_format($price_from, 0);
             }
             $card_data['price'] = $price;
         }
 
-        // Duration (new field)
-        if (in_array('duration', $visible_fields)) {
-            $days = get_field('days', $post_id);
-            if (!empty($days)) {
-                $card_data['duration'] = $days == 1 ? 'Full Day' : $days . ' Days';
-            }
+        // Duration - always calculate for packages (needed for duration_price)
+        // Try 'days' first, then 'itinerary' count as fallback
+        $days = get_field('days', $post_id);
+        if (empty($days)) {
+            // Use get_post_meta to get raw value (get_field returns repeater array)
+            $days = get_post_meta($post_id, 'itinerary', true);
+        }
+        if (!empty($days) && is_numeric($days)) {
+            $card_data['duration'] = $days == 1 ? 'Full Day' : $days . ' Days';
         }
 
         // Rating (new field)
@@ -766,6 +759,24 @@ class ContentQueryHelper {
         }
         $card_data['duration_price'] = $duration_price;
         $card_data['is_package'] = true; // Flag to identify package content
+
+        // Promo ribbon - calculate discount percentage from price_from vs price_offer
+        $promo_enabled = get_field('promo_enabled', $post_id);
+        if ($promo_enabled) {
+            $card_data['promo_enabled'] = true;
+
+            // Calculate discount percentage
+            $price_from = get_field('price_from', $post_id);
+            $price_offer = get_field('price_offer', $post_id);
+
+            if (!empty($price_from) && !empty($price_offer) && $price_from > $price_offer) {
+                $discount_percent = round((($price_from - $price_offer) / $price_from) * 100);
+                $card_data['promo_tag'] = $discount_percent . '% off';
+            } else {
+                // Fallback to manual promo_tag or default
+                $card_data['promo_tag'] = get_field('promo_tag', $post_id) ?: 'OFERTA';
+            }
+        }
 
         // Link and CTA (always included for functionality)
         $card_data['link'] = [
@@ -1347,7 +1358,7 @@ class ContentQueryHelper {
                 'label' => '🏷️ Solo con Promoción Activa',
                 'name' => "{$prefix}_filter_active_promo",
                 'type' => 'true_false',
-                'instructions' => 'Mostrar solo packages con promoción activa (active_promotion = 1)',
+                'instructions' => 'Mostrar solo packages con promoción activa (promo_enabled = 1). El texto del promo_tag se mostrará en el ribbon diagonal.',
                 'ui' => 1,
                 'default_value' => 0,
             ],
@@ -1522,14 +1533,10 @@ class ContentQueryHelper {
         // Description (excerpt)
         if (in_array('description', $visible_fields)) {
             $description = get_the_excerpt($post);
-            // Replace [...] with ... for cleaner truncation
-            $description = str_replace(['[...]', '[…]'], '...', $description);
-            // Truncate to ~30 words
-            $description = wp_trim_words($description, 30, '');
-            // Always end with ... (for CSS truncation visual consistency)
-            $description = rtrim($description, '.!?,;:') . '...';
-            $card_data['description'] = $description;
-            $card_data['excerpt'] = $description;
+            // Replace [...] with nothing - JS will handle truncation
+            $description = str_replace(['[...]', '[…]'], '', $description);
+            $card_data['description'] = trim($description);
+            $card_data['excerpt'] = trim($description);
         }
 
         // Date

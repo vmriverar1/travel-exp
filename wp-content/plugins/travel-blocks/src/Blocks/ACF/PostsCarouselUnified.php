@@ -598,7 +598,9 @@ abstract class PostsCarouselUnified extends BlockBase
 
                 'choices' => [
 
-                    'overlay'       => __('Overlay - Imagen de fondo con texto encima', 'travel-blocks'),
+                    'overlay'       => __('Overlay - Botón inline con descripción', 'travel-blocks'),
+
+                    'overlay-2'     => __('Overlay 2 - Botón separado abajo', 'travel-blocks'),
 
                     'vertical'      => __('Vertical - Imagen arriba, texto abajo (card normal)', 'travel-blocks'),
 

@@ -199,33 +199,19 @@
 .pc-card__badge {
 
   position: absolute;
-
   top: 20px;
-
   left: 20px;
-
   z-index: 10;
-
   background: var(--wp--preset--color--contrast-4);
-
   color: #fff;
-
   font-size: 13px;
-
   font-weight: 600;
-
   text-transform: capitalize;
-
   letter-spacing: 0.5px;
-
-  padding: 8px 16px;
-
+  padding: 4px 10px;
   border-radius: 20px;
-
   transition: all 0.2s ease;
-
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-
 }
 
 
@@ -360,7 +346,7 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  justify-content: center;
+  justify-content: end;
   flex: 1;
 }
 
@@ -458,7 +444,7 @@
 .posts-carousel--overlay .pc-card__inline-cta {
   float: right;
   clear: right;
-  margin-left: 12px;
+  margin-left: 8px;
   padding: 6px 16px;
   background: var(--wp--preset--color--secondary);
   color: #fff;
@@ -470,10 +456,11 @@
   transition: all 0.3s ease;
 }
 
+
 /* Hover effect: wrapper expands, button moves to absolute bottom right */
 @media (hover: hover) and (pointer: fine) {
   .posts-carousel--overlay .pc-card:hover .pc-card__excerpt-wrapper {
-    min-height: calc((var(--description-lines, 3) * 23px) + 50px);
+    min-height: calc(((var(--description-lines, 3) + 2) * 15px) + 10px);
   }
 
   .posts-carousel--overlay .pc-card:hover .pc-card__inline-cta {
@@ -487,6 +474,11 @@
   .posts-carousel--overlay .pc-card:hover .pc-card__excerpt-wrapper .pc-card__excerpt::before {
     height: 0;
     width: 0;
+  }
+
+  /* On hover, show 2 more lines of text */
+  .posts-carousel--overlay .pc-card:hover .pc-card__excerpt-wrapper .pc-card__excerpt {
+    max-height: calc((var(--description-lines, 3) + 2) * 23px);
   }
 }
 
@@ -534,7 +526,171 @@
   border: none;
 }
 
+/* =========================================================
+   OVERLAY-2: Estructura idéntica a Taxonomy Tabs
+   Copia exacta de los estilos de tt-card
+========================================================= */
 
+/* Content - copia de .tt-card__content */
+.posts-carousel--overlay-2 .pc-card__content {
+  padding: 24px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+/* Title - copia de .tt-card__title */
+.posts-carousel--overlay-2 .pc-card__title {
+  font-family: var(--wp--preset--font-family--satoshi);
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 26px;
+  letter-spacing: 0;
+  color: #fff;
+  margin: 0 0 12px;
+}
+
+/* Excerpt - copia de .tt-card__excerpt */
+.posts-carousel--overlay-2 .pc-card__excerpt {
+  font-family: 'Satoshi', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 17px;
+  letter-spacing: 0;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Divider - copia de .tt-card__divider */
+.posts-carousel--overlay-2 .pc-card__divider {
+  width: 50%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.8);
+  margin: 4px 0;
+}
+
+/* Meta (ubicación) - copia de .tt-card__meta */
+.posts-carousel--overlay-2 .pc-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 100%;
+  letter-spacing: 0;
+  color: rgba(255, 255, 255, 0.85);
+  margin-top: 6px;
+}
+
+.posts-carousel--overlay-2 .pc-card__meta svg {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+}
+
+/* Duration/Price */
+.posts-carousel--overlay-2 .pc-card__meta--duration-price {
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 100%;
+  letter-spacing: 0;
+  margin: 0;
+}
+
+/* Bottom row - duration/price + button en misma línea */
+.posts-carousel--overlay-2 .pc-card__bottom-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 8px;
+  width: 100%;
+}
+
+/* Price */
+.posts-carousel--overlay-2 .pc-card__price {
+  font-family: 'Satoshi', sans-serif;
+  font-size: 16px;
+  font-weight: 900;
+  color: #fff;
+  margin: 0;
+}
+
+/* Botón - copia de .tt-card__button */
+.posts-carousel--overlay-2 .pc-card__button {
+  padding: 10px 12px;
+  background: var(--wp--preset--color--secondary);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
+  margin: 0;
+}
+
+.posts-carousel--overlay-2 .pc-card__button:hover {
+  background: #d97a74;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.posts-carousel--overlay-2 .pc-card__button:active {
+  transform: translateY(0);
+}
+
+/* Discount Ribbon - Diagonal badge in top-right corner */
+.posts-carousel--overlay-2 .pc-card__discount-ribbon {
+  position: absolute;
+  top: 20px;
+  right: -36px;
+  z-index: 15;
+  background: #E78C85; /* Default: columna 1 */
+  color: #fff;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 100%;
+  text-align: center;
+  padding: 6px 35px;
+  transform: rotate(45deg);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
+}
+
+/* Ribbon colors by column position (repeats every 4) */
+.posts-carousel--overlay-2 .pc-card:nth-child(4n+1) .pc-card__discount-ribbon {
+  background: #E78C85; /* Rosa */
+}
+.posts-carousel--overlay-2 .pc-card:nth-child(4n+2) .pc-card__discount-ribbon {
+  background: #7BC5CC; /* Turquesa */
+}
+.posts-carousel--overlay-2 .pc-card:nth-child(4n+3) .pc-card__discount-ribbon {
+  background: #CEA02D; /* Dorado */
+}
+.posts-carousel--overlay-2 .pc-card:nth-child(4n+4) .pc-card__discount-ribbon {
+  background: #9FCC87; /* Verde */
+}
+
+/* Card overflow visible for ribbon */
+.posts-carousel--overlay-2 .pc-card {
+  overflow: hidden;
+}
+
+/* Keep image clipped */
+.posts-carousel--overlay-2 .pc-card__image-bg {
+  border-radius: 12px;
+  overflow: hidden;
+}
 
 .pc-card__title {
 
@@ -1088,13 +1244,17 @@
 
 
 
-  /* Cards en slider - una card a la vez */
+  /* Cards en slider - ancho configurable desde ACF (en px) */
 
   .pc-card {
 
-    flex: 0 0 100% !important;
+    flex: 0 0 310px !important;
 
-    scroll-snap-align: start;
+    width: 310px;
+
+    min-height: 430px !important;
+
+    scroll-snap-align: center;
 
     scroll-snap-stop: always;
 
@@ -1102,9 +1262,9 @@
 
 
 
-  /* ===== VARIANTE 1: Botones a los lados (70% ancho) ===== */
+  /* ===== VARIANTE 1: Botones a los lados (default) ===== */
 
-  .arrows-sides .pc-container {
+  .arrows-sides .pc-wrapper {
 
     display: flex;
 
@@ -1114,17 +1274,25 @@
 
     gap: 12px;
 
-    overflow: visible;
+  }
+
+
+
+  .arrows-sides .pc-nav-wrapper {
+
+    display: contents; /* No afecta el layout, los hijos se comportan como si no existiera */
 
   }
 
 
 
-  .arrows-sides .pc-grid {
+  .arrows-sides .pc-container {
 
     width: 70%;
 
     flex-shrink: 0;
+
+    order: 0;
 
   }
 
@@ -1187,22 +1355,118 @@
   }
 
 
+  /* ===== OVERLAY-2: Flechas en los bordes, mitad afuera de la card ===== */
 
-  /* ===== VARIANTE 2: Botones encima de la imagen ===== */
-
-  .arrows-overlay .pc-container {
+  .posts-carousel--overlay-2.arrows-sides .pc-wrapper {
 
     position: relative;
 
-    overflow: visible;
+    display: block;
+
+  }
+
+  .posts-carousel--overlay-2.arrows-sides .pc-container {
+
+    width: 310px;
+
+    margin: 0 auto;
+
+    overflow: hidden;
+
+  }
+
+  .posts-carousel--overlay-2.arrows-sides .pc-grid {
+
+    width: 100%;
 
   }
 
 
 
-  .arrows-overlay .pc-grid {
+  .posts-carousel--overlay-2.arrows-sides .pc-nav-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 330px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+    z-index: 100;
+  }
 
-    width: 100%;
+
+
+  .posts-carousel--overlay-2.arrows-sides .pc-arrow {
+
+    pointer-events: auto;
+
+  }
+
+  .posts-carousel--overlay-2.arrows-sides .pc-arrow--prev {
+
+    transform: translateX(-50%); /* Mitad afuera, mitad adentro */
+
+  }
+
+  .posts-carousel--overlay-2.arrows-sides .pc-arrow--next {
+
+    transform: translateX(50%); /* Mitad afuera, mitad adentro */
+
+  }
+
+  .posts-carousel--overlay-2.arrows-sides .pc-arrow:active {
+
+    transform: translateX(-50%) scale(0.9);
+
+  }
+
+  .posts-carousel--overlay-2.arrows-sides .pc-arrow--next:active {
+
+    transform: translateX(50%) scale(0.9);
+
+  }
+
+  .posts-carousel--overlay-2 .pc-card__meta--duration-price {
+
+    font-size: 15px;
+
+  }
+
+
+
+  /* ===== VARIANTE 2: Botones encima de la imagen ===== */
+
+  .arrows-overlay .pc-wrapper {
+
+    position: relative;
+
+  }
+
+
+
+  .arrows-overlay .pc-nav-wrapper {
+
+    position: absolute;
+
+    top: 50%;
+
+    left: 0;
+
+    right: 0;
+
+    transform: translateY(-50%);
+
+    display: flex;
+
+    justify-content: space-between;
+
+    pointer-events: none;
+
+    z-index: 20;
+
+    padding: 0 12px;
 
   }
 
@@ -1211,12 +1475,6 @@
   .arrows-overlay .pc-arrow {
 
     display: flex;
-
-    position: absolute;
-
-    top: 50%;
-
-    transform: translateY(-50%);
 
     width: 48px;
 
@@ -1230,19 +1488,17 @@
 
     justify-content: center;
 
-    z-index: 20;
-
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 
     transition: all 0.2s ease;
+
+    pointer-events: auto;
 
   }
 
 
 
   .arrows-overlay .pc-arrow--prev {
-
-    left: 12px;
 
     background: var(--wp--preset--color--secondary);
 
@@ -1256,8 +1512,6 @@
 
   .arrows-overlay .pc-arrow--next {
 
-    right: 12px;
-
     background: #fff;
 
     border: 2px solid var(--wp--preset--color--secondary);
@@ -1270,7 +1524,7 @@
 
   .arrows-overlay .pc-arrow:active {
 
-    transform: translateY(-50%) scale(0.9);
+    transform: scale(0.9);
 
   }
 
@@ -1278,11 +1532,13 @@
 
   /* ===== VARIANTE 2: Ajuste para VERTICAL CARDS ===== */
 
-  .posts-carousel--vertical.arrows-overlay .pc-arrow {
+  .posts-carousel--vertical.arrows-overlay .pc-nav-wrapper {
 
     /* Posicionar respecto a la imagen, no al contenedor completo */
 
     top: 140px; /* Mitad de la altura de la imagen (280px / 2) */
+
+    transform: none;
 
   }
 

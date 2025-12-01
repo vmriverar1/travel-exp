@@ -40,7 +40,7 @@ if (!defined('TRAVEL_BLOCKS_URL')) {
 
 if (!defined('TRAVEL_BLOCKS_VERSION')) {
 
-    define('TRAVEL_BLOCKS_VERSION', '1.4.9');
+    define('TRAVEL_BLOCKS_VERSION', '1.6.8');
 
 }
 
